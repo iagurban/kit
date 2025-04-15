@@ -1,0 +1,25 @@
+{
+  "name": "jelovnik",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Igor Gurban <iagurban@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@nestjs/common": "^10.4.17",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.3"
+  },
+  "packageManager": "yarn@4.9.1",
+  "dependenciesMeta": {
+    "@nestjs/common@11.0.17": {
+      "unplugged": true
+    },
+    "typescript@5.8.3": {
+      "unplugged": true
+    }
+  }
+}
