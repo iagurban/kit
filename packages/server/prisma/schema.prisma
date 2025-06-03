@@ -3,16 +3,204 @@ datasource db {
   provider = "postgresql"
 }
 
-generator client {
-  provider = "prisma-client"
-  output   = "../src/db-client.generated"
+generator oldClient {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/old-client"
+  engineType    = "binary"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
+generator client {
+  provider      = "prisma-client"
+  output        = "../src/generated/db-client"
+  engineType    = "binary"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+generator json {
+  provider = "yarn prisma-json-types-generator"
+}
+
+generator nestgraphql {
+  provider = "prisma-nestjs-graphql"
+  output   = "../src/generated/nestgraphql"
+
+  prismaClientImport = "../../db-client"
+  purgeOutput        = true
+}
+
+// generator nestjsDto {
+//   provider = "prisma-generator-nestjs-dto"
+//   output   = "../src/generated/nestjs-dto"
+//
+//   outputToNestJsResourceStructure = "true" // writes dtos and entities to subfolders aligned with NestJS CRUD generator (false)
+//   exportRelationModifierClasses   = "true" // Should extra classes generated for relationship field operations on DTOs be exported? (true)
+//   reExport                        = "false" // Should an index.ts be created for every folder? (false)
+//   createDtoPrefix                 = "Create" // phrase to prefix every CreateDTO class with (Create)
+//   updateDtoPrefix                 = "Update" // phrase to prefix every UpdateDTO class with (Update)
+//   dtoSuffix                       = "Dto" // phrase to suffix every CreateDTO and UpdateDTO class with (Dto)
+//   entityPrefix                    = "" // phrase to prefix every Entity class with (<empty>)
+//   entitySuffix                    = "" // phrase to suffix every Entity class with (<empty>)
+//   fileNamingStyle                 = "camel" // how to name generated files. Valid choices are "camel", "pascal", "kebab" and "snake". (camel)
+// }
+
+// generator erd {
+//   provider = "prisma-erd-generator"
+//
+//   output   = "../prisma/ERD.svg" // svg (default: ./prisma/ERD.svg), png, pdf, md
+//   // theme    = "forest" // default, forest, dark, neutral
+//   mmdcPath = "./CI"
+//
+//   // tableOnly = true
+//   // ignoreEnums = true
+//   includeRelationFromFields = true
+//   // disableEmoji = true
+//   // puppeteerConfig = "../puppeteerConfig.json"
+// }
+
+// generator prismaClassGenerator {
+//   provider = "prisma-class-generator"
+//
+//   output = "../src/generated/classes"
+//
+//   dryRun                   = false
+//   // useSwagger = false
+//   // makeIndexFile = false
+//   // separateRelationFields = true
+//   clientImportPath         = "../db-client"
+//   useNonNullableAssertions = false
+//   preserveDefaultNullable  = true
+// }
+
+// generator joi {
+//   provider = "prisma-joi-generator"
+//   output   = "../src/generated/joi"
+// }
+
+generator zod {
+  provider = "prisma-zod-generator"
+  output   = "../src/generated/zod"
+
+  isGenerateSelect  = true
+  isGenerateInclude = true
+}
+
+generator typescriptInterfaces {
+  provider = "prisma-generator-typescript-interfaces"
+
+  output      = "../src/generated/interfaces.ts"
+  modelType   = "type"
+  enumType    = "enum"
+  decimalType = "number"
+  // optionalNullables = true
+  // prettier    = true
+}
+
+// generator crudGrahql {
+//   provider = "nestjs-prisma-graphql-crud-gen"
+//   output   = "../generated/crud"
+// }
+
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now())
-  email     String   @unique
-  name      String   @unique
+
+  email String @unique
+  name  String @unique
 
   passwordHash String @map("externalId")
+
+  menus         Menu[]         @relation(name: "own")
+  uploadedFiles UploadedFile[]
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  hash String
+}
+
+model StoredFile {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid // 'abcdefgh' means path ab/cd/efgh
+
+  hash String
+  size Int
+
+  createdAt DateTime @default(now())
+
+  uploads UploadedFile[]
+
+  @@index([hash])
+}
+
+model UploadedFile {
+  id String @id @default(uuid())
+
+  originalName String
+  mimetype     String
+
+  uploadedAt DateTime @default(now())
+
+  uploaderId String @db.Uuid
+  uploader   User   @relation(fields: [uploaderId], references: [id])
+
+  storedFileId String     @db.Uuid
+  storedFile   StoredFile @relation(fields: [storedFileId], references: [id], onDelete: Restrict)
+
+  menuId String @db.Uuid
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  usingItems Item[]
+}
+
+model Menu {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+
+  title String
+
+  ownerId String @db.Uuid
+  owner   User   @relation(fields: [ownerId], references: [id], name: "own")
+
+  items Item[]
+  tags  Tag[]
+  files UploadedFile[]
+}
+
+model Item {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+  orderKey  String
+
+  title       String?
+  description String?
+  price       Decimal? @db.Decimal(10, 2)
+  archived    Boolean  @default(false)
+
+  imageId String?
+  image   UploadedFile? @relation(fields: [imageId], references: [id])
+
+  menuId String @db.Uuid
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  parentId String? @db.Uuid
+  parent   Item?   @relation(fields: [parentId], references: [id], name: "tree")
+  children Item[]  @relation(name: "tree")
+
+  @@unique([menuId, parentId, orderKey])
+}
+
+model Tag {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  menuId String @db.Uuid
+  menu   Menu   @relation(fields: [menuId], references: [id])
 }

@@ -14,8 +14,8 @@ export const nounPluralRU =
     return rem10 === 1 && rem100 !== 11
       ? nominative
       : rem10 > 1 && rem10 < 5 && (rem100 < 10 || rem100 > 19)
-      ? genitiveSingle
-      : genitiveMulti;
+        ? genitiveSingle
+        : genitiveMulti;
   };
 
 /**
@@ -50,6 +50,6 @@ export const verbPluralRU = (single: string, many: string, middle: string) => (n
   return (rem10 === 1 && rem100 !== 11) || n === 1000
     ? single
     : rem10 > 1 && rem10 < 5 && (rem100 < 10 || rem100 > 19)
-    ? many
-    : middle;
+      ? many
+      : middle;
 };

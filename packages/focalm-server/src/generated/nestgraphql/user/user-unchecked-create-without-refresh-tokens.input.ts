@@ -1,0 +1,36 @@
+import { Field, InputType } from '@nestjs/graphql';
+
+import { TaskUncheckedCreateNestedManyWithoutAuthorInput } from '../task/task-unchecked-create-nested-many-without-author.input';
+import { TaskUncheckedCreateNestedManyWithoutResponsibleInput } from '../task/task-unchecked-create-nested-many-without-responsible.input';
+import { TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-unchecked-create-nested-many-without-author.input';
+import { UploadedFileUncheckedCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-uploader.input';
+
+@InputType()
+export class UserUncheckedCreateWithoutRefreshTokensInput {
+  @Field(() => String, { nullable: true })
+  id?: string;
+
+  @Field(() => Date, { nullable: true })
+  createdAt?: Date | string;
+
+  @Field(() => String, { nullable: false })
+  email!: string;
+
+  @Field(() => String, { nullable: false })
+  name!: string;
+
+  @Field(() => String, { nullable: false })
+  passwordHash!: string;
+
+  @Field(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput, { nullable: true })
+  uploadedFiles?: UploadedFileUncheckedCreateNestedManyWithoutUploaderInput;
+
+  @Field(() => TaskUncheckedCreateNestedManyWithoutResponsibleInput, { nullable: true })
+  assignedTasks?: TaskUncheckedCreateNestedManyWithoutResponsibleInput;
+
+  @Field(() => TaskUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
+  authoredTasks?: TaskUncheckedCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
+  authoredTaskChanges?: TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput;
+}

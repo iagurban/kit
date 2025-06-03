@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Passes all script parameters to the Mermaid CLI for rendering diagrams
+yarn mmdc "$@"

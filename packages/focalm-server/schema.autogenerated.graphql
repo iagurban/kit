@@ -1,0 +1,180 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+enum CreatedAtFixReason {
+  Both
+  High
+  Low
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type IDMapping {
+  dst: String!
+  src: String!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Mutation {
+  login(login: String!, password: String!): String!
+  logout: Boolean!
+  updateTasks(changes: [TasksChangesGroup!]!): TasksUpdateResult!
+}
+
+type Query {
+  tasks(updatedAfter: DateTime): [Task!]!
+}
+
+type RefreshToken {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  hash: String!
+  id: ID!
+  user: User!
+  userId: String!
+}
+
+type StoredFile {
+  _count: StoredFileCount!
+  createdAt: DateTime!
+  hash: String!
+  id: ID!
+  size: Int!
+  uploads: [UploadedFile!]
+}
+
+type StoredFileCount {
+  uploads: Int!
+}
+
+type Task {
+  _count: TaskCount!
+  archived: Boolean!
+  author: User!
+  authorId: String!
+  children: [Task!]
+  createdAt: DateTime!
+  dueTo: DateTime
+  ease: Float!
+  historyGroups: [TaskHistoryGroup!]
+  id: ID!
+  impact: Float!
+  orderKey: String!
+  parent: Task
+  parentId: String
+  plannedStart: DateTime
+  responsible: User
+  responsibleId: String
+  startAfter: DateTime
+  state: TaskState!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type TaskCount {
+  children: Int!
+  historyGroups: Int!
+}
+
+input TaskFieldUpdateInput {
+  field: TaskHistoryKey!
+  stringValue: String!
+}
+
+type TaskHistoryGroup {
+  _count: TaskHistoryGroupCount!
+  author: User!
+  authorId: String!
+  createdAt: DateTime!
+  createdAtFixReason: CreatedAtFixReason
+  id: ID!
+  localCreatedAt: DateTime!
+  task: Task!
+  taskId: String!
+  values: [TaskHistoryValue!]
+}
+
+type TaskHistoryGroupCount {
+  values: Int!
+}
+
+enum TaskHistoryKey {
+  archived
+  authorId
+  ease
+  impact
+  orderKey
+  parentId
+  responsibleId
+  state
+  title
+}
+
+type TaskHistoryValue {
+  group: TaskHistoryGroup!
+  groupId: String!
+  key: TaskHistoryKey!
+  taskId: String!
+  value: JSON!
+}
+
+enum TaskState {
+  Active
+  Done
+  Pending
+}
+
+input TasksChangesGroup {
+  createdAt: DateTime!
+  createdAtFixReason: CreatedAtFixReason
+  id: String!
+  localCreatedAt: DateTime!
+  updates: [TaskFieldUpdateInput!]!
+}
+
+type TasksUpdateResult {
+  changedIds: [IDMapping!]!
+  tasks(updatedAfter: DateTime): [Task!]!
+}
+
+type UploadedFile {
+  id: ID!
+  mimetype: String!
+  originalName: String!
+  storedFile: StoredFile!
+  storedFileId: String!
+  uploadedAt: DateTime!
+  uploader: User!
+  uploaderId: String!
+  url: String!
+}
+
+type User {
+  _count: UserCount!
+  assignedTasks: [Task!]
+  authoredTaskChanges: [TaskHistoryGroup!]
+  authoredTasks: [Task!]
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  passwordHash: String!
+  refreshTokens: [RefreshToken!]
+  uploadedFiles: [UploadedFile!]
+}
+
+type UserCount {
+  assignedTasks: Int!
+  authoredTaskChanges: Int!
+  authoredTasks: Int!
+  refreshTokens: Int!
+  uploadedFiles: Int!
+}

@@ -2,7 +2,7 @@ import type { NextFont } from '@next/font';
 import { computed, makeObservable } from 'mobx';
 import { CSSProperties } from 'react';
 
-import { mutateCssNum } from '../react/css-util';
+import { mutateCssNum } from '../../../kit-ui/src/react/css-util';
 import type { AccentChooser } from './accent-chooser';
 import type { FaceMeasurers } from './face-measurer';
 import { faceSignature } from './text-style';

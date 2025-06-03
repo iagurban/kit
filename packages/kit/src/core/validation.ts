@@ -50,6 +50,10 @@ export const isUndefined = Object.assign((o: unknown): o is undefined => o === u
   type: 'undefined',
 });
 
+export const isNull = Object.assign((o: unknown): o is null => o === null, {
+  type: 'null',
+});
+
 export const isNullish = Object.assign((o: unknown): o is null | undefined => o == null, {
   type: 'null/undefined',
 });

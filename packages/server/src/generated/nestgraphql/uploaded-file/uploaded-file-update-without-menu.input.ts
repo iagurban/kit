@@ -1,0 +1,33 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+
+import { ItemUpdateManyWithoutImageNestedInput } from '../item/item-update-many-without-image-nested.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { StoredFileUpdateOneRequiredWithoutUploadsNestedInput } from '../stored-file/stored-file-update-one-required-without-uploads-nested.input';
+import { UserUpdateOneRequiredWithoutUploadedFilesNestedInput } from '../user/user-update-one-required-without-uploaded-files-nested.input';
+
+@InputType()
+export class UploadedFileUpdateWithoutMenuInput {
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  id?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  originalName?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  mimetype?: StringFieldUpdateOperationsInput;
+
+  @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
+  uploadedAt?: DateTimeFieldUpdateOperationsInput;
+
+  @Field(() => UserUpdateOneRequiredWithoutUploadedFilesNestedInput, { nullable: true })
+  uploader?: UserUpdateOneRequiredWithoutUploadedFilesNestedInput;
+
+  @Field(() => StoredFileUpdateOneRequiredWithoutUploadsNestedInput, { nullable: true })
+  storedFile?: StoredFileUpdateOneRequiredWithoutUploadsNestedInput;
+
+  @Field(() => ItemUpdateManyWithoutImageNestedInput, { nullable: true })
+  @Type(() => ItemUpdateManyWithoutImageNestedInput)
+  usingItems?: ItemUpdateManyWithoutImageNestedInput;
+}

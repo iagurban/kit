@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "esnext",
+    "strict": true,
+    "declaration": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "rootDir": "../..",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    //    "types": ["node"]
+    "baseUrl": ".",
+    "paths": {
+      "@focalm/server/*": ["../focalm-server/src/*"],
+      "@freyja/kit-ui/*": ["../kit-ui/src/*"],
+      "@freyja/kit/*": ["../kit/src/*"]
+    }
+  },
+  "include": ["src", "test", "111eslint.config.mjs", ".prettierrc.js"],
+  "exclude": ["node_modules", "dist"]
+}

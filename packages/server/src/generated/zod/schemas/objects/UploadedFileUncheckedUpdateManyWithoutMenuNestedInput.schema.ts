@@ -1,0 +1,82 @@
+import { z } from 'zod';
+
+import type { Prisma } from '../../../old-client';
+import { UploadedFileCreateManyMenuInputEnvelopeObjectSchema } from './UploadedFileCreateManyMenuInputEnvelope.schema';
+import { UploadedFileCreateOrConnectWithoutMenuInputObjectSchema } from './UploadedFileCreateOrConnectWithoutMenuInput.schema';
+import { UploadedFileCreateWithoutMenuInputObjectSchema } from './UploadedFileCreateWithoutMenuInput.schema';
+import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
+import { UploadedFileUncheckedCreateWithoutMenuInputObjectSchema } from './UploadedFileUncheckedCreateWithoutMenuInput.schema';
+import { UploadedFileUpdateManyWithWhereWithoutMenuInputObjectSchema } from './UploadedFileUpdateManyWithWhereWithoutMenuInput.schema';
+import { UploadedFileUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpdateWithWhereUniqueWithoutMenuInput.schema';
+import { UploadedFileUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpsertWithWhereUniqueWithoutMenuInput.schema';
+import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
+
+const Schema: z.ZodType<Prisma.UploadedFileUncheckedUpdateManyWithoutMenuNestedInput> = z
+  .object({
+    create: z
+      .union([
+        z.lazy(() => UploadedFileCreateWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileCreateWithoutMenuInputObjectSchema).array(),
+        z.lazy(() => UploadedFileUncheckedCreateWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileUncheckedCreateWithoutMenuInputObjectSchema).array(),
+      ])
+      .optional(),
+    connectOrCreate: z
+      .union([
+        z.lazy(() => UploadedFileCreateOrConnectWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileCreateOrConnectWithoutMenuInputObjectSchema).array(),
+      ])
+      .optional(),
+    upsert: z
+      .union([
+        z.lazy(() => UploadedFileUpsertWithWhereUniqueWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileUpsertWithWhereUniqueWithoutMenuInputObjectSchema).array(),
+      ])
+      .optional(),
+    createMany: z.lazy(() => UploadedFileCreateManyMenuInputEnvelopeObjectSchema).optional(),
+    set: z
+      .union([
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema),
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema).array(),
+      ])
+      .optional(),
+    disconnect: z
+      .union([
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema),
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema).array(),
+      ])
+      .optional(),
+    delete: z
+      .union([
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema),
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema).array(),
+      ])
+      .optional(),
+    connect: z
+      .union([
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema),
+        z.lazy(() => UploadedFileWhereUniqueInputObjectSchema).array(),
+      ])
+      .optional(),
+    update: z
+      .union([
+        z.lazy(() => UploadedFileUpdateWithWhereUniqueWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileUpdateWithWhereUniqueWithoutMenuInputObjectSchema).array(),
+      ])
+      .optional(),
+    updateMany: z
+      .union([
+        z.lazy(() => UploadedFileUpdateManyWithWhereWithoutMenuInputObjectSchema),
+        z.lazy(() => UploadedFileUpdateManyWithWhereWithoutMenuInputObjectSchema).array(),
+      ])
+      .optional(),
+    deleteMany: z
+      .union([
+        z.lazy(() => UploadedFileScalarWhereInputObjectSchema),
+        z.lazy(() => UploadedFileScalarWhereInputObjectSchema).array(),
+      ])
+      .optional(),
+  })
+  .strict();
+
+export const UploadedFileUncheckedUpdateManyWithoutMenuNestedInputObjectSchema = Schema;

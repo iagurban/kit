@@ -50,8 +50,17 @@ export default defineConfig({
         data: {
           title: 'index',
           // injectScript: `<link rel="preload" as="font" href={dancingFontUrl} type="font/woff2" />`,
+          // preloadScript: `<script type="module" src="/src/_preload.ts"></script>`
         },
         tags: [
+          {
+            injectTo: 'head',
+            tag: 'script',
+            attrs: {
+              type: 'module',
+              src: '/src/_preload.ts',
+            }
+          },
           {
             injectTo: 'body-prepend',
             tag: 'div',

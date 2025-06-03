@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Focalm-Server-Dev" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="3.0">
+    <runConfiguration name="focalm-server &gt; fc-server:start-dev" type="npm" />
+    <runConfiguration name="focalm-server &gt; fc-server:prisma-dev" type="npm" />
+    <method v="2" />
+  </configuration>
+</component>

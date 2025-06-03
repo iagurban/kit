@@ -1,0 +1,52 @@
+fragment FullTask on Task {
+    id
+
+    state
+    title
+    archived
+
+    createdAt
+    updatedAt
+
+    dueTo
+    startAfter
+    plannedStart
+
+    impact
+    ease
+
+    orderKey
+
+    parent {
+        id
+        title
+    }
+    responsible {
+        id
+        email
+        name
+    }
+    author {
+        id
+        email
+        name
+    }
+}
+
+query GetTasks($updatedAfter: DateTime) {
+    tasks(updatedAfter: $updatedAfter) {
+        ...FullTask
+    }
+}
+
+mutation UpdateTasks($changes: [TasksChangesGroup!]!, $updatedAfter: DateTime) {
+    result: updateTasks(changes: $changes) {
+        changedIds {
+            src
+            dst
+        }
+        tasks(updatedAfter: $updatedAfter) {
+            ...FullTask
+        }
+    }
+}

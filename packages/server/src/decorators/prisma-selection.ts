@@ -1,0 +1,106 @@
+import { isDefined, isROArray, isTruthy, notNull } from '@freyja/kit';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
+
+type Loc = { start: number; end: number };
+type Name = { kind: `Name`; value: string; loc: Loc };
+type SelectionSet = { kind: `SelectionSet`; selections: (Field | FragmentSpread)[]; loc: Loc };
+type Field = {
+  kind: `Field`;
+  alias?: Name;
+  name: Name;
+  arguments: { kind: `Argument`; name: Name; value: { kind: `Variable`; name: Name; loc: Loc }; loc: Loc }[];
+  directives: unknown[];
+  selectionSet?: SelectionSet;
+  loc: Loc;
+};
+
+type FragmentDefinition = {
+  kind: 'FragmentDefinition';
+  name: Name;
+  typeCondition: unknown;
+  directives: unknown[];
+  selectionSet?: SelectionSet;
+  loc: Loc;
+};
+
+type FragmentSpread = {
+  kind: 'FragmentSpread';
+  name: Name;
+};
+
+type RecurSelect = { select: { [key: string]: RecurSelect | boolean } } | boolean;
+
+const selector = (fragments: Record<string, FragmentDefinition>, skip?: Set<string>) => {
+  const flattenSpreads = (fields?: readonly (Field | FragmentSpread)[]): Field[] =>
+    fields
+      ? fields.flatMap(field =>
+          field.kind === `FragmentSpread`
+            ? flattenSpreads(notNull(fragments[field.name.value]).selectionSet?.selections)
+            : [field]
+        )
+      : [];
+
+  const collectSelection = (
+    fields: readonly (Field | FragmentSpread)[] | undefined,
+    path: string
+  ): RecurSelect =>
+    fields?.length
+      ? {
+          select: Object.fromEntries(
+            flattenSpreads(fields)
+              .map(f => {
+                const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
+                return skip?.has(subPath)
+                  ? undefined
+                  : ([f.name.value, collectSelection(f.selectionSet?.selections, subPath)] as const);
+              })
+              .filter(isDefined)
+          ),
+        }
+      : true;
+
+  const findByPath = (path: readonly string[], field: Field): Field | null => {
+    if (/* DEBUG */ path.length < 1) {
+      // path.length > 0 expected
+      throw new Error(`Programming Error: path.length < 1 in findByPath`);
+    }
+
+    const found = flattenSpreads(field.selectionSet?.selections).find(f => f.name.value === path[0]);
+    return !found ? null : path.length === 1 ? found : findByPath(path.slice(1), found);
+  };
+
+  return { collectSelection, findByPath };
+};
+
+type Args = { path?: readonly string[]; skip?: readonly string[] };
+
+export const PrismaSelection = createParamDecorator(
+  (opts: readonly string[] | Args | undefined, context: ExecutionContext) => {
+    const ctx = GqlExecutionContext.create(context);
+    const {
+      fieldName,
+      fieldNodes: [fieldNode],
+      fragments,
+    } = ctx.getInfo<{
+      fieldName: string;
+      fieldNodes: Field[];
+      fragments: Record<string, FragmentDefinition>;
+    }>();
+
+    // console.log(`opts`, opts);
+
+    const { path, skip } = isROArray(opts) ? { path: opts } : (opts ?? {});
+
+    const skipSet = skip && new Set(skip);
+
+    const s = selector(fragments, skipSet);
+    const root = path?.length ? s.findByPath(path, fieldNode) : fieldNode;
+    if (!root) {
+      throw new Error(`Path "${path?.join(`.`)}" not found in ${fieldName}`);
+    }
+
+    const r = s.collectSelection(root.selectionSet?.selections, path?.join(`.`) || ``);
+    return typeof r === `object` ? r['select'] : undefined;
+  }
+);

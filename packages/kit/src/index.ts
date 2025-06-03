@@ -1,4 +1,4 @@
-export { asserted, assertion, isDefined, isNotNull, isNotUndefined, isTruthy } from './asserts';
+export { asserted, assertion, checked, isDefined, isNotNull, isNotUndefined, isTruthy } from './asserts';
 export { ExMap } from './collections/ex-map';
 export { ExSet } from './collections/ex-set';
 export { iterabling } from './collections/iterabling';
@@ -21,6 +21,7 @@ export {
   compileIsArrayOf,
   compileIsTuples,
   isInteger,
+  isNull,
   isNullish,
   isNumber,
   isString,
@@ -28,19 +29,15 @@ export {
   validator,
   validator0,
 } from './core/validation';
+export { ProgrammingError } from './manual-sorting';
+export { ManualSortingAlphabet } from './manual-sorting';
+export { ObservableExMap } from './mobx/observable-ex-map';
+export { ObservableExSet } from './mobx/observable-ex-set';
 export type { ValueBox } from './mobx/value-box';
 export { valueBox } from './mobx/value-box';
 export type { NumericAgg } from './numbers/aggregation';
 export { aggregation, sum } from './numbers/aggregation';
-export { findNodeBy, findNodeOfType, isMounted } from './react/html';
-export { parseCookies } from './react/net';
-export {
-  createUsableContext,
-  createUseContext,
-  interleaveWithObject,
-  joinNodesWithText,
-  makeUseNotNullContext,
-} from './react/react';
+export { NumberBase } from './numbers/number-base';
 export {
   ArrayMutators,
   buckets,
@@ -62,4 +59,4 @@ export { snap } from './utils/numeric-utils';
 export { patchRR, PromiseController } from './utils/promise-util';
 export { rndStr } from './utils/random';
 export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
-export type { OverrideFields, ValOrArr } from './utils/types';
+export type { NotNullish, Nullish, OverrideFields, ValOrArr } from './utils/types';

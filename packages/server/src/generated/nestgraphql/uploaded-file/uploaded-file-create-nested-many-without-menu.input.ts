@@ -1,0 +1,27 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+
+import { Prisma } from '../../db-client';
+import { UploadedFileCreateManyMenuInputEnvelope } from './uploaded-file-create-many-menu-input-envelope.input';
+import { UploadedFileCreateOrConnectWithoutMenuInput } from './uploaded-file-create-or-connect-without-menu.input';
+import { UploadedFileCreateWithoutMenuInput } from './uploaded-file-create-without-menu.input';
+import { UploadedFileWhereUniqueInput } from './uploaded-file-where-unique.input';
+
+@InputType()
+export class UploadedFileCreateNestedManyWithoutMenuInput {
+  @Field(() => [UploadedFileCreateWithoutMenuInput], { nullable: true })
+  @Type(() => UploadedFileCreateWithoutMenuInput)
+  create?: Array<UploadedFileCreateWithoutMenuInput>;
+
+  @Field(() => [UploadedFileCreateOrConnectWithoutMenuInput], { nullable: true })
+  @Type(() => UploadedFileCreateOrConnectWithoutMenuInput)
+  connectOrCreate?: Array<UploadedFileCreateOrConnectWithoutMenuInput>;
+
+  @Field(() => UploadedFileCreateManyMenuInputEnvelope, { nullable: true })
+  @Type(() => UploadedFileCreateManyMenuInputEnvelope)
+  createMany?: UploadedFileCreateManyMenuInputEnvelope;
+
+  @Field(() => [UploadedFileWhereUniqueInput], { nullable: true })
+  @Type(() => UploadedFileWhereUniqueInput)
+  connect?: Array<Prisma.AtLeast<UploadedFileWhereUniqueInput, 'id'>>;
+}

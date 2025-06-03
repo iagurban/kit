@@ -1,0 +1,32 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+
+import { Prisma } from '../../db-client';
+import { UserCreateOrConnectWithoutAuthoredTasksInput } from './user-create-or-connect-without-authored-tasks.input';
+import { UserCreateWithoutAuthoredTasksInput } from './user-create-without-authored-tasks.input';
+import { UserUpdateToOneWithWhereWithoutAuthoredTasksInput } from './user-update-to-one-with-where-without-authored-tasks.input';
+import { UserUpsertWithoutAuthoredTasksInput } from './user-upsert-without-authored-tasks.input';
+import { UserWhereUniqueInput } from './user-where-unique.input';
+
+@InputType()
+export class UserUpdateOneRequiredWithoutAuthoredTasksNestedInput {
+  @Field(() => UserCreateWithoutAuthoredTasksInput, { nullable: true })
+  @Type(() => UserCreateWithoutAuthoredTasksInput)
+  create?: UserCreateWithoutAuthoredTasksInput;
+
+  @Field(() => UserCreateOrConnectWithoutAuthoredTasksInput, { nullable: true })
+  @Type(() => UserCreateOrConnectWithoutAuthoredTasksInput)
+  connectOrCreate?: UserCreateOrConnectWithoutAuthoredTasksInput;
+
+  @Field(() => UserUpsertWithoutAuthoredTasksInput, { nullable: true })
+  @Type(() => UserUpsertWithoutAuthoredTasksInput)
+  upsert?: UserUpsertWithoutAuthoredTasksInput;
+
+  @Field(() => UserWhereUniqueInput, { nullable: true })
+  @Type(() => UserWhereUniqueInput)
+  connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+
+  @Field(() => UserUpdateToOneWithWhereWithoutAuthoredTasksInput, { nullable: true })
+  @Type(() => UserUpdateToOneWithWhereWithoutAuthoredTasksInput)
+  update?: UserUpdateToOneWithWhereWithoutAuthoredTasksInput;
+}
