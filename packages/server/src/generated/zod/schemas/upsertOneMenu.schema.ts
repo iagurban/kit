@@ -1,12 +1,11 @@
 import { z } from 'zod';
-
-import { MenuCreateInputObjectSchema } from './objects/MenuCreateInput.schema';
-import { MenuIncludeObjectSchema } from './objects/MenuInclude.schema';
 import { MenuSelectObjectSchema } from './objects/MenuSelect.schema';
-import { MenuUncheckedCreateInputObjectSchema } from './objects/MenuUncheckedCreateInput.schema';
-import { MenuUncheckedUpdateInputObjectSchema } from './objects/MenuUncheckedUpdateInput.schema';
-import { MenuUpdateInputObjectSchema } from './objects/MenuUpdateInput.schema';
+import { MenuIncludeObjectSchema } from './objects/MenuInclude.schema';
 import { MenuWhereUniqueInputObjectSchema } from './objects/MenuWhereUniqueInput.schema';
+import { MenuCreateInputObjectSchema } from './objects/MenuCreateInput.schema';
+import { MenuUncheckedCreateInputObjectSchema } from './objects/MenuUncheckedCreateInput.schema';
+import { MenuUpdateInputObjectSchema } from './objects/MenuUpdateInput.schema';
+import { MenuUncheckedUpdateInputObjectSchema } from './objects/MenuUncheckedUpdateInput.schema';
 
 export const MenuUpsertSchema = z.object({
   select: MenuSelectObjectSchema.optional(),

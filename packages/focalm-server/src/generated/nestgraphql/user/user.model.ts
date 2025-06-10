@@ -4,6 +4,7 @@ import { RefreshToken } from '../refresh-token/refresh-token.model';
 import { Task } from '../task/task.model';
 import { TaskHistoryGroup } from '../task-history-group/task-history-group.model';
 import { UploadedFile } from '../uploaded-file/uploaded-file.model';
+import { UserInTask } from '../user-in-task/user-in-task.model';
 import { UserCount } from './user-count.output';
 
 @ObjectType()
@@ -37,6 +38,9 @@ export class User {
 
   @Field(() => [TaskHistoryGroup], { nullable: true })
   authoredTaskChanges?: Array<TaskHistoryGroup>;
+
+  @Field(() => [UserInTask], { nullable: true })
+  participatingTasks?: Array<UserInTask>;
 
   @Field(() => UserCount, { nullable: false })
   _count?: UserCount;

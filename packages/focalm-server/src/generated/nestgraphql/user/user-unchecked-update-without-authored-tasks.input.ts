@@ -6,6 +6,7 @@ import { RefreshTokenUncheckedUpdateManyWithoutUserNestedInput } from '../refres
 import { TaskUncheckedUpdateManyWithoutResponsibleNestedInput } from '../task/task-unchecked-update-many-without-responsible-nested.input';
 import { TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInput } from '../task-history-group/task-history-group-unchecked-update-many-without-author-nested.input';
 import { UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput } from '../uploaded-file/uploaded-file-unchecked-update-many-without-uploader-nested.input';
+import { UserInTaskUncheckedUpdateManyWithoutUserNestedInput } from '../user-in-task/user-in-task-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutAuthoredTasksInput {
@@ -35,4 +36,7 @@ export class UserUncheckedUpdateWithoutAuthoredTasksInput {
 
   @Field(() => TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInput;
+
+  @Field(() => UserInTaskUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
+  participatingTasks?: UserInTaskUncheckedUpdateManyWithoutUserNestedInput;
 }

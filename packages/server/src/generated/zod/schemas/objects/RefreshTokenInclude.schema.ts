@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { UserArgsObjectSchema } from './UserArgs.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UserArgsObjectSchema } from './UserArgs.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenInclude> = z
   .object({

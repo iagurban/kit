@@ -7,10 +7,12 @@ import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
 import { DateTimeNullableFilterObjectSchema } from './DateTimeNullableFilter.schema';
 import { EnumTaskStateFilterObjectSchema } from './EnumTaskStateFilter.schema';
 import { FloatFilterObjectSchema } from './FloatFilter.schema';
+import { IntNullableFilterObjectSchema } from './IntNullableFilter.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
-import { TaskHistoryGroupListRelationFilterObjectSchema } from './TaskHistoryGroupListRelationFilter.schema';
+import { TaskHistoryValueListRelationFilterObjectSchema } from './TaskHistoryValueListRelationFilter.schema';
 import { TaskListRelationFilterObjectSchema } from './TaskListRelationFilter.schema';
 import { TaskRelationFilterObjectSchema } from './TaskRelationFilter.schema';
+import { UserInTaskListRelationFilterObjectSchema } from './UserInTaskListRelationFilter.schema';
 import { UserRelationFilterObjectSchema } from './UserRelationFilter.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema';
 import { UuidFilterObjectSchema } from './UuidFilter.schema';
@@ -34,16 +36,28 @@ const Schema: z.ZodType<Prisma.TaskWhereInput> = z
     archived: z.union([z.lazy(() => BoolFilterObjectSchema), z.boolean()]).optional(),
     impact: z.union([z.lazy(() => FloatFilterObjectSchema), z.number()]).optional(),
     ease: z.union([z.lazy(() => FloatFilterObjectSchema), z.number()]).optional(),
-    startAfter: z
+    startAfterDate: z
       .union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()])
       .optional()
       .nullable(),
-    plannedStart: z
+    startAfterOffset: z
+      .union([z.lazy(() => IntNullableFilterObjectSchema), z.number()])
+      .optional()
+      .nullable(),
+    plannedStartDate: z
       .union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()])
       .optional()
       .nullable(),
-    dueTo: z
+    plannedStartOffset: z
+      .union([z.lazy(() => IntNullableFilterObjectSchema), z.number()])
+      .optional()
+      .nullable(),
+    dueToDate: z
       .union([z.lazy(() => DateTimeNullableFilterObjectSchema), z.coerce.date()])
+      .optional()
+      .nullable(),
+    dueToOffset: z
+      .union([z.lazy(() => IntNullableFilterObjectSchema), z.number()])
       .optional()
       .nullable(),
     createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
@@ -70,7 +84,8 @@ const Schema: z.ZodType<Prisma.TaskWhereInput> = z
       .optional()
       .nullable(),
     children: z.lazy(() => TaskListRelationFilterObjectSchema).optional(),
-    historyGroups: z.lazy(() => TaskHistoryGroupListRelationFilterObjectSchema).optional(),
+    participants: z.lazy(() => UserInTaskListRelationFilterObjectSchema).optional(),
+    historyValues: z.lazy(() => TaskHistoryValueListRelationFilterObjectSchema).optional(),
   })
   .strict();
 

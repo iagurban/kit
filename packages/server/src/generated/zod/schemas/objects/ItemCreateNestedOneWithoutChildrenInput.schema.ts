@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { ItemCreateOrConnectWithoutChildrenInputObjectSchema } from './ItemCreateOrConnectWithoutChildrenInput.schema';
 import { ItemCreateWithoutChildrenInputObjectSchema } from './ItemCreateWithoutChildrenInput.schema';
 import { ItemUncheckedCreateWithoutChildrenInputObjectSchema } from './ItemUncheckedCreateWithoutChildrenInput.schema';
+import { ItemCreateOrConnectWithoutChildrenInputObjectSchema } from './ItemCreateOrConnectWithoutChildrenInput.schema';
 import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.ItemCreateNestedOneWithoutChildrenInput> = z
   .object({

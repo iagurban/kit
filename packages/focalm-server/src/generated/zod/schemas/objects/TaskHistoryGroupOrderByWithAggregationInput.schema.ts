@@ -10,7 +10,6 @@ import { TaskHistoryGroupMinOrderByAggregateInputObjectSchema } from './TaskHist
 const Schema: z.ZodType<Prisma.TaskHistoryGroupOrderByWithAggregationInput> = z
   .object({
     id: z.lazy(() => SortOrderSchema).optional(),
-    taskId: z.lazy(() => SortOrderSchema).optional(),
     authorId: z.lazy(() => SortOrderSchema).optional(),
     localCreatedAt: z.lazy(() => SortOrderSchema).optional(),
     createdAt: z.lazy(() => SortOrderSchema).optional(),

@@ -1,9 +1,8 @@
 import { z } from 'zod';
-
-import { MenuScalarFieldEnumSchema } from './enums/MenuScalarFieldEnum.schema';
+import { MenuWhereInputObjectSchema } from './objects/MenuWhereInput.schema';
 import { MenuOrderByWithAggregationInputObjectSchema } from './objects/MenuOrderByWithAggregationInput.schema';
 import { MenuScalarWhereWithAggregatesInputObjectSchema } from './objects/MenuScalarWhereWithAggregatesInput.schema';
-import { MenuWhereInputObjectSchema } from './objects/MenuWhereInput.schema';
+import { MenuScalarFieldEnumSchema } from './enums/MenuScalarFieldEnum.schema';
 
 export const MenuGroupBySchema = z.object({
   where: MenuWhereInputObjectSchema.optional(),

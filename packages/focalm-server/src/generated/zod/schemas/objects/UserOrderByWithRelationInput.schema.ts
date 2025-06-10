@@ -6,6 +6,7 @@ import { RefreshTokenOrderByRelationAggregateInputObjectSchema } from './Refresh
 import { TaskHistoryGroupOrderByRelationAggregateInputObjectSchema } from './TaskHistoryGroupOrderByRelationAggregateInput.schema';
 import { TaskOrderByRelationAggregateInputObjectSchema } from './TaskOrderByRelationAggregateInput.schema';
 import { UploadedFileOrderByRelationAggregateInputObjectSchema } from './UploadedFileOrderByRelationAggregateInput.schema';
+import { UserInTaskOrderByRelationAggregateInputObjectSchema } from './UserInTaskOrderByRelationAggregateInput.schema';
 
 const Schema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z
   .object({
@@ -19,6 +20,7 @@ const Schema: z.ZodType<Prisma.UserOrderByWithRelationInput> = z
     assignedTasks: z.lazy(() => TaskOrderByRelationAggregateInputObjectSchema).optional(),
     authoredTasks: z.lazy(() => TaskOrderByRelationAggregateInputObjectSchema).optional(),
     authoredTaskChanges: z.lazy(() => TaskHistoryGroupOrderByRelationAggregateInputObjectSchema).optional(),
+    participatingTasks: z.lazy(() => UserInTaskOrderByRelationAggregateInputObjectSchema).optional(),
   })
   .strict();
 

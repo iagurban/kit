@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { NestedBoolFilterObjectSchema } from './NestedBoolFilter.schema';
 import { NestedBoolWithAggregatesFilterObjectSchema } from './NestedBoolWithAggregatesFilter.schema';
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
+import { NestedBoolFilterObjectSchema } from './NestedBoolFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.BoolWithAggregatesFilter> = z
   .object({

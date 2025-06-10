@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { StoredFileWhereInputObjectSchema } from './StoredFileWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { StoredFileWhereInputObjectSchema } from './StoredFileWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.StoredFileRelationFilter> = z
   .object({

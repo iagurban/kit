@@ -21,13 +21,22 @@ export class TaskCountAggregate {
   ease!: number;
 
   @Field(() => Int, { nullable: false })
-  startAfter!: number;
+  startAfterDate!: number;
 
   @Field(() => Int, { nullable: false })
-  plannedStart!: number;
+  startAfterOffset!: number;
 
   @Field(() => Int, { nullable: false })
-  dueTo!: number;
+  plannedStartDate!: number;
+
+  @Field(() => Int, { nullable: false })
+  plannedStartOffset!: number;
+
+  @Field(() => Int, { nullable: false })
+  dueToDate!: number;
+
+  @Field(() => Int, { nullable: false })
+  dueToOffset!: number;
 
   @Field(() => Int, { nullable: false })
   createdAt!: number;

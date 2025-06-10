@@ -2,7 +2,9 @@ import { z } from 'zod';
 
 import type { Prisma } from '../../../old-client';
 import { TaskHistoryKeySchema } from '../enums/TaskHistoryKey.schema';
+import { TaskHistoryOperationSchema } from '../enums/TaskHistoryOperation.schema';
 import { EnumTaskHistoryKeyWithAggregatesFilterObjectSchema } from './EnumTaskHistoryKeyWithAggregatesFilter.schema';
+import { EnumTaskHistoryOperationWithAggregatesFilterObjectSchema } from './EnumTaskHistoryOperationWithAggregatesFilter.schema';
 import { JsonWithAggregatesFilterObjectSchema } from './JsonWithAggregatesFilter.schema';
 import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 
@@ -30,6 +32,12 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueScalarWhereWithAggregatesInput> =
       .union([
         z.lazy(() => EnumTaskHistoryKeyWithAggregatesFilterObjectSchema),
         z.lazy(() => TaskHistoryKeySchema),
+      ])
+      .optional(),
+    op: z
+      .union([
+        z.lazy(() => EnumTaskHistoryOperationWithAggregatesFilterObjectSchema),
+        z.lazy(() => TaskHistoryOperationSchema),
       ])
       .optional(),
     value: z.lazy(() => JsonWithAggregatesFilterObjectSchema).optional(),

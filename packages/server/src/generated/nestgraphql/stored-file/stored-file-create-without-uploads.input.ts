@@ -1,16 +1,19 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
 
 @InputType()
 export class StoredFileCreateWithoutUploadsInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => String, { nullable: false })
-  hash!: string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => Int, { nullable: false })
-  size!: number;
+    @Field(() => String, {nullable:false})
+    hash!: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string;
+    @Field(() => Int, {nullable:false})
+    size!: number;
+
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
 }

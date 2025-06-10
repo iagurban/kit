@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { RefreshTokenScalarWhereInputObjectSchema } from './RefreshTokenScalarWhereInput.schema';
+import { RefreshTokenUpdateManyMutationInputObjectSchema } from './RefreshTokenUpdateManyMutationInput.schema';
+import { RefreshTokenUncheckedUpdateManyWithoutRefreshTokensInputObjectSchema } from './RefreshTokenUncheckedUpdateManyWithoutRefreshTokensInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { RefreshTokenScalarWhereInputObjectSchema } from './RefreshTokenScalarWhereInput.schema';
-import { RefreshTokenUncheckedUpdateManyWithoutRefreshTokensInputObjectSchema } from './RefreshTokenUncheckedUpdateManyWithoutRefreshTokensInput.schema';
-import { RefreshTokenUpdateManyMutationInputObjectSchema } from './RefreshTokenUpdateManyMutationInput.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenUpdateManyWithWhereWithoutUserInput> = z
   .object({

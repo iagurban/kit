@@ -1,8 +1,8 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { NestedIntNullableFilterObjectSchema } from './NestedIntNullableFilter.schema';
 import { NestedStringNullableFilterObjectSchema } from './NestedStringNullableFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.NestedStringNullableWithAggregatesFilter> = z
   .object({

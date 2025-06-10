@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { UserScalarFieldEnumSchema } from './enums/UserScalarFieldEnum.schema';
+import { UserSelectObjectSchema } from './objects/UserSelect.schema';
 import { UserIncludeObjectSchema } from './objects/UserInclude.schema';
 import { UserOrderByWithRelationInputObjectSchema } from './objects/UserOrderByWithRelationInput.schema';
-import { UserSelectObjectSchema } from './objects/UserSelect.schema';
 import { UserWhereInputObjectSchema } from './objects/UserWhereInput.schema';
 import { UserWhereUniqueInputObjectSchema } from './objects/UserWhereUniqueInput.schema';
+import { UserScalarFieldEnumSchema } from './enums/UserScalarFieldEnum.schema';
 
 export const UserFindManySchema = z.object({
   select: z.lazy(() => UserSelectObjectSchema.optional()),

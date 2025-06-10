@@ -1,10 +1,10 @@
 import { z } from 'zod';
+import { MenuFindManySchema } from '../findManyMenu.schema';
+import { UploadedFileFindManySchema } from '../findManyUploadedFile.schema';
+import { RefreshTokenFindManySchema } from '../findManyRefreshToken.schema';
+import { UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuFindManySchema } from '../findManyMenu.schema';
-import { RefreshTokenFindManySchema } from '../findManyRefreshToken.schema';
-import { UploadedFileFindManySchema } from '../findManyUploadedFile.schema';
-import { UserCountOutputTypeArgsObjectSchema } from './UserCountOutputTypeArgs.schema';
 
 const Schema: z.ZodType<Prisma.UserSelect> = z
   .object({

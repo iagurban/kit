@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { TagWhereUniqueInputObjectSchema } from './TagWhereUniqueInput.schema';
 import { TagCreateWithoutMenuInputObjectSchema } from './TagCreateWithoutMenuInput.schema';
 import { TagUncheckedCreateWithoutMenuInputObjectSchema } from './TagUncheckedCreateWithoutMenuInput.schema';
-import { TagWhereUniqueInputObjectSchema } from './TagWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.TagCreateOrConnectWithoutMenuInput> = z
   .object({

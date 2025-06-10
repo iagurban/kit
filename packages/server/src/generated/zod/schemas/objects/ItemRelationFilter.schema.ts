@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { ItemWhereInputObjectSchema } from './ItemWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemWhereInputObjectSchema } from './ItemWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemRelationFilter> = z
   .object({

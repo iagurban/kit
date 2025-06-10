@@ -1,7 +1,9 @@
-import { Field, Float, InputType } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import * as Scalars from 'graphql-scalars';
 
 import { TaskState } from '../prisma/task-state.enum';
-import { TaskHistoryGroupUncheckedCreateNestedManyWithoutTaskInput } from '../task-history-group/task-history-group-unchecked-create-nested-many-without-task.input';
+import { TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput } from '../task-history-value/task-history-value-unchecked-create-nested-many-without-task.input';
+import { UserInTaskUncheckedCreateNestedManyWithoutTaskInput } from '../user-in-task/user-in-task-unchecked-create-nested-many-without-task.input';
 import { TaskUncheckedCreateNestedManyWithoutParentInput } from './task-unchecked-create-nested-many-without-parent.input';
 
 @InputType()
@@ -24,14 +26,23 @@ export class TaskUncheckedCreateWithoutAuthorInput {
   @Field(() => Float, { nullable: true })
   ease?: number;
 
-  @Field(() => Date, { nullable: true })
-  startAfter?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  startAfterDate?: Date | string;
 
-  @Field(() => Date, { nullable: true })
-  plannedStart?: Date | string;
+  @Field(() => Int, { nullable: true })
+  startAfterOffset?: number;
 
-  @Field(() => Date, { nullable: true })
-  dueTo?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  plannedStartDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  plannedStartOffset?: number;
+
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  dueToDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  dueToOffset?: number;
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date | string;
@@ -51,6 +62,9 @@ export class TaskUncheckedCreateWithoutAuthorInput {
   @Field(() => TaskUncheckedCreateNestedManyWithoutParentInput, { nullable: true })
   children?: TaskUncheckedCreateNestedManyWithoutParentInput;
 
-  @Field(() => TaskHistoryGroupUncheckedCreateNestedManyWithoutTaskInput, { nullable: true })
-  historyGroups?: TaskHistoryGroupUncheckedCreateNestedManyWithoutTaskInput;
+  @Field(() => UserInTaskUncheckedCreateNestedManyWithoutTaskInput, { nullable: true })
+  participants?: UserInTaskUncheckedCreateNestedManyWithoutTaskInput;
+
+  @Field(() => TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput, { nullable: true })
+  historyValues?: TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput;
 }

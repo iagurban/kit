@@ -1,11 +1,11 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+import { ItemUpdateWithoutParentInputObjectSchema } from './ItemUpdateWithoutParentInput.schema';
+import { ItemUncheckedUpdateWithoutParentInputObjectSchema } from './ItemUncheckedUpdateWithoutParentInput.schema';
 import { ItemCreateWithoutParentInputObjectSchema } from './ItemCreateWithoutParentInput.schema';
 import { ItemUncheckedCreateWithoutParentInputObjectSchema } from './ItemUncheckedCreateWithoutParentInput.schema';
-import { ItemUncheckedUpdateWithoutParentInputObjectSchema } from './ItemUncheckedUpdateWithoutParentInput.schema';
-import { ItemUpdateWithoutParentInputObjectSchema } from './ItemUpdateWithoutParentInput.schema';
-import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.ItemUpsertWithWhereUniqueWithoutParentInput> = z
   .object({

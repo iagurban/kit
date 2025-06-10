@@ -1,12 +1,11 @@
 import { z } from 'zod';
-
-import { ItemCreateInputObjectSchema } from './objects/ItemCreateInput.schema';
-import { ItemIncludeObjectSchema } from './objects/ItemInclude.schema';
 import { ItemSelectObjectSchema } from './objects/ItemSelect.schema';
-import { ItemUncheckedCreateInputObjectSchema } from './objects/ItemUncheckedCreateInput.schema';
-import { ItemUncheckedUpdateInputObjectSchema } from './objects/ItemUncheckedUpdateInput.schema';
-import { ItemUpdateInputObjectSchema } from './objects/ItemUpdateInput.schema';
+import { ItemIncludeObjectSchema } from './objects/ItemInclude.schema';
 import { ItemWhereUniqueInputObjectSchema } from './objects/ItemWhereUniqueInput.schema';
+import { ItemCreateInputObjectSchema } from './objects/ItemCreateInput.schema';
+import { ItemUncheckedCreateInputObjectSchema } from './objects/ItemUncheckedCreateInput.schema';
+import { ItemUpdateInputObjectSchema } from './objects/ItemUpdateInput.schema';
+import { ItemUncheckedUpdateInputObjectSchema } from './objects/ItemUncheckedUpdateInput.schema';
 
 export const ItemUpsertSchema = z.object({
   select: ItemSelectObjectSchema.optional(),

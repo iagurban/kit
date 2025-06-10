@@ -1,34 +1,35 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { ItemUpdateManyWithoutImageNestedInput } from '../item/item-update-many-without-image-nested.input';
-import { MenuUpdateOneRequiredWithoutFilesNestedInput } from '../menu/menu-update-one-required-without-files-nested.input';
-import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { StoredFileUpdateOneRequiredWithoutUploadsNestedInput } from '../stored-file/stored-file-update-one-required-without-uploads-nested.input';
+import { MenuUpdateOneRequiredWithoutFilesNestedInput } from '../menu/menu-update-one-required-without-files-nested.input';
+import { Type } from 'class-transformer';
+import { ItemUpdateManyWithoutImageNestedInput } from '../item/item-update-many-without-image-nested.input';
 
 @InputType()
 export class UploadedFileUpdateWithoutUploaderInput {
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  originalName?: StringFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  mimetype?: StringFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    originalName?: StringFieldUpdateOperationsInput;
 
-  @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
-  uploadedAt?: DateTimeFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    mimetype?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StoredFileUpdateOneRequiredWithoutUploadsNestedInput, { nullable: true })
-  storedFile?: StoredFileUpdateOneRequiredWithoutUploadsNestedInput;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    uploadedAt?: DateTimeFieldUpdateOperationsInput;
 
-  @Field(() => MenuUpdateOneRequiredWithoutFilesNestedInput, { nullable: true })
-  @Type(() => MenuUpdateOneRequiredWithoutFilesNestedInput)
-  menu?: MenuUpdateOneRequiredWithoutFilesNestedInput;
+    @Field(() => StoredFileUpdateOneRequiredWithoutUploadsNestedInput, {nullable:true})
+    storedFile?: StoredFileUpdateOneRequiredWithoutUploadsNestedInput;
 
-  @Field(() => ItemUpdateManyWithoutImageNestedInput, { nullable: true })
-  @Type(() => ItemUpdateManyWithoutImageNestedInput)
-  usingItems?: ItemUpdateManyWithoutImageNestedInput;
+    @Field(() => MenuUpdateOneRequiredWithoutFilesNestedInput, {nullable:true})
+    @Type(() => MenuUpdateOneRequiredWithoutFilesNestedInput)
+    menu?: MenuUpdateOneRequiredWithoutFilesNestedInput;
+
+    @Field(() => ItemUpdateManyWithoutImageNestedInput, {nullable:true})
+    @Type(() => ItemUpdateManyWithoutImageNestedInput)
+    usingItems?: ItemUpdateManyWithoutImageNestedInput;
 }

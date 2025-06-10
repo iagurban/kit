@@ -1,16 +1,16 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
-import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
-import { MenuRelationFilterObjectSchema } from './MenuRelationFilter.schema';
-import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
-import { StoredFileRelationFilterObjectSchema } from './StoredFileRelationFilter.schema';
-import { StoredFileWhereInputObjectSchema } from './StoredFileWhereInput.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
+import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
+import { UuidFilterObjectSchema } from './UuidFilter.schema';
 import { UserRelationFilterObjectSchema } from './UserRelationFilter.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema';
-import { UuidFilterObjectSchema } from './UuidFilter.schema';
+import { StoredFileRelationFilterObjectSchema } from './StoredFileRelationFilter.schema';
+import { StoredFileWhereInputObjectSchema } from './StoredFileWhereInput.schema';
+import { MenuRelationFilterObjectSchema } from './MenuRelationFilter.schema';
+import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
+import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UploadedFileWhereInput> = z
   .object({
@@ -33,7 +33,7 @@ const Schema: z.ZodType<Prisma.UploadedFileWhereInput> = z
     id: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
     originalName: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
     mimetype: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
-    uploadedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+    uploadedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.dateStr()]).optional(),
     uploaderId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
     storedFileId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
     menuId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),

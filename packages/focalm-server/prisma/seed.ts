@@ -12,6 +12,7 @@ import { PreparedTaskChangesGroup, TasksService } from '../src/modules/tasks/tas
 import TaskHistoryKey = $Enums.TaskHistoryKey;
 
 import { CurrentUser } from '../src/decorators/current-user';
+import { currentUserCtx } from '../src/interceptors/current-user-context';
 
 console.log(`[started]`);
 
@@ -31,32 +32,42 @@ export class AppService {
     data: ({ title: string } & Partial<Pick<Task, `state` | `responsibleId`>>)[],
     user: CurrentUser
   ) {
-    const keys = manualSort.getNewKeys(data.length);
-    const tmpIds = samplesBy(data.length, () => `!!NEW:${uidGenerator()}`);
-    const updates = new ExMap<string, PreparedTaskChangesGroup[]>();
-    const f = (key: TaskHistoryKey, value: unknown): [TaskHistoryKey, string] => [key, JSON.stringify(value)];
-    for (const [idx, { title, state, responsibleId }] of data.entries()) {
-      updates
-        .getOrCreate(tmpIds[idx], () => [])
-        .push({
+    return currentUserCtx.run(user, async () => {
+      const keys = manualSort.getNewKeys(data.length);
+      const tmpIds = samplesBy(data.length, () => `!!NEW:${uidGenerator()}`);
+      const updates: PreparedTaskChangesGroup[] = [];
+      const f = (key: TaskHistoryKey, value: unknown): [TaskHistoryKey, string] => [
+        key,
+        JSON.stringify(value),
+      ];
+      for (const [idx, { title, state, responsibleId }] of data.entries()) {
+        const taskId = tmpIds[idx];
+        updates.push({
           createdAt: new Date(),
           localCreatedAt: new Date(),
-          values: new ExMap<TaskHistoryKey, string>(
+          valuesByTask: new ExMap<string, ExMap<TaskHistoryKey, string>>([
             [
-              f(TaskHistoryKey.authorId, user.id),
-              f(TaskHistoryKey.responsibleId, user.id),
-              f(TaskHistoryKey.title, title),
-              f(TaskHistoryKey.orderKey, keys[idx]),
-              state !== undefined ? f(TaskHistoryKey.state, state) : undefined,
-              responsibleId !== undefined ? f(TaskHistoryKey.responsibleId, responsibleId) : undefined,
-            ].filter(isDefined)
-          ),
+              taskId,
+              new ExMap(
+                [
+                  f(TaskHistoryKey.authorId, user.id),
+                  f(TaskHistoryKey.responsibleId, user.id),
+                  f(TaskHistoryKey.title, title),
+                  f(TaskHistoryKey.orderKey, keys[idx]),
+                  f(TaskHistoryKey.startAfterDate, new Date().toISOString().split('T')[0]),
+                  state !== undefined ? f(TaskHistoryKey.state, state) : undefined,
+                  responsibleId !== undefined ? f(TaskHistoryKey.responsibleId, responsibleId) : undefined,
+                ].filter(isDefined)
+              ),
+            ],
+          ]),
         });
-    }
-    const { newIdsReplacements } = await this.tasks.applyChanges(updates, user);
-    return tmpIds.map(tmpId =>
-      notNull(newIdsReplacements.get(tmpId), () => `created id not found: ${tmpId}`)
-    );
+      }
+      const { newIdsReplacements } = await this.tasks.applyChanges(updates);
+      return tmpIds.map(tmpId =>
+        notNull(newIdsReplacements.get(tmpId), () => `created id not found: ${tmpId}`)
+      );
+    });
   }
 
   async createAdmin() {
@@ -85,7 +96,12 @@ export class AppService {
     await this.db.transaction.task.deleteMany({ where: { authorId: me.id } });
 
     const createdIds = await this.createTasks(
-      [{ title: `Time tracking` }, { title: `Focus mode` }, { title: `Translation` }],
+      [
+        { title: `Time tracking` },
+        { title: `Focus mode` },
+        { title: `Translation` },
+        { title: `Reinstall Linux` },
+      ],
       me
     );
 

@@ -23,13 +23,22 @@ export class TaskMaxOrderByAggregateInput {
   ease?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  startAfter?: `${SortOrder}`;
+  startAfterDate?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  plannedStart?: `${SortOrder}`;
+  startAfterOffset?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  dueTo?: `${SortOrder}`;
+  plannedStartDate?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  plannedStartOffset?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  dueToDate?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  dueToOffset?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
   createdAt?: `${SortOrder}`;

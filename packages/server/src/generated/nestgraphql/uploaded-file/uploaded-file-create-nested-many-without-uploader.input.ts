@@ -1,27 +1,28 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { UploadedFileCreateManyUploaderInputEnvelope } from './uploaded-file-create-many-uploader-input-envelope.input';
-import { UploadedFileCreateOrConnectWithoutUploaderInput } from './uploaded-file-create-or-connect-without-uploader.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { UploadedFileCreateWithoutUploaderInput } from './uploaded-file-create-without-uploader.input';
+import { Type } from 'class-transformer';
+import { UploadedFileCreateOrConnectWithoutUploaderInput } from './uploaded-file-create-or-connect-without-uploader.input';
+import { UploadedFileCreateManyUploaderInputEnvelope } from './uploaded-file-create-many-uploader-input-envelope.input';
+import { Prisma } from '../../db-client';
 import { UploadedFileWhereUniqueInput } from './uploaded-file-where-unique.input';
 
 @InputType()
 export class UploadedFileCreateNestedManyWithoutUploaderInput {
-  @Field(() => [UploadedFileCreateWithoutUploaderInput], { nullable: true })
-  @Type(() => UploadedFileCreateWithoutUploaderInput)
-  create?: Array<UploadedFileCreateWithoutUploaderInput>;
 
-  @Field(() => [UploadedFileCreateOrConnectWithoutUploaderInput], { nullable: true })
-  @Type(() => UploadedFileCreateOrConnectWithoutUploaderInput)
-  connectOrCreate?: Array<UploadedFileCreateOrConnectWithoutUploaderInput>;
+    @Field(() => [UploadedFileCreateWithoutUploaderInput], {nullable:true})
+    @Type(() => UploadedFileCreateWithoutUploaderInput)
+    create?: Array<UploadedFileCreateWithoutUploaderInput>;
 
-  @Field(() => UploadedFileCreateManyUploaderInputEnvelope, { nullable: true })
-  @Type(() => UploadedFileCreateManyUploaderInputEnvelope)
-  createMany?: UploadedFileCreateManyUploaderInputEnvelope;
+    @Field(() => [UploadedFileCreateOrConnectWithoutUploaderInput], {nullable:true})
+    @Type(() => UploadedFileCreateOrConnectWithoutUploaderInput)
+    connectOrCreate?: Array<UploadedFileCreateOrConnectWithoutUploaderInput>;
 
-  @Field(() => [UploadedFileWhereUniqueInput], { nullable: true })
-  @Type(() => UploadedFileWhereUniqueInput)
-  connect?: Array<Prisma.AtLeast<UploadedFileWhereUniqueInput, 'id'>>;
+    @Field(() => UploadedFileCreateManyUploaderInputEnvelope, {nullable:true})
+    @Type(() => UploadedFileCreateManyUploaderInputEnvelope)
+    createMany?: UploadedFileCreateManyUploaderInputEnvelope;
+
+    @Field(() => [UploadedFileWhereUniqueInput], {nullable:true})
+    @Type(() => UploadedFileWhereUniqueInput)
+    connect?: Array<Prisma.AtLeast<UploadedFileWhereUniqueInput, 'id'>>;
 }

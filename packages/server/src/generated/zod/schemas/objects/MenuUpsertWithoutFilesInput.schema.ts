@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { MenuUpdateWithoutFilesInputObjectSchema } from './MenuUpdateWithoutFilesInput.schema';
+import { MenuUncheckedUpdateWithoutFilesInputObjectSchema } from './MenuUncheckedUpdateWithoutFilesInput.schema';
 import { MenuCreateWithoutFilesInputObjectSchema } from './MenuCreateWithoutFilesInput.schema';
 import { MenuUncheckedCreateWithoutFilesInputObjectSchema } from './MenuUncheckedCreateWithoutFilesInput.schema';
-import { MenuUncheckedUpdateWithoutFilesInputObjectSchema } from './MenuUncheckedUpdateWithoutFilesInput.schema';
-import { MenuUpdateWithoutFilesInputObjectSchema } from './MenuUpdateWithoutFilesInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.MenuUpsertWithoutFilesInput> = z
   .object({

@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { RefreshTokenCreateManyUserInputObjectSchema } from './RefreshTokenCreateManyUserInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { RefreshTokenCreateManyUserInputObjectSchema } from './RefreshTokenCreateManyUserInput.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenCreateManyUserInputEnvelope> = z
   .object({

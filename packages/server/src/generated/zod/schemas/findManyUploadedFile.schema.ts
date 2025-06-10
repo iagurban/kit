@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { UploadedFileScalarFieldEnumSchema } from './enums/UploadedFileScalarFieldEnum.schema';
+import { UploadedFileSelectObjectSchema } from './objects/UploadedFileSelect.schema';
 import { UploadedFileIncludeObjectSchema } from './objects/UploadedFileInclude.schema';
 import { UploadedFileOrderByWithRelationInputObjectSchema } from './objects/UploadedFileOrderByWithRelationInput.schema';
-import { UploadedFileSelectObjectSchema } from './objects/UploadedFileSelect.schema';
 import { UploadedFileWhereInputObjectSchema } from './objects/UploadedFileWhereInput.schema';
 import { UploadedFileWhereUniqueInputObjectSchema } from './objects/UploadedFileWhereUniqueInput.schema';
+import { UploadedFileScalarFieldEnumSchema } from './enums/UploadedFileScalarFieldEnum.schema';
 
 export const UploadedFileFindManySchema = z.object({
   select: z.lazy(() => UploadedFileSelectObjectSchema.optional()),

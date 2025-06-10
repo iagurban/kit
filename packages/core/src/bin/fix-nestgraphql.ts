@@ -7,7 +7,9 @@ import * as fs from 'node:fs';
     try {
       content = await fs.promises.readFile(path, { encoding: `utf-8` });
     } catch (e) {
-      console.log(path, e);
+      if (e instanceof Error && `code` in e && e.code !== `EISDIR`) {
+        console.log(`error on path`, path, e);
+      }
       continue;
     }
     let newContent = content;

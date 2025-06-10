@@ -7,6 +7,7 @@ import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-l
 import { TaskListRelationFilter } from '../task/task-list-relation-filter.input';
 import { TaskHistoryGroupListRelationFilter } from '../task-history-group/task-history-group-list-relation-filter.input';
 import { UploadedFileListRelationFilter } from '../uploaded-file/uploaded-file-list-relation-filter.input';
+import { UserInTaskListRelationFilter } from '../user-in-task/user-in-task-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -48,4 +49,7 @@ export class UserWhereInput {
 
   @Field(() => TaskHistoryGroupListRelationFilter, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupListRelationFilter;
+
+  @Field(() => UserInTaskListRelationFilter, { nullable: true })
+  participatingTasks?: UserInTaskListRelationFilter;
 }

@@ -6,7 +6,6 @@ import { CreatedAtFixReasonSchema } from '../enums/CreatedAtFixReason.schema';
 const Schema: z.ZodType<Prisma.TaskHistoryGroupCreateManyAuthorInput> = z
   .object({
     id: z.string().optional(),
-    taskId: z.string(),
     localCreatedAt: z.coerce.date(),
     createdAt: z.coerce.date(),
     createdAtFixReason: z

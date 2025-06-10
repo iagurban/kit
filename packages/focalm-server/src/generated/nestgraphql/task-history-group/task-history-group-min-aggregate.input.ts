@@ -6,9 +6,6 @@ export class TaskHistoryGroupMinAggregateInput {
   id?: true;
 
   @Field(() => Boolean, { nullable: true })
-  taskId?: true;
-
-  @Field(() => Boolean, { nullable: true })
   authorId?: true;
 
   @Field(() => Boolean, { nullable: true })

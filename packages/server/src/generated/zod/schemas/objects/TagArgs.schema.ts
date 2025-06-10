@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { TagSelectObjectSchema } from './TagSelect.schema';
+import { TagIncludeObjectSchema } from './TagInclude.schema';
 
 import type { Prisma } from '../../../old-client';
-import { TagIncludeObjectSchema } from './TagInclude.schema';
-import { TagSelectObjectSchema } from './TagSelect.schema';
 
 const Schema: z.ZodType<Prisma.TagArgs> = z
   .object({

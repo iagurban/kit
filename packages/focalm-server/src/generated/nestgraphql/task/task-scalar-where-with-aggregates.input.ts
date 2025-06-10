@@ -5,6 +5,7 @@ import { DateTimeNullableWithAggregatesFilter } from '../prisma/date-time-nullab
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
 import { EnumTaskStateWithAggregatesFilter } from '../prisma/enum-task-state-with-aggregates-filter.input';
 import { FloatWithAggregatesFilter } from '../prisma/float-with-aggregates-filter.input';
+import { IntNullableWithAggregatesFilter } from '../prisma/int-nullable-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
@@ -39,13 +40,22 @@ export class TaskScalarWhereWithAggregatesInput {
   ease?: FloatWithAggregatesFilter;
 
   @Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
-  startAfter?: DateTimeNullableWithAggregatesFilter;
+  startAfterDate?: DateTimeNullableWithAggregatesFilter;
+
+  @Field(() => IntNullableWithAggregatesFilter, { nullable: true })
+  startAfterOffset?: IntNullableWithAggregatesFilter;
 
   @Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
-  plannedStart?: DateTimeNullableWithAggregatesFilter;
+  plannedStartDate?: DateTimeNullableWithAggregatesFilter;
+
+  @Field(() => IntNullableWithAggregatesFilter, { nullable: true })
+  plannedStartOffset?: IntNullableWithAggregatesFilter;
 
   @Field(() => DateTimeNullableWithAggregatesFilter, { nullable: true })
-  dueTo?: DateTimeNullableWithAggregatesFilter;
+  dueToDate?: DateTimeNullableWithAggregatesFilter;
+
+  @Field(() => IntNullableWithAggregatesFilter, { nullable: true })
+  dueToOffset?: IntNullableWithAggregatesFilter;
 
   @Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   createdAt?: DateTimeWithAggregatesFilter;

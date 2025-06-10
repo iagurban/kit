@@ -8,9 +8,6 @@ export class TaskHistoryGroupMaxAggregate {
   id?: string;
 
   @Field(() => String, { nullable: true })
-  taskId?: string;
-
-  @Field(() => String, { nullable: true })
   authorId?: string;
 
   @Field(() => Date, { nullable: true })

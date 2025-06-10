@@ -1,37 +1,39 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
+import { User } from '../user/user.model';
 import { Item } from '../item/item.model';
 import { Tag } from '../tag/tag.model';
 import { UploadedFile } from '../uploaded-file/uploaded-file.model';
-import { User } from '../user/user.model';
 import { MenuCount } from './menu-count.output';
 
 @ObjectType()
 export class Menu {
-  @Field(() => ID, { nullable: false })
-  id!: string;
 
-  @Field(() => Date, { nullable: false })
-  createdAt!: Date;
+    @Field(() => ID, {nullable:false})
+    id!: string;
 
-  @Field(() => String, { nullable: false })
-  title!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
 
-  @Field(() => String, { nullable: false })
-  ownerId!: string;
+    @Field(() => String, {nullable:false})
+    title!: string;
 
-  @Field(() => User, { nullable: false })
-  owner?: User;
+    @Field(() => String, {nullable:false})
+    ownerId!: string;
 
-  @Field(() => [Item], { nullable: true })
-  items?: Array<Item>;
+    @Field(() => User, {nullable:false})
+    owner?: User;
 
-  @Field(() => [Tag], { nullable: true })
-  tags?: Array<Tag>;
+    @Field(() => [Item], {nullable:true})
+    items?: Array<Item>;
 
-  @Field(() => [UploadedFile], { nullable: true })
-  files?: Array<UploadedFile>;
+    @Field(() => [Tag], {nullable:true})
+    tags?: Array<Tag>;
 
-  @Field(() => MenuCount, { nullable: false })
-  _count?: MenuCount;
+    @Field(() => [UploadedFile], {nullable:true})
+    files?: Array<UploadedFile>;
+
+    @Field(() => MenuCount, {nullable:false})
+    _count?: MenuCount;
 }

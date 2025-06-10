@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import { StoredFileCreateManyInputObjectSchema } from './objects/StoredFileCreateManyInput.schema';
 
 export const StoredFileCreateManySchema = z.object({

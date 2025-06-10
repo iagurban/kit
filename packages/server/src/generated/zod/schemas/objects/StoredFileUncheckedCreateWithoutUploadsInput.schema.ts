@@ -7,7 +7,7 @@ const Schema: z.ZodType<Prisma.StoredFileUncheckedCreateWithoutUploadsInput> = z
     id: z.string().optional(),
     hash: z.string(),
     size: z.number(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.dateStr().optional(),
   })
   .strict();
 

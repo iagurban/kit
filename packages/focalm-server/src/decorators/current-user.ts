@@ -6,16 +6,16 @@ import type { User } from '../generated/db-client';
 
 export type CurrentUser = Pick<User, 'id' | 'name' | 'email'>;
 
-const getCurrentUser = (context: ExecutionContext): CurrentUser | undefined =>
+export const getCurrentUserFromExeContext = (context: ExecutionContext): CurrentUser | undefined =>
   (context.getType<`graphql` /* force */>() === 'graphql'
     ? GqlExecutionContext.create(context).getContext().req
     : context.switchToHttp().getRequest()
   ).user ?? undefined;
 
 export const TryCurrentUser = createParamDecorator((_: unknown, context: ExecutionContext) =>
-  getCurrentUser(context)
+  getCurrentUserFromExeContext(context)
 );
 
 export const CurrentUser = createParamDecorator((_: unknown, context: ExecutionContext) =>
-  notNull(getCurrentUser(context), 'Unauthorized access: missing req.user')
+  notNull(getCurrentUserFromExeContext(context), 'Unauthorized access: missing req.user')
 );

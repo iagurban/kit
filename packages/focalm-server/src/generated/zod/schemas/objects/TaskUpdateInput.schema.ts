@@ -7,10 +7,12 @@ import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldU
 import { EnumTaskStateFieldUpdateOperationsInputObjectSchema } from './EnumTaskStateFieldUpdateOperationsInput.schema';
 import { FloatFieldUpdateOperationsInputObjectSchema } from './FloatFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { NullableIntFieldUpdateOperationsInputObjectSchema } from './NullableIntFieldUpdateOperationsInput.schema';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
-import { TaskHistoryGroupUpdateManyWithoutTaskNestedInputObjectSchema } from './TaskHistoryGroupUpdateManyWithoutTaskNestedInput.schema';
+import { TaskHistoryValueUpdateManyWithoutTaskNestedInputObjectSchema } from './TaskHistoryValueUpdateManyWithoutTaskNestedInput.schema';
 import { TaskUpdateManyWithoutParentNestedInputObjectSchema } from './TaskUpdateManyWithoutParentNestedInput.schema';
 import { TaskUpdateOneWithoutChildrenNestedInputObjectSchema } from './TaskUpdateOneWithoutChildrenNestedInput.schema';
+import { UserInTaskUpdateManyWithoutTaskNestedInputObjectSchema } from './UserInTaskUpdateManyWithoutTaskNestedInput.schema';
 import { UserUpdateOneRequiredWithoutAuthoredTasksNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutAuthoredTasksNestedInput.schema';
 import { UserUpdateOneWithoutAssignedTasksNestedInputObjectSchema } from './UserUpdateOneWithoutAssignedTasksNestedInput.schema';
 
@@ -27,16 +29,28 @@ const Schema: z.ZodType<Prisma.TaskUpdateInput> = z
     archived: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema)]).optional(),
     impact: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema)]).optional(),
     ease: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema)]).optional(),
-    startAfter: z
+    startAfterDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
-    plannedStart: z
+    startAfterOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    plannedStartDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
-    dueTo: z
+    plannedStartOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    dueToDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    dueToOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
     createdAt: z
@@ -50,7 +64,8 @@ const Schema: z.ZodType<Prisma.TaskUpdateInput> = z
     responsible: z.lazy(() => UserUpdateOneWithoutAssignedTasksNestedInputObjectSchema).optional(),
     parent: z.lazy(() => TaskUpdateOneWithoutChildrenNestedInputObjectSchema).optional(),
     children: z.lazy(() => TaskUpdateManyWithoutParentNestedInputObjectSchema).optional(),
-    historyGroups: z.lazy(() => TaskHistoryGroupUpdateManyWithoutTaskNestedInputObjectSchema).optional(),
+    participants: z.lazy(() => UserInTaskUpdateManyWithoutTaskNestedInputObjectSchema).optional(),
+    historyValues: z.lazy(() => TaskHistoryValueUpdateManyWithoutTaskNestedInputObjectSchema).optional(),
   })
   .strict();
 

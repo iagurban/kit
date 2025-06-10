@@ -1,12 +1,13 @@
-import { ArgsType, Field } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { Prisma } from '../../db-client';
 import { RefreshTokenWhereUniqueInput } from './refresh-token-where-unique.input';
+import { Type } from 'class-transformer';
 
 @ArgsType()
 export class DeleteOneRefreshTokenArgs {
-  @Field(() => RefreshTokenWhereUniqueInput, { nullable: false })
-  @Type(() => RefreshTokenWhereUniqueInput)
-  where!: Prisma.AtLeast<RefreshTokenWhereUniqueInput, 'id'>;
+
+    @Field(() => RefreshTokenWhereUniqueInput, {nullable:false})
+    @Type(() => RefreshTokenWhereUniqueInput)
+    where!: Prisma.AtLeast<RefreshTokenWhereUniqueInput, 'id'>;
 }

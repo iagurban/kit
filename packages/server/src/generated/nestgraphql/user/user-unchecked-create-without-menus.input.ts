@@ -1,30 +1,31 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { UploadedFileUncheckedCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-uploader.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutMenusInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => String, { nullable: false })
-  email!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
 
-  @Field(() => String, { nullable: false })
-  name!: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
+    @Field(() => String, {nullable:false})
+    name!: string;
 
-  @Field(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput, { nullable: true })
-  @Type(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput)
-  uploadedFiles?: UploadedFileUncheckedCreateNestedManyWithoutUploaderInput;
+    @Field(() => String, {nullable:false})
+    passwordHash!: string;
 
-  @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
-  refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+    @Field(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput, {nullable:true})
+    @Type(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput)
+    uploadedFiles?: UploadedFileUncheckedCreateNestedManyWithoutUploaderInput;
+
+    @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, {nullable:true})
+    refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
 }

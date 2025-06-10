@@ -1,29 +1,30 @@
-import { Field, InputType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
-import { UuidFilter } from '../prisma/uuid-filter.input';
 
 @InputType()
 export class MenuScalarWhereInput {
-  @Field(() => [MenuScalarWhereInput], { nullable: true })
-  AND?: Array<MenuScalarWhereInput>;
 
-  @Field(() => [MenuScalarWhereInput], { nullable: true })
-  OR?: Array<MenuScalarWhereInput>;
+    @Field(() => [MenuScalarWhereInput], {nullable:true})
+    AND?: Array<MenuScalarWhereInput>;
 
-  @Field(() => [MenuScalarWhereInput], { nullable: true })
-  NOT?: Array<MenuScalarWhereInput>;
+    @Field(() => [MenuScalarWhereInput], {nullable:true})
+    OR?: Array<MenuScalarWhereInput>;
 
-  @Field(() => UuidFilter, { nullable: true })
-  id?: UuidFilter;
+    @Field(() => [MenuScalarWhereInput], {nullable:true})
+    NOT?: Array<MenuScalarWhereInput>;
 
-  @Field(() => DateTimeFilter, { nullable: true })
-  createdAt?: DateTimeFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  title?: StringFilter;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: DateTimeFilter;
 
-  @Field(() => UuidFilter, { nullable: true })
-  ownerId?: UuidFilter;
+    @Field(() => StringFilter, {nullable:true})
+    title?: StringFilter;
+
+    @Field(() => UuidFilter, {nullable:true})
+    ownerId?: UuidFilter;
 }

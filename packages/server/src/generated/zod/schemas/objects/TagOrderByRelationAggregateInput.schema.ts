@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { SortOrderSchema } from '../enums/SortOrder.schema';
 
 import type { Prisma } from '../../../old-client';
-import { SortOrderSchema } from '../enums/SortOrder.schema';
 
 const Schema: z.ZodType<Prisma.TagOrderByRelationAggregateInput> = z
   .object({

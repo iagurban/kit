@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { UserCountOrderByAggregateInput } from './user-count-order-by-aggregate.input';
 import { UserMaxOrderByAggregateInput } from './user-max-order-by-aggregate.input';
@@ -7,27 +7,28 @@ import { UserMinOrderByAggregateInput } from './user-min-order-by-aggregate.inpu
 
 @InputType()
 export class UserOrderByWithAggregationInput {
-  @Field(() => SortOrder, { nullable: true })
-  id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  email?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  name?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    email?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  passwordHash?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    name?: `${SortOrder}`;
 
-  @Field(() => UserCountOrderByAggregateInput, { nullable: true })
-  _count?: UserCountOrderByAggregateInput;
+    @Field(() => SortOrder, {nullable:true})
+    passwordHash?: `${SortOrder}`;
 
-  @Field(() => UserMaxOrderByAggregateInput, { nullable: true })
-  _max?: UserMaxOrderByAggregateInput;
+    @Field(() => UserCountOrderByAggregateInput, {nullable:true})
+    _count?: UserCountOrderByAggregateInput;
 
-  @Field(() => UserMinOrderByAggregateInput, { nullable: true })
-  _min?: UserMinOrderByAggregateInput;
+    @Field(() => UserMaxOrderByAggregateInput, {nullable:true})
+    _max?: UserMaxOrderByAggregateInput;
+
+    @Field(() => UserMinOrderByAggregateInput, {nullable:true})
+    _min?: UserMinOrderByAggregateInput;
 }

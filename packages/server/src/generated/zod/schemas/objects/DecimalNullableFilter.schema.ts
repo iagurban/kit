@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { NestedDecimalNullableFilterObjectSchema } from './NestedDecimalNullableFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { NestedDecimalNullableFilterObjectSchema } from './NestedDecimalNullableFilter.schema';
 
 const Schema: z.ZodType<Prisma.DecimalNullableFilter> = z
   .object({

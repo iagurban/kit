@@ -19,9 +19,6 @@ export class TaskHistoryGroupScalarWhereInput {
   id?: UuidFilter;
 
   @Field(() => UuidFilter, { nullable: true })
-  taskId?: UuidFilter;
-
-  @Field(() => UuidFilter, { nullable: true })
   authorId?: UuidFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })

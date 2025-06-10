@@ -5,9 +5,11 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { EnumTaskStateFieldUpdateOperationsInput } from '../prisma/enum-task-state-field-update-operations.input';
 import { FloatFieldUpdateOperationsInput } from '../prisma/float-field-update-operations.input';
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
-import { TaskHistoryGroupUncheckedUpdateManyWithoutTaskNestedInput } from '../task-history-group/task-history-group-unchecked-update-many-without-task-nested.input';
+import { TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput } from '../task-history-value/task-history-value-unchecked-update-many-without-task-nested.input';
+import { UserInTaskUncheckedUpdateManyWithoutTaskNestedInput } from '../user-in-task/user-in-task-unchecked-update-many-without-task-nested.input';
 import { TaskUncheckedUpdateManyWithoutParentNestedInput } from './task-unchecked-update-many-without-parent-nested.input';
 
 @InputType()
@@ -31,13 +33,22 @@ export class TaskUncheckedUpdateWithoutAuthorInput {
   ease?: FloatFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  startAfter?: NullableDateTimeFieldUpdateOperationsInput;
+  startAfterDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  startAfterOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  plannedStart?: NullableDateTimeFieldUpdateOperationsInput;
+  plannedStartDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  plannedStartOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  dueTo?: NullableDateTimeFieldUpdateOperationsInput;
+  dueToDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  dueToOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
   createdAt?: DateTimeFieldUpdateOperationsInput;
@@ -57,6 +68,9 @@ export class TaskUncheckedUpdateWithoutAuthorInput {
   @Field(() => TaskUncheckedUpdateManyWithoutParentNestedInput, { nullable: true })
   children?: TaskUncheckedUpdateManyWithoutParentNestedInput;
 
-  @Field(() => TaskHistoryGroupUncheckedUpdateManyWithoutTaskNestedInput, { nullable: true })
-  historyGroups?: TaskHistoryGroupUncheckedUpdateManyWithoutTaskNestedInput;
+  @Field(() => UserInTaskUncheckedUpdateManyWithoutTaskNestedInput, { nullable: true })
+  participants?: UserInTaskUncheckedUpdateManyWithoutTaskNestedInput;
+
+  @Field(() => TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput, { nullable: true })
+  historyValues?: TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput;
 }

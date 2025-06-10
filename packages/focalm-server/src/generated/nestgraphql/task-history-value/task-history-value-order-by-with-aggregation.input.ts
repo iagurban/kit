@@ -17,6 +17,9 @@ export class TaskHistoryValueOrderByWithAggregationInput {
   key?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
+  op?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
   value?: `${SortOrder}`;
 
   @Field(() => TaskHistoryValueCountOrderByAggregateInput, { nullable: true })

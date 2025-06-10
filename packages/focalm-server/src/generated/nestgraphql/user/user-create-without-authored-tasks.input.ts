@@ -4,6 +4,7 @@ import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/r
 import { TaskCreateNestedManyWithoutResponsibleInput } from '../task/task-create-nested-many-without-responsible.input';
 import { TaskHistoryGroupCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-create-nested-many-without-author.input';
 import { UploadedFileCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-create-nested-many-without-uploader.input';
+import { UserInTaskCreateNestedManyWithoutUserInput } from '../user-in-task/user-in-task-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutAuthoredTasksInput {
@@ -33,4 +34,7 @@ export class UserCreateWithoutAuthoredTasksInput {
 
   @Field(() => TaskHistoryGroupCreateNestedManyWithoutAuthorInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => UserInTaskCreateNestedManyWithoutUserInput, { nullable: true })
+  participatingTasks?: UserInTaskCreateNestedManyWithoutUserInput;
 }

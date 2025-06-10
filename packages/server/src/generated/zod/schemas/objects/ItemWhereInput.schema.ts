@@ -1,19 +1,19 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { BoolFilterObjectSchema } from './BoolFilter.schema';
+import { UuidFilterObjectSchema } from './UuidFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
-import { DecimalNullableFilterObjectSchema } from './DecimalNullableFilter.schema';
-import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
-import { ItemRelationFilterObjectSchema } from './ItemRelationFilter.schema';
-import { MenuRelationFilterObjectSchema } from './MenuRelationFilter.schema';
-import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
 import { StringNullableFilterObjectSchema } from './StringNullableFilter.schema';
+import { DecimalNullableFilterObjectSchema } from './DecimalNullableFilter.schema';
+import { BoolFilterObjectSchema } from './BoolFilter.schema';
+import { UuidNullableFilterObjectSchema } from './UuidNullableFilter.schema';
 import { UploadedFileRelationFilterObjectSchema } from './UploadedFileRelationFilter.schema';
 import { UploadedFileWhereInputObjectSchema } from './UploadedFileWhereInput.schema';
-import { UuidFilterObjectSchema } from './UuidFilter.schema';
-import { UuidNullableFilterObjectSchema } from './UuidNullableFilter.schema';
+import { MenuRelationFilterObjectSchema } from './MenuRelationFilter.schema';
+import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
+import { ItemRelationFilterObjectSchema } from './ItemRelationFilter.schema';
+import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.ItemWhereInput> = z
   .object({
@@ -28,7 +28,7 @@ const Schema: z.ZodType<Prisma.ItemWhereInput> = z
       .union([z.lazy(() => ItemWhereInputObjectSchema), z.lazy(() => ItemWhereInputObjectSchema).array()])
       .optional(),
     id: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
-    createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.dateStr()]).optional(),
     orderKey: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
     title: z
       .union([z.lazy(() => StringNullableFilterObjectSchema), z.string()])

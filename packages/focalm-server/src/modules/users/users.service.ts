@@ -1,10 +1,8 @@
-import { AsyncLocalStorage } from 'node:async_hooks';
-
-import { notNull } from '@freyja/kit/src';
 import { Injectable } from '@nestjs/common';
 
-import { CurrentUser } from '../../decorators/current-user';
+import { Prisma } from '../../generated/db-client';
 import { DbService } from '../db/db.service';
+import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 @Injectable()
 export class UsersService {
@@ -17,20 +15,7 @@ export class UsersService {
     );
   }
 
-  private readonly currentUserStorage = new AsyncLocalStorage<CurrentUser>();
-
-  get contextUser() {
-    return notNull(this.maybeContextUser);
-  }
-
-  get maybeContextUser() {
-    return this.currentUserStorage.getStore();
-  }
-
-  withContextUser<T>(user: CurrentUser, fn: () => Promise<T>, allowNested = false): Promise<T> {
-    if (!allowNested && this.maybeContextUser) {
-      throw new Error(`Nesting context users are not allowed`);
-    }
-    return this.currentUserStorage.run(user, fn);
+  getUsers(arg: UserFindManyArgs) {
+    return this.db.transaction.user.findMany(arg);
   }
 }

@@ -1,38 +1,39 @@
-import { Field, InputType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
-import { StoredFileAvgOrderByAggregateInput } from './stored-file-avg-order-by-aggregate.input';
 import { StoredFileCountOrderByAggregateInput } from './stored-file-count-order-by-aggregate.input';
+import { StoredFileAvgOrderByAggregateInput } from './stored-file-avg-order-by-aggregate.input';
 import { StoredFileMaxOrderByAggregateInput } from './stored-file-max-order-by-aggregate.input';
 import { StoredFileMinOrderByAggregateInput } from './stored-file-min-order-by-aggregate.input';
 import { StoredFileSumOrderByAggregateInput } from './stored-file-sum-order-by-aggregate.input';
 
 @InputType()
 export class StoredFileOrderByWithAggregationInput {
-  @Field(() => SortOrder, { nullable: true })
-  id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  hash?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  size?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    hash?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    size?: `${SortOrder}`;
 
-  @Field(() => StoredFileCountOrderByAggregateInput, { nullable: true })
-  _count?: StoredFileCountOrderByAggregateInput;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
 
-  @Field(() => StoredFileAvgOrderByAggregateInput, { nullable: true })
-  _avg?: StoredFileAvgOrderByAggregateInput;
+    @Field(() => StoredFileCountOrderByAggregateInput, {nullable:true})
+    _count?: StoredFileCountOrderByAggregateInput;
 
-  @Field(() => StoredFileMaxOrderByAggregateInput, { nullable: true })
-  _max?: StoredFileMaxOrderByAggregateInput;
+    @Field(() => StoredFileAvgOrderByAggregateInput, {nullable:true})
+    _avg?: StoredFileAvgOrderByAggregateInput;
 
-  @Field(() => StoredFileMinOrderByAggregateInput, { nullable: true })
-  _min?: StoredFileMinOrderByAggregateInput;
+    @Field(() => StoredFileMaxOrderByAggregateInput, {nullable:true})
+    _max?: StoredFileMaxOrderByAggregateInput;
 
-  @Field(() => StoredFileSumOrderByAggregateInput, { nullable: true })
-  _sum?: StoredFileSumOrderByAggregateInput;
+    @Field(() => StoredFileMinOrderByAggregateInput, {nullable:true})
+    _min?: StoredFileMinOrderByAggregateInput;
+
+    @Field(() => StoredFileSumOrderByAggregateInput, {nullable:true})
+    _sum?: StoredFileSumOrderByAggregateInput;
 }

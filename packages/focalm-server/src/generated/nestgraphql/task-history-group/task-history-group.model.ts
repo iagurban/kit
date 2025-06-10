@@ -1,7 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 import { CreatedAtFixReason } from '../prisma/created-at-fix-reason.enum';
-import { Task } from '../task/task.model';
 import { TaskHistoryValue } from '../task-history-value/task-history-value.model';
 import { User } from '../user/user.model';
 import { TaskHistoryGroupCount } from './task-history-group-count.output';
@@ -10,9 +9,6 @@ import { TaskHistoryGroupCount } from './task-history-group-count.output';
 export class TaskHistoryGroup {
   @Field(() => ID, { nullable: false })
   id!: string;
-
-  @Field(() => String, { nullable: false })
-  taskId!: string;
 
   @Field(() => String, { nullable: false })
   authorId!: string;
@@ -25,9 +21,6 @@ export class TaskHistoryGroup {
 
   @Field(() => CreatedAtFixReason, { nullable: true })
   createdAtFixReason!: `${CreatedAtFixReason}` | null;
-
-  @Field(() => Task, { nullable: false })
-  task?: Task;
 
   @Field(() => [TaskHistoryValue], { nullable: true })
   values?: Array<TaskHistoryValue>;

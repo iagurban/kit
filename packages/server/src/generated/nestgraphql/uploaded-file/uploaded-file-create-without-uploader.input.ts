@@ -1,32 +1,33 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { ItemCreateNestedManyWithoutImageInput } from '../item/item-create-nested-many-without-image.input';
-import { MenuCreateNestedOneWithoutFilesInput } from '../menu/menu-create-nested-one-without-files.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { StoredFileCreateNestedOneWithoutUploadsInput } from '../stored-file/stored-file-create-nested-one-without-uploads.input';
+import { MenuCreateNestedOneWithoutFilesInput } from '../menu/menu-create-nested-one-without-files.input';
+import { Type } from 'class-transformer';
+import { ItemCreateNestedManyWithoutImageInput } from '../item/item-create-nested-many-without-image.input';
 
 @InputType()
 export class UploadedFileCreateWithoutUploaderInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => String, { nullable: false })
-  originalName!: string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => String, { nullable: false })
-  mimetype!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
 
-  @Field(() => Date, { nullable: true })
-  uploadedAt?: Date | string;
+    @Field(() => String, {nullable:false})
+    mimetype!: string;
 
-  @Field(() => StoredFileCreateNestedOneWithoutUploadsInput, { nullable: false })
-  storedFile!: StoredFileCreateNestedOneWithoutUploadsInput;
+    @Field(() => Date, {nullable:true})
+    uploadedAt?: Date | string;
 
-  @Field(() => MenuCreateNestedOneWithoutFilesInput, { nullable: false })
-  @Type(() => MenuCreateNestedOneWithoutFilesInput)
-  menu!: MenuCreateNestedOneWithoutFilesInput;
+    @Field(() => StoredFileCreateNestedOneWithoutUploadsInput, {nullable:false})
+    storedFile!: StoredFileCreateNestedOneWithoutUploadsInput;
 
-  @Field(() => ItemCreateNestedManyWithoutImageInput, { nullable: true })
-  @Type(() => ItemCreateNestedManyWithoutImageInput)
-  usingItems?: ItemCreateNestedManyWithoutImageInput;
+    @Field(() => MenuCreateNestedOneWithoutFilesInput, {nullable:false})
+    @Type(() => MenuCreateNestedOneWithoutFilesInput)
+    menu!: MenuCreateNestedOneWithoutFilesInput;
+
+    @Field(() => ItemCreateNestedManyWithoutImageInput, {nullable:true})
+    @Type(() => ItemCreateNestedManyWithoutImageInput)
+    usingItems?: ItemCreateNestedManyWithoutImageInput;
 }

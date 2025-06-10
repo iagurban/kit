@@ -1,13 +1,13 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { UserCreateOrConnectWithoutRefreshTokensInputObjectSchema } from './UserCreateOrConnectWithoutRefreshTokensInput.schema';
 import { UserCreateWithoutRefreshTokensInputObjectSchema } from './UserCreateWithoutRefreshTokensInput.schema';
 import { UserUncheckedCreateWithoutRefreshTokensInputObjectSchema } from './UserUncheckedCreateWithoutRefreshTokensInput.schema';
-import { UserUncheckedUpdateWithoutRefreshTokensInputObjectSchema } from './UserUncheckedUpdateWithoutRefreshTokensInput.schema';
-import { UserUpdateWithoutRefreshTokensInputObjectSchema } from './UserUpdateWithoutRefreshTokensInput.schema';
+import { UserCreateOrConnectWithoutRefreshTokensInputObjectSchema } from './UserCreateOrConnectWithoutRefreshTokensInput.schema';
 import { UserUpsertWithoutRefreshTokensInputObjectSchema } from './UserUpsertWithoutRefreshTokensInput.schema';
 import { UserWhereUniqueInputObjectSchema } from './UserWhereUniqueInput.schema';
+import { UserUpdateWithoutRefreshTokensInputObjectSchema } from './UserUpdateWithoutRefreshTokensInput.schema';
+import { UserUncheckedUpdateWithoutRefreshTokensInputObjectSchema } from './UserUncheckedUpdateWithoutRefreshTokensInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UserUpdateOneRequiredWithoutRefreshTokensNestedInput> = z
   .object({

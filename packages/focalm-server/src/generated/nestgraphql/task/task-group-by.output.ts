@@ -1,4 +1,5 @@
-import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import * as Scalars from 'graphql-scalars';
 
 import { TaskState } from '../prisma/task-state.enum';
 import { TaskAvgAggregate } from './task-avg-aggregate.output';
@@ -27,14 +28,23 @@ export class TaskGroupBy {
   @Field(() => Float, { nullable: false })
   ease!: number;
 
-  @Field(() => Date, { nullable: true })
-  startAfter?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  startAfterDate?: Date | string;
 
-  @Field(() => Date, { nullable: true })
-  plannedStart?: Date | string;
+  @Field(() => Int, { nullable: true })
+  startAfterOffset?: number;
 
-  @Field(() => Date, { nullable: true })
-  dueTo?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  plannedStartDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  plannedStartOffset?: number;
+
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  dueToDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  dueToOffset?: number;
 
   @Field(() => Date, { nullable: false })
   createdAt!: Date | string;

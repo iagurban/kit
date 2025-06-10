@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { ItemMenuIdParentIdOrderKeyCompoundUniqueInputObjectSchema } from './ItemMenuIdParentIdOrderKeyCompoundUniqueInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemMenuIdParentIdOrderKeyCompoundUniqueInputObjectSchema } from './ItemMenuIdParentIdOrderKeyCompoundUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemWhereUniqueInput> = z
   .object({

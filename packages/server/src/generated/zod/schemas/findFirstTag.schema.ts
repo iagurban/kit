@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { TagScalarFieldEnumSchema } from './enums/TagScalarFieldEnum.schema';
+import { TagSelectObjectSchema } from './objects/TagSelect.schema';
 import { TagIncludeObjectSchema } from './objects/TagInclude.schema';
 import { TagOrderByWithRelationInputObjectSchema } from './objects/TagOrderByWithRelationInput.schema';
-import { TagSelectObjectSchema } from './objects/TagSelect.schema';
 import { TagWhereInputObjectSchema } from './objects/TagWhereInput.schema';
 import { TagWhereUniqueInputObjectSchema } from './objects/TagWhereUniqueInput.schema';
+import { TagScalarFieldEnumSchema } from './enums/TagScalarFieldEnum.schema';
 
 export const TagFindFirstSchema = z.object({
   select: TagSelectObjectSchema.optional(),

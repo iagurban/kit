@@ -5,8 +5,8 @@ import type { Prisma } from '../../../old-client';
 const Schema: z.ZodType<Prisma.RefreshTokenUncheckedCreateWithoutUserInput> = z
   .object({
     id: z.string().optional(),
-    createdAt: z.coerce.date().optional(),
-    expiresAt: z.coerce.date(),
+    createdAt: z.coerce.dateStr().optional(),
+    expiresAt: z.coerce.dateStr(),
     hash: z.string(),
   })
   .strict();

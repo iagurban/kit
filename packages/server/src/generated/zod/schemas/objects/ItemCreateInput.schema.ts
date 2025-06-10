@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { UploadedFileCreateNestedOneWithoutUsingItemsInputObjectSchema } from './UploadedFileCreateNestedOneWithoutUsingItemsInput.schema';
+import { MenuCreateNestedOneWithoutItemsInputObjectSchema } from './MenuCreateNestedOneWithoutItemsInput.schema';
+import { ItemCreateNestedOneWithoutChildrenInputObjectSchema } from './ItemCreateNestedOneWithoutChildrenInput.schema';
+import { ItemCreateNestedManyWithoutParentInputObjectSchema } from './ItemCreateNestedManyWithoutParentInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCreateNestedManyWithoutParentInputObjectSchema } from './ItemCreateNestedManyWithoutParentInput.schema';
-import { ItemCreateNestedOneWithoutChildrenInputObjectSchema } from './ItemCreateNestedOneWithoutChildrenInput.schema';
-import { MenuCreateNestedOneWithoutItemsInputObjectSchema } from './MenuCreateNestedOneWithoutItemsInput.schema';
-import { UploadedFileCreateNestedOneWithoutUsingItemsInputObjectSchema } from './UploadedFileCreateNestedOneWithoutUsingItemsInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemCreateInput> = z
   .object({
     id: z.string().optional(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.dateStr().optional(),
     orderKey: z.string(),
     title: z.string().optional().nullable(),
     description: z.string().optional().nullable(),

@@ -9,6 +9,11 @@ enum CreatedAtFixReason {
 }
 
 """
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
@@ -30,7 +35,7 @@ type Mutation {
 }
 
 type Query {
-  tasks(updatedAfter: DateTime): [Task!]!
+  tasks(updatedAfter: DateTime): TasksWithRelatedStuff!
 }
 
 type RefreshToken {
@@ -62,18 +67,22 @@ type Task {
   authorId: String!
   children: [Task!]
   createdAt: DateTime!
-  dueTo: DateTime
+  dueToDate: Date
+  dueToOffset: Int
   ease: Float!
-  historyGroups: [TaskHistoryGroup!]
+  historyValues: [TaskHistoryValue!]
   id: ID!
   impact: Float!
   orderKey: String!
   parent: Task
   parentId: String
-  plannedStart: DateTime
+  participants: [UserInTask!]
+  plannedStartDate: Date
+  plannedStartOffset: Int
   responsible: User
   responsibleId: String
-  startAfter: DateTime
+  startAfterDate: Date
+  startAfterOffset: Int
   state: TaskState!
   title: String!
   updatedAt: DateTime!
@@ -81,12 +90,14 @@ type Task {
 
 type TaskCount {
   children: Int!
-  historyGroups: Int!
+  historyValues: Int!
+  participants: Int!
 }
 
 input TaskFieldUpdateInput {
   field: TaskHistoryKey!
   stringValue: String!
+  taskId: String!
 }
 
 type TaskHistoryGroup {
@@ -97,8 +108,6 @@ type TaskHistoryGroup {
   createdAtFixReason: CreatedAtFixReason
   id: ID!
   localCreatedAt: DateTime!
-  task: Task!
-  taskId: String!
   values: [TaskHistoryValue!]
 }
 
@@ -109,19 +118,34 @@ type TaskHistoryGroupCount {
 enum TaskHistoryKey {
   archived
   authorId
+  dueToDate
+  dueToOffset
   ease
   impact
   orderKey
   parentId
+  participants
+  plannedStartDate
+  plannedStartOffset
   responsibleId
+  startAfterDate
+  startAfterOffset
   state
   title
+}
+
+enum TaskHistoryOperation {
+  Add
+  Remove
+  Set
 }
 
 type TaskHistoryValue {
   group: TaskHistoryGroup!
   groupId: String!
   key: TaskHistoryKey!
+  op: TaskHistoryOperation!
+  task: Task!
   taskId: String!
   value: JSON!
 }
@@ -135,14 +159,18 @@ enum TaskState {
 input TasksChangesGroup {
   createdAt: DateTime!
   createdAtFixReason: CreatedAtFixReason
-  id: String!
   localCreatedAt: DateTime!
   updates: [TaskFieldUpdateInput!]!
 }
 
 type TasksUpdateResult {
   changedIds: [IDMapping!]!
-  tasks(updatedAfter: DateTime): [Task!]!
+  tasks(updatedAfter: DateTime): TasksWithRelatedStuff!
+}
+
+type TasksWithRelatedStuff {
+  relatedUsers: [User!]!
+  tasks: [Task!]!
 }
 
 type UploadedFile {
@@ -166,6 +194,7 @@ type User {
   email: String!
   id: ID!
   name: String!
+  participatingTasks: [UserInTask!]
   passwordHash: String!
   refreshTokens: [RefreshToken!]
   uploadedFiles: [UploadedFile!]
@@ -175,6 +204,27 @@ type UserCount {
   assignedTasks: Int!
   authoredTaskChanges: Int!
   authoredTasks: Int!
+  participatingTasks: Int!
   refreshTokens: Int!
   uploadedFiles: Int!
+}
+
+type UserInTask {
+  _count: UserInTaskCount!
+  id: ID!
+  tags: [UserInTaskTag!]
+  task: Task!
+  taskId: String!
+  user: User!
+  userId: String!
+}
+
+type UserInTaskCount {
+  tags: Int!
+}
+
+type UserInTaskTag {
+  tag: String!
+  userInTask: UserInTask!
+  userInTaskId: String!
 }

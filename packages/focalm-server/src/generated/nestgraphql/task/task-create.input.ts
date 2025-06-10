@@ -1,9 +1,11 @@
-import { Field, Float, InputType } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import * as Scalars from 'graphql-scalars';
 
 import { TaskState } from '../prisma/task-state.enum';
-import { TaskHistoryGroupCreateNestedManyWithoutTaskInput } from '../task-history-group/task-history-group-create-nested-many-without-task.input';
+import { TaskHistoryValueCreateNestedManyWithoutTaskInput } from '../task-history-value/task-history-value-create-nested-many-without-task.input';
 import { UserCreateNestedOneWithoutAssignedTasksInput } from '../user/user-create-nested-one-without-assigned-tasks.input';
 import { UserCreateNestedOneWithoutAuthoredTasksInput } from '../user/user-create-nested-one-without-authored-tasks.input';
+import { UserInTaskCreateNestedManyWithoutTaskInput } from '../user-in-task/user-in-task-create-nested-many-without-task.input';
 import { TaskCreateNestedManyWithoutParentInput } from './task-create-nested-many-without-parent.input';
 import { TaskCreateNestedOneWithoutChildrenInput } from './task-create-nested-one-without-children.input';
 
@@ -27,14 +29,23 @@ export class TaskCreateInput {
   @Field(() => Float, { nullable: true })
   ease?: number;
 
-  @Field(() => Date, { nullable: true })
-  startAfter?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  startAfterDate?: Date | string;
 
-  @Field(() => Date, { nullable: true })
-  plannedStart?: Date | string;
+  @Field(() => Int, { nullable: true })
+  startAfterOffset?: number;
 
-  @Field(() => Date, { nullable: true })
-  dueTo?: Date | string;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  plannedStartDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  plannedStartOffset?: number;
+
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  dueToDate?: Date | string;
+
+  @Field(() => Int, { nullable: true })
+  dueToOffset?: number;
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date | string;
@@ -57,6 +68,9 @@ export class TaskCreateInput {
   @Field(() => TaskCreateNestedManyWithoutParentInput, { nullable: true })
   children?: TaskCreateNestedManyWithoutParentInput;
 
-  @Field(() => TaskHistoryGroupCreateNestedManyWithoutTaskInput, { nullable: true })
-  historyGroups?: TaskHistoryGroupCreateNestedManyWithoutTaskInput;
+  @Field(() => UserInTaskCreateNestedManyWithoutTaskInput, { nullable: true })
+  participants?: UserInTaskCreateNestedManyWithoutTaskInput;
+
+  @Field(() => TaskHistoryValueCreateNestedManyWithoutTaskInput, { nullable: true })
+  historyValues?: TaskHistoryValueCreateNestedManyWithoutTaskInput;
 }

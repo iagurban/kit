@@ -1,11 +1,11 @@
 import { z } from 'zod';
+import { UserArgsObjectSchema } from './UserArgs.schema';
+import { StoredFileArgsObjectSchema } from './StoredFileArgs.schema';
+import { MenuArgsObjectSchema } from './MenuArgs.schema';
+import { ItemFindManySchema } from '../findManyItem.schema';
+import { UploadedFileCountOutputTypeArgsObjectSchema } from './UploadedFileCountOutputTypeArgs.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemFindManySchema } from '../findManyItem.schema';
-import { MenuArgsObjectSchema } from './MenuArgs.schema';
-import { StoredFileArgsObjectSchema } from './StoredFileArgs.schema';
-import { UploadedFileCountOutputTypeArgsObjectSchema } from './UploadedFileCountOutputTypeArgs.schema';
-import { UserArgsObjectSchema } from './UserArgs.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileInclude> = z
   .object({

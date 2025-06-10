@@ -1,17 +1,18 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { Prisma } from '../../db-client';
-import { UploadedFileUpdateWithoutMenuInput } from './uploaded-file-update-without-menu.input';
 import { UploadedFileWhereUniqueInput } from './uploaded-file-where-unique.input';
+import { Type } from 'class-transformer';
+import { UploadedFileUpdateWithoutMenuInput } from './uploaded-file-update-without-menu.input';
 
 @InputType()
 export class UploadedFileUpdateWithWhereUniqueWithoutMenuInput {
-  @Field(() => UploadedFileWhereUniqueInput, { nullable: false })
-  @Type(() => UploadedFileWhereUniqueInput)
-  where!: Prisma.AtLeast<UploadedFileWhereUniqueInput, 'id'>;
 
-  @Field(() => UploadedFileUpdateWithoutMenuInput, { nullable: false })
-  @Type(() => UploadedFileUpdateWithoutMenuInput)
-  data!: UploadedFileUpdateWithoutMenuInput;
+    @Field(() => UploadedFileWhereUniqueInput, {nullable:false})
+    @Type(() => UploadedFileWhereUniqueInput)
+    where!: Prisma.AtLeast<UploadedFileWhereUniqueInput, 'id'>;
+
+    @Field(() => UploadedFileUpdateWithoutMenuInput, {nullable:false})
+    @Type(() => UploadedFileUpdateWithoutMenuInput)
+    data!: UploadedFileUpdateWithoutMenuInput;
 }

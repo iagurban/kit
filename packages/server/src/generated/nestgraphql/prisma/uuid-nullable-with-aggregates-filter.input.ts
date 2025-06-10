@@ -1,45 +1,46 @@
-import { Field, InputType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { QueryMode } from './query-mode.enum';
+import { NestedUuidNullableWithAggregatesFilter } from './nested-uuid-nullable-with-aggregates-filter.input';
 import { NestedIntNullableFilter } from './nested-int-nullable-filter.input';
 import { NestedStringNullableFilter } from './nested-string-nullable-filter.input';
-import { NestedUuidNullableWithAggregatesFilter } from './nested-uuid-nullable-with-aggregates-filter.input';
-import { QueryMode } from './query-mode.enum';
 
 @InputType()
 export class UuidNullableWithAggregatesFilter {
-  @Field(() => String, { nullable: true })
-  equals?: string;
 
-  @Field(() => [String], { nullable: true })
-  in?: Array<string>;
+    @Field(() => String, {nullable:true})
+    equals?: string;
 
-  @Field(() => [String], { nullable: true })
-  notIn?: Array<string>;
+    @Field(() => [String], {nullable:true})
+    in?: Array<string>;
 
-  @Field(() => String, { nullable: true })
-  lt?: string;
+    @Field(() => [String], {nullable:true})
+    notIn?: Array<string>;
 
-  @Field(() => String, { nullable: true })
-  lte?: string;
+    @Field(() => String, {nullable:true})
+    lt?: string;
 
-  @Field(() => String, { nullable: true })
-  gt?: string;
+    @Field(() => String, {nullable:true})
+    lte?: string;
 
-  @Field(() => String, { nullable: true })
-  gte?: string;
+    @Field(() => String, {nullable:true})
+    gt?: string;
 
-  @Field(() => QueryMode, { nullable: true })
-  mode?: `${QueryMode}`;
+    @Field(() => String, {nullable:true})
+    gte?: string;
 
-  @Field(() => NestedUuidNullableWithAggregatesFilter, { nullable: true })
-  not?: NestedUuidNullableWithAggregatesFilter;
+    @Field(() => QueryMode, {nullable:true})
+    mode?: `${QueryMode}`;
 
-  @Field(() => NestedIntNullableFilter, { nullable: true })
-  _count?: NestedIntNullableFilter;
+    @Field(() => NestedUuidNullableWithAggregatesFilter, {nullable:true})
+    not?: NestedUuidNullableWithAggregatesFilter;
 
-  @Field(() => NestedStringNullableFilter, { nullable: true })
-  _min?: NestedStringNullableFilter;
+    @Field(() => NestedIntNullableFilter, {nullable:true})
+    _count?: NestedIntNullableFilter;
 
-  @Field(() => NestedStringNullableFilter, { nullable: true })
-  _max?: NestedStringNullableFilter;
+    @Field(() => NestedStringNullableFilter, {nullable:true})
+    _min?: NestedStringNullableFilter;
+
+    @Field(() => NestedStringNullableFilter, {nullable:true})
+    _max?: NestedStringNullableFilter;
 }

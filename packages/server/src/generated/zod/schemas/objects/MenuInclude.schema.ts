@@ -1,11 +1,11 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { UserArgsObjectSchema } from './UserArgs.schema';
 import { ItemFindManySchema } from '../findManyItem.schema';
 import { TagFindManySchema } from '../findManyTag.schema';
 import { UploadedFileFindManySchema } from '../findManyUploadedFile.schema';
 import { MenuCountOutputTypeArgsObjectSchema } from './MenuCountOutputTypeArgs.schema';
-import { UserArgsObjectSchema } from './UserArgs.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.MenuInclude> = z
   .object({

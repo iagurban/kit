@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
 import { ItemCreateWithoutMenuInputObjectSchema } from './ItemCreateWithoutMenuInput.schema';
 import { ItemUncheckedCreateWithoutMenuInputObjectSchema } from './ItemUncheckedCreateWithoutMenuInput.schema';
-import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.ItemCreateOrConnectWithoutMenuInput> = z
   .object({

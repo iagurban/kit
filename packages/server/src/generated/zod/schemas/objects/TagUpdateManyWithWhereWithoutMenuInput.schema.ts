@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { TagScalarWhereInputObjectSchema } from './TagScalarWhereInput.schema';
+import { TagUpdateManyMutationInputObjectSchema } from './TagUpdateManyMutationInput.schema';
+import { TagUncheckedUpdateManyWithoutTagsInputObjectSchema } from './TagUncheckedUpdateManyWithoutTagsInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { TagScalarWhereInputObjectSchema } from './TagScalarWhereInput.schema';
-import { TagUncheckedUpdateManyWithoutTagsInputObjectSchema } from './TagUncheckedUpdateManyWithoutTagsInput.schema';
-import { TagUpdateManyMutationInputObjectSchema } from './TagUpdateManyMutationInput.schema';
 
 const Schema: z.ZodType<Prisma.TagUpdateManyWithWhereWithoutMenuInput> = z
   .object({

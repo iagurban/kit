@@ -6,8 +6,8 @@ const Schema: z.ZodType<Prisma.RefreshTokenCreateManyInput> = z
   .object({
     id: z.string().optional(),
     userId: z.string(),
-    createdAt: z.coerce.date().optional(),
-    expiresAt: z.coerce.date(),
+    createdAt: z.coerce.dateStr().optional(),
+    expiresAt: z.coerce.dateStr(),
     hash: z.string(),
   })
   .strict();

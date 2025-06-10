@@ -1,8 +1,7 @@
 import { z } from 'zod';
-
-import { TagCreateInputObjectSchema } from './objects/TagCreateInput.schema';
-import { TagIncludeObjectSchema } from './objects/TagInclude.schema';
 import { TagSelectObjectSchema } from './objects/TagSelect.schema';
+import { TagIncludeObjectSchema } from './objects/TagInclude.schema';
+import { TagCreateInputObjectSchema } from './objects/TagCreateInput.schema';
 import { TagUncheckedCreateInputObjectSchema } from './objects/TagUncheckedCreateInput.schema';
 
 export const TagCreateOneSchema = z.object({

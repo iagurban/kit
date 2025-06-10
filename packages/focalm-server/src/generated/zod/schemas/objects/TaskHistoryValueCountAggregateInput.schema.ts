@@ -7,6 +7,7 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueCountAggregateInputType> = z
     groupId: z.literal(true).optional(),
     taskId: z.literal(true).optional(),
     key: z.literal(true).optional(),
+    op: z.literal(true).optional(),
     value: z.literal(true).optional(),
     _all: z.literal(true).optional(),
   })

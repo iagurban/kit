@@ -1,13 +1,13 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
-import { ItemAvgOrderByAggregateInputObjectSchema } from './ItemAvgOrderByAggregateInput.schema';
+import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
 import { ItemCountOrderByAggregateInputObjectSchema } from './ItemCountOrderByAggregateInput.schema';
+import { ItemAvgOrderByAggregateInputObjectSchema } from './ItemAvgOrderByAggregateInput.schema';
 import { ItemMaxOrderByAggregateInputObjectSchema } from './ItemMaxOrderByAggregateInput.schema';
 import { ItemMinOrderByAggregateInputObjectSchema } from './ItemMinOrderByAggregateInput.schema';
 import { ItemSumOrderByAggregateInputObjectSchema } from './ItemSumOrderByAggregateInput.schema';
-import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.ItemOrderByWithAggregationInput> = z
   .object({

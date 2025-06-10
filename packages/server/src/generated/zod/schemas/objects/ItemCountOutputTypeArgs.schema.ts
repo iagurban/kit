@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { ItemCountOutputTypeSelectObjectSchema } from './ItemCountOutputTypeSelect.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCountOutputTypeSelectObjectSchema } from './ItemCountOutputTypeSelect.schema';
 
 const Schema: z.ZodType<Prisma.ItemCountOutputTypeArgs> = z
   .object({

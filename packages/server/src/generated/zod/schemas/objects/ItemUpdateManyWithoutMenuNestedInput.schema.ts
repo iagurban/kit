@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { ItemCreateWithoutMenuInputObjectSchema } from './ItemCreateWithoutMenuInput.schema';
+import { ItemUncheckedCreateWithoutMenuInputObjectSchema } from './ItemUncheckedCreateWithoutMenuInput.schema';
+import { ItemCreateOrConnectWithoutMenuInputObjectSchema } from './ItemCreateOrConnectWithoutMenuInput.schema';
+import { ItemUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './ItemUpsertWithWhereUniqueWithoutMenuInput.schema';
+import { ItemCreateManyMenuInputEnvelopeObjectSchema } from './ItemCreateManyMenuInputEnvelope.schema';
+import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+import { ItemUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './ItemUpdateWithWhereUniqueWithoutMenuInput.schema';
+import { ItemUpdateManyWithWhereWithoutMenuInputObjectSchema } from './ItemUpdateManyWithWhereWithoutMenuInput.schema';
+import { ItemScalarWhereInputObjectSchema } from './ItemScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCreateManyMenuInputEnvelopeObjectSchema } from './ItemCreateManyMenuInputEnvelope.schema';
-import { ItemCreateOrConnectWithoutMenuInputObjectSchema } from './ItemCreateOrConnectWithoutMenuInput.schema';
-import { ItemCreateWithoutMenuInputObjectSchema } from './ItemCreateWithoutMenuInput.schema';
-import { ItemScalarWhereInputObjectSchema } from './ItemScalarWhereInput.schema';
-import { ItemUncheckedCreateWithoutMenuInputObjectSchema } from './ItemUncheckedCreateWithoutMenuInput.schema';
-import { ItemUpdateManyWithWhereWithoutMenuInputObjectSchema } from './ItemUpdateManyWithWhereWithoutMenuInput.schema';
-import { ItemUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './ItemUpdateWithWhereUniqueWithoutMenuInput.schema';
-import { ItemUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './ItemUpsertWithWhereUniqueWithoutMenuInput.schema';
-import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemUpdateManyWithoutMenuNestedInput> = z
   .object({

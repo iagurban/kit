@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { NullsOrderSchema } from '../enums/NullsOrder.schema';
 
 import type { Prisma } from '../../../old-client';
-import { NullsOrderSchema } from '../enums/NullsOrder.schema';
-import { SortOrderSchema } from '../enums/SortOrder.schema';
 
 const Schema: z.ZodType<Prisma.SortOrderInput> = z
   .object({

@@ -1,33 +1,34 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { MenuUncheckedUpdateManyWithoutOwnerNestedInput } from '../menu/menu-unchecked-update-many-without-owner-nested.input';
-import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { MenuUncheckedUpdateManyWithoutOwnerNestedInput } from '../menu/menu-unchecked-update-many-without-owner-nested.input';
+import { Type } from 'class-transformer';
 import { UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput } from '../uploaded-file/uploaded-file-unchecked-update-many-without-uploader-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutRefreshTokensInput {
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
-  createdAt?: DateTimeFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  email?: StringFieldUpdateOperationsInput;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  name?: StringFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    email?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  passwordHash?: StringFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    name?: StringFieldUpdateOperationsInput;
 
-  @Field(() => MenuUncheckedUpdateManyWithoutOwnerNestedInput, { nullable: true })
-  @Type(() => MenuUncheckedUpdateManyWithoutOwnerNestedInput)
-  menus?: MenuUncheckedUpdateManyWithoutOwnerNestedInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    passwordHash?: StringFieldUpdateOperationsInput;
 
-  @Field(() => UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput, { nullable: true })
-  @Type(() => UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput)
-  uploadedFiles?: UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput;
+    @Field(() => MenuUncheckedUpdateManyWithoutOwnerNestedInput, {nullable:true})
+    @Type(() => MenuUncheckedUpdateManyWithoutOwnerNestedInput)
+    menus?: MenuUncheckedUpdateManyWithoutOwnerNestedInput;
+
+    @Field(() => UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput, {nullable:true})
+    @Type(() => UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput)
+    uploadedFiles?: UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput;
 }

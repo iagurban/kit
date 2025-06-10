@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { MenuCountOutputTypeSelectObjectSchema } from './MenuCountOutputTypeSelect.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuCountOutputTypeSelectObjectSchema } from './MenuCountOutputTypeSelect.schema';
 
 const Schema: z.ZodType<Prisma.MenuCountOutputTypeArgs> = z
   .object({

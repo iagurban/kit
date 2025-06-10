@@ -7,6 +7,7 @@ import { DateTimeNullableWithAggregatesFilterObjectSchema } from './DateTimeNull
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
 import { EnumTaskStateWithAggregatesFilterObjectSchema } from './EnumTaskStateWithAggregatesFilter.schema';
 import { FloatWithAggregatesFilterObjectSchema } from './FloatWithAggregatesFilter.schema';
+import { IntNullableWithAggregatesFilterObjectSchema } from './IntNullableWithAggregatesFilter.schema';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
 import { UuidNullableWithAggregatesFilterObjectSchema } from './UuidNullableWithAggregatesFilter.schema';
 import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
@@ -37,16 +38,28 @@ const Schema: z.ZodType<Prisma.TaskScalarWhereWithAggregatesInput> = z
     archived: z.union([z.lazy(() => BoolWithAggregatesFilterObjectSchema), z.boolean()]).optional(),
     impact: z.union([z.lazy(() => FloatWithAggregatesFilterObjectSchema), z.number()]).optional(),
     ease: z.union([z.lazy(() => FloatWithAggregatesFilterObjectSchema), z.number()]).optional(),
-    startAfter: z
+    startAfterDate: z
       .union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.coerce.date()])
       .optional()
       .nullable(),
-    plannedStart: z
+    startAfterOffset: z
+      .union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number()])
+      .optional()
+      .nullable(),
+    plannedStartDate: z
       .union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.coerce.date()])
       .optional()
       .nullable(),
-    dueTo: z
+    plannedStartOffset: z
+      .union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number()])
+      .optional()
+      .nullable(),
+    dueToDate: z
       .union([z.lazy(() => DateTimeNullableWithAggregatesFilterObjectSchema), z.coerce.date()])
+      .optional()
+      .nullable(),
+    dueToOffset: z
+      .union([z.lazy(() => IntNullableWithAggregatesFilterObjectSchema), z.number()])
       .optional()
       .nullable(),
     createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),

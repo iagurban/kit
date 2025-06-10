@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { TagWhereInputObjectSchema } from './TagWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { TagWhereInputObjectSchema } from './TagWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.TagListRelationFilter> = z
   .object({

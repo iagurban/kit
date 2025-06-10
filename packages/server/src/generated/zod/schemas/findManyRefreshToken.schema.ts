@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { RefreshTokenScalarFieldEnumSchema } from './enums/RefreshTokenScalarFieldEnum.schema';
+import { RefreshTokenSelectObjectSchema } from './objects/RefreshTokenSelect.schema';
 import { RefreshTokenIncludeObjectSchema } from './objects/RefreshTokenInclude.schema';
 import { RefreshTokenOrderByWithRelationInputObjectSchema } from './objects/RefreshTokenOrderByWithRelationInput.schema';
-import { RefreshTokenSelectObjectSchema } from './objects/RefreshTokenSelect.schema';
 import { RefreshTokenWhereInputObjectSchema } from './objects/RefreshTokenWhereInput.schema';
 import { RefreshTokenWhereUniqueInputObjectSchema } from './objects/RefreshTokenWhereUniqueInput.schema';
+import { RefreshTokenScalarFieldEnumSchema } from './enums/RefreshTokenScalarFieldEnum.schema';
 
 export const RefreshTokenFindManySchema = z.object({
   select: z.lazy(() => RefreshTokenSelectObjectSchema.optional()),

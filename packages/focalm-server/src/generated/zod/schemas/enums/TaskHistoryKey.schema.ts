@@ -8,6 +8,13 @@ export const TaskHistoryKeySchema = z.enum([
   'ease',
   'authorId',
   'responsibleId',
+  'participants',
   'orderKey',
   'parentId',
+  'startAfterDate',
+  'startAfterOffset',
+  'plannedStartDate',
+  'plannedStartOffset',
+  'dueToDate',
+  'dueToOffset',
 ]);

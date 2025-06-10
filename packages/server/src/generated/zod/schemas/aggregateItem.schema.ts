@@ -1,13 +1,12 @@
 import { z } from 'zod';
-
-import { ItemAvgAggregateInputObjectSchema } from './objects/ItemAvgAggregateInput.schema';
-import { ItemCountAggregateInputObjectSchema } from './objects/ItemCountAggregateInput.schema';
-import { ItemMaxAggregateInputObjectSchema } from './objects/ItemMaxAggregateInput.schema';
-import { ItemMinAggregateInputObjectSchema } from './objects/ItemMinAggregateInput.schema';
 import { ItemOrderByWithRelationInputObjectSchema } from './objects/ItemOrderByWithRelationInput.schema';
-import { ItemSumAggregateInputObjectSchema } from './objects/ItemSumAggregateInput.schema';
 import { ItemWhereInputObjectSchema } from './objects/ItemWhereInput.schema';
 import { ItemWhereUniqueInputObjectSchema } from './objects/ItemWhereUniqueInput.schema';
+import { ItemCountAggregateInputObjectSchema } from './objects/ItemCountAggregateInput.schema';
+import { ItemMinAggregateInputObjectSchema } from './objects/ItemMinAggregateInput.schema';
+import { ItemMaxAggregateInputObjectSchema } from './objects/ItemMaxAggregateInput.schema';
+import { ItemAvgAggregateInputObjectSchema } from './objects/ItemAvgAggregateInput.schema';
+import { ItemSumAggregateInputObjectSchema } from './objects/ItemSumAggregateInput.schema';
 
 export const ItemAggregateSchema = z.object({
   orderBy: z

@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { TagCreateManyMenuInputObjectSchema } from './TagCreateManyMenuInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { TagCreateManyMenuInputObjectSchema } from './TagCreateManyMenuInput.schema';
 
 const Schema: z.ZodType<Prisma.TagCreateManyMenuInputEnvelope> = z
   .object({

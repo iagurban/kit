@@ -1,41 +1,42 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { ItemCreateOrConnectWithoutChildrenInput } from './item-create-or-connect-without-children.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { ItemCreateWithoutChildrenInput } from './item-create-without-children.input';
-import { ItemUpdateToOneWithWhereWithoutChildrenInput } from './item-update-to-one-with-where-without-children.input';
+import { Type } from 'class-transformer';
+import { ItemCreateOrConnectWithoutChildrenInput } from './item-create-or-connect-without-children.input';
 import { ItemUpsertWithoutChildrenInput } from './item-upsert-without-children.input';
 import { ItemWhereInput } from './item-where.input';
+import { Prisma } from '../../db-client';
 import { ItemWhereUniqueInput } from './item-where-unique.input';
+import { ItemUpdateToOneWithWhereWithoutChildrenInput } from './item-update-to-one-with-where-without-children.input';
 
 @InputType()
 export class ItemUpdateOneWithoutChildrenNestedInput {
-  @Field(() => ItemCreateWithoutChildrenInput, { nullable: true })
-  @Type(() => ItemCreateWithoutChildrenInput)
-  create?: ItemCreateWithoutChildrenInput;
 
-  @Field(() => ItemCreateOrConnectWithoutChildrenInput, { nullable: true })
-  @Type(() => ItemCreateOrConnectWithoutChildrenInput)
-  connectOrCreate?: ItemCreateOrConnectWithoutChildrenInput;
+    @Field(() => ItemCreateWithoutChildrenInput, {nullable:true})
+    @Type(() => ItemCreateWithoutChildrenInput)
+    create?: ItemCreateWithoutChildrenInput;
 
-  @Field(() => ItemUpsertWithoutChildrenInput, { nullable: true })
-  @Type(() => ItemUpsertWithoutChildrenInput)
-  upsert?: ItemUpsertWithoutChildrenInput;
+    @Field(() => ItemCreateOrConnectWithoutChildrenInput, {nullable:true})
+    @Type(() => ItemCreateOrConnectWithoutChildrenInput)
+    connectOrCreate?: ItemCreateOrConnectWithoutChildrenInput;
 
-  @Field(() => ItemWhereInput, { nullable: true })
-  @Type(() => ItemWhereInput)
-  disconnect?: ItemWhereInput;
+    @Field(() => ItemUpsertWithoutChildrenInput, {nullable:true})
+    @Type(() => ItemUpsertWithoutChildrenInput)
+    upsert?: ItemUpsertWithoutChildrenInput;
 
-  @Field(() => ItemWhereInput, { nullable: true })
-  @Type(() => ItemWhereInput)
-  delete?: ItemWhereInput;
+    @Field(() => ItemWhereInput, {nullable:true})
+    @Type(() => ItemWhereInput)
+    disconnect?: ItemWhereInput;
 
-  @Field(() => ItemWhereUniqueInput, { nullable: true })
-  @Type(() => ItemWhereUniqueInput)
-  connect?: Prisma.AtLeast<ItemWhereUniqueInput, 'id' | 'menuId_parentId_orderKey'>;
+    @Field(() => ItemWhereInput, {nullable:true})
+    @Type(() => ItemWhereInput)
+    delete?: ItemWhereInput;
 
-  @Field(() => ItemUpdateToOneWithWhereWithoutChildrenInput, { nullable: true })
-  @Type(() => ItemUpdateToOneWithWhereWithoutChildrenInput)
-  update?: ItemUpdateToOneWithWhereWithoutChildrenInput;
+    @Field(() => ItemWhereUniqueInput, {nullable:true})
+    @Type(() => ItemWhereUniqueInput)
+    connect?: Prisma.AtLeast<ItemWhereUniqueInput, 'id' | 'menuId_parentId_orderKey'>;
+
+    @Field(() => ItemUpdateToOneWithWhereWithoutChildrenInput, {nullable:true})
+    @Type(() => ItemUpdateToOneWithWhereWithoutChildrenInput)
+    update?: ItemUpdateToOneWithWhereWithoutChildrenInput;
 }

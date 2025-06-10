@@ -1,11 +1,11 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { RefreshTokenCreateManyUserInputEnvelopeObjectSchema } from './RefreshTokenCreateManyUserInputEnvelope.schema';
-import { RefreshTokenCreateOrConnectWithoutUserInputObjectSchema } from './RefreshTokenCreateOrConnectWithoutUserInput.schema';
 import { RefreshTokenCreateWithoutUserInputObjectSchema } from './RefreshTokenCreateWithoutUserInput.schema';
 import { RefreshTokenUncheckedCreateWithoutUserInputObjectSchema } from './RefreshTokenUncheckedCreateWithoutUserInput.schema';
+import { RefreshTokenCreateOrConnectWithoutUserInputObjectSchema } from './RefreshTokenCreateOrConnectWithoutUserInput.schema';
+import { RefreshTokenCreateManyUserInputEnvelopeObjectSchema } from './RefreshTokenCreateManyUserInputEnvelope.schema';
 import { RefreshTokenWhereUniqueInputObjectSchema } from './RefreshTokenWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput> = z
   .object({

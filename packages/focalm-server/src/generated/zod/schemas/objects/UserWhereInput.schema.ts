@@ -7,6 +7,7 @@ import { StringFilterObjectSchema } from './StringFilter.schema';
 import { TaskHistoryGroupListRelationFilterObjectSchema } from './TaskHistoryGroupListRelationFilter.schema';
 import { TaskListRelationFilterObjectSchema } from './TaskListRelationFilter.schema';
 import { UploadedFileListRelationFilterObjectSchema } from './UploadedFileListRelationFilter.schema';
+import { UserInTaskListRelationFilterObjectSchema } from './UserInTaskListRelationFilter.schema';
 import { UuidFilterObjectSchema } from './UuidFilter.schema';
 
 const Schema: z.ZodType<Prisma.UserWhereInput> = z
@@ -31,6 +32,7 @@ const Schema: z.ZodType<Prisma.UserWhereInput> = z
     assignedTasks: z.lazy(() => TaskListRelationFilterObjectSchema).optional(),
     authoredTasks: z.lazy(() => TaskListRelationFilterObjectSchema).optional(),
     authoredTaskChanges: z.lazy(() => TaskHistoryGroupListRelationFilterObjectSchema).optional(),
+    participatingTasks: z.lazy(() => UserInTaskListRelationFilterObjectSchema).optional(),
   })
   .strict();
 

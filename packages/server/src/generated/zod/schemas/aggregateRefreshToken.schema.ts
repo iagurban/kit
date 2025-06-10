@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { RefreshTokenCountAggregateInputObjectSchema } from './objects/RefreshTokenCountAggregateInput.schema';
-import { RefreshTokenMaxAggregateInputObjectSchema } from './objects/RefreshTokenMaxAggregateInput.schema';
-import { RefreshTokenMinAggregateInputObjectSchema } from './objects/RefreshTokenMinAggregateInput.schema';
 import { RefreshTokenOrderByWithRelationInputObjectSchema } from './objects/RefreshTokenOrderByWithRelationInput.schema';
 import { RefreshTokenWhereInputObjectSchema } from './objects/RefreshTokenWhereInput.schema';
 import { RefreshTokenWhereUniqueInputObjectSchema } from './objects/RefreshTokenWhereUniqueInput.schema';
+import { RefreshTokenCountAggregateInputObjectSchema } from './objects/RefreshTokenCountAggregateInput.schema';
+import { RefreshTokenMinAggregateInputObjectSchema } from './objects/RefreshTokenMinAggregateInput.schema';
+import { RefreshTokenMaxAggregateInputObjectSchema } from './objects/RefreshTokenMaxAggregateInput.schema';
 
 export const RefreshTokenAggregateSchema = z.object({
   orderBy: z

@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldUpdateOperationsInput.schema';
 import { ItemUncheckedUpdateManyWithoutImageNestedInputObjectSchema } from './ItemUncheckedUpdateManyWithoutImageNestedInput.schema';
-import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UploadedFileUncheckedUpdateWithoutMenuInput> = z
   .object({
@@ -13,7 +13,7 @@ const Schema: z.ZodType<Prisma.UploadedFileUncheckedUpdateWithoutMenuInput> = z
       .optional(),
     mimetype: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
     uploadedAt: z
-      .union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)])
+      .union([z.coerce.dateStr(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional(),
     uploaderId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
     storedFileId: z

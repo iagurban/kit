@@ -1,46 +1,48 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { StoredFileAvgAggregateInput } from './stored-file-avg-aggregate.input';
-import { StoredFileCountAggregateInput } from './stored-file-count-aggregate.input';
-import { StoredFileMaxAggregateInput } from './stored-file-max-aggregate.input';
-import { StoredFileMinAggregateInput } from './stored-file-min-aggregate.input';
-import { StoredFileOrderByWithRelationInput } from './stored-file-order-by-with-relation.input';
-import { StoredFileSumAggregateInput } from './stored-file-sum-aggregate.input';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { StoredFileWhereInput } from './stored-file-where.input';
+import { Type } from 'class-transformer';
+import { StoredFileOrderByWithRelationInput } from './stored-file-order-by-with-relation.input';
+import { Prisma } from '../../db-client';
 import { StoredFileWhereUniqueInput } from './stored-file-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { StoredFileCountAggregateInput } from './stored-file-count-aggregate.input';
+import { StoredFileAvgAggregateInput } from './stored-file-avg-aggregate.input';
+import { StoredFileSumAggregateInput } from './stored-file-sum-aggregate.input';
+import { StoredFileMinAggregateInput } from './stored-file-min-aggregate.input';
+import { StoredFileMaxAggregateInput } from './stored-file-max-aggregate.input';
 
 @ArgsType()
 export class StoredFileAggregateArgs {
-  @Field(() => StoredFileWhereInput, { nullable: true })
-  @Type(() => StoredFileWhereInput)
-  where?: StoredFileWhereInput;
 
-  @Field(() => [StoredFileOrderByWithRelationInput], { nullable: true })
-  orderBy?: Array<StoredFileOrderByWithRelationInput>;
+    @Field(() => StoredFileWhereInput, {nullable:true})
+    @Type(() => StoredFileWhereInput)
+    where?: StoredFileWhereInput;
 
-  @Field(() => StoredFileWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
+    @Field(() => [StoredFileOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<StoredFileOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => StoredFileWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => StoredFileCountAggregateInput, { nullable: true })
-  _count?: StoredFileCountAggregateInput;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
 
-  @Field(() => StoredFileAvgAggregateInput, { nullable: true })
-  _avg?: StoredFileAvgAggregateInput;
+    @Field(() => StoredFileCountAggregateInput, {nullable:true})
+    _count?: StoredFileCountAggregateInput;
 
-  @Field(() => StoredFileSumAggregateInput, { nullable: true })
-  _sum?: StoredFileSumAggregateInput;
+    @Field(() => StoredFileAvgAggregateInput, {nullable:true})
+    _avg?: StoredFileAvgAggregateInput;
 
-  @Field(() => StoredFileMinAggregateInput, { nullable: true })
-  _min?: StoredFileMinAggregateInput;
+    @Field(() => StoredFileSumAggregateInput, {nullable:true})
+    _sum?: StoredFileSumAggregateInput;
 
-  @Field(() => StoredFileMaxAggregateInput, { nullable: true })
-  _max?: StoredFileMaxAggregateInput;
+    @Field(() => StoredFileMinAggregateInput, {nullable:true})
+    _min?: StoredFileMinAggregateInput;
+
+    @Field(() => StoredFileMaxAggregateInput, {nullable:true})
+    _max?: StoredFileMaxAggregateInput;
 }

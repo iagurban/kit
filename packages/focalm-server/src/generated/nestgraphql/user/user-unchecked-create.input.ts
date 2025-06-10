@@ -5,6 +5,7 @@ import { TaskUncheckedCreateNestedManyWithoutAuthorInput } from '../task/task-un
 import { TaskUncheckedCreateNestedManyWithoutResponsibleInput } from '../task/task-unchecked-create-nested-many-without-responsible.input';
 import { TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-unchecked-create-nested-many-without-author.input';
 import { UploadedFileUncheckedCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-uploader.input';
+import { UserInTaskUncheckedCreateNestedManyWithoutUserInput } from '../user-in-task/user-in-task-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateInput {
@@ -37,4 +38,7 @@ export class UserUncheckedCreateInput {
 
   @Field(() => TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => UserInTaskUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
+  participatingTasks?: UserInTaskUncheckedCreateNestedManyWithoutUserInput;
 }

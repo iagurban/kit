@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { UploadedFileSelectObjectSchema } from './UploadedFileSelect.schema';
+import { UploadedFileIncludeObjectSchema } from './UploadedFileInclude.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileIncludeObjectSchema } from './UploadedFileInclude.schema';
-import { UploadedFileSelectObjectSchema } from './UploadedFileSelect.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileArgs> = z
   .object({

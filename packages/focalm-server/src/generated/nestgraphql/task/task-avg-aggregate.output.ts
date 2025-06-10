@@ -7,4 +7,13 @@ export class TaskAvgAggregate {
 
   @Field(() => Float, { nullable: true })
   ease?: number;
+
+  @Field(() => Float, { nullable: true })
+  startAfterOffset?: number;
+
+  @Field(() => Float, { nullable: true })
+  plannedStartOffset?: number;
+
+  @Field(() => Float, { nullable: true })
+  dueToOffset?: number;
 }

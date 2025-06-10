@@ -1,12 +1,13 @@
-import { ArgsType, Field } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { Prisma } from '../../db-client';
 import { StoredFileWhereUniqueInput } from './stored-file-where-unique.input';
+import { Type } from 'class-transformer';
 
 @ArgsType()
 export class DeleteOneStoredFileArgs {
-  @Field(() => StoredFileWhereUniqueInput, { nullable: false })
-  @Type(() => StoredFileWhereUniqueInput)
-  where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
+
+    @Field(() => StoredFileWhereUniqueInput, {nullable:false})
+    @Type(() => StoredFileWhereUniqueInput)
+    where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
 }

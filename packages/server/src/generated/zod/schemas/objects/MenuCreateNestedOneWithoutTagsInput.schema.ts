@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { MenuCreateOrConnectWithoutTagsInputObjectSchema } from './MenuCreateOrConnectWithoutTagsInput.schema';
 import { MenuCreateWithoutTagsInputObjectSchema } from './MenuCreateWithoutTagsInput.schema';
 import { MenuUncheckedCreateWithoutTagsInputObjectSchema } from './MenuUncheckedCreateWithoutTagsInput.schema';
+import { MenuCreateOrConnectWithoutTagsInputObjectSchema } from './MenuCreateOrConnectWithoutTagsInput.schema';
 import { MenuWhereUniqueInputObjectSchema } from './MenuWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.MenuCreateNestedOneWithoutTagsInput> = z
   .object({

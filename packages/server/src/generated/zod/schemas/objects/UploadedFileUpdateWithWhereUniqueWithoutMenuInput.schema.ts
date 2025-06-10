@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
+import { UploadedFileUpdateWithoutMenuInputObjectSchema } from './UploadedFileUpdateWithoutMenuInput.schema';
+import { UploadedFileUncheckedUpdateWithoutMenuInputObjectSchema } from './UploadedFileUncheckedUpdateWithoutMenuInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileUncheckedUpdateWithoutMenuInputObjectSchema } from './UploadedFileUncheckedUpdateWithoutMenuInput.schema';
-import { UploadedFileUpdateWithoutMenuInputObjectSchema } from './UploadedFileUpdateWithoutMenuInput.schema';
-import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileUpdateWithWhereUniqueWithoutMenuInput> = z
   .object({

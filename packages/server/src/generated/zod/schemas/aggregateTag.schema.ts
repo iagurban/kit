@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { TagCountAggregateInputObjectSchema } from './objects/TagCountAggregateInput.schema';
-import { TagMaxAggregateInputObjectSchema } from './objects/TagMaxAggregateInput.schema';
-import { TagMinAggregateInputObjectSchema } from './objects/TagMinAggregateInput.schema';
 import { TagOrderByWithRelationInputObjectSchema } from './objects/TagOrderByWithRelationInput.schema';
 import { TagWhereInputObjectSchema } from './objects/TagWhereInput.schema';
 import { TagWhereUniqueInputObjectSchema } from './objects/TagWhereUniqueInput.schema';
+import { TagCountAggregateInputObjectSchema } from './objects/TagCountAggregateInput.schema';
+import { TagMinAggregateInputObjectSchema } from './objects/TagMinAggregateInput.schema';
+import { TagMaxAggregateInputObjectSchema } from './objects/TagMaxAggregateInput.schema';
 
 export const TagAggregateSchema = z.object({
   orderBy: z

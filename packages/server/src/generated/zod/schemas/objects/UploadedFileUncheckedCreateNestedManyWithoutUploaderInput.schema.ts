@@ -1,11 +1,11 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { UploadedFileCreateManyUploaderInputEnvelopeObjectSchema } from './UploadedFileCreateManyUploaderInputEnvelope.schema';
-import { UploadedFileCreateOrConnectWithoutUploaderInputObjectSchema } from './UploadedFileCreateOrConnectWithoutUploaderInput.schema';
 import { UploadedFileCreateWithoutUploaderInputObjectSchema } from './UploadedFileCreateWithoutUploaderInput.schema';
 import { UploadedFileUncheckedCreateWithoutUploaderInputObjectSchema } from './UploadedFileUncheckedCreateWithoutUploaderInput.schema';
+import { UploadedFileCreateOrConnectWithoutUploaderInputObjectSchema } from './UploadedFileCreateOrConnectWithoutUploaderInput.schema';
+import { UploadedFileCreateManyUploaderInputEnvelopeObjectSchema } from './UploadedFileCreateManyUploaderInputEnvelope.schema';
 import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UploadedFileUncheckedCreateNestedManyWithoutUploaderInput> = z
   .object({

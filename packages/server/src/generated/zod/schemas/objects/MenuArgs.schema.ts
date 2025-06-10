@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { MenuSelectObjectSchema } from './MenuSelect.schema';
+import { MenuIncludeObjectSchema } from './MenuInclude.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuIncludeObjectSchema } from './MenuInclude.schema';
-import { MenuSelectObjectSchema } from './MenuSelect.schema';
 
 const Schema: z.ZodType<Prisma.MenuArgs> = z
   .object({

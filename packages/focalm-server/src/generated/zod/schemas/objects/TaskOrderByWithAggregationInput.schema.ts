@@ -17,11 +17,22 @@ const Schema: z.ZodType<Prisma.TaskOrderByWithAggregationInput> = z
     archived: z.lazy(() => SortOrderSchema).optional(),
     impact: z.lazy(() => SortOrderSchema).optional(),
     ease: z.lazy(() => SortOrderSchema).optional(),
-    startAfter: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-    plannedStart: z
+    startAfterDate: z
       .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
       .optional(),
-    dueTo: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+    startAfterOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    plannedStartDate: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    plannedStartOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    dueToDate: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+    dueToOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
     createdAt: z.lazy(() => SortOrderSchema).optional(),
     updatedAt: z.lazy(() => SortOrderSchema).optional(),
     authorId: z.lazy(() => SortOrderSchema).optional(),

@@ -10,7 +10,6 @@ import { TaskHistoryValueUncheckedUpdateManyWithoutGroupNestedInputObjectSchema 
 const Schema: z.ZodType<Prisma.TaskHistoryGroupUncheckedUpdateWithoutAuthorInput> = z
   .object({
     id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-    taskId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
     localCreatedAt: z
       .union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional(),

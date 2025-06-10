@@ -1,13 +1,13 @@
 import { z } from 'zod';
+import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
+import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
+import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
+import { DecimalNullableWithAggregatesFilterObjectSchema } from './DecimalNullableWithAggregatesFilter.schema';
+import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
+import { UuidNullableWithAggregatesFilterObjectSchema } from './UuidNullableWithAggregatesFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { BoolWithAggregatesFilterObjectSchema } from './BoolWithAggregatesFilter.schema';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
-import { DecimalNullableWithAggregatesFilterObjectSchema } from './DecimalNullableWithAggregatesFilter.schema';
-import { StringNullableWithAggregatesFilterObjectSchema } from './StringNullableWithAggregatesFilter.schema';
-import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { UuidNullableWithAggregatesFilterObjectSchema } from './UuidNullableWithAggregatesFilter.schema';
-import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 
 const Schema: z.ZodType<Prisma.ItemScalarWhereWithAggregatesInput> = z
   .object({
@@ -28,7 +28,7 @@ const Schema: z.ZodType<Prisma.ItemScalarWhereWithAggregatesInput> = z
       ])
       .optional(),
     id: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),
-    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.dateStr()]).optional(),
     orderKey: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     title: z
       .union([z.lazy(() => StringNullableWithAggregatesFilterObjectSchema), z.string()])

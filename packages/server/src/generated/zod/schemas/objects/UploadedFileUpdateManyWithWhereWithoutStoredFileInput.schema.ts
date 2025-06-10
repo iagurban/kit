@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
+import { UploadedFileUpdateManyMutationInputObjectSchema } from './UploadedFileUpdateManyMutationInput.schema';
+import { UploadedFileUncheckedUpdateManyWithoutUploadsInputObjectSchema } from './UploadedFileUncheckedUpdateManyWithoutUploadsInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
-import { UploadedFileUncheckedUpdateManyWithoutUploadsInputObjectSchema } from './UploadedFileUncheckedUpdateManyWithoutUploadsInput.schema';
-import { UploadedFileUpdateManyMutationInputObjectSchema } from './UploadedFileUpdateManyMutationInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileUpdateManyWithWhereWithoutStoredFileInput> = z
   .object({

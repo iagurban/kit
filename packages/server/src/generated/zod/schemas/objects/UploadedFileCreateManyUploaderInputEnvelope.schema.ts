@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { UploadedFileCreateManyUploaderInputObjectSchema } from './UploadedFileCreateManyUploaderInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileCreateManyUploaderInputObjectSchema } from './UploadedFileCreateManyUploaderInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileCreateManyUploaderInputEnvelope> = z
   .object({

@@ -1,22 +1,24 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 
 @InputType()
 export class UploadedFileCreateManyStoredFileInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => String, { nullable: false })
-  originalName!: string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => String, { nullable: false })
-  mimetype!: string;
+    @Field(() => String, {nullable:false})
+    originalName!: string;
 
-  @Field(() => Date, { nullable: true })
-  uploadedAt?: Date | string;
+    @Field(() => String, {nullable:false})
+    mimetype!: string;
 
-  @Field(() => String, { nullable: false })
-  uploaderId!: string;
+    @Field(() => Date, {nullable:true})
+    uploadedAt?: Date | string;
 
-  @Field(() => String, { nullable: false })
-  menuId!: string;
+    @Field(() => String, {nullable:false})
+    uploaderId!: string;
+
+    @Field(() => String, {nullable:false})
+    menuId!: string;
 }

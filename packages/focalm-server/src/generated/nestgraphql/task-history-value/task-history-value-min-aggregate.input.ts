@@ -10,4 +10,7 @@ export class TaskHistoryValueMinAggregateInput {
 
   @Field(() => Boolean, { nullable: true })
   key?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  op?: true;
 }

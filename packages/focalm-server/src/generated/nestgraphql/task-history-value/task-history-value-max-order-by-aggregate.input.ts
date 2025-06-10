@@ -12,4 +12,7 @@ export class TaskHistoryValueMaxOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   key?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  op?: `${SortOrder}`;
 }

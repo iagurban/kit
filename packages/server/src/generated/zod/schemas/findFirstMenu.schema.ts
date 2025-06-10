@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { MenuScalarFieldEnumSchema } from './enums/MenuScalarFieldEnum.schema';
+import { MenuSelectObjectSchema } from './objects/MenuSelect.schema';
 import { MenuIncludeObjectSchema } from './objects/MenuInclude.schema';
 import { MenuOrderByWithRelationInputObjectSchema } from './objects/MenuOrderByWithRelationInput.schema';
-import { MenuSelectObjectSchema } from './objects/MenuSelect.schema';
 import { MenuWhereInputObjectSchema } from './objects/MenuWhereInput.schema';
 import { MenuWhereUniqueInputObjectSchema } from './objects/MenuWhereUniqueInput.schema';
+import { MenuScalarFieldEnumSchema } from './enums/MenuScalarFieldEnum.schema';
 
 export const MenuFindFirstSchema = z.object({
   select: MenuSelectObjectSchema.optional(),

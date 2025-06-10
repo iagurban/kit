@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import { UploadedFileUpdateManyMutationInputObjectSchema } from './objects/UploadedFileUpdateManyMutationInput.schema';
 import { UploadedFileWhereInputObjectSchema } from './objects/UploadedFileWhereInput.schema';
 

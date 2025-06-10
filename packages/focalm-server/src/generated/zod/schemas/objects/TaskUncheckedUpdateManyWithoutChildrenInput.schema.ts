@@ -7,6 +7,7 @@ import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldU
 import { EnumTaskStateFieldUpdateOperationsInputObjectSchema } from './EnumTaskStateFieldUpdateOperationsInput.schema';
 import { FloatFieldUpdateOperationsInputObjectSchema } from './FloatFieldUpdateOperationsInput.schema';
 import { NullableDateTimeFieldUpdateOperationsInputObjectSchema } from './NullableDateTimeFieldUpdateOperationsInput.schema';
+import { NullableIntFieldUpdateOperationsInputObjectSchema } from './NullableIntFieldUpdateOperationsInput.schema';
 import { NullableStringFieldUpdateOperationsInputObjectSchema } from './NullableStringFieldUpdateOperationsInput.schema';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 
@@ -23,16 +24,28 @@ const Schema: z.ZodType<Prisma.TaskUncheckedUpdateManyWithoutChildrenInput> = z
     archived: z.union([z.boolean(), z.lazy(() => BoolFieldUpdateOperationsInputObjectSchema)]).optional(),
     impact: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema)]).optional(),
     ease: z.union([z.number(), z.lazy(() => FloatFieldUpdateOperationsInputObjectSchema)]).optional(),
-    startAfter: z
+    startAfterDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
-    plannedStart: z
+    startAfterOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    plannedStartDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
-    dueTo: z
+    plannedStartOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    dueToDate: z
       .union([z.coerce.date(), z.lazy(() => NullableDateTimeFieldUpdateOperationsInputObjectSchema)])
+      .optional()
+      .nullable(),
+    dueToOffset: z
+      .union([z.number(), z.lazy(() => NullableIntFieldUpdateOperationsInputObjectSchema)])
       .optional()
       .nullable(),
     createdAt: z

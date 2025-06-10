@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { QueryModeSchema } from '../enums/QueryMode.schema';
+import { NestedStringWithAggregatesFilterObjectSchema } from './NestedStringWithAggregatesFilter.schema';
 import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
 import { NestedStringFilterObjectSchema } from './NestedStringFilter.schema';
-import { NestedStringWithAggregatesFilterObjectSchema } from './NestedStringWithAggregatesFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.StringWithAggregatesFilter> = z
   .object({

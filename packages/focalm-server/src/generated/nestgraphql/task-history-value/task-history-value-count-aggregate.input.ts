@@ -12,6 +12,9 @@ export class TaskHistoryValueCountAggregateInput {
   key?: true;
 
   @Field(() => Boolean, { nullable: true })
+  op?: true;
+
+  @Field(() => Boolean, { nullable: true })
   value?: true;
 
   @Field(() => Boolean, { nullable: true })

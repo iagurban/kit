@@ -1,13 +1,13 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { MenuCreateOrConnectWithoutItemsInputObjectSchema } from './MenuCreateOrConnectWithoutItemsInput.schema';
 import { MenuCreateWithoutItemsInputObjectSchema } from './MenuCreateWithoutItemsInput.schema';
 import { MenuUncheckedCreateWithoutItemsInputObjectSchema } from './MenuUncheckedCreateWithoutItemsInput.schema';
-import { MenuUncheckedUpdateWithoutItemsInputObjectSchema } from './MenuUncheckedUpdateWithoutItemsInput.schema';
-import { MenuUpdateWithoutItemsInputObjectSchema } from './MenuUpdateWithoutItemsInput.schema';
+import { MenuCreateOrConnectWithoutItemsInputObjectSchema } from './MenuCreateOrConnectWithoutItemsInput.schema';
 import { MenuUpsertWithoutItemsInputObjectSchema } from './MenuUpsertWithoutItemsInput.schema';
 import { MenuWhereUniqueInputObjectSchema } from './MenuWhereUniqueInput.schema';
+import { MenuUpdateWithoutItemsInputObjectSchema } from './MenuUpdateWithoutItemsInput.schema';
+import { MenuUncheckedUpdateWithoutItemsInputObjectSchema } from './MenuUncheckedUpdateWithoutItemsInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.MenuUpdateOneRequiredWithoutItemsNestedInput> = z
   .object({

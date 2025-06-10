@@ -1,41 +1,43 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
+import { RefreshTokenWhereInput } from './refresh-token-where.input';
 import { Type } from 'class-transformer';
-
-import { RefreshTokenCountAggregateInput } from './refresh-token-count-aggregate.input';
-import { RefreshTokenMaxAggregateInput } from './refresh-token-max-aggregate.input';
-import { RefreshTokenMinAggregateInput } from './refresh-token-min-aggregate.input';
 import { RefreshTokenOrderByWithAggregationInput } from './refresh-token-order-by-with-aggregation.input';
 import { RefreshTokenScalarFieldEnum } from './refresh-token-scalar-field.enum';
 import { RefreshTokenScalarWhereWithAggregatesInput } from './refresh-token-scalar-where-with-aggregates.input';
-import { RefreshTokenWhereInput } from './refresh-token-where.input';
+import { Int } from '@nestjs/graphql';
+import { RefreshTokenCountAggregateInput } from './refresh-token-count-aggregate.input';
+import { RefreshTokenMinAggregateInput } from './refresh-token-min-aggregate.input';
+import { RefreshTokenMaxAggregateInput } from './refresh-token-max-aggregate.input';
 
 @ArgsType()
 export class RefreshTokenGroupByArgs {
-  @Field(() => RefreshTokenWhereInput, { nullable: true })
-  @Type(() => RefreshTokenWhereInput)
-  where?: RefreshTokenWhereInput;
 
-  @Field(() => [RefreshTokenOrderByWithAggregationInput], { nullable: true })
-  orderBy?: Array<RefreshTokenOrderByWithAggregationInput>;
+    @Field(() => RefreshTokenWhereInput, {nullable:true})
+    @Type(() => RefreshTokenWhereInput)
+    where?: RefreshTokenWhereInput;
 
-  @Field(() => [RefreshTokenScalarFieldEnum], { nullable: false })
-  by!: Array<`${RefreshTokenScalarFieldEnum}`>;
+    @Field(() => [RefreshTokenOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<RefreshTokenOrderByWithAggregationInput>;
 
-  @Field(() => RefreshTokenScalarWhereWithAggregatesInput, { nullable: true })
-  having?: RefreshTokenScalarWhereWithAggregatesInput;
+    @Field(() => [RefreshTokenScalarFieldEnum], {nullable:false})
+    by!: Array<`${RefreshTokenScalarFieldEnum}`>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => RefreshTokenScalarWhereWithAggregatesInput, {nullable:true})
+    having?: RefreshTokenScalarWhereWithAggregatesInput;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => RefreshTokenCountAggregateInput, { nullable: true })
-  _count?: RefreshTokenCountAggregateInput;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
 
-  @Field(() => RefreshTokenMinAggregateInput, { nullable: true })
-  _min?: RefreshTokenMinAggregateInput;
+    @Field(() => RefreshTokenCountAggregateInput, {nullable:true})
+    _count?: RefreshTokenCountAggregateInput;
 
-  @Field(() => RefreshTokenMaxAggregateInput, { nullable: true })
-  _max?: RefreshTokenMaxAggregateInput;
+    @Field(() => RefreshTokenMinAggregateInput, {nullable:true})
+    _min?: RefreshTokenMinAggregateInput;
+
+    @Field(() => RefreshTokenMaxAggregateInput, {nullable:true})
+    _max?: RefreshTokenMaxAggregateInput;
 }

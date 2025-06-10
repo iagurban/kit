@@ -7,6 +7,7 @@ import { TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInputObjectSchema
 import { TaskUncheckedUpdateManyWithoutAuthorNestedInputObjectSchema } from './TaskUncheckedUpdateManyWithoutAuthorNestedInput.schema';
 import { TaskUncheckedUpdateManyWithoutResponsibleNestedInputObjectSchema } from './TaskUncheckedUpdateManyWithoutResponsibleNestedInput.schema';
 import { UploadedFileUncheckedUpdateManyWithoutUploaderNestedInputObjectSchema } from './UploadedFileUncheckedUpdateManyWithoutUploaderNestedInput.schema';
+import { UserInTaskUncheckedUpdateManyWithoutUserNestedInputObjectSchema } from './UserInTaskUncheckedUpdateManyWithoutUserNestedInput.schema';
 
 const Schema: z.ZodType<Prisma.UserUncheckedUpdateWithoutRefreshTokensInput> = z
   .object({
@@ -26,6 +27,9 @@ const Schema: z.ZodType<Prisma.UserUncheckedUpdateWithoutRefreshTokensInput> = z
     authoredTasks: z.lazy(() => TaskUncheckedUpdateManyWithoutAuthorNestedInputObjectSchema).optional(),
     authoredTaskChanges: z
       .lazy(() => TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInputObjectSchema)
+      .optional(),
+    participatingTasks: z
+      .lazy(() => UserInTaskUncheckedUpdateManyWithoutUserNestedInputObjectSchema)
       .optional(),
   })
   .strict();

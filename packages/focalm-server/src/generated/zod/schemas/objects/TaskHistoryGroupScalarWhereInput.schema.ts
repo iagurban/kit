@@ -25,7 +25,6 @@ const Schema: z.ZodType<Prisma.TaskHistoryGroupScalarWhereInput> = z
       ])
       .optional(),
     id: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
-    taskId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
     authorId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
     localCreatedAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
     createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),

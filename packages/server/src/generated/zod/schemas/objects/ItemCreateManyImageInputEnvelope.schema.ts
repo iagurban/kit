@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { ItemCreateManyImageInputObjectSchema } from './ItemCreateManyImageInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCreateManyImageInputObjectSchema } from './ItemCreateManyImageInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemCreateManyImageInputEnvelope> = z
   .object({

@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
-import { StoredFileCreateOrConnectWithoutUploadsInputObjectSchema } from './StoredFileCreateOrConnectWithoutUploadsInput.schema';
 import { StoredFileCreateWithoutUploadsInputObjectSchema } from './StoredFileCreateWithoutUploadsInput.schema';
 import { StoredFileUncheckedCreateWithoutUploadsInputObjectSchema } from './StoredFileUncheckedCreateWithoutUploadsInput.schema';
+import { StoredFileCreateOrConnectWithoutUploadsInputObjectSchema } from './StoredFileCreateOrConnectWithoutUploadsInput.schema';
 import { StoredFileWhereUniqueInputObjectSchema } from './StoredFileWhereUniqueInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.StoredFileCreateNestedOneWithoutUploadsInput> = z
   .object({

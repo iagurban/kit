@@ -21,13 +21,22 @@ export class TaskMinAggregateInput {
   ease?: true;
 
   @Field(() => Boolean, { nullable: true })
-  startAfter?: true;
+  startAfterDate?: true;
 
   @Field(() => Boolean, { nullable: true })
-  plannedStart?: true;
+  startAfterOffset?: true;
 
   @Field(() => Boolean, { nullable: true })
-  dueTo?: true;
+  plannedStartDate?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  plannedStartOffset?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  dueToDate?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  dueToOffset?: true;
 
   @Field(() => Boolean, { nullable: true })
   createdAt?: true;

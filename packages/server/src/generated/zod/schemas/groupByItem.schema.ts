@@ -1,9 +1,8 @@
 import { z } from 'zod';
-
-import { ItemScalarFieldEnumSchema } from './enums/ItemScalarFieldEnum.schema';
+import { ItemWhereInputObjectSchema } from './objects/ItemWhereInput.schema';
 import { ItemOrderByWithAggregationInputObjectSchema } from './objects/ItemOrderByWithAggregationInput.schema';
 import { ItemScalarWhereWithAggregatesInputObjectSchema } from './objects/ItemScalarWhereWithAggregatesInput.schema';
-import { ItemWhereInputObjectSchema } from './objects/ItemWhereInput.schema';
+import { ItemScalarFieldEnumSchema } from './enums/ItemScalarFieldEnum.schema';
 
 export const ItemGroupBySchema = z.object({
   where: ItemWhereInputObjectSchema.optional(),

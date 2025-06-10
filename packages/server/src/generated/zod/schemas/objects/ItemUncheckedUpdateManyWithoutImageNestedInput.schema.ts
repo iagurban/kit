@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { ItemCreateWithoutImageInputObjectSchema } from './ItemCreateWithoutImageInput.schema';
+import { ItemUncheckedCreateWithoutImageInputObjectSchema } from './ItemUncheckedCreateWithoutImageInput.schema';
+import { ItemCreateOrConnectWithoutImageInputObjectSchema } from './ItemCreateOrConnectWithoutImageInput.schema';
+import { ItemUpsertWithWhereUniqueWithoutImageInputObjectSchema } from './ItemUpsertWithWhereUniqueWithoutImageInput.schema';
+import { ItemCreateManyImageInputEnvelopeObjectSchema } from './ItemCreateManyImageInputEnvelope.schema';
+import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
+import { ItemUpdateWithWhereUniqueWithoutImageInputObjectSchema } from './ItemUpdateWithWhereUniqueWithoutImageInput.schema';
+import { ItemUpdateManyWithWhereWithoutImageInputObjectSchema } from './ItemUpdateManyWithWhereWithoutImageInput.schema';
+import { ItemScalarWhereInputObjectSchema } from './ItemScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCreateManyImageInputEnvelopeObjectSchema } from './ItemCreateManyImageInputEnvelope.schema';
-import { ItemCreateOrConnectWithoutImageInputObjectSchema } from './ItemCreateOrConnectWithoutImageInput.schema';
-import { ItemCreateWithoutImageInputObjectSchema } from './ItemCreateWithoutImageInput.schema';
-import { ItemScalarWhereInputObjectSchema } from './ItemScalarWhereInput.schema';
-import { ItemUncheckedCreateWithoutImageInputObjectSchema } from './ItemUncheckedCreateWithoutImageInput.schema';
-import { ItemUpdateManyWithWhereWithoutImageInputObjectSchema } from './ItemUpdateManyWithWhereWithoutImageInput.schema';
-import { ItemUpdateWithWhereUniqueWithoutImageInputObjectSchema } from './ItemUpdateWithWhereUniqueWithoutImageInput.schema';
-import { ItemUpsertWithWhereUniqueWithoutImageInputObjectSchema } from './ItemUpsertWithWhereUniqueWithoutImageInput.schema';
-import { ItemWhereUniqueInputObjectSchema } from './ItemWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemUncheckedUpdateManyWithoutImageNestedInput> = z
   .object({

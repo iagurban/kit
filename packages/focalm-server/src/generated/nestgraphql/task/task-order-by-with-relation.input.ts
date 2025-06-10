@@ -2,8 +2,9 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
-import { TaskHistoryGroupOrderByRelationAggregateInput } from '../task-history-group/task-history-group-order-by-relation-aggregate.input';
+import { TaskHistoryValueOrderByRelationAggregateInput } from '../task-history-value/task-history-value-order-by-relation-aggregate.input';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { UserInTaskOrderByRelationAggregateInput } from '../user-in-task/user-in-task-order-by-relation-aggregate.input';
 import { TaskOrderByRelationAggregateInput } from './task-order-by-relation-aggregate.input';
 
 @InputType()
@@ -27,13 +28,22 @@ export class TaskOrderByWithRelationInput {
   ease?: `${SortOrder}`;
 
   @Field(() => SortOrderInput, { nullable: true })
-  startAfter?: SortOrderInput;
+  startAfterDate?: SortOrderInput;
 
   @Field(() => SortOrderInput, { nullable: true })
-  plannedStart?: SortOrderInput;
+  startAfterOffset?: SortOrderInput;
 
   @Field(() => SortOrderInput, { nullable: true })
-  dueTo?: SortOrderInput;
+  plannedStartDate?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  plannedStartOffset?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  dueToDate?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  dueToOffset?: SortOrderInput;
 
   @Field(() => SortOrder, { nullable: true })
   createdAt?: `${SortOrder}`;
@@ -65,6 +75,9 @@ export class TaskOrderByWithRelationInput {
   @Field(() => TaskOrderByRelationAggregateInput, { nullable: true })
   children?: TaskOrderByRelationAggregateInput;
 
-  @Field(() => TaskHistoryGroupOrderByRelationAggregateInput, { nullable: true })
-  historyGroups?: TaskHistoryGroupOrderByRelationAggregateInput;
+  @Field(() => UserInTaskOrderByRelationAggregateInput, { nullable: true })
+  participants?: UserInTaskOrderByRelationAggregateInput;
+
+  @Field(() => TaskHistoryValueOrderByRelationAggregateInput, { nullable: true })
+  historyValues?: TaskHistoryValueOrderByRelationAggregateInput;
 }

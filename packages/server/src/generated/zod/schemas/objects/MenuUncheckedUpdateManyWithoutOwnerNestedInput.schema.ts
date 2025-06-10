@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { MenuCreateWithoutOwnerInputObjectSchema } from './MenuCreateWithoutOwnerInput.schema';
+import { MenuUncheckedCreateWithoutOwnerInputObjectSchema } from './MenuUncheckedCreateWithoutOwnerInput.schema';
+import { MenuCreateOrConnectWithoutOwnerInputObjectSchema } from './MenuCreateOrConnectWithoutOwnerInput.schema';
+import { MenuUpsertWithWhereUniqueWithoutOwnerInputObjectSchema } from './MenuUpsertWithWhereUniqueWithoutOwnerInput.schema';
+import { MenuCreateManyOwnerInputEnvelopeObjectSchema } from './MenuCreateManyOwnerInputEnvelope.schema';
+import { MenuWhereUniqueInputObjectSchema } from './MenuWhereUniqueInput.schema';
+import { MenuUpdateWithWhereUniqueWithoutOwnerInputObjectSchema } from './MenuUpdateWithWhereUniqueWithoutOwnerInput.schema';
+import { MenuUpdateManyWithWhereWithoutOwnerInputObjectSchema } from './MenuUpdateManyWithWhereWithoutOwnerInput.schema';
+import { MenuScalarWhereInputObjectSchema } from './MenuScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuCreateManyOwnerInputEnvelopeObjectSchema } from './MenuCreateManyOwnerInputEnvelope.schema';
-import { MenuCreateOrConnectWithoutOwnerInputObjectSchema } from './MenuCreateOrConnectWithoutOwnerInput.schema';
-import { MenuCreateWithoutOwnerInputObjectSchema } from './MenuCreateWithoutOwnerInput.schema';
-import { MenuScalarWhereInputObjectSchema } from './MenuScalarWhereInput.schema';
-import { MenuUncheckedCreateWithoutOwnerInputObjectSchema } from './MenuUncheckedCreateWithoutOwnerInput.schema';
-import { MenuUpdateManyWithWhereWithoutOwnerInputObjectSchema } from './MenuUpdateManyWithWhereWithoutOwnerInput.schema';
-import { MenuUpdateWithWhereUniqueWithoutOwnerInputObjectSchema } from './MenuUpdateWithWhereUniqueWithoutOwnerInput.schema';
-import { MenuUpsertWithWhereUniqueWithoutOwnerInputObjectSchema } from './MenuUpsertWithWhereUniqueWithoutOwnerInput.schema';
-import { MenuWhereUniqueInputObjectSchema } from './MenuWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.MenuUncheckedUpdateManyWithoutOwnerNestedInput> = z
   .object({

@@ -57,7 +57,7 @@ export default defineConfig({
         },
         tags: [
           {
-            injectTo: 'head',
+            injectTo: 'head-prepend',
             tag: 'script',
             attrs: {
               type: 'module',
@@ -80,6 +80,7 @@ export default defineConfig({
     watch: {
       additionalPaths: (watcher) => {
         watcher.add('../kit/src/**');
+        watcher.add('../kit-ui/src/**');
       }
     }
   }

@@ -8,6 +8,7 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueMinOrderByAggregateInput> = z
     groupId: z.lazy(() => SortOrderSchema).optional(),
     taskId: z.lazy(() => SortOrderSchema).optional(),
     key: z.lazy(() => SortOrderSchema).optional(),
+    op: z.lazy(() => SortOrderSchema).optional(),
   })
   .strict();
 

@@ -1,56 +1,57 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
-
-import { BoolWithAggregatesFilter } from '../prisma/bool-with-aggregates-filter.input';
-import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
-import { DecimalNullableWithAggregatesFilter } from '../prisma/decimal-nullable-with-aggregates-filter.input';
-import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
-import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
-import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
+import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
+import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
+import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
+import { DecimalNullableWithAggregatesFilter } from '../prisma/decimal-nullable-with-aggregates-filter.input';
+import { BoolWithAggregatesFilter } from '../prisma/bool-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 
 @InputType()
 export class ItemScalarWhereWithAggregatesInput {
-  @Field(() => [ItemScalarWhereWithAggregatesInput], { nullable: true })
-  @Type(() => ItemScalarWhereWithAggregatesInput)
-  AND?: Array<ItemScalarWhereWithAggregatesInput>;
 
-  @Field(() => [ItemScalarWhereWithAggregatesInput], { nullable: true })
-  @Type(() => ItemScalarWhereWithAggregatesInput)
-  OR?: Array<ItemScalarWhereWithAggregatesInput>;
+    @Field(() => [ItemScalarWhereWithAggregatesInput], {nullable:true})
+    @Type(() => ItemScalarWhereWithAggregatesInput)
+    AND?: Array<ItemScalarWhereWithAggregatesInput>;
 
-  @Field(() => [ItemScalarWhereWithAggregatesInput], { nullable: true })
-  @Type(() => ItemScalarWhereWithAggregatesInput)
-  NOT?: Array<ItemScalarWhereWithAggregatesInput>;
+    @Field(() => [ItemScalarWhereWithAggregatesInput], {nullable:true})
+    @Type(() => ItemScalarWhereWithAggregatesInput)
+    OR?: Array<ItemScalarWhereWithAggregatesInput>;
 
-  @Field(() => UuidWithAggregatesFilter, { nullable: true })
-  id?: UuidWithAggregatesFilter;
+    @Field(() => [ItemScalarWhereWithAggregatesInput], {nullable:true})
+    @Type(() => ItemScalarWhereWithAggregatesInput)
+    NOT?: Array<ItemScalarWhereWithAggregatesInput>;
 
-  @Field(() => DateTimeWithAggregatesFilter, { nullable: true })
-  createdAt?: DateTimeWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    id?: UuidWithAggregatesFilter;
 
-  @Field(() => StringWithAggregatesFilter, { nullable: true })
-  orderKey?: StringWithAggregatesFilter;
+    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    createdAt?: DateTimeWithAggregatesFilter;
 
-  @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
-  title?: StringNullableWithAggregatesFilter;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    orderKey?: StringWithAggregatesFilter;
 
-  @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
-  description?: StringNullableWithAggregatesFilter;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    title?: StringNullableWithAggregatesFilter;
 
-  @Field(() => DecimalNullableWithAggregatesFilter, { nullable: true })
-  @Type(() => DecimalNullableWithAggregatesFilter)
-  price?: DecimalNullableWithAggregatesFilter;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    description?: StringNullableWithAggregatesFilter;
 
-  @Field(() => BoolWithAggregatesFilter, { nullable: true })
-  archived?: BoolWithAggregatesFilter;
+    @Field(() => DecimalNullableWithAggregatesFilter, {nullable:true})
+    @Type(() => DecimalNullableWithAggregatesFilter)
+    price?: DecimalNullableWithAggregatesFilter;
 
-  @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
-  imageId?: StringNullableWithAggregatesFilter;
+    @Field(() => BoolWithAggregatesFilter, {nullable:true})
+    archived?: BoolWithAggregatesFilter;
 
-  @Field(() => UuidWithAggregatesFilter, { nullable: true })
-  menuId?: UuidWithAggregatesFilter;
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    imageId?: StringNullableWithAggregatesFilter;
 
-  @Field(() => UuidNullableWithAggregatesFilter, { nullable: true })
-  parentId?: UuidNullableWithAggregatesFilter;
+    @Field(() => UuidWithAggregatesFilter, {nullable:true})
+    menuId?: UuidWithAggregatesFilter;
+
+    @Field(() => UuidNullableWithAggregatesFilter, {nullable:true})
+    parentId?: UuidNullableWithAggregatesFilter;
 }

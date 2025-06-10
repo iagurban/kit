@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { UserCountOrderByAggregateInputObjectSchema } from './UserCountOrderByAggregateInput.schema';
 import { UserMaxOrderByAggregateInputObjectSchema } from './UserMaxOrderByAggregateInput.schema';
 import { UserMinOrderByAggregateInputObjectSchema } from './UserMinOrderByAggregateInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UserOrderByWithAggregationInput> = z
   .object({

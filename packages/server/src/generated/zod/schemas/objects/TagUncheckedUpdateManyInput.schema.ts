@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 
 const Schema: z.ZodType<Prisma.TagUncheckedUpdateManyInput> = z
   .object({

@@ -1,14 +1,14 @@
 import { z } from 'zod';
+import { UploadedFileUncheckedCreateNestedManyWithoutStoredFileInputObjectSchema } from './UploadedFileUncheckedCreateNestedManyWithoutStoredFileInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileUncheckedCreateNestedManyWithoutStoredFileInputObjectSchema } from './UploadedFileUncheckedCreateNestedManyWithoutStoredFileInput.schema';
 
 const Schema: z.ZodType<Prisma.StoredFileUncheckedCreateInput> = z
   .object({
     id: z.string().optional(),
     hash: z.string(),
     size: z.number(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.dateStr().optional(),
     uploads: z.lazy(() => UploadedFileUncheckedCreateNestedManyWithoutStoredFileInputObjectSchema).optional(),
   })
   .strict();

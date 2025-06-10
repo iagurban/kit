@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { MenuCreateManyOwnerInputObjectSchema } from './MenuCreateManyOwnerInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuCreateManyOwnerInputObjectSchema } from './MenuCreateManyOwnerInput.schema';
 
 const Schema: z.ZodType<Prisma.MenuCreateManyOwnerInputEnvelope> = z
   .object({

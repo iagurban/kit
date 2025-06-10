@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import { StoredFileUpdateManyMutationInputObjectSchema } from './objects/StoredFileUpdateManyMutationInput.schema';
 import { StoredFileWhereInputObjectSchema } from './objects/StoredFileWhereInput.schema';
 

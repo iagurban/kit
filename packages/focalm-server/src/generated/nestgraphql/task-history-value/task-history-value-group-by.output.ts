@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 
 import { TaskHistoryKey } from '../prisma/task-history-key.enum';
+import { TaskHistoryOperation } from '../prisma/task-history-operation.enum';
 import { TaskHistoryValueCountAggregate } from './task-history-value-count-aggregate.output';
 import { TaskHistoryValueMaxAggregate } from './task-history-value-max-aggregate.output';
 import { TaskHistoryValueMinAggregate } from './task-history-value-min-aggregate.output';
@@ -16,6 +17,9 @@ export class TaskHistoryValueGroupBy {
 
   @Field(() => TaskHistoryKey, { nullable: false })
   key!: `${TaskHistoryKey}`;
+
+  @Field(() => TaskHistoryOperation, { nullable: false })
+  op!: `${TaskHistoryOperation}`;
 
   @Field(() => GraphQLJSON, { nullable: false })
   value!: any;

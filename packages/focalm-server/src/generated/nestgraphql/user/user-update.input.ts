@@ -7,6 +7,7 @@ import { TaskUpdateManyWithoutAuthorNestedInput } from '../task/task-update-many
 import { TaskUpdateManyWithoutResponsibleNestedInput } from '../task/task-update-many-without-responsible-nested.input';
 import { TaskHistoryGroupUpdateManyWithoutAuthorNestedInput } from '../task-history-group/task-history-group-update-many-without-author-nested.input';
 import { UploadedFileUpdateManyWithoutUploaderNestedInput } from '../uploaded-file/uploaded-file-update-many-without-uploader-nested.input';
+import { UserInTaskUpdateManyWithoutUserNestedInput } from '../user-in-task/user-in-task-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUpdateInput {
@@ -39,4 +40,7 @@ export class UserUpdateInput {
 
   @Field(() => TaskHistoryGroupUpdateManyWithoutAuthorNestedInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupUpdateManyWithoutAuthorNestedInput;
+
+  @Field(() => UserInTaskUpdateManyWithoutUserNestedInput, { nullable: true })
+  participatingTasks?: UserInTaskUpdateManyWithoutUserNestedInput;
 }

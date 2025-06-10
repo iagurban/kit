@@ -6,7 +6,6 @@ import { DateTimeFieldUpdateOperationsInputObjectSchema } from './DateTimeFieldU
 import { NullableEnumCreatedAtFixReasonFieldUpdateOperationsInputObjectSchema } from './NullableEnumCreatedAtFixReasonFieldUpdateOperationsInput.schema';
 import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 import { TaskHistoryValueUpdateManyWithoutGroupNestedInputObjectSchema } from './TaskHistoryValueUpdateManyWithoutGroupNestedInput.schema';
-import { TaskUpdateOneRequiredWithoutHistoryGroupsNestedInputObjectSchema } from './TaskUpdateOneRequiredWithoutHistoryGroupsNestedInput.schema';
 import { UserUpdateOneRequiredWithoutAuthoredTaskChangesNestedInputObjectSchema } from './UserUpdateOneRequiredWithoutAuthoredTaskChangesNestedInput.schema';
 
 const Schema: z.ZodType<Prisma.TaskHistoryGroupUpdateInput> = z
@@ -25,7 +24,6 @@ const Schema: z.ZodType<Prisma.TaskHistoryGroupUpdateInput> = z
       ])
       .optional()
       .nullable(),
-    task: z.lazy(() => TaskUpdateOneRequiredWithoutHistoryGroupsNestedInputObjectSchema).optional(),
     values: z.lazy(() => TaskHistoryValueUpdateManyWithoutGroupNestedInputObjectSchema).optional(),
     author: z.lazy(() => UserUpdateOneRequiredWithoutAuthoredTaskChangesNestedInputObjectSchema).optional(),
   })

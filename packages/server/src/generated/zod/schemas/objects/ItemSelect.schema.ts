@@ -1,11 +1,11 @@
 import { z } from 'zod';
+import { UploadedFileArgsObjectSchema } from './UploadedFileArgs.schema';
+import { MenuArgsObjectSchema } from './MenuArgs.schema';
+import { ItemArgsObjectSchema } from './ItemArgs.schema';
+import { ItemFindManySchema } from '../findManyItem.schema';
+import { ItemCountOutputTypeArgsObjectSchema } from './ItemCountOutputTypeArgs.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemFindManySchema } from '../findManyItem.schema';
-import { ItemArgsObjectSchema } from './ItemArgs.schema';
-import { ItemCountOutputTypeArgsObjectSchema } from './ItemCountOutputTypeArgs.schema';
-import { MenuArgsObjectSchema } from './MenuArgs.schema';
-import { UploadedFileArgsObjectSchema } from './UploadedFileArgs.schema';
 
 const Schema: z.ZodType<Prisma.ItemSelect> = z
   .object({

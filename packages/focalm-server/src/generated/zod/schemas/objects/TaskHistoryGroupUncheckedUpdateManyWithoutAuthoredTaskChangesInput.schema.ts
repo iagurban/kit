@@ -9,7 +9,6 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 const Schema: z.ZodType<Prisma.TaskHistoryGroupUncheckedUpdateManyWithoutAuthoredTaskChangesInput> = z
   .object({
     id: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
-    taskId: z.union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputObjectSchema)]).optional(),
     localCreatedAt: z
       .union([z.coerce.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputObjectSchema)])
       .optional(),

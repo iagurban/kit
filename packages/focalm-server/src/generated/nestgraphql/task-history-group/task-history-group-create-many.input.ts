@@ -8,9 +8,6 @@ export class TaskHistoryGroupCreateManyInput {
   id?: string;
 
   @Field(() => String, { nullable: false })
-  taskId!: string;
-
-  @Field(() => String, { nullable: false })
   authorId!: string;
 
   @Field(() => Date, { nullable: false })

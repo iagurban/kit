@@ -1,30 +1,32 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { RefreshTokenOrderByWithRelationInput } from './refresh-token-order-by-with-relation.input';
-import { RefreshTokenScalarFieldEnum } from './refresh-token-scalar-field.enum';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { RefreshTokenWhereInput } from './refresh-token-where.input';
+import { Type } from 'class-transformer';
+import { RefreshTokenOrderByWithRelationInput } from './refresh-token-order-by-with-relation.input';
+import { Prisma } from '../../db-client';
 import { RefreshTokenWhereUniqueInput } from './refresh-token-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { RefreshTokenScalarFieldEnum } from './refresh-token-scalar-field.enum';
 
 @ArgsType()
 export class FindManyRefreshTokenArgs {
-  @Field(() => RefreshTokenWhereInput, { nullable: true })
-  @Type(() => RefreshTokenWhereInput)
-  where?: RefreshTokenWhereInput;
 
-  @Field(() => [RefreshTokenOrderByWithRelationInput], { nullable: true })
-  orderBy?: Array<RefreshTokenOrderByWithRelationInput>;
+    @Field(() => RefreshTokenWhereInput, {nullable:true})
+    @Type(() => RefreshTokenWhereInput)
+    where?: RefreshTokenWhereInput;
 
-  @Field(() => RefreshTokenWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<RefreshTokenWhereUniqueInput, 'id'>;
+    @Field(() => [RefreshTokenOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<RefreshTokenOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => RefreshTokenWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<RefreshTokenWhereUniqueInput, 'id'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => [RefreshTokenScalarFieldEnum], { nullable: true })
-  distinct?: Array<`${RefreshTokenScalarFieldEnum}`>;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+
+    @Field(() => [RefreshTokenScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${RefreshTokenScalarFieldEnum}`>;
 }

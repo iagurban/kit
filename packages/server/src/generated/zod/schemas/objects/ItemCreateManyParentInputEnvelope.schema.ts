@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { ItemCreateManyParentInputObjectSchema } from './ItemCreateManyParentInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemCreateManyParentInputObjectSchema } from './ItemCreateManyParentInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemCreateManyParentInputEnvelope> = z
   .object({

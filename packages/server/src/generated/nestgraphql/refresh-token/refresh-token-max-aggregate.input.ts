@@ -1,19 +1,21 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 
 @InputType()
 export class RefreshTokenMaxAggregateInput {
-  @Field(() => Boolean, { nullable: true })
-  id?: true;
 
-  @Field(() => Boolean, { nullable: true })
-  userId?: true;
+    @Field(() => Boolean, {nullable:true})
+    id?: true;
 
-  @Field(() => Boolean, { nullable: true })
-  createdAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    userId?: true;
 
-  @Field(() => Boolean, { nullable: true })
-  expiresAt?: true;
+    @Field(() => Boolean, {nullable:true})
+    createdAt?: true;
 
-  @Field(() => Boolean, { nullable: true })
-  hash?: true;
+    @Field(() => Boolean, {nullable:true})
+    expiresAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    hash?: true;
 }

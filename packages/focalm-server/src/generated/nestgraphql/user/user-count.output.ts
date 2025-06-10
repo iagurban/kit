@@ -16,4 +16,7 @@ export class UserCount {
 
   @Field(() => Int, { nullable: false })
   authoredTaskChanges?: number;
+
+  @Field(() => Int, { nullable: false })
+  participatingTasks?: number;
 }

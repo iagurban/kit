@@ -1,37 +1,38 @@
-import { Field, InputType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { RefreshTokenWhereInput } from './refresh-token-where.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
-import { UuidFilter } from '../prisma/uuid-filter.input';
 import { UserScalarRelationFilter } from '../user/user-scalar-relation-filter.input';
-import { RefreshTokenWhereInput } from './refresh-token-where.input';
 
 @InputType()
 export class RefreshTokenWhereUniqueInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => [RefreshTokenWhereInput], { nullable: true })
-  AND?: Array<RefreshTokenWhereInput>;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => [RefreshTokenWhereInput], { nullable: true })
-  OR?: Array<RefreshTokenWhereInput>;
+    @Field(() => [RefreshTokenWhereInput], {nullable:true})
+    AND?: Array<RefreshTokenWhereInput>;
 
-  @Field(() => [RefreshTokenWhereInput], { nullable: true })
-  NOT?: Array<RefreshTokenWhereInput>;
+    @Field(() => [RefreshTokenWhereInput], {nullable:true})
+    OR?: Array<RefreshTokenWhereInput>;
 
-  @Field(() => UuidFilter, { nullable: true })
-  userId?: UuidFilter;
+    @Field(() => [RefreshTokenWhereInput], {nullable:true})
+    NOT?: Array<RefreshTokenWhereInput>;
 
-  @Field(() => DateTimeFilter, { nullable: true })
-  createdAt?: DateTimeFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    userId?: UuidFilter;
 
-  @Field(() => DateTimeFilter, { nullable: true })
-  expiresAt?: DateTimeFilter;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: DateTimeFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  hash?: StringFilter;
+    @Field(() => DateTimeFilter, {nullable:true})
+    expiresAt?: DateTimeFilter;
 
-  @Field(() => UserScalarRelationFilter, { nullable: true })
-  user?: UserScalarRelationFilter;
+    @Field(() => StringFilter, {nullable:true})
+    hash?: StringFilter;
+
+    @Field(() => UserScalarRelationFilter, {nullable:true})
+    user?: UserScalarRelationFilter;
 }

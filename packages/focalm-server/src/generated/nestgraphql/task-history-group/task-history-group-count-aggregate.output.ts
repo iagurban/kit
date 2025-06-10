@@ -6,9 +6,6 @@ export class TaskHistoryGroupCountAggregate {
   id!: number;
 
   @Field(() => Int, { nullable: false })
-  taskId!: number;
-
-  @Field(() => Int, { nullable: false })
   authorId!: number;
 
   @Field(() => Int, { nullable: false })

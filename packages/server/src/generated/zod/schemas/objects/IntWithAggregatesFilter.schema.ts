@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { NestedIntWithAggregatesFilterObjectSchema } from './NestedIntWithAggregatesFilter.schema';
+import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
+import { NestedFloatFilterObjectSchema } from './NestedFloatFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { NestedFloatFilterObjectSchema } from './NestedFloatFilter.schema';
-import { NestedIntFilterObjectSchema } from './NestedIntFilter.schema';
-import { NestedIntWithAggregatesFilterObjectSchema } from './NestedIntWithAggregatesFilter.schema';
 
 const Schema: z.ZodType<Prisma.IntWithAggregatesFilter> = z
   .object({

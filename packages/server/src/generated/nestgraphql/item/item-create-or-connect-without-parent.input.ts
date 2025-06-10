@@ -1,17 +1,18 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { Prisma } from '../../db-client';
-import { ItemCreateWithoutParentInput } from './item-create-without-parent.input';
 import { ItemWhereUniqueInput } from './item-where-unique.input';
+import { Type } from 'class-transformer';
+import { ItemCreateWithoutParentInput } from './item-create-without-parent.input';
 
 @InputType()
 export class ItemCreateOrConnectWithoutParentInput {
-  @Field(() => ItemWhereUniqueInput, { nullable: false })
-  @Type(() => ItemWhereUniqueInput)
-  where!: Prisma.AtLeast<ItemWhereUniqueInput, 'id' | 'menuId_parentId_orderKey'>;
 
-  @Field(() => ItemCreateWithoutParentInput, { nullable: false })
-  @Type(() => ItemCreateWithoutParentInput)
-  create!: ItemCreateWithoutParentInput;
+    @Field(() => ItemWhereUniqueInput, {nullable:false})
+    @Type(() => ItemWhereUniqueInput)
+    where!: Prisma.AtLeast<ItemWhereUniqueInput, 'id' | 'menuId_parentId_orderKey'>;
+
+    @Field(() => ItemCreateWithoutParentInput, {nullable:false})
+    @Type(() => ItemCreateWithoutParentInput)
+    create!: ItemCreateWithoutParentInput;
 }

@@ -1,4 +1,5 @@
 import { authExchange } from '@urql/exchange-auth';
+import { retryExchange } from '@urql/exchange-retry';
 import { action, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { PropsWithChildren, useMemo } from 'react';
@@ -67,10 +68,25 @@ const client = () =>
       credentials: 'include', // <==== вот это критично!
     }),
     exchanges: [
+      retryExchange({
+        // сколько миллисекунд ждать перед первой повторной попыткой:
+        initialDelayMs: 1000,
+        // максимальная задержка между попытками:
+        maxDelayMs: 10000,
+        // включить случайную флуктуацию задержки (джиттер):
+        randomDelay: true,
+        // сколько всего раз (помимо первой) пытаться повторить:
+        maxNumberAttempts: 3,
+        // по каким ошибкам повторять (по умолчанию — только сетевые)
+        retryIf: (error, _operation) =>
+          Boolean(error.networkError) || error.graphQLErrors.some(e => e.message === 'Internal Server Error'),
+      }),
       authExchange(async utils => {
         return {
           // 1. Проверяем, была ли auth ошибка
-          didAuthError: error => error.graphQLErrors.some(e => e.extensions?.['code'] === 'UNAUTHENTICATED'),
+          didAuthError: error => (
+            console.log(error), error.graphQLErrors.some(e => e.extensions?.['code'] === 'UNAUTHENTICATED')
+          ),
 
           // 2. Устанавливаем заголовок
           addAuthToOperation: operation => {

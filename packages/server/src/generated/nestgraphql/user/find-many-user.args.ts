@@ -1,30 +1,32 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { UserOrderByWithRelationInput } from './user-order-by-with-relation.input';
-import { UserScalarFieldEnum } from './user-scalar-field.enum';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { UserWhereInput } from './user-where.input';
+import { Type } from 'class-transformer';
+import { UserOrderByWithRelationInput } from './user-order-by-with-relation.input';
+import { Prisma } from '../../db-client';
 import { UserWhereUniqueInput } from './user-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { UserScalarFieldEnum } from './user-scalar-field.enum';
 
 @ArgsType()
 export class FindManyUserArgs {
-  @Field(() => UserWhereInput, { nullable: true })
-  @Type(() => UserWhereInput)
-  where?: UserWhereInput;
 
-  @Field(() => [UserOrderByWithRelationInput], { nullable: true })
-  orderBy?: Array<UserOrderByWithRelationInput>;
+    @Field(() => UserWhereInput, {nullable:true})
+    @Type(() => UserWhereInput)
+    where?: UserWhereInput;
 
-  @Field(() => UserWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+    @Field(() => [UserOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<UserOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => UserWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => [UserScalarFieldEnum], { nullable: true })
-  distinct?: Array<`${UserScalarFieldEnum}`>;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+
+    @Field(() => [UserScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${UserScalarFieldEnum}`>;
 }

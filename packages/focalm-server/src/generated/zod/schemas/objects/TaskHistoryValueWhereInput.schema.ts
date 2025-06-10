@@ -2,10 +2,14 @@ import { z } from 'zod';
 
 import type { Prisma } from '../../../old-client';
 import { TaskHistoryKeySchema } from '../enums/TaskHistoryKey.schema';
+import { TaskHistoryOperationSchema } from '../enums/TaskHistoryOperation.schema';
 import { EnumTaskHistoryKeyFilterObjectSchema } from './EnumTaskHistoryKeyFilter.schema';
+import { EnumTaskHistoryOperationFilterObjectSchema } from './EnumTaskHistoryOperationFilter.schema';
 import { JsonFilterObjectSchema } from './JsonFilter.schema';
 import { TaskHistoryGroupRelationFilterObjectSchema } from './TaskHistoryGroupRelationFilter.schema';
 import { TaskHistoryGroupWhereInputObjectSchema } from './TaskHistoryGroupWhereInput.schema';
+import { TaskRelationFilterObjectSchema } from './TaskRelationFilter.schema';
+import { TaskWhereInputObjectSchema } from './TaskWhereInput.schema';
 import { UuidFilterObjectSchema } from './UuidFilter.schema';
 
 const Schema: z.ZodType<Prisma.TaskHistoryValueWhereInput> = z
@@ -31,12 +35,21 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueWhereInput> = z
     key: z
       .union([z.lazy(() => EnumTaskHistoryKeyFilterObjectSchema), z.lazy(() => TaskHistoryKeySchema)])
       .optional(),
+    op: z
+      .union([
+        z.lazy(() => EnumTaskHistoryOperationFilterObjectSchema),
+        z.lazy(() => TaskHistoryOperationSchema),
+      ])
+      .optional(),
     value: z.lazy(() => JsonFilterObjectSchema).optional(),
     group: z
       .union([
         z.lazy(() => TaskHistoryGroupRelationFilterObjectSchema),
         z.lazy(() => TaskHistoryGroupWhereInputObjectSchema),
       ])
+      .optional(),
+    task: z
+      .union([z.lazy(() => TaskRelationFilterObjectSchema), z.lazy(() => TaskWhereInputObjectSchema)])
       .optional(),
   })
   .strict();

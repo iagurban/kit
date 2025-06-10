@@ -1,8 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 import { EnumTaskHistoryKeyFilter } from '../prisma/enum-task-history-key-filter.input';
+import { EnumTaskHistoryOperationFilter } from '../prisma/enum-task-history-operation-filter.input';
 import { JsonFilter } from '../prisma/json-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
+import { TaskScalarRelationFilter } from '../task/task-scalar-relation-filter.input';
 import { TaskHistoryGroupScalarRelationFilter } from '../task-history-group/task-history-group-scalar-relation-filter.input';
 
 @InputType()
@@ -25,9 +27,15 @@ export class TaskHistoryValueWhereInput {
   @Field(() => EnumTaskHistoryKeyFilter, { nullable: true })
   key?: EnumTaskHistoryKeyFilter;
 
+  @Field(() => EnumTaskHistoryOperationFilter, { nullable: true })
+  op?: EnumTaskHistoryOperationFilter;
+
   @Field(() => JsonFilter, { nullable: true })
   value?: JsonFilter;
 
   @Field(() => TaskHistoryGroupScalarRelationFilter, { nullable: true })
   group?: TaskHistoryGroupScalarRelationFilter;
+
+  @Field(() => TaskScalarRelationFilter, { nullable: true })
+  task?: TaskScalarRelationFilter;
 }

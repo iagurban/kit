@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { RefreshTokenSelectObjectSchema } from './RefreshTokenSelect.schema';
+import { RefreshTokenIncludeObjectSchema } from './RefreshTokenInclude.schema';
 
 import type { Prisma } from '../../../old-client';
-import { RefreshTokenIncludeObjectSchema } from './RefreshTokenInclude.schema';
-import { RefreshTokenSelectObjectSchema } from './RefreshTokenSelect.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenArgs> = z
   .object({

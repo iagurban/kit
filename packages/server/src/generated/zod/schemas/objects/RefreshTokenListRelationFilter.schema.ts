@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { RefreshTokenWhereInputObjectSchema } from './RefreshTokenWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { RefreshTokenWhereInputObjectSchema } from './RefreshTokenWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenListRelationFilter> = z
   .object({

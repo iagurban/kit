@@ -27,6 +27,11 @@ const config: CodegenConfig = {
           },
         }
       ],
+      config: {
+        scalars: {
+          DateTime: 'string',
+        },
+      }
     },
   },
   ignoreNoDocuments: true,

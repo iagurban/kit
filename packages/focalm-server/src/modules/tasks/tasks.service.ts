@@ -12,7 +12,7 @@ import {
   samplesBy,
 } from '@freyja/kit/src';
 import { Injectable } from '@nestjs/common';
-import { reverse, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 
 import { $Enums, Prisma, TaskHistoryKey, TaskState } from '../../generated/db-client';
 import { DbService } from '../db/db.service';
@@ -24,7 +24,7 @@ import JsonNull = Prisma.JsonNull;
 import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
 import CreatedAtFixReason = $Enums.CreatedAtFixReason;
 import { Task } from '../../generated/nestgraphql/task/task.model';
-import { UsersService } from '../users/users.service';
+import { currentUserCtx } from '../../interceptors/current-user-context';
 import { FetchAllTasksOptionsInput } from './fetch-all-tasks-options-input';
 import { TasksChangesGroup } from './tasks-changes-group';
 
@@ -48,6 +48,8 @@ const isTaskHistoryKey = (key: string): key is TaskHistoryKey =>
 
 const isTaskState = (key: string): key is TaskState => (TaskState as Record<string, string>)[key] === key;
 const isStringAndTaskState = (key: unknown): key is TaskState => typeof key === `string` && isTaskState(key);
+
+const secondsIn24h = 24 * 60 * 60;
 
 const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacements: ExMap<string, string>) => {
   switch (key) {
@@ -74,6 +76,30 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
           () => `Invalid ${key}: ${value}`
         ),
       };
+    case 'startAfterDate':
+    case 'plannedStartDate':
+    case 'dueToDate':
+      return {
+        key,
+        value: new Date(
+          checked(
+            checked(value, isString, () => `Invalid ${key}: ${value}`),
+            s => /^\d{4}-\d{2}-\d{2}$/.test(s),
+            () => `Invalid date format: ${value}`
+          )
+        ),
+      };
+    case 'startAfterOffset':
+    case 'plannedStartOffset':
+    case 'dueToOffset':
+      return {
+        key,
+        value: checked(
+          checked(value, isNumber, () => `Invalid ${key}: ${value}`),
+          v => v >= 0 && v < secondsIn24h,
+          () => `Invalid offset: ${value}; expected 0..${secondsIn24h - 1}`
+        ),
+      };
     default:
       throw new Error(`Unknown update field ${key}`);
   }
@@ -91,6 +117,12 @@ const taskUpdateCollector = (id: string) => {
     authorId: string;
     responsibleId: string | null;
     parentId: string | null;
+    startAfterDate: Date;
+    startAfterOffset?: number | null;
+    plannedStartDate: Date;
+    plannedStartOffset?: number | null;
+    dueToDate: Date;
+    dueToOffset?: number | null;
   }> = {};
   return {
     addPart(typed: ReturnType<typeof getTypedChange>) {
@@ -119,20 +151,20 @@ export type PreparedTaskChangesGroup = {
   localCreatedAt: Date;
   createdAt: Date;
   createdAtFixReason?: CreatedAtFixReason;
-  values: ExMap<TaskHistoryKey, string /* JSON */>;
+  valuesByTask: ExMap<string /* taskId */, ExMap<TaskHistoryKey, string /* JSON */>>;
 };
 
 @Injectable()
 export class TasksService {
   constructor(
-    readonly db: DbService,
-    readonly usersService: UsersService
+    readonly db: DbService
+    // readonly usersService: UsersService
   ) {}
 
   async getTasks(select?: Prisma.TaskSelect, fetchOptions?: FetchAllTasksOptionsInput): Promise<Task[]> {
     return this.db.client.task.findMany({
       where: {
-        responsibleId: this.usersService.contextUser.id,
+        responsibleId: currentUserCtx.get().id,
         updatedAt: fetchOptions?.updatedAfter != null ? { gt: fetchOptions.updatedAfter } : undefined,
       },
       select,
@@ -171,12 +203,12 @@ export class TasksService {
   async getLastFieldsValuesFromHistory(ids: string[]) {
     return ExMap.groupedBy(
       await this.db.transaction.taskHistoryValue.findMany({
-        where: { group: { task: { id: { in: ids } } } },
-        select: { key: true, value: true, group: { select: { taskId: true, createdAt: true } } },
+        where: { task: { id: { in: ids } } },
+        select: { key: true, value: true, taskId: true, group: { select: { createdAt: true } } },
         orderBy: [{ taskId: `asc` }, { key: `asc` }, { group: { createdAt: 'desc' } }],
         distinct: [`taskId`, `key`],
       }),
-      v => v.group.taskId
+      v => v.taskId
     ).mapEntries(e =>
       ExMap.mappedBy(e, e => e.key).mapEntries(e => ({
         value: e.value,
@@ -185,9 +217,8 @@ export class TasksService {
     );
   }
 
-  async getNewIdsReplacements(changes: ExMap<string, unknown>) {
-    const allIds = [...new Set(changes.keys())];
-    const split = ExMap.groupedBy(allIds, id => id.startsWith(`!!NEW:`));
+  async getNewIdsReplacements(allIds: Set<string>) {
+    const split = ExMap.groupedBy([...allIds], id => id.startsWith(`!!NEW:`));
     const newSentIds = split.get(true) ?? [];
     const existingIds = split.get(false) ?? [];
     const newIds = await this.getFreeTaskIdsFromHistory(newSentIds.length);
@@ -203,47 +234,55 @@ export class TasksService {
    * Apply updates on existing tasks and write them to the history.
    *
    * @param changes
-   * @param user
    */
-  async applyChanges(changes: ExMap<string /* task id */, readonly PreparedTaskChangesGroup[]>) {
+  async applyChanges(changes: readonly PreparedTaskChangesGroup[]) {
     return this.db.inAnyTransaction({ isolationLevel: TransactionIsolationLevel.Serializable }, async () => {
-      const { newIdsReplacements, existingIds, newIds } = await this.getNewIdsReplacements(changes);
-
-      const updatesByTaskId = new ExMap(
-        Array.from(
-          changes.entries(),
-          ([id, groups]) =>
-            [
-              newIdsReplacements.get(id) ?? id,
-              reverse(
-                sortBy(
-                  groups.map(g => ({
-                    localCreatedAt: g.localCreatedAt,
-                    ...trimCreatedAt(g.createdAt, g.createdAtFixReason),
-                    values: g.values.toArray((value, key) =>
-                      getTypedChange(key, JSON.parse(value), newIdsReplacements)
-                    ),
-                  })),
-                  e => e.createdAt.getTime()
-                )
-              ),
-            ] as const
-        )
+      const { newIdsReplacements, existingIds, newIds } = await this.getNewIdsReplacements(
+        new Set(changes.flatMap(g => [...g.valuesByTask.keys()]))
       );
 
-      const newLastByTaskId = updatesByTaskId.mapEntries(groups => {
+      const preparedGroups = changes.map(group => ({
+        localCreatedAt: group.localCreatedAt,
+        ...trimCreatedAt(group.createdAt, group.createdAtFixReason),
+        values: new ExMap(
+          group.valuesByTask.toArray(
+            (k2v, taskId) =>
+              [
+                newIdsReplacements.get(taskId) ?? taskId,
+                k2v.toArray((value, key) => getTypedChange(key, JSON.parse(value), newIdsReplacements)),
+              ] as const
+          )
+        ),
+      }));
+
+      const allValues = sortBy(
+        preparedGroups.flatMap(group =>
+          group.values
+            .toArray((updates, taskId) =>
+              updates.map(update => ({
+                taskId,
+                group,
+                ...update,
+              }))
+            )
+            .flat()
+        ),
+        e => e.group.createdAt.getTime()
+      );
+
+      const updatesByTaskId = ExMap.groupedBy(allValues, value => value.taskId);
+
+      const newLastByTaskId = updatesByTaskId.mapEntries(values => {
         const u = new ExMap<TaskHistoryKey, { part: ReturnType<typeof getTypedChange>; createdAt: Date }>();
-        for (const group of groups) {
-          for (const value of group.values) {
-            u.set(value.key, { part: value, createdAt: group.createdAt });
-          }
+        for (const value of values) {
+          u.set(value.key, { part: value, createdAt: value.group.createdAt });
         }
         return u;
       });
 
       const curLastByTaskId = await this.getLastFieldsValuesFromHistory(existingIds);
 
-      const user = this.usersService.contextUser;
+      const user = currentUserCtx.get();
 
       await Promise.all([
         ...newLastByTaskId
@@ -277,28 +316,29 @@ export class TasksService {
           })
           .filter(isTruthy),
 
-        ...updatesByTaskId
-          .toArray((groups, taskId) =>
-            groups.map(group =>
-              this.db.transaction.taskHistoryGroup.create({
-                data: {
-                  task: { connect: { id: taskId } },
-                  author: { connect: { id: user.id } },
-                  localCreatedAt: group.localCreatedAt,
-                  createdAt: group.createdAt,
-                  createdAtFixReason: group.createdAtFixReason,
-                  values: {
-                    createMany: {
-                      data: group.values.map(value => ({
-                        taskId,
-                        key: value.key,
-                        value: value.value != null ? value.value : JsonNull,
-                      })),
-                    },
+        ...preparedGroups
+          .map(group =>
+            this.db.transaction.taskHistoryGroup.create({
+              data: {
+                author: { connect: { id: user.id } },
+                localCreatedAt: group.localCreatedAt,
+                createdAt: group.createdAt,
+                createdAtFixReason: group.createdAtFixReason,
+                values: {
+                  createMany: {
+                    data: group.values
+                      .toArray((values, taskId) =>
+                        values.map(value => ({
+                          taskId,
+                          key: value.key,
+                          value: value.value != null ? value.value : JsonNull,
+                        }))
+                      )
+                      .flat(),
                   },
                 },
-              })
-            )
+              },
+            })
           )
           .flat(),
       ]);
@@ -308,16 +348,16 @@ export class TasksService {
 
   async updateTasks(changes: TasksChangesGroup[]) {
     const { newIdsReplacements } = await this.applyChanges(
-      ExMap.groupedBy(changes, c => c.id).mapEntries(groups =>
-        groups.map(
-          group =>
-            ({
-              createdAt: group.createdAt,
-              localCreatedAt: group.localCreatedAt,
-              createdAtFixReason: group.createdAtFixReason,
-              values: new ExMap(group.updates.map(update => [update.field, update.stringValue])),
-            }) as const
-        )
+      changes.map(
+        group =>
+          ({
+            createdAt: group.createdAt,
+            localCreatedAt: group.localCreatedAt,
+            createdAtFixReason: group.createdAtFixReason,
+            valuesByTask: ExMap.groupedBy(group.updates, u => u.taskId).mapEntries(
+              updates => new ExMap(updates.map(update => [update.field, update.stringValue] as const))
+            ),
+          }) as const
       )
     );
     return {

@@ -9,6 +9,7 @@ const Schema: z.ZodType<Prisma.UserCountOutputTypeSelect> = z
     assignedTasks: z.boolean().optional(),
     authoredTasks: z.boolean().optional(),
     authoredTaskChanges: z.boolean().optional(),
+    participatingTasks: z.boolean().optional(),
   })
   .strict();
 

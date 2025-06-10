@@ -1,10 +1,10 @@
 import { z } from 'zod';
+import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
+import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
+import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema';
+import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
-import { IntWithAggregatesFilterObjectSchema } from './IntWithAggregatesFilter.schema';
-import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 
 const Schema: z.ZodType<Prisma.StoredFileScalarWhereWithAggregatesInput> = z
   .object({
@@ -27,7 +27,7 @@ const Schema: z.ZodType<Prisma.StoredFileScalarWhereWithAggregatesInput> = z
     id: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),
     hash: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     size: z.union([z.lazy(() => IntWithAggregatesFilterObjectSchema), z.number()]).optional(),
-    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.dateStr()]).optional(),
   })
   .strict();
 

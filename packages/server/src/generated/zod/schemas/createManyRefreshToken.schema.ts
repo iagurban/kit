@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 import { RefreshTokenCreateManyInputObjectSchema } from './objects/RefreshTokenCreateManyInput.schema';
 
 export const RefreshTokenCreateManySchema = z.object({

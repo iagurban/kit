@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { StoredFileCountOutputTypeSelectObjectSchema } from './StoredFileCountOutputTypeSelect.schema';
 
 import type { Prisma } from '../../../old-client';
-import { StoredFileCountOutputTypeSelectObjectSchema } from './StoredFileCountOutputTypeSelect.schema';
 
 const Schema: z.ZodType<Prisma.StoredFileCountOutputTypeArgs> = z
   .object({

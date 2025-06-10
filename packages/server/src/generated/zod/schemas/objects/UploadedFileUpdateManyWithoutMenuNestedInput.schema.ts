@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { UploadedFileCreateWithoutMenuInputObjectSchema } from './UploadedFileCreateWithoutMenuInput.schema';
+import { UploadedFileUncheckedCreateWithoutMenuInputObjectSchema } from './UploadedFileUncheckedCreateWithoutMenuInput.schema';
+import { UploadedFileCreateOrConnectWithoutMenuInputObjectSchema } from './UploadedFileCreateOrConnectWithoutMenuInput.schema';
+import { UploadedFileUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpsertWithWhereUniqueWithoutMenuInput.schema';
+import { UploadedFileCreateManyMenuInputEnvelopeObjectSchema } from './UploadedFileCreateManyMenuInputEnvelope.schema';
+import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
+import { UploadedFileUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpdateWithWhereUniqueWithoutMenuInput.schema';
+import { UploadedFileUpdateManyWithWhereWithoutMenuInputObjectSchema } from './UploadedFileUpdateManyWithWhereWithoutMenuInput.schema';
+import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileCreateManyMenuInputEnvelopeObjectSchema } from './UploadedFileCreateManyMenuInputEnvelope.schema';
-import { UploadedFileCreateOrConnectWithoutMenuInputObjectSchema } from './UploadedFileCreateOrConnectWithoutMenuInput.schema';
-import { UploadedFileCreateWithoutMenuInputObjectSchema } from './UploadedFileCreateWithoutMenuInput.schema';
-import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
-import { UploadedFileUncheckedCreateWithoutMenuInputObjectSchema } from './UploadedFileUncheckedCreateWithoutMenuInput.schema';
-import { UploadedFileUpdateManyWithWhereWithoutMenuInputObjectSchema } from './UploadedFileUpdateManyWithWhereWithoutMenuInput.schema';
-import { UploadedFileUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpdateWithWhereUniqueWithoutMenuInput.schema';
-import { UploadedFileUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './UploadedFileUpsertWithWhereUniqueWithoutMenuInput.schema';
-import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileUpdateManyWithoutMenuNestedInput> = z
   .object({

@@ -3,8 +3,9 @@ import { z } from 'zod';
 import type { Prisma } from '../../../old-client';
 import { SortOrderSchema } from '../enums/SortOrder.schema';
 import { SortOrderInputObjectSchema } from './SortOrderInput.schema';
-import { TaskHistoryGroupOrderByRelationAggregateInputObjectSchema } from './TaskHistoryGroupOrderByRelationAggregateInput.schema';
+import { TaskHistoryValueOrderByRelationAggregateInputObjectSchema } from './TaskHistoryValueOrderByRelationAggregateInput.schema';
 import { TaskOrderByRelationAggregateInputObjectSchema } from './TaskOrderByRelationAggregateInput.schema';
+import { UserInTaskOrderByRelationAggregateInputObjectSchema } from './UserInTaskOrderByRelationAggregateInput.schema';
 import { UserOrderByWithRelationInputObjectSchema } from './UserOrderByWithRelationInput.schema';
 
 const Schema: z.ZodType<Prisma.TaskOrderByWithRelationInput> = z
@@ -15,11 +16,22 @@ const Schema: z.ZodType<Prisma.TaskOrderByWithRelationInput> = z
     archived: z.lazy(() => SortOrderSchema).optional(),
     impact: z.lazy(() => SortOrderSchema).optional(),
     ease: z.lazy(() => SortOrderSchema).optional(),
-    startAfter: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
-    plannedStart: z
+    startAfterDate: z
       .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
       .optional(),
-    dueTo: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+    startAfterOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    plannedStartDate: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    plannedStartOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
+    dueToDate: z.union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)]).optional(),
+    dueToOffset: z
+      .union([z.lazy(() => SortOrderSchema), z.lazy(() => SortOrderInputObjectSchema)])
+      .optional(),
     createdAt: z.lazy(() => SortOrderSchema).optional(),
     updatedAt: z.lazy(() => SortOrderSchema).optional(),
     authorId: z.lazy(() => SortOrderSchema).optional(),
@@ -32,7 +44,8 @@ const Schema: z.ZodType<Prisma.TaskOrderByWithRelationInput> = z
     responsible: z.lazy(() => UserOrderByWithRelationInputObjectSchema).optional(),
     parent: z.lazy(() => TaskOrderByWithRelationInputObjectSchema).optional(),
     children: z.lazy(() => TaskOrderByRelationAggregateInputObjectSchema).optional(),
-    historyGroups: z.lazy(() => TaskHistoryGroupOrderByRelationAggregateInputObjectSchema).optional(),
+    participants: z.lazy(() => UserInTaskOrderByRelationAggregateInputObjectSchema).optional(),
+    historyValues: z.lazy(() => TaskHistoryValueOrderByRelationAggregateInputObjectSchema).optional(),
   })
   .strict();
 

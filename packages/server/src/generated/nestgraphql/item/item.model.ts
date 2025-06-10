@@ -1,56 +1,58 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
 import { GraphQLDecimal } from 'prisma-graphql-type-decimal';
-
-import { Prisma } from '../../db-client';
+import {Prisma} from '../../db-client';
 import Decimal = Prisma.Decimal;
-import { Menu } from '../menu/menu.model';
 import { UploadedFile } from '../uploaded-file/uploaded-file.model';
+import { Menu } from '../menu/menu.model';
 import { ItemCount } from './item-count.output';
 
 @ObjectType()
 export class Item {
-  @Field(() => ID, { nullable: false })
-  id!: string;
 
-  @Field(() => Date, { nullable: false })
-  createdAt!: Date;
+    @Field(() => ID, {nullable:false})
+    id!: string;
 
-  @Field(() => String, { nullable: false })
-  orderKey!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
 
-  @Field(() => String, { nullable: true })
-  title!: string | null;
+    @Field(() => String, {nullable:false})
+    orderKey!: string;
 
-  @Field(() => String, { nullable: true })
-  description!: string | null;
+    @Field(() => String, {nullable:true})
+    title!: string | null;
 
-  @Field(() => GraphQLDecimal, { nullable: true })
-  price!: Decimal | null;
+    @Field(() => String, {nullable:true})
+    description!: string | null;
 
-  @Field(() => Boolean, { defaultValue: false, nullable: false })
-  archived!: boolean;
+    @Field(() => GraphQLDecimal, {nullable:true})
+    price!: Decimal | null;
 
-  @Field(() => String, { nullable: true })
-  imageId!: string | null;
+    @Field(() => Boolean, {defaultValue:false,nullable:false})
+    archived!: boolean;
 
-  @Field(() => String, { nullable: false })
-  menuId!: string;
+    @Field(() => String, {nullable:true})
+    imageId!: string | null;
 
-  @Field(() => String, { nullable: true })
-  parentId!: string | null;
+    @Field(() => String, {nullable:false})
+    menuId!: string;
 
-  @Field(() => UploadedFile, { nullable: true })
-  image?: UploadedFile | null;
+    @Field(() => String, {nullable:true})
+    parentId!: string | null;
 
-  @Field(() => Menu, { nullable: false })
-  menu?: Menu;
+    @Field(() => UploadedFile, {nullable:true})
+    image?: UploadedFile | null;
 
-  @Field(() => Item, { nullable: true })
-  parent?: Item | null;
+    @Field(() => Menu, {nullable:false})
+    menu?: Menu;
 
-  @Field(() => [Item], { nullable: true })
-  children?: Array<Item>;
+    @Field(() => Item, {nullable:true})
+    parent?: Item | null;
 
-  @Field(() => ItemCount, { nullable: false })
-  _count?: ItemCount;
+    @Field(() => [Item], {nullable:true})
+    children?: Array<Item>;
+
+    @Field(() => ItemCount, {nullable:false})
+    _count?: ItemCount;
 }

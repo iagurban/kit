@@ -7,6 +7,7 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueMaxAggregateInputType> = z
     groupId: z.literal(true).optional(),
     taskId: z.literal(true).optional(),
     key: z.literal(true).optional(),
+    op: z.literal(true).optional(),
   })
   .strict();
 

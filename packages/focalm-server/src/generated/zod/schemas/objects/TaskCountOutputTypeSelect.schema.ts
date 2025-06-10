@@ -5,7 +5,8 @@ import type { Prisma } from '../../../old-client';
 const Schema: z.ZodType<Prisma.TaskCountOutputTypeSelect> = z
   .object({
     children: z.boolean().optional(),
-    historyGroups: z.boolean().optional(),
+    participants: z.boolean().optional(),
+    historyValues: z.boolean().optional(),
   })
   .strict();
 

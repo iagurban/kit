@@ -5,6 +5,7 @@
     "strict": true,
     "declaration": true,
     "incremental": true,
+    "pretty": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,

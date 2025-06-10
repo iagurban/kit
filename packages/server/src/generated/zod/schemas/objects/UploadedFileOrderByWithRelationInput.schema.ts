@@ -1,11 +1,11 @@
 import { z } from 'zod';
+import { SortOrderSchema } from '../enums/SortOrder.schema';
+import { UserOrderByWithRelationInputObjectSchema } from './UserOrderByWithRelationInput.schema';
+import { StoredFileOrderByWithRelationInputObjectSchema } from './StoredFileOrderByWithRelationInput.schema';
+import { MenuOrderByWithRelationInputObjectSchema } from './MenuOrderByWithRelationInput.schema';
+import { ItemOrderByRelationAggregateInputObjectSchema } from './ItemOrderByRelationAggregateInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { SortOrderSchema } from '../enums/SortOrder.schema';
-import { ItemOrderByRelationAggregateInputObjectSchema } from './ItemOrderByRelationAggregateInput.schema';
-import { MenuOrderByWithRelationInputObjectSchema } from './MenuOrderByWithRelationInput.schema';
-import { StoredFileOrderByWithRelationInputObjectSchema } from './StoredFileOrderByWithRelationInput.schema';
-import { UserOrderByWithRelationInputObjectSchema } from './UserOrderByWithRelationInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileOrderByWithRelationInput> = z
   .object({

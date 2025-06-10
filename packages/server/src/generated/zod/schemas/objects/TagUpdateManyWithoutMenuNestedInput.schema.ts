@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { TagCreateWithoutMenuInputObjectSchema } from './TagCreateWithoutMenuInput.schema';
+import { TagUncheckedCreateWithoutMenuInputObjectSchema } from './TagUncheckedCreateWithoutMenuInput.schema';
+import { TagCreateOrConnectWithoutMenuInputObjectSchema } from './TagCreateOrConnectWithoutMenuInput.schema';
+import { TagUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './TagUpsertWithWhereUniqueWithoutMenuInput.schema';
+import { TagCreateManyMenuInputEnvelopeObjectSchema } from './TagCreateManyMenuInputEnvelope.schema';
+import { TagWhereUniqueInputObjectSchema } from './TagWhereUniqueInput.schema';
+import { TagUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './TagUpdateWithWhereUniqueWithoutMenuInput.schema';
+import { TagUpdateManyWithWhereWithoutMenuInputObjectSchema } from './TagUpdateManyWithWhereWithoutMenuInput.schema';
+import { TagScalarWhereInputObjectSchema } from './TagScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { TagCreateManyMenuInputEnvelopeObjectSchema } from './TagCreateManyMenuInputEnvelope.schema';
-import { TagCreateOrConnectWithoutMenuInputObjectSchema } from './TagCreateOrConnectWithoutMenuInput.schema';
-import { TagCreateWithoutMenuInputObjectSchema } from './TagCreateWithoutMenuInput.schema';
-import { TagScalarWhereInputObjectSchema } from './TagScalarWhereInput.schema';
-import { TagUncheckedCreateWithoutMenuInputObjectSchema } from './TagUncheckedCreateWithoutMenuInput.schema';
-import { TagUpdateManyWithWhereWithoutMenuInputObjectSchema } from './TagUpdateManyWithWhereWithoutMenuInput.schema';
-import { TagUpdateWithWhereUniqueWithoutMenuInputObjectSchema } from './TagUpdateWithWhereUniqueWithoutMenuInput.schema';
-import { TagUpsertWithWhereUniqueWithoutMenuInputObjectSchema } from './TagUpsertWithWhereUniqueWithoutMenuInput.schema';
-import { TagWhereUniqueInputObjectSchema } from './TagWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.TagUpdateManyWithoutMenuNestedInput> = z
   .object({

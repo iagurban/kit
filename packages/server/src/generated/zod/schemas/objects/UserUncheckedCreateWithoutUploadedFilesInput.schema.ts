@@ -1,13 +1,13 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { MenuUncheckedCreateNestedManyWithoutOwnerInputObjectSchema } from './MenuUncheckedCreateNestedManyWithoutOwnerInput.schema';
 import { RefreshTokenUncheckedCreateNestedManyWithoutUserInputObjectSchema } from './RefreshTokenUncheckedCreateNestedManyWithoutUserInput.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UserUncheckedCreateWithoutUploadedFilesInput> = z
   .object({
     id: z.string().optional(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.dateStr().optional(),
     email: z.string(),
     name: z.string(),
     passwordHash: z.string(),

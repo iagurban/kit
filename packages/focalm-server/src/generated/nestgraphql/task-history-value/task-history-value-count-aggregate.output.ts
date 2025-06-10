@@ -12,6 +12,9 @@ export class TaskHistoryValueCountAggregate {
   key!: number;
 
   @Field(() => Int, { nullable: false })
+  op!: number;
+
+  @Field(() => Int, { nullable: false })
   value!: number;
 
   @Field(() => Int, { nullable: false })

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { oEntries, oFromEntries } from '../util';
+import { oEntries, oFromEntries } from '../utils/util';
 import { api } from './util';
 
 const uploadResultSchema = z.object({

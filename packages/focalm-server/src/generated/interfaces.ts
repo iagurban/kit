@@ -6,6 +6,12 @@ export enum TaskState {
   Done = 'Done',
 }
 
+export enum TaskHistoryOperation {
+  Set = 'Set',
+  Add = 'Add',
+  Remove = 'Remove',
+}
+
 export enum TaskHistoryKey {
   title = 'title',
   state = 'state',
@@ -14,8 +20,15 @@ export enum TaskHistoryKey {
   ease = 'ease',
   authorId = 'authorId',
   responsibleId = 'responsibleId',
+  participants = 'participants',
   orderKey = 'orderKey',
   parentId = 'parentId',
+  startAfterDate = 'startAfterDate',
+  startAfterOffset = 'startAfterOffset',
+  plannedStartDate = 'plannedStartDate',
+  plannedStartOffset = 'plannedStartOffset',
+  dueToDate = 'dueToDate',
+  dueToOffset = 'dueToOffset',
 }
 
 export enum CreatedAtFixReason {
@@ -35,6 +48,7 @@ export type User = {
   assignedTasks?: Task[];
   authoredTasks?: Task[];
   authoredTaskChanges?: TaskHistoryGroup[];
+  participatingTasks?: UserInTask[];
 };
 
 export type RefreshToken = {
@@ -69,14 +83,14 @@ export type TaskHistoryValue = {
   groupId: string;
   group?: TaskHistoryGroup;
   taskId: string;
+  task?: Task;
   key: TaskHistoryKey;
+  op: TaskHistoryOperation;
   value: JsonValue;
 };
 
 export type TaskHistoryGroup = {
   id: string;
-  taskId: string;
-  task?: Task;
   values?: TaskHistoryValue[];
   authorId: string;
   author?: User;
@@ -92,9 +106,12 @@ export type Task = {
   archived: boolean;
   impact: number;
   ease: number;
-  startAfter: Date | null;
-  plannedStart: Date | null;
-  dueTo: Date | null;
+  startAfterDate: Date | null;
+  startAfterOffset: number | null;
+  plannedStartDate: Date | null;
+  plannedStartOffset: number | null;
+  dueToDate: Date | null;
+  dueToOffset: number | null;
   createdAt: Date;
   updatedAt: Date;
   authorId: string;
@@ -105,7 +122,23 @@ export type Task = {
   parent?: Task | null;
   children?: Task[];
   orderKey: string;
-  historyGroups?: TaskHistoryGroup[];
+  participants?: UserInTask[];
+  historyValues?: TaskHistoryValue[];
+};
+
+export type UserInTask = {
+  id: string;
+  userId: string;
+  user?: User;
+  taskId: string;
+  task?: Task;
+  tags?: UserInTaskTag[];
+};
+
+export type UserInTaskTag = {
+  userInTaskId: string;
+  userInTask?: UserInTask;
+  tag: string;
 };
 
 type JsonValue = string | number | boolean | { [key in string]?: JsonValue } | Array<JsonValue> | null;

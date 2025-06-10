@@ -1,28 +1,29 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { UserCreateNestedOneWithoutMenusInput } from '../user/user-create-nested-one-without-menus.input';
 import { TagCreateNestedManyWithoutMenuInput } from '../tag/tag-create-nested-many-without-menu.input';
 import { UploadedFileCreateNestedManyWithoutMenuInput } from '../uploaded-file/uploaded-file-create-nested-many-without-menu.input';
-import { UserCreateNestedOneWithoutMenusInput } from '../user/user-create-nested-one-without-menus.input';
+import { Type } from 'class-transformer';
 
 @InputType()
 export class MenuCreateWithoutItemsInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => String, { nullable: false })
-  title!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
 
-  @Field(() => UserCreateNestedOneWithoutMenusInput, { nullable: false })
-  owner!: UserCreateNestedOneWithoutMenusInput;
+    @Field(() => String, {nullable:false})
+    title!: string;
 
-  @Field(() => TagCreateNestedManyWithoutMenuInput, { nullable: true })
-  tags?: TagCreateNestedManyWithoutMenuInput;
+    @Field(() => UserCreateNestedOneWithoutMenusInput, {nullable:false})
+    owner!: UserCreateNestedOneWithoutMenusInput;
 
-  @Field(() => UploadedFileCreateNestedManyWithoutMenuInput, { nullable: true })
-  @Type(() => UploadedFileCreateNestedManyWithoutMenuInput)
-  files?: UploadedFileCreateNestedManyWithoutMenuInput;
+    @Field(() => TagCreateNestedManyWithoutMenuInput, {nullable:true})
+    tags?: TagCreateNestedManyWithoutMenuInput;
+
+    @Field(() => UploadedFileCreateNestedManyWithoutMenuInput, {nullable:true})
+    @Type(() => UploadedFileCreateNestedManyWithoutMenuInput)
+    files?: UploadedFileCreateNestedManyWithoutMenuInput;
 }

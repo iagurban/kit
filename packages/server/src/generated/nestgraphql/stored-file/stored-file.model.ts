@@ -1,25 +1,28 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
+import { ID } from '@nestjs/graphql';
+import { Int } from '@nestjs/graphql';
 import { UploadedFile } from '../uploaded-file/uploaded-file.model';
 import { StoredFileCount } from './stored-file-count.output';
 
 @ObjectType()
 export class StoredFile {
-  @Field(() => ID, { nullable: false })
-  id!: string;
 
-  @Field(() => String, { nullable: false })
-  hash!: string;
+    @Field(() => ID, {nullable:false})
+    id!: string;
 
-  @Field(() => Int, { nullable: false })
-  size!: number;
+    @Field(() => String, {nullable:false})
+    hash!: string;
 
-  @Field(() => Date, { nullable: false })
-  createdAt!: Date;
+    @Field(() => Int, {nullable:false})
+    size!: number;
 
-  @Field(() => [UploadedFile], { nullable: true })
-  uploads?: Array<UploadedFile>;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date;
 
-  @Field(() => StoredFileCount, { nullable: false })
-  _count?: StoredFileCount;
+    @Field(() => [UploadedFile], {nullable:true})
+    uploads?: Array<UploadedFile>;
+
+    @Field(() => StoredFileCount, {nullable:false})
+    _count?: StoredFileCount;
 }

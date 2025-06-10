@@ -5,6 +5,7 @@ import { TaskCreateNestedManyWithoutAuthorInput } from '../task/task-create-nest
 import { TaskCreateNestedManyWithoutResponsibleInput } from '../task/task-create-nested-many-without-responsible.input';
 import { TaskHistoryGroupCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-create-nested-many-without-author.input';
 import { UploadedFileCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-create-nested-many-without-uploader.input';
+import { UserInTaskCreateNestedManyWithoutUserInput } from '../user-in-task/user-in-task-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateInput {
@@ -37,4 +38,7 @@ export class UserCreateInput {
 
   @Field(() => TaskHistoryGroupCreateNestedManyWithoutAuthorInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => UserInTaskCreateNestedManyWithoutUserInput, { nullable: true })
+  participatingTasks?: UserInTaskCreateNestedManyWithoutUserInput;
 }

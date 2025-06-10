@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { MenuCreateNestedOneWithoutTagsInputObjectSchema } from './MenuCreateNestedOneWithoutTagsInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuCreateNestedOneWithoutTagsInputObjectSchema } from './MenuCreateNestedOneWithoutTagsInput.schema';
 
 const Schema: z.ZodType<Prisma.TagCreateInput> = z
   .object({

@@ -1,10 +1,10 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
 import { QueryModeSchema } from '../enums/QueryMode.schema';
+import { NestedUuidNullableWithAggregatesFilterObjectSchema } from './NestedUuidNullableWithAggregatesFilter.schema';
 import { NestedIntNullableFilterObjectSchema } from './NestedIntNullableFilter.schema';
 import { NestedStringNullableFilterObjectSchema } from './NestedStringNullableFilter.schema';
-import { NestedUuidNullableWithAggregatesFilterObjectSchema } from './NestedUuidNullableWithAggregatesFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UuidNullableWithAggregatesFilter> = z
   .object({

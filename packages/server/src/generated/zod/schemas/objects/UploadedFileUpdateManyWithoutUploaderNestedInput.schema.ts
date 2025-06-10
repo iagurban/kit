@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { UploadedFileCreateWithoutUploaderInputObjectSchema } from './UploadedFileCreateWithoutUploaderInput.schema';
+import { UploadedFileUncheckedCreateWithoutUploaderInputObjectSchema } from './UploadedFileUncheckedCreateWithoutUploaderInput.schema';
+import { UploadedFileCreateOrConnectWithoutUploaderInputObjectSchema } from './UploadedFileCreateOrConnectWithoutUploaderInput.schema';
+import { UploadedFileUpsertWithWhereUniqueWithoutUploaderInputObjectSchema } from './UploadedFileUpsertWithWhereUniqueWithoutUploaderInput.schema';
+import { UploadedFileCreateManyUploaderInputEnvelopeObjectSchema } from './UploadedFileCreateManyUploaderInputEnvelope.schema';
+import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
+import { UploadedFileUpdateWithWhereUniqueWithoutUploaderInputObjectSchema } from './UploadedFileUpdateWithWhereUniqueWithoutUploaderInput.schema';
+import { UploadedFileUpdateManyWithWhereWithoutUploaderInputObjectSchema } from './UploadedFileUpdateManyWithWhereWithoutUploaderInput.schema';
+import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileCreateManyUploaderInputEnvelopeObjectSchema } from './UploadedFileCreateManyUploaderInputEnvelope.schema';
-import { UploadedFileCreateOrConnectWithoutUploaderInputObjectSchema } from './UploadedFileCreateOrConnectWithoutUploaderInput.schema';
-import { UploadedFileCreateWithoutUploaderInputObjectSchema } from './UploadedFileCreateWithoutUploaderInput.schema';
-import { UploadedFileScalarWhereInputObjectSchema } from './UploadedFileScalarWhereInput.schema';
-import { UploadedFileUncheckedCreateWithoutUploaderInputObjectSchema } from './UploadedFileUncheckedCreateWithoutUploaderInput.schema';
-import { UploadedFileUpdateManyWithWhereWithoutUploaderInputObjectSchema } from './UploadedFileUpdateManyWithWhereWithoutUploaderInput.schema';
-import { UploadedFileUpdateWithWhereUniqueWithoutUploaderInputObjectSchema } from './UploadedFileUpdateWithWhereUniqueWithoutUploaderInput.schema';
-import { UploadedFileUpsertWithWhereUniqueWithoutUploaderInputObjectSchema } from './UploadedFileUpsertWithWhereUniqueWithoutUploaderInput.schema';
-import { UploadedFileWhereUniqueInputObjectSchema } from './UploadedFileWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileUpdateManyWithoutUploaderNestedInput> = z
   .object({

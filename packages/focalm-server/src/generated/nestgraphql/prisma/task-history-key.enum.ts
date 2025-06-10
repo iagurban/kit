@@ -8,8 +8,15 @@ export enum TaskHistoryKey {
   ease = 'ease',
   authorId = 'authorId',
   responsibleId = 'responsibleId',
+  participants = 'participants',
   orderKey = 'orderKey',
   parentId = 'parentId',
+  startAfterDate = 'startAfterDate',
+  startAfterOffset = 'startAfterOffset',
+  plannedStartDate = 'plannedStartDate',
+  plannedStartOffset = 'plannedStartOffset',
+  dueToDate = 'dueToDate',
+  dueToOffset = 'dueToOffset',
 }
 
 registerEnumType(TaskHistoryKey, { name: 'TaskHistoryKey', description: undefined });

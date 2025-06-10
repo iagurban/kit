@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
 import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
   .object({
@@ -24,7 +24,7 @@ const Schema: z.ZodType<Prisma.UserScalarWhereWithAggregatesInput> = z
       ])
       .optional(),
     id: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),
-    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.dateStr()]).optional(),
     email: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     name: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     passwordHash: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),

@@ -9,9 +9,6 @@ export class TaskHistoryGroupUncheckedUpdateManyWithoutAuthorInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  taskId?: StringFieldUpdateOperationsInput;
-
   @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
   localCreatedAt?: DateTimeFieldUpdateOperationsInput;
 

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Task" ALTER COLUMN "dueToDate" DROP NOT NULL,
+ALTER COLUMN "plannedStartDate" DROP NOT NULL,
+ALTER COLUMN "startAfterDate" DROP NOT NULL;

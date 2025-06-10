@@ -1,13 +1,12 @@
 import { z } from 'zod';
-
-import { StoredFileAvgAggregateInputObjectSchema } from './objects/StoredFileAvgAggregateInput.schema';
-import { StoredFileCountAggregateInputObjectSchema } from './objects/StoredFileCountAggregateInput.schema';
-import { StoredFileMaxAggregateInputObjectSchema } from './objects/StoredFileMaxAggregateInput.schema';
-import { StoredFileMinAggregateInputObjectSchema } from './objects/StoredFileMinAggregateInput.schema';
 import { StoredFileOrderByWithRelationInputObjectSchema } from './objects/StoredFileOrderByWithRelationInput.schema';
-import { StoredFileSumAggregateInputObjectSchema } from './objects/StoredFileSumAggregateInput.schema';
 import { StoredFileWhereInputObjectSchema } from './objects/StoredFileWhereInput.schema';
 import { StoredFileWhereUniqueInputObjectSchema } from './objects/StoredFileWhereUniqueInput.schema';
+import { StoredFileCountAggregateInputObjectSchema } from './objects/StoredFileCountAggregateInput.schema';
+import { StoredFileMinAggregateInputObjectSchema } from './objects/StoredFileMinAggregateInput.schema';
+import { StoredFileMaxAggregateInputObjectSchema } from './objects/StoredFileMaxAggregateInput.schema';
+import { StoredFileAvgAggregateInputObjectSchema } from './objects/StoredFileAvgAggregateInput.schema';
+import { StoredFileSumAggregateInputObjectSchema } from './objects/StoredFileSumAggregateInput.schema';
 
 export const StoredFileAggregateSchema = z.object({
   orderBy: z

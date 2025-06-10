@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
+import { MenuUpdateOneRequiredWithoutTagsNestedInputObjectSchema } from './MenuUpdateOneRequiredWithoutTagsNestedInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuUpdateOneRequiredWithoutTagsNestedInputObjectSchema } from './MenuUpdateOneRequiredWithoutTagsNestedInput.schema';
-import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdateOperationsInput.schema';
 
 const Schema: z.ZodType<Prisma.TagUpdateInput> = z
   .object({

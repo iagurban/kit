@@ -1,8 +1,10 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
+import * as Scalars from 'graphql-scalars';
 
 import { TaskState } from '../prisma/task-state.enum';
-import { TaskHistoryGroup } from '../task-history-group/task-history-group.model';
+import { TaskHistoryValue } from '../task-history-value/task-history-value.model';
 import { User } from '../user/user.model';
+import { UserInTask } from '../user-in-task/user-in-task.model';
 import { TaskCount } from './task-count.output';
 
 @ObjectType()
@@ -25,14 +27,23 @@ export class Task {
   @Field(() => Float, { defaultValue: 0.5, nullable: false })
   ease!: number;
 
-  @Field(() => Date, { nullable: true })
-  startAfter!: Date | null;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  startAfterDate!: Date | null;
 
-  @Field(() => Date, { nullable: true })
-  plannedStart!: Date | null;
+  @Field(() => Int, { nullable: true })
+  startAfterOffset!: number | null;
 
-  @Field(() => Date, { nullable: true })
-  dueTo!: Date | null;
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  plannedStartDate!: Date | null;
+
+  @Field(() => Int, { nullable: true })
+  plannedStartOffset!: number | null;
+
+  @Field(() => Scalars.GraphQLDate, { nullable: true })
+  dueToDate!: Date | null;
+
+  @Field(() => Int, { nullable: true })
+  dueToOffset!: number | null;
 
   @Field(() => Date, { nullable: false })
   createdAt!: Date;
@@ -64,8 +75,11 @@ export class Task {
   @Field(() => [Task], { nullable: true })
   children?: Array<Task>;
 
-  @Field(() => [TaskHistoryGroup], { nullable: true })
-  historyGroups?: Array<TaskHistoryGroup>;
+  @Field(() => [UserInTask], { nullable: true })
+  participants?: Array<UserInTask>;
+
+  @Field(() => [TaskHistoryValue], { nullable: true })
+  historyValues?: Array<TaskHistoryValue>;
 
   @Field(() => TaskCount, { nullable: false })
   _count?: TaskCount;

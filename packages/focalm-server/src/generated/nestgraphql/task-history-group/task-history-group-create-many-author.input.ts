@@ -7,9 +7,6 @@ export class TaskHistoryGroupCreateManyAuthorInput {
   @Field(() => String, { nullable: true })
   id?: string;
 
-  @Field(() => String, { nullable: false })
-  taskId!: string;
-
   @Field(() => Date, { nullable: false })
   localCreatedAt!: Date | string;
 

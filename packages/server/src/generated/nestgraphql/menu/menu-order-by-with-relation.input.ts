@@ -1,37 +1,38 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { ItemOrderByRelationAggregateInput } from '../item/item-order-by-relation-aggregate.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
+import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { ItemOrderByRelationAggregateInput } from '../item/item-order-by-relation-aggregate.input';
+import { Type } from 'class-transformer';
 import { TagOrderByRelationAggregateInput } from '../tag/tag-order-by-relation-aggregate.input';
 import { UploadedFileOrderByRelationAggregateInput } from '../uploaded-file/uploaded-file-order-by-relation-aggregate.input';
-import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
 
 @InputType()
 export class MenuOrderByWithRelationInput {
-  @Field(() => SortOrder, { nullable: true })
-  id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  createdAt?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    id?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  title?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    createdAt?: `${SortOrder}`;
 
-  @Field(() => SortOrder, { nullable: true })
-  ownerId?: `${SortOrder}`;
+    @Field(() => SortOrder, {nullable:true})
+    title?: `${SortOrder}`;
 
-  @Field(() => UserOrderByWithRelationInput, { nullable: true })
-  owner?: UserOrderByWithRelationInput;
+    @Field(() => SortOrder, {nullable:true})
+    ownerId?: `${SortOrder}`;
 
-  @Field(() => ItemOrderByRelationAggregateInput, { nullable: true })
-  @Type(() => ItemOrderByRelationAggregateInput)
-  items?: ItemOrderByRelationAggregateInput;
+    @Field(() => UserOrderByWithRelationInput, {nullable:true})
+    owner?: UserOrderByWithRelationInput;
 
-  @Field(() => TagOrderByRelationAggregateInput, { nullable: true })
-  tags?: TagOrderByRelationAggregateInput;
+    @Field(() => ItemOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => ItemOrderByRelationAggregateInput)
+    items?: ItemOrderByRelationAggregateInput;
 
-  @Field(() => UploadedFileOrderByRelationAggregateInput, { nullable: true })
-  @Type(() => UploadedFileOrderByRelationAggregateInput)
-  files?: UploadedFileOrderByRelationAggregateInput;
+    @Field(() => TagOrderByRelationAggregateInput, {nullable:true})
+    tags?: TagOrderByRelationAggregateInput;
+
+    @Field(() => UploadedFileOrderByRelationAggregateInput, {nullable:true})
+    @Type(() => UploadedFileOrderByRelationAggregateInput)
+    files?: UploadedFileOrderByRelationAggregateInput;
 }

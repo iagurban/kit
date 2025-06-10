@@ -11,9 +11,6 @@ export class TaskHistoryGroupUncheckedUpdateInput {
   id?: StringFieldUpdateOperationsInput;
 
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  taskId?: StringFieldUpdateOperationsInput;
-
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   authorId?: StringFieldUpdateOperationsInput;
 
   @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })

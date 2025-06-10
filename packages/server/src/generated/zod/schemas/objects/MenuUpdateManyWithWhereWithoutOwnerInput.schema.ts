@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { MenuScalarWhereInputObjectSchema } from './MenuScalarWhereInput.schema';
+import { MenuUpdateManyMutationInputObjectSchema } from './MenuUpdateManyMutationInput.schema';
+import { MenuUncheckedUpdateManyWithoutMenusInputObjectSchema } from './MenuUncheckedUpdateManyWithoutMenusInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuScalarWhereInputObjectSchema } from './MenuScalarWhereInput.schema';
-import { MenuUncheckedUpdateManyWithoutMenusInputObjectSchema } from './MenuUncheckedUpdateManyWithoutMenusInput.schema';
-import { MenuUpdateManyMutationInputObjectSchema } from './MenuUpdateManyMutationInput.schema';
 
 const Schema: z.ZodType<Prisma.MenuUpdateManyWithWhereWithoutOwnerInput> = z
   .object({

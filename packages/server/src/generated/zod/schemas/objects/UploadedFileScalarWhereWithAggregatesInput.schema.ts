@@ -1,9 +1,9 @@
 import { z } from 'zod';
+import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
+import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
+import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { DateTimeWithAggregatesFilterObjectSchema } from './DateTimeWithAggregatesFilter.schema';
-import { StringWithAggregatesFilterObjectSchema } from './StringWithAggregatesFilter.schema';
-import { UuidWithAggregatesFilterObjectSchema } from './UuidWithAggregatesFilter.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileScalarWhereWithAggregatesInput> = z
   .object({
@@ -26,7 +26,7 @@ const Schema: z.ZodType<Prisma.UploadedFileScalarWhereWithAggregatesInput> = z
     id: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     originalName: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
     mimetype: z.union([z.lazy(() => StringWithAggregatesFilterObjectSchema), z.string()]).optional(),
-    uploadedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.date()]).optional(),
+    uploadedAt: z.union([z.lazy(() => DateTimeWithAggregatesFilterObjectSchema), z.coerce.dateStr()]).optional(),
     uploaderId: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),
     storedFileId: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),
     menuId: z.union([z.lazy(() => UuidWithAggregatesFilterObjectSchema), z.string()]).optional(),

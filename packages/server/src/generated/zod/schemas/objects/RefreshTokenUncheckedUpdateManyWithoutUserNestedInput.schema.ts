@@ -1,15 +1,15 @@
 import { z } from 'zod';
+import { RefreshTokenCreateWithoutUserInputObjectSchema } from './RefreshTokenCreateWithoutUserInput.schema';
+import { RefreshTokenUncheckedCreateWithoutUserInputObjectSchema } from './RefreshTokenUncheckedCreateWithoutUserInput.schema';
+import { RefreshTokenCreateOrConnectWithoutUserInputObjectSchema } from './RefreshTokenCreateOrConnectWithoutUserInput.schema';
+import { RefreshTokenUpsertWithWhereUniqueWithoutUserInputObjectSchema } from './RefreshTokenUpsertWithWhereUniqueWithoutUserInput.schema';
+import { RefreshTokenCreateManyUserInputEnvelopeObjectSchema } from './RefreshTokenCreateManyUserInputEnvelope.schema';
+import { RefreshTokenWhereUniqueInputObjectSchema } from './RefreshTokenWhereUniqueInput.schema';
+import { RefreshTokenUpdateWithWhereUniqueWithoutUserInputObjectSchema } from './RefreshTokenUpdateWithWhereUniqueWithoutUserInput.schema';
+import { RefreshTokenUpdateManyWithWhereWithoutUserInputObjectSchema } from './RefreshTokenUpdateManyWithWhereWithoutUserInput.schema';
+import { RefreshTokenScalarWhereInputObjectSchema } from './RefreshTokenScalarWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { RefreshTokenCreateManyUserInputEnvelopeObjectSchema } from './RefreshTokenCreateManyUserInputEnvelope.schema';
-import { RefreshTokenCreateOrConnectWithoutUserInputObjectSchema } from './RefreshTokenCreateOrConnectWithoutUserInput.schema';
-import { RefreshTokenCreateWithoutUserInputObjectSchema } from './RefreshTokenCreateWithoutUserInput.schema';
-import { RefreshTokenScalarWhereInputObjectSchema } from './RefreshTokenScalarWhereInput.schema';
-import { RefreshTokenUncheckedCreateWithoutUserInputObjectSchema } from './RefreshTokenUncheckedCreateWithoutUserInput.schema';
-import { RefreshTokenUpdateManyWithWhereWithoutUserInputObjectSchema } from './RefreshTokenUpdateManyWithWhereWithoutUserInput.schema';
-import { RefreshTokenUpdateWithWhereUniqueWithoutUserInputObjectSchema } from './RefreshTokenUpdateWithWhereUniqueWithoutUserInput.schema';
-import { RefreshTokenUpsertWithWhereUniqueWithoutUserInputObjectSchema } from './RefreshTokenUpsertWithWhereUniqueWithoutUserInput.schema';
-import { RefreshTokenWhereUniqueInputObjectSchema } from './RefreshTokenWhereUniqueInput.schema';
 
 const Schema: z.ZodType<Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput> = z
   .object({

@@ -1,7 +1,6 @@
 import { z } from 'zod';
-
-import { MenuIncludeObjectSchema } from './objects/MenuInclude.schema';
 import { MenuSelectObjectSchema } from './objects/MenuSelect.schema';
+import { MenuIncludeObjectSchema } from './objects/MenuInclude.schema';
 import { MenuWhereUniqueInputObjectSchema } from './objects/MenuWhereUniqueInput.schema';
 
 export const MenuFindUniqueSchema = z.object({

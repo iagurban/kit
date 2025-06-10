@@ -1,56 +1,57 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
-
-import { BoolFilter } from '../prisma/bool-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { DecimalNullableFilter } from '../prisma/decimal-nullable-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
-import { UuidFilter } from '../prisma/uuid-filter.input';
+import { DecimalNullableFilter } from '../prisma/decimal-nullable-filter.input';
+import { BoolFilter } from '../prisma/bool-filter.input';
 import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
 
 @InputType()
 export class ItemScalarWhereInput {
-  @Field(() => [ItemScalarWhereInput], { nullable: true })
-  @Type(() => ItemScalarWhereInput)
-  AND?: Array<ItemScalarWhereInput>;
 
-  @Field(() => [ItemScalarWhereInput], { nullable: true })
-  @Type(() => ItemScalarWhereInput)
-  OR?: Array<ItemScalarWhereInput>;
+    @Field(() => [ItemScalarWhereInput], {nullable:true})
+    @Type(() => ItemScalarWhereInput)
+    AND?: Array<ItemScalarWhereInput>;
 
-  @Field(() => [ItemScalarWhereInput], { nullable: true })
-  @Type(() => ItemScalarWhereInput)
-  NOT?: Array<ItemScalarWhereInput>;
+    @Field(() => [ItemScalarWhereInput], {nullable:true})
+    @Type(() => ItemScalarWhereInput)
+    OR?: Array<ItemScalarWhereInput>;
 
-  @Field(() => UuidFilter, { nullable: true })
-  id?: UuidFilter;
+    @Field(() => [ItemScalarWhereInput], {nullable:true})
+    @Type(() => ItemScalarWhereInput)
+    NOT?: Array<ItemScalarWhereInput>;
 
-  @Field(() => DateTimeFilter, { nullable: true })
-  createdAt?: DateTimeFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    id?: UuidFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  orderKey?: StringFilter;
+    @Field(() => DateTimeFilter, {nullable:true})
+    createdAt?: DateTimeFilter;
 
-  @Field(() => StringNullableFilter, { nullable: true })
-  title?: StringNullableFilter;
+    @Field(() => StringFilter, {nullable:true})
+    orderKey?: StringFilter;
 
-  @Field(() => StringNullableFilter, { nullable: true })
-  description?: StringNullableFilter;
+    @Field(() => StringNullableFilter, {nullable:true})
+    title?: StringNullableFilter;
 
-  @Field(() => DecimalNullableFilter, { nullable: true })
-  @Type(() => DecimalNullableFilter)
-  price?: DecimalNullableFilter;
+    @Field(() => StringNullableFilter, {nullable:true})
+    description?: StringNullableFilter;
 
-  @Field(() => BoolFilter, { nullable: true })
-  archived?: BoolFilter;
+    @Field(() => DecimalNullableFilter, {nullable:true})
+    @Type(() => DecimalNullableFilter)
+    price?: DecimalNullableFilter;
 
-  @Field(() => StringNullableFilter, { nullable: true })
-  imageId?: StringNullableFilter;
+    @Field(() => BoolFilter, {nullable:true})
+    archived?: BoolFilter;
 
-  @Field(() => UuidFilter, { nullable: true })
-  menuId?: UuidFilter;
+    @Field(() => StringNullableFilter, {nullable:true})
+    imageId?: StringNullableFilter;
 
-  @Field(() => UuidNullableFilter, { nullable: true })
-  parentId?: UuidNullableFilter;
+    @Field(() => UuidFilter, {nullable:true})
+    menuId?: UuidFilter;
+
+    @Field(() => UuidNullableFilter, {nullable:true})
+    parentId?: UuidNullableFilter;
 }

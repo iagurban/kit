@@ -1,9 +1,8 @@
 import { z } from 'zod';
-
-import { StoredFileScalarFieldEnumSchema } from './enums/StoredFileScalarFieldEnum.schema';
+import { StoredFileWhereInputObjectSchema } from './objects/StoredFileWhereInput.schema';
 import { StoredFileOrderByWithAggregationInputObjectSchema } from './objects/StoredFileOrderByWithAggregationInput.schema';
 import { StoredFileScalarWhereWithAggregatesInputObjectSchema } from './objects/StoredFileScalarWhereWithAggregatesInput.schema';
-import { StoredFileWhereInputObjectSchema } from './objects/StoredFileWhereInput.schema';
+import { StoredFileScalarFieldEnumSchema } from './enums/StoredFileScalarFieldEnum.schema';
 
 export const StoredFileGroupBySchema = z.object({
   where: StoredFileWhereInputObjectSchema.optional(),

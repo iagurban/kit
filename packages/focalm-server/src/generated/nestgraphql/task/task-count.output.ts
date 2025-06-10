@@ -6,5 +6,8 @@ export class TaskCount {
   children?: number;
 
   @Field(() => Int, { nullable: false })
-  historyGroups?: number;
+  participants?: number;
+
+  @Field(() => Int, { nullable: false })
+  historyValues?: number;
 }

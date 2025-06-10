@@ -5,6 +5,7 @@ import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { EnumTaskStateFilter } from '../prisma/enum-task-state-filter.input';
 import { FloatFilter } from '../prisma/float-filter.input';
+import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
 import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
@@ -39,13 +40,22 @@ export class TaskScalarWhereInput {
   ease?: FloatFilter;
 
   @Field(() => DateTimeNullableFilter, { nullable: true })
-  startAfter?: DateTimeNullableFilter;
+  startAfterDate?: DateTimeNullableFilter;
+
+  @Field(() => IntNullableFilter, { nullable: true })
+  startAfterOffset?: IntNullableFilter;
 
   @Field(() => DateTimeNullableFilter, { nullable: true })
-  plannedStart?: DateTimeNullableFilter;
+  plannedStartDate?: DateTimeNullableFilter;
+
+  @Field(() => IntNullableFilter, { nullable: true })
+  plannedStartOffset?: IntNullableFilter;
 
   @Field(() => DateTimeNullableFilter, { nullable: true })
-  dueTo?: DateTimeNullableFilter;
+  dueToDate?: DateTimeNullableFilter;
+
+  @Field(() => IntNullableFilter, { nullable: true })
+  dueToOffset?: IntNullableFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter;

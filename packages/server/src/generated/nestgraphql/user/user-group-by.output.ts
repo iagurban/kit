@@ -1,32 +1,33 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 import { UserCountAggregate } from './user-count-aggregate.output';
-import { UserMaxAggregate } from './user-max-aggregate.output';
 import { UserMinAggregate } from './user-min-aggregate.output';
+import { UserMaxAggregate } from './user-max-aggregate.output';
 
 @ObjectType()
 export class UserGroupBy {
-  @Field(() => String, { nullable: false })
-  id!: string;
 
-  @Field(() => Date, { nullable: false })
-  createdAt!: Date | string;
+    @Field(() => String, {nullable:false})
+    id!: string;
 
-  @Field(() => String, { nullable: false })
-  email!: string;
+    @Field(() => Date, {nullable:false})
+    createdAt!: Date | string;
 
-  @Field(() => String, { nullable: false })
-  name!: string;
+    @Field(() => String, {nullable:false})
+    email!: string;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
+    @Field(() => String, {nullable:false})
+    name!: string;
 
-  @Field(() => UserCountAggregate, { nullable: true })
-  _count?: UserCountAggregate;
+    @Field(() => String, {nullable:false})
+    passwordHash!: string;
 
-  @Field(() => UserMinAggregate, { nullable: true })
-  _min?: UserMinAggregate;
+    @Field(() => UserCountAggregate, {nullable:true})
+    _count?: UserCountAggregate;
 
-  @Field(() => UserMaxAggregate, { nullable: true })
-  _max?: UserMaxAggregate;
+    @Field(() => UserMinAggregate, {nullable:true})
+    _min?: UserMinAggregate;
+
+    @Field(() => UserMaxAggregate, {nullable:true})
+    _max?: UserMaxAggregate;
 }

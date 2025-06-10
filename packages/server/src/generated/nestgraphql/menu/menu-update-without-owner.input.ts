@@ -1,31 +1,32 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { ItemUpdateManyWithoutMenuNestedInput } from '../item/item-update-many-without-menu-nested.input';
-import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { ItemUpdateManyWithoutMenuNestedInput } from '../item/item-update-many-without-menu-nested.input';
+import { Type } from 'class-transformer';
 import { TagUpdateManyWithoutMenuNestedInput } from '../tag/tag-update-many-without-menu-nested.input';
 import { UploadedFileUpdateManyWithoutMenuNestedInput } from '../uploaded-file/uploaded-file-update-many-without-menu-nested.input';
 
 @InputType()
 export class MenuUpdateWithoutOwnerInput {
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
-  createdAt?: DateTimeFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    id?: StringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  title?: StringFieldUpdateOperationsInput;
+    @Field(() => DateTimeFieldUpdateOperationsInput, {nullable:true})
+    createdAt?: DateTimeFieldUpdateOperationsInput;
 
-  @Field(() => ItemUpdateManyWithoutMenuNestedInput, { nullable: true })
-  @Type(() => ItemUpdateManyWithoutMenuNestedInput)
-  items?: ItemUpdateManyWithoutMenuNestedInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    title?: StringFieldUpdateOperationsInput;
 
-  @Field(() => TagUpdateManyWithoutMenuNestedInput, { nullable: true })
-  tags?: TagUpdateManyWithoutMenuNestedInput;
+    @Field(() => ItemUpdateManyWithoutMenuNestedInput, {nullable:true})
+    @Type(() => ItemUpdateManyWithoutMenuNestedInput)
+    items?: ItemUpdateManyWithoutMenuNestedInput;
 
-  @Field(() => UploadedFileUpdateManyWithoutMenuNestedInput, { nullable: true })
-  @Type(() => UploadedFileUpdateManyWithoutMenuNestedInput)
-  files?: UploadedFileUpdateManyWithoutMenuNestedInput;
+    @Field(() => TagUpdateManyWithoutMenuNestedInput, {nullable:true})
+    tags?: TagUpdateManyWithoutMenuNestedInput;
+
+    @Field(() => UploadedFileUpdateManyWithoutMenuNestedInput, {nullable:true})
+    @Type(() => UploadedFileUpdateManyWithoutMenuNestedInput)
+    files?: UploadedFileUpdateManyWithoutMenuNestedInput;
 }

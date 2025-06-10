@@ -1,9 +1,8 @@
 import { z } from 'zod';
-
-import { UploadedFileIncludeObjectSchema } from './objects/UploadedFileInclude.schema';
 import { UploadedFileSelectObjectSchema } from './objects/UploadedFileSelect.schema';
-import { UploadedFileUncheckedUpdateInputObjectSchema } from './objects/UploadedFileUncheckedUpdateInput.schema';
+import { UploadedFileIncludeObjectSchema } from './objects/UploadedFileInclude.schema';
 import { UploadedFileUpdateInputObjectSchema } from './objects/UploadedFileUpdateInput.schema';
+import { UploadedFileUncheckedUpdateInputObjectSchema } from './objects/UploadedFileUncheckedUpdateInput.schema';
 import { UploadedFileWhereUniqueInputObjectSchema } from './objects/UploadedFileWhereUniqueInput.schema';
 
 export const UploadedFileUpdateOneSchema = z.object({

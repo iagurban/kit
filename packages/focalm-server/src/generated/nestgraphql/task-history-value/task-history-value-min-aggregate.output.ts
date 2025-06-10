@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 import { TaskHistoryKey } from '../prisma/task-history-key.enum';
+import { TaskHistoryOperation } from '../prisma/task-history-operation.enum';
 
 @ObjectType()
 export class TaskHistoryValueMinAggregate {
@@ -12,4 +13,7 @@ export class TaskHistoryValueMinAggregate {
 
   @Field(() => TaskHistoryKey, { nullable: true })
   key?: `${TaskHistoryKey}`;
+
+  @Field(() => TaskHistoryOperation, { nullable: true })
+  op?: `${TaskHistoryOperation}`;
 }

@@ -11,6 +11,7 @@ const Schema: z.ZodType<Prisma.TaskHistoryValueOrderByWithAggregationInput> = z
     groupId: z.lazy(() => SortOrderSchema).optional(),
     taskId: z.lazy(() => SortOrderSchema).optional(),
     key: z.lazy(() => SortOrderSchema).optional(),
+    op: z.lazy(() => SortOrderSchema).optional(),
     value: z.lazy(() => SortOrderSchema).optional(),
     _count: z.lazy(() => TaskHistoryValueCountOrderByAggregateInputObjectSchema).optional(),
     _max: z.lazy(() => TaskHistoryValueMaxOrderByAggregateInputObjectSchema).optional(),

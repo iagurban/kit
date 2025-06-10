@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.MenuRelationFilter> = z
   .object({

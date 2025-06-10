@@ -5,6 +5,7 @@ import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-up
 import { EnumTaskStateFieldUpdateOperationsInput } from '../prisma/enum-task-state-field-update-operations.input';
 import { FloatFieldUpdateOperationsInput } from '../prisma/float-field-update-operations.input';
 import { NullableDateTimeFieldUpdateOperationsInput } from '../prisma/nullable-date-time-field-update-operations.input';
+import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 
 @InputType()
@@ -28,13 +29,22 @@ export class TaskUpdateManyMutationInput {
   ease?: FloatFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  startAfter?: NullableDateTimeFieldUpdateOperationsInput;
+  startAfterDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  startAfterOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  plannedStart?: NullableDateTimeFieldUpdateOperationsInput;
+  plannedStartDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  plannedStartOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => NullableDateTimeFieldUpdateOperationsInput, { nullable: true })
-  dueTo?: NullableDateTimeFieldUpdateOperationsInput;
+  dueToDate?: NullableDateTimeFieldUpdateOperationsInput;
+
+  @Field(() => NullableIntFieldUpdateOperationsInput, { nullable: true })
+  dueToOffset?: NullableIntFieldUpdateOperationsInput;
 
   @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
   createdAt?: DateTimeFieldUpdateOperationsInput;

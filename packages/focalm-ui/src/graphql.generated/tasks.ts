@@ -10,18 +10,28 @@ export type FullTaskFragment = {
   state: Types.TaskState;
   title: string;
   archived: boolean;
-  createdAt: any;
-  updatedAt: any;
-  dueTo?: any | null;
-  startAfter?: any | null;
-  plannedStart?: any | null;
+  createdAt: string;
+  updatedAt: string;
+  dueToDate?: any | null;
+  dueToOffset?: number | null;
+  startAfterDate?: any | null;
+  startAfterOffset?: number | null;
+  plannedStartDate?: any | null;
+  plannedStartOffset?: number | null;
   impact: number;
   ease: number;
   orderKey: string;
+  responsibleId?: string | null;
+  authorId: string;
   parent?: { __typename?: 'Task'; id: string; title: string } | null;
-  responsible?: { __typename?: 'User'; id: string; email: string; name: string } | null;
-  author: { __typename?: 'User'; id: string; email: string; name: string };
+  participants?: Array<{
+    __typename?: 'UserInTask';
+    userId: string;
+    tags?: Array<{ __typename?: 'UserInTaskTag'; tag: string }> | null;
+  }> | null;
 };
+
+export type BriefUserFragment = { __typename?: 'User'; id: string; email: string; name: string };
 
 export type GetTasksQueryVariables = Types.Exact<{
   updatedAfter?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
@@ -29,24 +39,36 @@ export type GetTasksQueryVariables = Types.Exact<{
 
 export type GetTasksQuery = {
   __typename?: 'Query';
-  tasks: Array<{
-    __typename?: 'Task';
-    id: string;
-    state: Types.TaskState;
-    title: string;
-    archived: boolean;
-    createdAt: any;
-    updatedAt: any;
-    dueTo?: any | null;
-    startAfter?: any | null;
-    plannedStart?: any | null;
-    impact: number;
-    ease: number;
-    orderKey: string;
-    parent?: { __typename?: 'Task'; id: string; title: string } | null;
-    responsible?: { __typename?: 'User'; id: string; email: string; name: string } | null;
-    author: { __typename?: 'User'; id: string; email: string; name: string };
-  }>;
+  tasks: {
+    __typename?: 'TasksWithRelatedStuff';
+    tasks: Array<{
+      __typename?: 'Task';
+      id: string;
+      state: Types.TaskState;
+      title: string;
+      archived: boolean;
+      createdAt: string;
+      updatedAt: string;
+      dueToDate?: any | null;
+      dueToOffset?: number | null;
+      startAfterDate?: any | null;
+      startAfterOffset?: number | null;
+      plannedStartDate?: any | null;
+      plannedStartOffset?: number | null;
+      impact: number;
+      ease: number;
+      orderKey: string;
+      responsibleId?: string | null;
+      authorId: string;
+      parent?: { __typename?: 'Task'; id: string; title: string } | null;
+      participants?: Array<{
+        __typename?: 'UserInTask';
+        userId: string;
+        tags?: Array<{ __typename?: 'UserInTaskTag'; tag: string }> | null;
+      }> | null;
+    }>;
+    relatedUsers: Array<{ __typename?: 'User'; id: string; email: string; name: string }>;
+  };
 };
 
 export type UpdateTasksMutationVariables = Types.Exact<{
@@ -59,24 +81,36 @@ export type UpdateTasksMutation = {
   result: {
     __typename?: 'TasksUpdateResult';
     changedIds: Array<{ __typename?: 'IDMapping'; src: string; dst: string }>;
-    tasks: Array<{
-      __typename?: 'Task';
-      id: string;
-      state: Types.TaskState;
-      title: string;
-      archived: boolean;
-      createdAt: any;
-      updatedAt: any;
-      dueTo?: any | null;
-      startAfter?: any | null;
-      plannedStart?: any | null;
-      impact: number;
-      ease: number;
-      orderKey: string;
-      parent?: { __typename?: 'Task'; id: string; title: string } | null;
-      responsible?: { __typename?: 'User'; id: string; email: string; name: string } | null;
-      author: { __typename?: 'User'; id: string; email: string; name: string };
-    }>;
+    tasks: {
+      __typename?: 'TasksWithRelatedStuff';
+      tasks: Array<{
+        __typename?: 'Task';
+        id: string;
+        state: Types.TaskState;
+        title: string;
+        archived: boolean;
+        createdAt: string;
+        updatedAt: string;
+        dueToDate?: any | null;
+        dueToOffset?: number | null;
+        startAfterDate?: any | null;
+        startAfterOffset?: number | null;
+        plannedStartDate?: any | null;
+        plannedStartOffset?: number | null;
+        impact: number;
+        ease: number;
+        orderKey: string;
+        responsibleId?: string | null;
+        authorId: string;
+        parent?: { __typename?: 'Task'; id: string; title: string } | null;
+        participants?: Array<{
+          __typename?: 'UserInTask';
+          userId: string;
+          tags?: Array<{ __typename?: 'UserInTaskTag'; tag: string }> | null;
+        }> | null;
+      }>;
+      relatedUsers: Array<{ __typename?: 'User'; id: string; email: string; name: string }>;
+    };
   };
 };
 
@@ -88,9 +122,12 @@ export const FullTaskFragmentDoc = gql`
     archived
     createdAt
     updatedAt
-    dueTo
-    startAfter
-    plannedStart
+    dueToDate
+    dueToOffset
+    startAfterDate
+    startAfterOffset
+    plannedStartDate
+    plannedStartOffset
     impact
     ease
     orderKey
@@ -98,25 +135,36 @@ export const FullTaskFragmentDoc = gql`
       id
       title
     }
-    responsible {
-      id
-      email
-      name
+    responsibleId
+    authorId
+    participants {
+      userId
+      tags {
+        tag
+      }
     }
-    author {
-      id
-      email
-      name
-    }
+  }
+`;
+export const BriefUserFragmentDoc = gql`
+  fragment BriefUser on User {
+    id
+    email
+    name
   }
 `;
 export const GetTasksDocument = gql`
   query GetTasks($updatedAfter: DateTime) {
     tasks(updatedAfter: $updatedAfter) {
-      ...FullTask
+      tasks {
+        ...FullTask
+      }
+      relatedUsers {
+        ...BriefUser
+      }
     }
   }
   ${FullTaskFragmentDoc}
+  ${BriefUserFragmentDoc}
 `;
 
 export function useGetTasksQuery(options?: Omit<Urql.UseQueryArgs<GetTasksQueryVariables>, 'query'>) {
@@ -130,11 +178,17 @@ export const UpdateTasksDocument = gql`
         dst
       }
       tasks(updatedAfter: $updatedAfter) {
-        ...FullTask
+        tasks {
+          ...FullTask
+        }
+        relatedUsers {
+          ...BriefUser
+        }
       }
     }
   }
   ${FullTaskFragmentDoc}
+  ${BriefUserFragmentDoc}
 `;
 
 export function useUpdateTasksMutation() {

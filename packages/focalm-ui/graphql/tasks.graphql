@@ -8,9 +8,12 @@ fragment FullTask on Task {
     createdAt
     updatedAt
 
-    dueTo
-    startAfter
-    plannedStart
+    dueToDate
+    dueToOffset
+    startAfterDate
+    startAfterOffset
+    plannedStartDate
+    plannedStartOffset
 
     impact
     ease
@@ -21,21 +24,30 @@ fragment FullTask on Task {
         id
         title
     }
-    responsible {
-        id
-        email
-        name
+    responsibleId
+    authorId
+    participants {
+        userId
+        tags {
+            tag
+        }
     }
-    author {
-        id
-        email
-        name
-    }
+}
+
+fragment BriefUser on User {
+    id
+    email
+    name
 }
 
 query GetTasks($updatedAfter: DateTime) {
     tasks(updatedAfter: $updatedAfter) {
-        ...FullTask
+        tasks {
+            ...FullTask
+        }
+        relatedUsers {
+            ...BriefUser
+        }
     }
 }
 
@@ -46,7 +58,12 @@ mutation UpdateTasks($changes: [TasksChangesGroup!]!, $updatedAfter: DateTime) {
             dst
         }
         tasks(updatedAfter: $updatedAfter) {
-            ...FullTask
+            tasks {
+                ...FullTask
+            }
+            relatedUsers {
+                ...BriefUser
+            }
         }
     }
 }

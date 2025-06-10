@@ -9,4 +9,13 @@ export class TaskSumOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   ease?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  startAfterOffset?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  plannedStartOffset?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  dueToOffset?: `${SortOrder}`;
 }

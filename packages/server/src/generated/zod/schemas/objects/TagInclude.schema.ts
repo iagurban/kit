@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { MenuArgsObjectSchema } from './MenuArgs.schema';
 
 import type { Prisma } from '../../../old-client';
-import { MenuArgsObjectSchema } from './MenuArgs.schema';
 
 const Schema: z.ZodType<Prisma.TagInclude> = z
   .object({

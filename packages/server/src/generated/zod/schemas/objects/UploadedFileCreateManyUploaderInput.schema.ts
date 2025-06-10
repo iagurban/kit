@@ -7,7 +7,7 @@ const Schema: z.ZodType<Prisma.UploadedFileCreateManyUploaderInput> = z
     id: z.string().optional(),
     originalName: z.string(),
     mimetype: z.string(),
-    uploadedAt: z.coerce.date().optional(),
+    uploadedAt: z.coerce.dateStr().optional(),
     storedFileId: z.string(),
     menuId: z.string(),
   })

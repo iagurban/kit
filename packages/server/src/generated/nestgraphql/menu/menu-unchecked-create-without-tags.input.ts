@@ -1,28 +1,29 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
+import { Field } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
 import { ItemUncheckedCreateNestedManyWithoutMenuInput } from '../item/item-unchecked-create-nested-many-without-menu.input';
+import { Type } from 'class-transformer';
 import { UploadedFileUncheckedCreateNestedManyWithoutMenuInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-menu.input';
 
 @InputType()
 export class MenuUncheckedCreateWithoutTagsInput {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => String, { nullable: false })
-  title!: string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
 
-  @Field(() => String, { nullable: false })
-  ownerId!: string;
+    @Field(() => String, {nullable:false})
+    title!: string;
 
-  @Field(() => ItemUncheckedCreateNestedManyWithoutMenuInput, { nullable: true })
-  @Type(() => ItemUncheckedCreateNestedManyWithoutMenuInput)
-  items?: ItemUncheckedCreateNestedManyWithoutMenuInput;
+    @Field(() => String, {nullable:false})
+    ownerId!: string;
 
-  @Field(() => UploadedFileUncheckedCreateNestedManyWithoutMenuInput, { nullable: true })
-  @Type(() => UploadedFileUncheckedCreateNestedManyWithoutMenuInput)
-  files?: UploadedFileUncheckedCreateNestedManyWithoutMenuInput;
+    @Field(() => ItemUncheckedCreateNestedManyWithoutMenuInput, {nullable:true})
+    @Type(() => ItemUncheckedCreateNestedManyWithoutMenuInput)
+    items?: ItemUncheckedCreateNestedManyWithoutMenuInput;
+
+    @Field(() => UploadedFileUncheckedCreateNestedManyWithoutMenuInput, {nullable:true})
+    @Type(() => UploadedFileUncheckedCreateNestedManyWithoutMenuInput)
+    files?: UploadedFileUncheckedCreateNestedManyWithoutMenuInput;
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { UploadedFileWhereInputObjectSchema } from './UploadedFileWhereInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UploadedFileWhereInputObjectSchema } from './UploadedFileWhereInput.schema';
 
 const Schema: z.ZodType<Prisma.UploadedFileListRelationFilter> = z
   .object({

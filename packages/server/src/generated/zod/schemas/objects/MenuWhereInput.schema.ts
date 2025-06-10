@@ -1,14 +1,14 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { UuidFilterObjectSchema } from './UuidFilter.schema';
 import { DateTimeFilterObjectSchema } from './DateTimeFilter.schema';
-import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
 import { StringFilterObjectSchema } from './StringFilter.schema';
-import { TagListRelationFilterObjectSchema } from './TagListRelationFilter.schema';
-import { UploadedFileListRelationFilterObjectSchema } from './UploadedFileListRelationFilter.schema';
 import { UserRelationFilterObjectSchema } from './UserRelationFilter.schema';
 import { UserWhereInputObjectSchema } from './UserWhereInput.schema';
-import { UuidFilterObjectSchema } from './UuidFilter.schema';
+import { ItemListRelationFilterObjectSchema } from './ItemListRelationFilter.schema';
+import { TagListRelationFilterObjectSchema } from './TagListRelationFilter.schema';
+import { UploadedFileListRelationFilterObjectSchema } from './UploadedFileListRelationFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.MenuWhereInput> = z
   .object({
@@ -23,7 +23,7 @@ const Schema: z.ZodType<Prisma.MenuWhereInput> = z
       .union([z.lazy(() => MenuWhereInputObjectSchema), z.lazy(() => MenuWhereInputObjectSchema).array()])
       .optional(),
     id: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
-    createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.date()]).optional(),
+    createdAt: z.union([z.lazy(() => DateTimeFilterObjectSchema), z.coerce.dateStr()]).optional(),
     title: z.union([z.lazy(() => StringFilterObjectSchema), z.string()]).optional(),
     ownerId: z.union([z.lazy(() => UuidFilterObjectSchema), z.string()]).optional(),
     owner: z

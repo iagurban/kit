@@ -5,6 +5,7 @@ import * as path from 'node:path';
 import { Injectable } from '@nestjs/common';
 
 import { StoredFile, UploadedFile } from '../../generated/db-client';
+import { currentUserCtx } from '../../interceptors/current-user-context';
 import { DbService } from '../db/db.service';
 import { UsersService } from '../users/users.service';
 
@@ -82,7 +83,7 @@ export class FilesService {
         originalName: file.originalname,
         storedFile: { connect: { id: storedFile.id } },
         mimetype: file.mimetype,
-        uploader: { connect: { id: this.users.contextUser.id } },
+        uploader: { connect: { id: currentUserCtx.get().id } },
         // menu: { connect: { id: menuId } },
       },
     });

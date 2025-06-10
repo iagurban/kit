@@ -7,6 +7,7 @@ import { StringFieldUpdateOperationsInputObjectSchema } from './StringFieldUpdat
 import { TaskHistoryGroupUpdateManyWithoutAuthorNestedInputObjectSchema } from './TaskHistoryGroupUpdateManyWithoutAuthorNestedInput.schema';
 import { TaskUpdateManyWithoutAuthorNestedInputObjectSchema } from './TaskUpdateManyWithoutAuthorNestedInput.schema';
 import { UploadedFileUpdateManyWithoutUploaderNestedInputObjectSchema } from './UploadedFileUpdateManyWithoutUploaderNestedInput.schema';
+import { UserInTaskUpdateManyWithoutUserNestedInputObjectSchema } from './UserInTaskUpdateManyWithoutUserNestedInput.schema';
 
 const Schema: z.ZodType<Prisma.UserUpdateWithoutAssignedTasksInput> = z
   .object({
@@ -25,6 +26,7 @@ const Schema: z.ZodType<Prisma.UserUpdateWithoutAssignedTasksInput> = z
     authoredTaskChanges: z
       .lazy(() => TaskHistoryGroupUpdateManyWithoutAuthorNestedInputObjectSchema)
       .optional(),
+    participatingTasks: z.lazy(() => UserInTaskUpdateManyWithoutUserNestedInputObjectSchema).optional(),
   })
   .strict();
 

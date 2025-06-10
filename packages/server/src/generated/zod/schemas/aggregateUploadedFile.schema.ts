@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { UploadedFileCountAggregateInputObjectSchema } from './objects/UploadedFileCountAggregateInput.schema';
-import { UploadedFileMaxAggregateInputObjectSchema } from './objects/UploadedFileMaxAggregateInput.schema';
-import { UploadedFileMinAggregateInputObjectSchema } from './objects/UploadedFileMinAggregateInput.schema';
 import { UploadedFileOrderByWithRelationInputObjectSchema } from './objects/UploadedFileOrderByWithRelationInput.schema';
 import { UploadedFileWhereInputObjectSchema } from './objects/UploadedFileWhereInput.schema';
 import { UploadedFileWhereUniqueInputObjectSchema } from './objects/UploadedFileWhereUniqueInput.schema';
+import { UploadedFileCountAggregateInputObjectSchema } from './objects/UploadedFileCountAggregateInput.schema';
+import { UploadedFileMinAggregateInputObjectSchema } from './objects/UploadedFileMinAggregateInput.schema';
+import { UploadedFileMaxAggregateInputObjectSchema } from './objects/UploadedFileMaxAggregateInput.schema';
 
 export const UploadedFileAggregateSchema = z.object({
   orderBy: z

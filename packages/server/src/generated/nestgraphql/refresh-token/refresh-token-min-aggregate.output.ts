@@ -1,19 +1,21 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class RefreshTokenMinAggregate {
-  @Field(() => String, { nullable: true })
-  id?: string;
 
-  @Field(() => String, { nullable: true })
-  userId?: string;
+    @Field(() => String, {nullable:true})
+    id?: string;
 
-  @Field(() => Date, { nullable: true })
-  createdAt?: Date | string;
+    @Field(() => String, {nullable:true})
+    userId?: string;
 
-  @Field(() => Date, { nullable: true })
-  expiresAt?: Date | string;
+    @Field(() => Date, {nullable:true})
+    createdAt?: Date | string;
 
-  @Field(() => String, { nullable: true })
-  hash?: string;
+    @Field(() => Date, {nullable:true})
+    expiresAt?: Date | string;
+
+    @Field(() => String, {nullable:true})
+    hash?: string;
 }

@@ -1,41 +1,43 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
+import { UploadedFileWhereInput } from './uploaded-file-where.input';
 import { Type } from 'class-transformer';
-
-import { UploadedFileCountAggregateInput } from './uploaded-file-count-aggregate.input';
-import { UploadedFileMaxAggregateInput } from './uploaded-file-max-aggregate.input';
-import { UploadedFileMinAggregateInput } from './uploaded-file-min-aggregate.input';
 import { UploadedFileOrderByWithAggregationInput } from './uploaded-file-order-by-with-aggregation.input';
 import { UploadedFileScalarFieldEnum } from './uploaded-file-scalar-field.enum';
 import { UploadedFileScalarWhereWithAggregatesInput } from './uploaded-file-scalar-where-with-aggregates.input';
-import { UploadedFileWhereInput } from './uploaded-file-where.input';
+import { Int } from '@nestjs/graphql';
+import { UploadedFileCountAggregateInput } from './uploaded-file-count-aggregate.input';
+import { UploadedFileMinAggregateInput } from './uploaded-file-min-aggregate.input';
+import { UploadedFileMaxAggregateInput } from './uploaded-file-max-aggregate.input';
 
 @ArgsType()
 export class UploadedFileGroupByArgs {
-  @Field(() => UploadedFileWhereInput, { nullable: true })
-  @Type(() => UploadedFileWhereInput)
-  where?: UploadedFileWhereInput;
 
-  @Field(() => [UploadedFileOrderByWithAggregationInput], { nullable: true })
-  orderBy?: Array<UploadedFileOrderByWithAggregationInput>;
+    @Field(() => UploadedFileWhereInput, {nullable:true})
+    @Type(() => UploadedFileWhereInput)
+    where?: UploadedFileWhereInput;
 
-  @Field(() => [UploadedFileScalarFieldEnum], { nullable: false })
-  by!: Array<`${UploadedFileScalarFieldEnum}`>;
+    @Field(() => [UploadedFileOrderByWithAggregationInput], {nullable:true})
+    orderBy?: Array<UploadedFileOrderByWithAggregationInput>;
 
-  @Field(() => UploadedFileScalarWhereWithAggregatesInput, { nullable: true })
-  having?: UploadedFileScalarWhereWithAggregatesInput;
+    @Field(() => [UploadedFileScalarFieldEnum], {nullable:false})
+    by!: Array<`${UploadedFileScalarFieldEnum}`>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => UploadedFileScalarWhereWithAggregatesInput, {nullable:true})
+    having?: UploadedFileScalarWhereWithAggregatesInput;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => UploadedFileCountAggregateInput, { nullable: true })
-  _count?: UploadedFileCountAggregateInput;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
 
-  @Field(() => UploadedFileMinAggregateInput, { nullable: true })
-  _min?: UploadedFileMinAggregateInput;
+    @Field(() => UploadedFileCountAggregateInput, {nullable:true})
+    _count?: UploadedFileCountAggregateInput;
 
-  @Field(() => UploadedFileMaxAggregateInput, { nullable: true })
-  _max?: UploadedFileMaxAggregateInput;
+    @Field(() => UploadedFileMinAggregateInput, {nullable:true})
+    _min?: UploadedFileMinAggregateInput;
+
+    @Field(() => UploadedFileMaxAggregateInput, {nullable:true})
+    _max?: UploadedFileMaxAggregateInput;
 }

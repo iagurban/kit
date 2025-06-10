@@ -7,7 +7,6 @@ import { TaskHistoryValueUncheckedCreateNestedManyWithoutGroupInputObjectSchema 
 const Schema: z.ZodType<Prisma.TaskHistoryGroupUncheckedCreateInput> = z
   .object({
     id: z.string().optional(),
-    taskId: z.string(),
     authorId: z.string(),
     localCreatedAt: z.coerce.date(),
     createdAt: z.coerce.date(),

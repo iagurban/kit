@@ -1,9 +1,9 @@
 import { z } from 'zod';
-
-import type { Prisma } from '../../../old-client';
+import { UuidFilterObjectSchema } from './UuidFilter.schema';
 import { MenuRelationFilterObjectSchema } from './MenuRelationFilter.schema';
 import { MenuWhereInputObjectSchema } from './MenuWhereInput.schema';
-import { UuidFilterObjectSchema } from './UuidFilter.schema';
+
+import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.TagWhereInput> = z
   .object({

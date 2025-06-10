@@ -30,6 +30,12 @@ generator nestgraphql {
 
   emitInputBinding = true // ← экспортирует типы ввода
   useInputType     = true // ← делает все non-null поля — non-null в GraphQL
+
+  fields_Scalars_from   = "graphql-scalars"
+  fields_Scalars_input  = true
+  fields_Scalars_output = true
+  fields_Scalars_model  = true
+  fields_Scalars_args   = true
 }
 
 // generator nestjsDto {
@@ -120,6 +126,8 @@ model User {
   assignedTasks       Task[]             @relation("responsible")
   authoredTasks       Task[]             @relation("author")
   authoredTaskChanges TaskHistoryGroup[]
+
+  participatingTasks UserInTask[] @relation("user")
 }
 
 model RefreshToken {
@@ -168,6 +176,12 @@ enum TaskState {
   Done
 }
 
+enum TaskHistoryOperation {
+  Set
+  Add
+  Remove
+}
+
 enum TaskHistoryKey {
   title
   state
@@ -176,17 +190,27 @@ enum TaskHistoryKey {
   ease
   authorId
   responsibleId
+  participants
   orderKey
   parentId
+
+  startAfterDate
+  startAfterOffset
+  plannedStartDate
+  plannedStartOffset
+  dueToDate
+  dueToOffset
 }
 
 model TaskHistoryValue {
   groupId String           @db.Uuid
   group   TaskHistoryGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-  taskId String @db.Uuid // denormalization; equals `this.group.taskId`; remove when prisma can do nested distinct
+  taskId String @db.Uuid
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   key TaskHistoryKey
+  op  TaskHistoryOperation @default(Set)
 
   value Json
 
@@ -201,9 +225,6 @@ enum CreatedAtFixReason {
 
 model TaskHistoryGroup {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-
-  taskId String @db.Uuid
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   values TaskHistoryValue[]
 
@@ -225,9 +246,15 @@ model Task {
   impact Float @default(0.5)
   ease   Float @default(0.5)
 
-  startAfter   DateTime?
-  plannedStart DateTime?
-  dueTo        DateTime?
+  /// @FieldType('Scalars.GraphQLDate')
+  startAfterDate     DateTime? @db.Date
+  startAfterOffset   Int? // секунды от начала дня, NULL → all-day
+  /// @FieldType('Scalars.GraphQLDate')
+  plannedStartDate   DateTime? @db.Date
+  plannedStartOffset Int? // секунды от начала дня, NULL → all-day
+  /// @FieldType('Scalars.GraphQLDate')
+  dueToDate          DateTime? @db.Date
+  dueToOffset        Int? // секунды от начала дня, NULL → all-day
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -243,5 +270,27 @@ model Task {
   children Task[]  @relation("tree")
   orderKey String
 
-  historyGroups TaskHistoryGroup[]
+  participants  UserInTask[]       @relation("task")
+  historyValues TaskHistoryValue[]
+}
+
+model UserInTask {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation("user", fields: [userId], references: [id], onDelete: Cascade)
+
+  taskId String @db.Uuid
+  task   Task   @relation("task", fields: [taskId], references: [id], onDelete: Cascade)
+
+  tags UserInTaskTag[]
+}
+
+model UserInTaskTag {
+  userInTaskId String     @db.Uuid
+  userInTask   UserInTask @relation(fields: [userInTaskId], references: [id], onDelete: Cascade)
+
+  tag String
+
+  @@id([userInTaskId, tag])
 }

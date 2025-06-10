@@ -1,38 +1,40 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { MenuCountAggregateInput } from './menu-count-aggregate.input';
-import { MenuMaxAggregateInput } from './menu-max-aggregate.input';
-import { MenuMinAggregateInput } from './menu-min-aggregate.input';
-import { MenuOrderByWithRelationInput } from './menu-order-by-with-relation.input';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { MenuWhereInput } from './menu-where.input';
+import { Type } from 'class-transformer';
+import { MenuOrderByWithRelationInput } from './menu-order-by-with-relation.input';
+import { Prisma } from '../../db-client';
 import { MenuWhereUniqueInput } from './menu-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { MenuCountAggregateInput } from './menu-count-aggregate.input';
+import { MenuMinAggregateInput } from './menu-min-aggregate.input';
+import { MenuMaxAggregateInput } from './menu-max-aggregate.input';
 
 @ArgsType()
 export class MenuAggregateArgs {
-  @Field(() => MenuWhereInput, { nullable: true })
-  @Type(() => MenuWhereInput)
-  where?: MenuWhereInput;
 
-  @Field(() => [MenuOrderByWithRelationInput], { nullable: true })
-  orderBy?: Array<MenuOrderByWithRelationInput>;
+    @Field(() => MenuWhereInput, {nullable:true})
+    @Type(() => MenuWhereInput)
+    where?: MenuWhereInput;
 
-  @Field(() => MenuWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<MenuWhereUniqueInput, 'id'>;
+    @Field(() => [MenuOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<MenuOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => MenuWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<MenuWhereUniqueInput, 'id'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => MenuCountAggregateInput, { nullable: true })
-  _count?: MenuCountAggregateInput;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
 
-  @Field(() => MenuMinAggregateInput, { nullable: true })
-  _min?: MenuMinAggregateInput;
+    @Field(() => MenuCountAggregateInput, {nullable:true})
+    _count?: MenuCountAggregateInput;
 
-  @Field(() => MenuMaxAggregateInput, { nullable: true })
-  _max?: MenuMaxAggregateInput;
+    @Field(() => MenuMinAggregateInput, {nullable:true})
+    _min?: MenuMinAggregateInput;
+
+    @Field(() => MenuMaxAggregateInput, {nullable:true})
+    _max?: MenuMaxAggregateInput;
 }

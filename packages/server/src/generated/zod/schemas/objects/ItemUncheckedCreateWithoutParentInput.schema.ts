@@ -1,12 +1,12 @@
 import { z } from 'zod';
+import { ItemUncheckedCreateNestedManyWithoutParentInputObjectSchema } from './ItemUncheckedCreateNestedManyWithoutParentInput.schema';
 
 import type { Prisma } from '../../../old-client';
-import { ItemUncheckedCreateNestedManyWithoutParentInputObjectSchema } from './ItemUncheckedCreateNestedManyWithoutParentInput.schema';
 
 const Schema: z.ZodType<Prisma.ItemUncheckedCreateWithoutParentInput> = z
   .object({
     id: z.string().optional(),
-    createdAt: z.coerce.date().optional(),
+    createdAt: z.coerce.dateStr().optional(),
     orderKey: z.string(),
     title: z.string().optional().nullable(),
     description: z.string().optional().nullable(),

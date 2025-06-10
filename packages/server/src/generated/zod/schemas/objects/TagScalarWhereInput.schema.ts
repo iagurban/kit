@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { UuidFilterObjectSchema } from './UuidFilter.schema';
 
 import type { Prisma } from '../../../old-client';
-import { UuidFilterObjectSchema } from './UuidFilter.schema';
 
 const Schema: z.ZodType<Prisma.TagScalarWhereInput> = z
   .object({

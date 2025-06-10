@@ -29,13 +29,22 @@ export class TaskOrderByWithAggregationInput {
   ease?: `${SortOrder}`;
 
   @Field(() => SortOrderInput, { nullable: true })
-  startAfter?: SortOrderInput;
+  startAfterDate?: SortOrderInput;
 
   @Field(() => SortOrderInput, { nullable: true })
-  plannedStart?: SortOrderInput;
+  startAfterOffset?: SortOrderInput;
 
   @Field(() => SortOrderInput, { nullable: true })
-  dueTo?: SortOrderInput;
+  plannedStartDate?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  plannedStartOffset?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  dueToDate?: SortOrderInput;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  dueToOffset?: SortOrderInput;
 
   @Field(() => SortOrder, { nullable: true })
   createdAt?: `${SortOrder}`;

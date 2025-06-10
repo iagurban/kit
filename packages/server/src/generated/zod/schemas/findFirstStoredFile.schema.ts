@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
-import { StoredFileScalarFieldEnumSchema } from './enums/StoredFileScalarFieldEnum.schema';
+import { StoredFileSelectObjectSchema } from './objects/StoredFileSelect.schema';
 import { StoredFileIncludeObjectSchema } from './objects/StoredFileInclude.schema';
 import { StoredFileOrderByWithRelationInputObjectSchema } from './objects/StoredFileOrderByWithRelationInput.schema';
-import { StoredFileSelectObjectSchema } from './objects/StoredFileSelect.schema';
 import { StoredFileWhereInputObjectSchema } from './objects/StoredFileWhereInput.schema';
 import { StoredFileWhereUniqueInputObjectSchema } from './objects/StoredFileWhereUniqueInput.schema';
+import { StoredFileScalarFieldEnumSchema } from './enums/StoredFileScalarFieldEnum.schema';
 
 export const StoredFileFindFirstSchema = z.object({
   select: StoredFileSelectObjectSchema.optional(),

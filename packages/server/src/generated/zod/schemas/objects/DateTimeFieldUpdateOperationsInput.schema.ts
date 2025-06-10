@@ -4,7 +4,7 @@ import type { Prisma } from '../../../old-client';
 
 const Schema: z.ZodType<Prisma.DateTimeFieldUpdateOperationsInput> = z
   .object({
-    set: z.coerce.date().optional(),
+    set: z.coerce.dateStr().optional(),
   })
   .strict();
 

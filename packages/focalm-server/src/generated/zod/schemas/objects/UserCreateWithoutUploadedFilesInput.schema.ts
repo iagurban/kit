@@ -5,6 +5,7 @@ import { RefreshTokenCreateNestedManyWithoutUserInputObjectSchema } from './Refr
 import { TaskCreateNestedManyWithoutAuthorInputObjectSchema } from './TaskCreateNestedManyWithoutAuthorInput.schema';
 import { TaskCreateNestedManyWithoutResponsibleInputObjectSchema } from './TaskCreateNestedManyWithoutResponsibleInput.schema';
 import { TaskHistoryGroupCreateNestedManyWithoutAuthorInputObjectSchema } from './TaskHistoryGroupCreateNestedManyWithoutAuthorInput.schema';
+import { UserInTaskCreateNestedManyWithoutUserInputObjectSchema } from './UserInTaskCreateNestedManyWithoutUserInput.schema';
 
 const Schema: z.ZodType<Prisma.UserCreateWithoutUploadedFilesInput> = z
   .object({
@@ -19,6 +20,7 @@ const Schema: z.ZodType<Prisma.UserCreateWithoutUploadedFilesInput> = z
     authoredTaskChanges: z
       .lazy(() => TaskHistoryGroupCreateNestedManyWithoutAuthorInputObjectSchema)
       .optional(),
+    participatingTasks: z.lazy(() => UserInTaskCreateNestedManyWithoutUserInputObjectSchema).optional(),
   })
   .strict();
 

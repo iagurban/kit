@@ -1,9 +1,8 @@
 import { z } from 'zod';
-
-import { RefreshTokenScalarFieldEnumSchema } from './enums/RefreshTokenScalarFieldEnum.schema';
+import { RefreshTokenWhereInputObjectSchema } from './objects/RefreshTokenWhereInput.schema';
 import { RefreshTokenOrderByWithAggregationInputObjectSchema } from './objects/RefreshTokenOrderByWithAggregationInput.schema';
 import { RefreshTokenScalarWhereWithAggregatesInputObjectSchema } from './objects/RefreshTokenScalarWhereWithAggregatesInput.schema';
-import { RefreshTokenWhereInputObjectSchema } from './objects/RefreshTokenWhereInput.schema';
+import { RefreshTokenScalarFieldEnumSchema } from './enums/RefreshTokenScalarFieldEnum.schema';
 
 export const RefreshTokenGroupBySchema = z.object({
   where: RefreshTokenWhereInputObjectSchema.optional(),

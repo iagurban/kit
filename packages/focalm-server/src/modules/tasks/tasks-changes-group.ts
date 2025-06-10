@@ -5,6 +5,9 @@ import { TaskHistoryKey } from '../../generated/nestgraphql/prisma/task-history-
 
 @InputType()
 class TaskFieldUpdateInput {
+  @Field(() => String)
+  taskId!: string;
+
   @Field(() => TaskHistoryKey)
   field!: TaskHistoryKey;
 
@@ -14,9 +17,6 @@ class TaskFieldUpdateInput {
 
 @InputType()
 export class TasksChangesGroup {
-  @Field(() => String)
-  id!: string;
-
   @Field(() => Date)
   localCreatedAt!: Date;
 

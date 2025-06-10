@@ -1,30 +1,32 @@
-import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
-
-import { Prisma } from '../../db-client';
-import { TagOrderByWithRelationInput } from './tag-order-by-with-relation.input';
-import { TagScalarFieldEnum } from './tag-scalar-field.enum';
+import { Field } from '@nestjs/graphql';
+import { ArgsType } from '@nestjs/graphql';
 import { TagWhereInput } from './tag-where.input';
+import { Type } from 'class-transformer';
+import { TagOrderByWithRelationInput } from './tag-order-by-with-relation.input';
+import { Prisma } from '../../db-client';
 import { TagWhereUniqueInput } from './tag-where-unique.input';
+import { Int } from '@nestjs/graphql';
+import { TagScalarFieldEnum } from './tag-scalar-field.enum';
 
 @ArgsType()
 export class FindFirstTagOrThrowArgs {
-  @Field(() => TagWhereInput, { nullable: true })
-  @Type(() => TagWhereInput)
-  where?: TagWhereInput;
 
-  @Field(() => [TagOrderByWithRelationInput], { nullable: true })
-  orderBy?: Array<TagOrderByWithRelationInput>;
+    @Field(() => TagWhereInput, {nullable:true})
+    @Type(() => TagWhereInput)
+    where?: TagWhereInput;
 
-  @Field(() => TagWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<TagWhereUniqueInput, 'id'>;
+    @Field(() => [TagOrderByWithRelationInput], {nullable:true})
+    orderBy?: Array<TagOrderByWithRelationInput>;
 
-  @Field(() => Int, { nullable: true })
-  take?: number;
+    @Field(() => TagWhereUniqueInput, {nullable:true})
+    cursor?: Prisma.AtLeast<TagWhereUniqueInput, 'id'>;
 
-  @Field(() => Int, { nullable: true })
-  skip?: number;
+    @Field(() => Int, {nullable:true})
+    take?: number;
 
-  @Field(() => [TagScalarFieldEnum], { nullable: true })
-  distinct?: Array<`${TagScalarFieldEnum}`>;
+    @Field(() => Int, {nullable:true})
+    skip?: number;
+
+    @Field(() => [TagScalarFieldEnum], {nullable:true})
+    distinct?: Array<`${TagScalarFieldEnum}`>;
 }

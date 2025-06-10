@@ -8,9 +8,6 @@ export class TaskHistoryGroupMaxOrderByAggregateInput {
   id?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  taskId?: `${SortOrder}`;
-
-  @Field(() => SortOrder, { nullable: true })
   authorId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })

@@ -5,6 +5,7 @@ import { RefreshTokenOrderByRelationAggregateInput } from '../refresh-token/refr
 import { TaskOrderByRelationAggregateInput } from '../task/task-order-by-relation-aggregate.input';
 import { TaskHistoryGroupOrderByRelationAggregateInput } from '../task-history-group/task-history-group-order-by-relation-aggregate.input';
 import { UploadedFileOrderByRelationAggregateInput } from '../uploaded-file/uploaded-file-order-by-relation-aggregate.input';
+import { UserInTaskOrderByRelationAggregateInput } from '../user-in-task/user-in-task-order-by-relation-aggregate.input';
 
 @InputType()
 export class UserOrderByWithRelationInput {
@@ -37,4 +38,7 @@ export class UserOrderByWithRelationInput {
 
   @Field(() => TaskHistoryGroupOrderByRelationAggregateInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupOrderByRelationAggregateInput;
+
+  @Field(() => UserInTaskOrderByRelationAggregateInput, { nullable: true })
+  participatingTasks?: UserInTaskOrderByRelationAggregateInput;
 }
