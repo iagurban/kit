@@ -132,3 +132,4 @@ dist
 
 libquery_engine-debian-openssl-1.1.x.so.node
 .vite-cache
+.gen-cli-cache
