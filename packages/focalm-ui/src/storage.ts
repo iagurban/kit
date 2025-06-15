@@ -1,18 +1,11 @@
-import { ExMap, ExSet, notNull, Nullish, sleep, uidGenerator } from '@freyja/kit/src';
+import { ExMap, ExSet, notNull, Nullish, uidGenerator } from '@freyja/kit/src';
 import { createUsableContext } from '@freyja/kit-ui/react/react';
 import dayjs from 'dayjs';
 import { sortBy } from 'lodash';
-import { computed, reaction } from 'mobx';
+import { computed, observable, reaction } from 'mobx';
 import { createContext, customRef, idProp, Model, model, modelAction, prop } from 'mobx-keystone';
 import { computedFn } from 'mobx-utils';
-import {
-  AnyVariables,
-  Client,
-  DocumentInput,
-  OperationContext,
-  OperationResult,
-  OperationResultSource,
-} from 'urql';
+import { Client } from 'urql';
 
 import { TaskHistoryKey, TaskState } from './graphql.generated/_types';
 import {
@@ -23,10 +16,9 @@ import {
   UpdateTasksMutation,
   UpdateTasksMutationVariables,
 } from './graphql.generated/tasks';
-import { getUrqlClient, urqlClientCtx } from './utils/mobx-util';
-import { ImperativeRequester, PromiseWithCancel } from './utils/requester';
-
-type NonNullish<T> = Exclude<T, Nullish>;
+import { executeMutation, executeQuery } from './utils/execute-query';
+import { disposable, getUrqlClient, urqlClientCtx } from './utils/mobx-util';
+import { ImperativeRequester } from './utils/requester';
 
 type Task = Omit<GetTasksQuery[`tasks`][`tasks`][number], `__typename`>;
 
@@ -35,74 +27,6 @@ type UserBrief = GetTasksQuery[`tasks`][`relatedUsers`][number];
 export type TaskUpdate = { taskId: string; field: Exclude<keyof Task, `id`>; value: unknown };
 
 type TaskChangeGroup = { createdAt: string; localCreatedAt: string; values: TaskUpdate[] };
-
-const prepareOperationResultSource = <Data, Variables extends AnyVariables>(
-  source: OperationResultSource<OperationResult<Data, Variables>>
-) =>
-  source.toPromise().then(result => {
-    if (result.error) {
-      throw result.error;
-    }
-    if (!result.data) {
-      throw new Error(`no data`);
-    }
-    return result.data;
-  });
-
-const executeMutation = <Data, Variables extends AnyVariables>(
-  client: Client,
-  query: DocumentInput<Data, Variables>,
-  variables: Variables,
-  context?: Partial<OperationContext>
-): PromiseWithCancel<Data> => ({
-  promise: prepareOperationResultSource(client.mutation<Data, Variables>(query, variables, context)),
-  cancel: () => {
-    throw new Error(`can not cancel mutation`);
-  },
-});
-
-const executeQuery = <Data, Variables extends AnyVariables>(
-  client: Client,
-  query: DocumentInput<Data, Variables>,
-  variables: Variables,
-  context?: Partial<OperationContext>
-): PromiseWithCancel<Data> & {
-  update<T>(fn: (p: Promise<Data>) => Promise<T>): { promise: Promise<T>; cancel: (() => void) | undefined };
-} => {
-  const ac = new AbortController();
-  return {
-    promise: prepareOperationResultSource(
-      client.query<Data, Variables>(query, variables, {
-        ...context,
-        fetchOptions: { ...context?.fetchOptions, signal: ac.signal },
-      })
-    ).catch(async e => {
-      await sleep(1000);
-      throw e;
-    }),
-    cancel: () => {
-      ac.abort(`canceled by user`);
-    },
-    update<T>(fn: (p: Promise<Data>) => Promise<T>) {
-      return {
-        promise: fn(this.promise),
-        cancel: this.cancel,
-      };
-    },
-  };
-};
-
-export const disposable = (f: () => () => void): { init(): void; destroy(): void } => ({
-  init() {
-    this.destroy = f();
-  },
-  destroy: () => {
-    throw new Error(`init didn't called`);
-  },
-});
-
-// when uploading change of the task, it's createdAt must be clamped to [maxUpdatedAt, server.now()] (lower bound on the front, upper - on the server)
-// when adding changes to history, need to apply values which's createdAt greater than the last existing change of the same key in history
 
 const tasksStoreCtx = createContext<Synchronizer>();
 
@@ -115,6 +39,11 @@ export class TaskCardStore extends Model({
     Partial<Exclude<ReturnType<ReturnType<typeof Synchronizer.actualTaskRef>[`resolve`]>, Nullish>>
   >(() => ({})),
 }) {
+  @computed
+  get storage() {
+    return notNull(tasksStoreCtx.get(this));
+  }
+
   @computed
   get actual() {
     let draft = { ...this.originalRef.maybeCurrent };
@@ -167,6 +96,7 @@ export class TaskCardStore extends Model({
   @modelAction
   submit() {
     const original = this.originalRef.maybeCurrent;
+    const taskId = original ? original.id : `!!NEW:${uidGenerator()}`;
     const changes: TaskUpdate[] = [];
     for (const [key, value] of Object.entries(this.editValues) as [keyof typeof this.editValues, unknown][]) {
       switch (key) {
@@ -181,7 +111,7 @@ export class TaskCardStore extends Model({
         case `title`: {
           if (original?.title !== value) {
             changes.push({
-              taskId: original ? original.id : `!!NEW:${uidGenerator()}`,
+              taskId,
               field: key,
               value,
             });
@@ -192,13 +122,13 @@ export class TaskCardStore extends Model({
           throw new Error(`unexpected key ${key}`);
       }
     }
-    notNull(tasksStoreCtx.get(this)).pushUpdates(changes);
+    this.storage.pushUpdates(changes);
     this.reset();
   }
 
   @modelAction
   close() {
-    const opened = notNull(tasksStoreCtx.get(this)).opened;
+    const opened = this.storage.opened;
     const idx = opened.findIndex(card => card.id === this.id);
     if (idx >= 0) {
       opened.splice(idx, 1);
@@ -209,11 +139,28 @@ export class TaskCardStore extends Model({
 @model(`focalm/Synchronizer`)
 export class Synchronizer extends Model({
   stored: prop<Record<string, Task>>(() => ({})),
+
   saving: prop<TaskChangeGroup[]>(() => []),
   pending: prop<TaskChangeGroup[]>(() => []),
+
   opened: prop<TaskCardStore[]>(() => []),
+
   users: prop<Record<string, UserBrief>>(() => ({})),
 }) {
+  @observable cardsHidden = false;
+  @modelAction
+  setCardsHidden(hidden: boolean) {
+    this.cardsHidden = hidden;
+  }
+
+  @modelAction
+  closeAllCards() {
+    this.opened = this.opened.filter(card => card.hasChanges);
+    if (this.opened.length) {
+      this.setCardsHidden(true);
+    }
+  }
+
   private readonly _dummy = ((() => tasksStoreCtx.set(this, this))(), 0);
 
   static readonly actualTaskRef = customRef<Exclude<ReturnType<Synchronizer[`actualTasks`][`get`]>, Nullish>>(
@@ -272,7 +219,9 @@ export class Synchronizer extends Model({
     const pft = this.pendingForTaskId(id);
     return sortBy(
       [
-        ...this.saving.flatMap(group => group.values.map(v => ({ ...v, createdAt: group.createdAt }))),
+        ...this.saving.flatMap(group =>
+          group.values.filter(v => v.taskId === id).map(v => ({ ...v, createdAt: group.createdAt }))
+        ),
         ...pft,
       ],
       value => new Date(value.createdAt).getTime()
@@ -460,6 +409,7 @@ export class Synchronizer extends Model({
     } else {
       this.opened.push(new TaskCardStore({ originalRef: Synchronizer.actualTaskRef(id) }));
     }
+    this.setCardsHidden(false);
   }
 
   @modelAction
@@ -467,6 +417,7 @@ export class Synchronizer extends Model({
     const oldIdx = this.opened.findIndex(card => card.id === id);
     if (oldIdx >= 0) {
       this.opened.push(this.opened.splice(oldIdx, 1)[0]);
+      this.setCardsHidden(false);
       return true;
     }
     return false;

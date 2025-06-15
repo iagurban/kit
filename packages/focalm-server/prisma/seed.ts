@@ -77,7 +77,7 @@ export class AppService {
       passwordHash: await hashing.hash(`pass`),
     } as const;
 
-    return await this.db.transaction.user.upsert({
+    return this.db.transaction.user.upsert({
       where: { email: data.email },
       create: data,
       update: data,
@@ -99,8 +99,15 @@ export class AppService {
       [
         { title: `Time tracking` },
         { title: `Focus mode` },
-        { title: `Translation` },
-        { title: `Reinstall Linux` },
+        { title: `Adding new tasks` },
+        { title: `Expanding tabs on hover` },
+        { title: `Projects` },
+        { title: `Saving to indexed db` },
+        { title: `SW` },
+        { title: `Fix refreshing token` },
+        {
+          title: `'ready'-flag for updating packages - if update has temp-ids for not persisted new tasks, it's not ready until id exchanged to persitent`,
+        },
       ],
       me
     );

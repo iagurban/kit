@@ -3,11 +3,14 @@ import { createUsableContext } from '@freyja/kit-ui/react/react';
 import { Model, model, prop, SnapshotInOf } from 'mobx-keystone';
 import { observer } from 'mobx-react-lite';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { navigatorDetector } from 'typesafe-i18n/detectors';
 
 import { useAuth } from './auth/useAuth';
-import { dbPromise } from './database';
-import { disposable } from './storage';
-import { SnapshotSaver, useMobxRootStoreRegistration } from './utils/mobx-util';
+import { idbClient } from './database';
+import { detectLocale } from './i18n/_i18n-util';
+import { loadLocaleAsync } from './i18n/_i18n-util.async';
+import TypesafeI18n from './i18n/i18n-react';
+import { disposable, SnapshotSaver, useMobxRootStoreRegistration } from './utils/mobx-util';
 
 @model(`focalm/LocalPreferences`)
 export class LocalPreferences extends Model({
@@ -18,7 +21,7 @@ export class LocalPreferences extends Model({
     1000,
     async (userId, snapshot) => {
       // console.log(`save snapshot`, snapshot);
-      await (await dbPromise).put('localPreferences', { userId, json: snapshot });
+      await (await idbClient).put('localPreferences', { userId, json: snapshot });
     }
   );
 
@@ -49,13 +52,27 @@ export const { use: useLocalPreferences, provider: LocalPreferencesProvider } =
 const loadSnapshot = async (
   user: CurrentUserJwtPayload
 ): Promise<SnapshotInOf<LocalPreferences> | undefined> => {
-  return (await (await dbPromise).getFromIndex('localPreferences', 'by-user', user.sub))?.json;
+  return (await (await idbClient).getFromIndex('localPreferences', 'by-user', user.sub))?.json;
 };
 
 export const LocalPreferencesSource = observer<PropsWithChildren>(function LocalPreferencesSource({
   children,
 }) {
   const user = useAuth();
+
+  // Detect locale
+  // (Use as advanaced locale detection strategy as you like.
+  // More info: https://github.com/ivanhofer/typesafe-i18n/tree/main/packages/detectors)
+  const locale = detectLocale(navigatorDetector);
+
+  // Load locales
+  // (Use a data fetching solution that you prefer)
+  const [localesLoaded, setLocalesLoaded] = useState(false);
+  useEffect(() => {
+    loadLocaleAsync(locale).then(() => setLocalesLoaded(true));
+  }, [locale]);
+
+  // Load LocalPreferences
   const [store, setStore] = useState<LocalPreferences>();
   const loading = useRef<{
     key: unknown;
@@ -88,5 +105,9 @@ export const LocalPreferencesSource = observer<PropsWithChildren>(function Local
 
   useMobxRootStoreRegistration(store);
 
-  return store ? <LocalPreferencesProvider value={store}>{children}</LocalPreferencesProvider> : null;
+  return store && localesLoaded ? (
+    <TypesafeI18n locale={locale}>
+      <LocalPreferencesProvider value={store}>{children}</LocalPreferencesProvider>
+    </TypesafeI18n>
+  ) : null;
 });

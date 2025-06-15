@@ -6,7 +6,8 @@ export default buildEslintConfig([
   'node_modules/**',
   'dist/**',
   'src/db-client.generated/**',
-  '.vite-cache'
+  '.vite-cache',
+  'src/i18n/*'
 ], [
   frontConfig,
   frontRules,

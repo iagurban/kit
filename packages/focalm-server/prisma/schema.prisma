@@ -4,17 +4,13 @@ datasource db {
 }
 
 generator oldClient {
-  provider      = "prisma-client-js"
-  output        = "../src/generated/old-client"
-  engineType    = "binary"
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider = "prisma-client-js"
+  output   = "../src/generated/old-client"
 }
 
 generator client {
-  provider      = "prisma-client"
-  output        = "../src/generated/db-client"
-  engineType    = "binary"
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  provider = "prisma-client"
+  output   = "../src/generated/db-client"
 }
 
 generator json {

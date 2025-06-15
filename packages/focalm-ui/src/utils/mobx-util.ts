@@ -95,3 +95,12 @@ export class SnapshotSaver<S> {
     );
   }
 }
+
+export const disposable = (f: () => () => void): { init(): void; destroy(): void } => ({
+  init() {
+    this.destroy = f();
+  },
+  destroy: () => {
+    throw new Error(`init didn't called`);
+  },
+});

@@ -6,13 +6,15 @@ import {
   ExMap,
   ExSet,
   isNull,
+  isNullish,
   isNumber,
   isString,
   isTruthy,
+  PromiseValue,
   samplesBy,
 } from '@freyja/kit/src';
 import { Injectable } from '@nestjs/common';
-import { sortBy } from 'lodash';
+import { sortBy, sortedIndexBy } from 'lodash';
 
 import { $Enums, Prisma, TaskHistoryKey, TaskState } from '../../generated/db-client';
 import { DbService } from '../db/db.service';
@@ -78,34 +80,44 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
       };
     case 'startAfterDate':
     case 'plannedStartDate':
-    case 'dueToDate':
+    case 'dueToDate': {
+      const str = checked(
+        checked(value, compileIsAny(isString, isNullish), () => `Invalid ${key}: ${value}`),
+        s => s == null || /^\d{4}-\d{2}-\d{2}$/.test(s),
+        () => `Invalid date format: ${value}`
+      );
+
       return {
         key,
-        value: new Date(
-          checked(
-            checked(value, isString, () => `Invalid ${key}: ${value}`),
-            s => /^\d{4}-\d{2}-\d{2}$/.test(s),
-            () => `Invalid date format: ${value}`
-          )
-        ),
+        value: str ? new Date(str) : null,
       };
+    }
     case 'startAfterOffset':
     case 'plannedStartOffset':
     case 'dueToOffset':
       return {
         key,
         value: checked(
-          checked(value, isNumber, () => `Invalid ${key}: ${value}`),
-          v => v >= 0 && v < secondsIn24h,
+          checked(value, compileIsAny(isNumber, isNullish), () => `Invalid ${key}: ${value}`),
+          v => v == null || (v >= 0 && v < secondsIn24h),
           () => `Invalid offset: ${value}; expected 0..${secondsIn24h - 1}`
         ),
+      };
+    case 'participants':
+      return {
+        key,
+        value: JSON.parse(checked(value, isString, () => `Invalid ${key}: ${value}`)) as {
+          action: `+` | `-`;
+          userId: string;
+          roleId?: string;
+        },
       };
     default:
       throw new Error(`Unknown update field ${key}`);
   }
 };
 
-const taskUpdateCollector = (id: string) => {
+const taskUpdateCollector = (id: string, db: DbService) => {
   let changed = false;
   let update: Partial<{
     title: string;
@@ -124,10 +136,116 @@ const taskUpdateCollector = (id: string) => {
     dueToDate: Date;
     dueToOffset?: number | null;
   }> = {};
+  const participants: {
+    value: {
+      action: '+' | '-';
+      userId: string;
+      roleId?: string;
+    };
+    createdAt: Date;
+  }[] = [];
+  let participantsNeedsFullRebuild = false;
+
+  const getCurrentSortedParticipantsChanges = async () => {
+    return (
+      await db.transaction.taskHistoryValue.findMany({
+        where: { taskId: id, key: TaskHistoryKey.participants },
+        orderBy: { group: { createdAt: 'asc' } },
+        select: { value: true, group: { select: { createdAt: true } } },
+      })
+    ).map(e => ({
+      value: e.value as {
+        action: '+' | '-';
+        userId: string;
+        roleId?: string;
+      },
+      createdAt: e.group.createdAt,
+    }));
+  };
+
+  const addSortedParticipantsChanges = (
+    current: PromiseValue<ReturnType<typeof getCurrentSortedParticipantsChanges>>,
+    add: (typeof participants)[number][]
+  ) => {
+    current = [...current];
+    for (const v of add) {
+      current.splice(
+        sortedIndexBy(current, v, v => v.createdAt.getTime()),
+        0,
+        v
+      );
+    }
+    return current;
+  };
+
+  const changesToSnapshot = (
+    changes: PromiseValue<ReturnType<typeof getCurrentSortedParticipantsChanges>>
+  ) => {
+    const result: Record<string /*user*/, Set<string>> = {};
+    for (const c of changes) {
+      if (c.value.roleId != null) {
+        if (result[c.value.userId]) {
+          if (c.value.action === `+`) {
+            result[c.value.userId].add(c.value.roleId ?? ``);
+          } else {
+            result[c.value.userId].delete(c.value.roleId ?? ``);
+          }
+        }
+      } else {
+        if (c.value.action === `+`) {
+          result[c.value.userId] ??= new Set(); // don't overwrite
+        } else {
+          delete result[c.value.userId];
+        }
+      }
+    }
+    return result;
+  };
+
+  const rewriteParticipants = async (
+    changes: PromiseValue<ReturnType<typeof getCurrentSortedParticipantsChanges>>
+  ) => {
+    await db.transaction.userInTask.deleteMany({ where: { taskId: id } });
+    const snapshot = changesToSnapshot(changes);
+    await db.transaction.userInTask.createMany({
+      data: Object.entries(snapshot).map(([userId, roles]) => ({
+        userId,
+        taskId: id,
+        roles: [...roles].map(r => ({ create: { tag: r } })),
+      })),
+    });
+  };
+
   return {
     addPart(typed: ReturnType<typeof getTypedChange>) {
       update = { ...update, [typed.key]: typed.value };
       changed = true;
+    },
+    addParticipantsChange(
+      part: {
+        key: 'participants';
+        value: {
+          action: '+' | '-';
+          userId: string;
+          roleId?: string;
+        };
+      },
+      isOlderThanLast: boolean,
+      cur: { value: JsonValue; createdAt: Date } | undefined,
+      createdAt: Date
+    ) {
+      participants.push({ value: part.value, createdAt });
+      if (isOlderThanLast) {
+        participantsNeedsFullRebuild = true;
+      }
+    },
+    async writeParticipantsChanges() {
+      if (!participants.length) {
+        return;
+      }
+      await rewriteParticipants(
+        addSortedParticipantsChanges(await getCurrentSortedParticipantsChanges(), participants)
+      );
     },
     get hasChanges() {
       return changed;
@@ -286,33 +404,50 @@ export class TasksService {
 
       await Promise.all([
         ...newLastByTaskId
-          .toArray((newFields, taskId) => {
+          .toArray(async (newFields, taskId) => {
             const curFields = curLastByTaskId.get(taskId);
-            const collector = taskUpdateCollector(taskId);
+            const collector = taskUpdateCollector(taskId, this.db);
+
+            const add = (
+              isOlderThanLastExisting: boolean,
+              part: ReturnType<typeof getTypedChange>,
+              cur:
+                | {
+                    value: JsonValue;
+                    createdAt: Date;
+                  }
+                | undefined,
+              createdAt: Date
+            ) => {
+              if (part.key === `participants`) {
+                collector.addParticipantsChange(part, isOlderThanLastExisting, cur, createdAt);
+              } else if (isOlderThanLastExisting) {
+                collector.addPart(part);
+              }
+            };
+
             if (curFields) {
               for (const [field, { createdAt, part }] of newFields.entries()) {
                 const cur = curFields?.get(field);
-                if (cur == null || cur.createdAt.getTime() < createdAt.getTime()) {
-                  collector.addPart(part);
-                }
+                const isOlderThanLastExisting = cur == null || cur.createdAt.getTime() < createdAt.getTime();
+                add(isOlderThanLastExisting, part, cur, createdAt);
               }
             } else {
-              for (const { part } of newFields.values()) {
-                collector.addPart(part);
+              for (const { part, createdAt } of newFields.values()) {
+                add(true, part, undefined, createdAt);
               }
             }
             if (newIds.has(taskId)) {
-              return this.db.transaction.task.create({
+              await this.db.transaction.task.create({
                 data: { ...collector.create, updatedAt: new Date() },
               });
-            }
-            if (collector.hasChanges) {
-              return this.db.transaction.task.update({
+            } else if (collector.hasChanges) {
+              await this.db.transaction.task.update({
                 where: { id: taskId },
                 data: { ...collector.update, updatedAt: new Date() },
               });
             }
-            return undefined;
+            await collector.writeParticipantsChanges();
           })
           .filter(isTruthy),
 

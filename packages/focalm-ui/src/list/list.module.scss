@@ -1,0 +1,6 @@
+.taskItemRoot {
+  cursor: pointer;
+  &:hover {
+    --paper-border-color: var(--mantine-color-orange-2);
+  }
+}

@@ -12,6 +12,7 @@ import { UsersService } from '../users/users.service';
 const saltOrRounds = 10;
 
 export const jwtConstants = {
+  /// TODO
   secret:
     'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
 };

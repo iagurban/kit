@@ -4,14 +4,10 @@ import { hsl } from 'chroma.ts';
 import { observer } from 'mobx-react-lite';
 import { CSSProperties, useMemo } from 'react';
 
+import { gainHue, gainPointColor } from '../const';
 import { distance00to11 } from '../utils/geometry';
 import { observerWithForwardRef } from '../utils/mobx-util';
-import { scaleFrom01 } from '../utils/numeric';
 import { useAnimationConfig } from '../utils/react-contexts';
-
-export const gainHueFor0 = 1;
-export const gainHueFor1 = 140;
-export const gainHue = (r: number) => scaleFrom01(r, gainHueFor0, gainHueFor1);
 
 const Ratio2DGraphSvg = observer(function Ratio2DGraphSvg() {
   const maskId = useMemo(() => `Ratio2DGraph_${uidGenerator()}`, []);
@@ -46,9 +42,6 @@ const Ratio2DGraphSvg = observer(function Ratio2DGraphSvg() {
     </svg>
   );
 });
-
-export const gainPointColor = (gain: number) => hsl(gainHue(gain), 0.8, 0.4).hex();
-export const gainBadgeColor = (gain: number) => hsl(gainHue(gain), 0.6, 0.4).hex();
 
 export const Ratio2DGraph = observerWithForwardRef<
   {

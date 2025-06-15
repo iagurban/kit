@@ -10,9 +10,10 @@
     "dev-hmr": "PATH=\"$HOME/.npm-global/bin:$PATH\" nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "eslint-generated": "./bin/eslint-on-generated.sh",
     "after-client-generation": "yarn rimraf src/generated/old-client && ../core/src/bin/fix-prisma-imports.sh && ts-node ../core/src/bin/fix-nestgraphql.ts && echo '[eslint]' && yarn eslint-generated && echo '[finish]'",
-    "fc-prisma:generate-client": "NODE_ENV=production yarn pnpify prisma generate --no-hints && yarn after-client-generation",
+    "fc-prisma:generate-client-slow": "NODE_ENV=production yarn pnpify prisma generate --no-hints && yarn after-client-generation",
+    "fc-prisma:generate-client": "../core/src/bin/run-cached-input.sh -i './prisma/schema.prisma' -t './.gen-cli-cache' -x 'yarn fc-prisma:generate-client-slow'",
     "fc-server:prisma-dev": "nodemon -d 5 -e 'prisma' -w './prisma/schema.prisma' -x 'yarn fc-prisma:generate-client'",
-    "fc-server:full-dev": "yarn node --max-old-space-size=2048 $(yarn bin concurrently) -n nest,prisma -c cyan,magenta \"sleep 20 && yarn fc-server:start-dev\" \"yarn fc-server:prisma-dev\"",
+    "fc-server:full-dev": "yarn node --max-old-space-size=2048 $(yarn bin concurrently) -n nest,prisma -c cyan,magenta \"sleep 2 && yarn fc-server:start-dev\" \"yarn fc-server:prisma-dev\"",
     "fc-prisma:migrate": "yarn pnpify prisma migrate dev && yarn after-client-generation",
     "fc-prisma:migrate-reset": "yarn pnpify prisma migrate reset && yarn after-client-generation",
     "fc-prisma:seed": "yarn prisma db seed"

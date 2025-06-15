@@ -26,18 +26,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // Логируем стек только для 500 ошибок
     if (status === HttpStatus.INTERNAL_SERVER_ERROR) {
-      this.logger.error(`URL: ${request.url} ▶ ${message}\n${stack}`);
+      this.logger.error(`URL: ${request?.url} ▶ ${message}\n${stack}`);
     } else {
-      this.logger.warn(`URL: ${request.url} ▶ ${message}`);
+      this.logger.warn(`URL: ${request?.url} ▶ ${message}`);
     }
 
     // Отправляем клиенту
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      message,
-    });
+    if (response) {
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request?.url,
+        message,
+      });
+    }
   }
 }
 
@@ -50,7 +52,7 @@ async function bootstrap() {
     },
   });
 
-  app.useGlobalFilters(new AllExceptionsFilter());
+  // app.useGlobalFilters(new AllExceptionsFilter());
 
   app.use(cookieParser());
 

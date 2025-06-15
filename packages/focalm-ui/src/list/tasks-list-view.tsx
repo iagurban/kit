@@ -1,60 +1,19 @@
-import { Badge, Box, Flex, Paper, Tooltip } from '@mantine/core';
+import { Badge, Box, Button, Checkbox, Flex, Paper, Popover, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconCheck, IconCircle, IconClockCheck, IconClockPlay, IconClockStop } from '@tabler/icons-react';
+import dayjs from 'dayjs';
 import { sortBy } from 'lodash';
 import { observer } from 'mobx-react-lite';
-import { hanumanFont } from 'src/fonts/hanuman';
+import { ReactNode } from 'react';
 
-import { gainBadgeColor } from '../editing/ratio2-d-graph';
-import { aguDisplayFont, aguDisplayFontFallback } from '../fonts/agu-display';
-import { artifikaFont } from '../fonts/artifika';
-import { breeSerifFont } from '../fonts/bree-serif';
-import { bungeeInlineFont, bungeeInlineFontFallback } from '../fonts/bungee-inline';
-import { cherrySwashFont, cherrySwashFontFallback } from '../fonts/cherry-swash';
-import { creteRoundFont } from '../fonts/crete-round';
-import { enriquetaFont } from '../fonts/enriqueta';
-import { geostarFont, geostarFontFallback } from '../fonts/geostar';
-import { kumarOneOutlineFont, kumarOneOutlineFontFallback } from '../fonts/kumar-one-outline';
-import { lustriaFont } from '../fonts/lustria';
-import { monaspaceXenonFont } from '../fonts/monaspace-xenon';
-import { notoNastaliqUrduFont } from '../fonts/noto-nastaliq-urdu';
-import { notoSerifDevanagariFont } from '../fonts/noto-serif-devanagari';
-import { portLligatSlabFont } from '../fonts/port-lligat-slab';
-import { ribeyeMarrowFont, ribeyeMarrowFontFallback } from '../fonts/ribeye-marrow';
-import { ryeFont, ryeFontFallback } from '../fonts/rye';
-import { slabo27pxFont } from '../fonts/slabo-27px';
-import { suwannaphumFont } from '../fonts/suwannaphum';
-import { tourneyFont, tourneyFontFallback } from '../fonts/tourney';
-import { Task } from '../graphql.generated/_types';
+import { gainBadgeColor } from '../const';
+import { fonts } from '../fonts';
+import { Task, TaskState } from '../graphql.generated/_types';
 import { useStorage } from '../storage';
 import { distanceTo00 } from '../utils/geometry';
-
-const font = (name: string, fallback?: string) => `"${name}"` + (fallback ? `, ${fallback}` : '');
-
-const fonts = {
-  kumarOneOutline: font(kumarOneOutlineFont, kumarOneOutlineFontFallback),
-  aguDisplay: font(aguDisplayFont, aguDisplayFontFallback),
-  artifika: font(artifikaFont),
-  bungeeInline: font(bungeeInlineFont, bungeeInlineFontFallback),
-  cherrySwash: font(cherrySwashFont, cherrySwashFontFallback),
-  hanuman: font(hanumanFont),
-  geostar: font(geostarFont, geostarFontFallback),
-  ribeyeMarrow: font(ribeyeMarrowFont, ribeyeMarrowFontFallback),
-  rye: font(ryeFont, ryeFontFallback),
-
-  // serif
-  notoNastaliqUrdu: font(notoNastaliqUrduFont),
-  monaspaceXenon: font(monaspaceXenonFont),
-  lustria: font(lustriaFont),
-  breeSerif: font(breeSerifFont),
-  notoSerifDevanagari: font(notoSerifDevanagariFont),
-  portLligatSlab: font(portLligatSlabFont),
-  slabo27px: font(slabo27pxFont),
-  suwannaphum: font(suwannaphumFont),
-  tourney: font(tourneyFont, tourneyFontFallback),
-
-  // sans
-  enriqueta: font(enriquetaFont),
-  creteRound: font(creteRoundFont),
-} as const;
+import { useDatesFormats } from '../utils/react-contexts';
+import { secondsOffsetToString } from '../utils/seconds-offset';
+import classNames from './list.module.scss';
 
 const NumericBadge = observer<{
   value: number;
@@ -122,6 +81,73 @@ const Indicators = observer<{
   );
 });
 
+const DateTimeBadge = observer<{
+  date: string | null | undefined;
+  offset: number | null | undefined;
+  icon: ReactNode;
+  color: string;
+  label: string;
+}>(function DateTimeBadge({ date, offset, icon, color, label }) {
+  const formats = useDatesFormats();
+
+  return date ? (
+    <Tooltip label={label} withArrow>
+      <Badge leftSection={icon} color={color} variant="outline">
+        {dayjs(date).format(formats.dateFormat)} {offset != null && secondsOffsetToString(offset)}
+      </Badge>
+    </Tooltip>
+  ) : null;
+});
+
+const StateCheckbox = observer<{
+  task: Pick<Task, `id` | `state`>;
+}>(function StateCheckbox({ task }) {
+  const storage = useStorage();
+
+  const [opened, { close, open }] = useDisclosure();
+
+  return (
+    <Popover opened={opened} onDismiss={close}>
+      <Popover.Target>
+        <Checkbox
+          readOnly
+          checked={task.state === TaskState.Done}
+          indeterminate={task.state === TaskState.Active}
+          onClick={e => {
+            if (e.defaultPrevented) {
+              return;
+            }
+            open();
+            e.preventDefault();
+          }}
+        />
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Flex gap="sm" align="center">
+          <Box>Mark {task.state !== TaskState.Done ? `completed` : `pending`}?</Box>
+          <Button
+            color="green.5"
+            leftSection={task.state !== TaskState.Done ? <IconCheck /> : <IconCircle />}
+            onClick={e => {
+              close();
+              storage.tasks.pushUpdates([
+                {
+                  taskId: task.id,
+                  field: `state`,
+                  value: task.state !== TaskState.Done ? TaskState.Done : TaskState.Pending,
+                },
+              ]);
+              e.preventDefault();
+            }}
+          >
+            Mark
+          </Button>
+        </Flex>
+      </Popover.Dropdown>
+    </Popover>
+  );
+});
+
 export const TasksListView = observer(function TasksListView() {
   const storage = useStorage();
 
@@ -129,12 +155,37 @@ export const TasksListView = observer(function TasksListView() {
     <Flex direction="column">
       {sortBy([...storage.tasks.actualTasks.values()], t => t.orderKey).map(t => (
         <Flex key={t.id} direction="column" px={4} py={2}>
-          <Paper p={8} withBorder onClick={() => storage.tasks.openTask(t.id)}>
-            <Flex align="center">
+          <Paper
+            p={8}
+            withBorder
+            onClick={e => void (e.defaultPrevented || storage.tasks.openTask(t.id))}
+            className={classNames.taskItemRoot}
+          >
+            <Flex align="center" gap="xs">
+              <StateCheckbox task={t} />
               <Box flex="1 0 auto">{t.title}</Box>
-              <Badge>
-                {t.dueToDate} {t.dueToOffset}
-              </Badge>
+
+              <DateTimeBadge
+                date={t.startAfterDate}
+                offset={t.startAfterOffset}
+                icon={<IconClockPlay size="1rem" />}
+                color="orange.5"
+                label="Start After"
+              />
+              <DateTimeBadge
+                date={t.plannedStartDate}
+                offset={t.plannedStartOffset}
+                icon={<IconClockCheck size="1rem" />}
+                color="green.7"
+                label="Planned Start"
+              />
+              <DateTimeBadge
+                date={t.dueToDate}
+                offset={t.dueToOffset}
+                icon={<IconClockStop size="1rem" />}
+                color="red.5"
+                label="Due To"
+              />
               <Indicators variant="brief" data={t} />
             </Flex>
           </Paper>

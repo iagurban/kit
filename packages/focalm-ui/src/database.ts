@@ -29,7 +29,7 @@ interface MyDB extends DBSchema {
   };
 }
 
-export const dbPromise = openDB<MyDB>('focalm-app-db', 1, {
+export const idbClient = openDB<MyDB>('focalm-app-db', 1, {
   upgrade(db) {
     {
       const store = db.createObjectStore('snapshots', {

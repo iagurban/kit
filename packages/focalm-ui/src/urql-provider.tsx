@@ -85,7 +85,12 @@ const client = () =>
         return {
           // 1. Проверяем, была ли auth ошибка
           didAuthError: error => (
-            console.log(error), error.graphQLErrors.some(e => e.extensions?.['code'] === 'UNAUTHENTICATED')
+            console.log(
+              `uqrl auth err`,
+              [error],
+              error.graphQLErrors.some(e => e.extensions?.['code'] === 'UNAUTHENTICATED')
+            ),
+            error.graphQLErrors.some(e => e.extensions?.['code'] === 'UNAUTHENTICATED')
           ),
 
           // 2. Устанавливаем заголовок

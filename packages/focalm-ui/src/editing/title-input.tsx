@@ -8,7 +8,7 @@ export const editableLabelDecoration = {
   textDecorationColor: `#aaa`,
   textDecorationThickness: `1px`,
   cursor: `pointer`,
-} as CSSProperties;
+} as const satisfies CSSProperties;
 
 export const TitleInput = observer<{
   value: string;

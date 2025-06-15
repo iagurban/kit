@@ -62,7 +62,7 @@ export const useResizeObserver = (callback: (e: ResizeObserverEntry) => void) =>
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useResizeObserverWithCallback = <T extends (...a: any[]) => any>(
+export const useResizeObserverWithCallback = <T extends (e: ResizeObserverEntry) => any>(
   ...cb: Parameters<typeof useCallback<T>>
 ) => {
   const onResize = useCallback(...cb);

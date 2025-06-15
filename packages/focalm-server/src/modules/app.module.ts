@@ -1,7 +1,8 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { GraphQLISODateTime, GraphQLModule } from '@nestjs/graphql';
 import { Request, Response } from 'express';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
 
 import { CurrentUser } from '../decorators/current-user';
 import { AppController } from './app.controller';
@@ -23,6 +24,52 @@ import { UsersModule } from './users/users.module';
       playground: true, // GraphQL Playground в dev
       introspection: true, // отключи в проде
       context: ({ req, res }: { req: Request & { user?: CurrentUser }; res: Response }) => ({ req, res }), // важно для auth
+
+      formatError: (error): GraphQLFormattedError => {
+        let stackTrace: string | undefined;
+
+        if (error.extensions?.[`code`] === `UNAUTHENTICATED`) {
+          Logger.error(`[GraphQL][ERROR] ${error.message}`, 'GQL-Exception');
+        } else {
+          // 1) Если это GraphQLError (который наследует Error), у него есть stack.
+          if (error instanceof GraphQLError) {
+            // Попробуем вытянуть кастомный stack из extensions.exception, если он есть
+            const ext = error.extensions?.exception as { stack?: string; stacktrace?: string[] } | undefined;
+
+            if (ext?.stack) {
+              stackTrace = ext.stack;
+            } else if (Array.isArray(ext?.stacktrace)) {
+              stackTrace = ext.stacktrace.join('\n');
+            }
+
+            // fallback на стандартный GraphQLError.stack
+            if (!stackTrace) {
+              stackTrace = error.stack;
+            }
+          }
+          // 2) Ещё на всякий случай: любое другое исключение, унаследованное от Error.
+          else if (error instanceof Error) {
+            stackTrace = error.stack;
+          }
+
+          // Логируем полный стектрейс на сервер
+          Logger.error(
+            `[GraphQL][ERROR] ${error.message} [code=${error.extensions?.[`code`] || '<none>'}]`,
+            stackTrace,
+            'GQL-Exception'
+          );
+        }
+
+        // Клиенту отдадим только безопасное поле message + стандартные поля
+        return {
+          message: process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message,
+          locations: error.locations,
+          path: error.path,
+          extensions: {
+            code: error.extensions?.code,
+          },
+        };
+      },
     }),
     FilesModule,
     TasksModule,

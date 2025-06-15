@@ -1,16 +1,14 @@
 import { samples } from '@freyja/kit/utils/array-utils';
 import { Flex, Input, Popover, Slider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { hsl } from 'chroma.ts';
 import { observer } from 'mobx-react-lite';
 
+import { gainHue, gainHueFor0, gainHueFor1, gainPointColor, lightColor } from '../const';
 import { TaskCardStore } from '../storage';
 import { distance00to11, distanceTo00 } from '../utils/geometry';
 import { useAnimationConfig } from '../utils/react-contexts';
 import classNames from './editing.module.scss';
-import { gainHue, gainHueFor0, gainHueFor1, gainPointColor, Ratio2DGraph } from './ratio2-d-graph';
-
-const lightColor = (hue: number) => hsl(hue, 0.8, 0.8).hex();
+import { Ratio2DGraph } from './ratio2-d-graph';
 
 const step = (gainHueFor1 - gainHueFor0) / 3;
 const hues = [
@@ -21,8 +19,6 @@ const hues = [
 ].map(lightColor);
 
 const overGoodColor = lightColor(gainHue(distance00to11));
-
-export const pointSizeRem = 1;
 
 const GainLine = observer<{ value: number }>(function GainLine({ value }) {
   const { timeMs } = useAnimationConfig();
