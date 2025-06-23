@@ -23,6 +23,37 @@ export {
   validator,
   validator0,
 } from './core/checks';
+export {
+  angleBetween,
+  boundingBox,
+  circleArea,
+  circleCircumference,
+  degToRad,
+  distance,
+  distance00to11,
+  distanceTo00,
+  lerp,
+  lerpPoint,
+  midpoint,
+  pointInCircle,
+  pointInRect,
+  pointInTriangle,
+  pointOnCircle,
+  radToDeg,
+  rectArea,
+  rectCenter,
+  rectPerimeter,
+  rectsIntersect,
+  rotatePoint,
+  rotateRect,
+  triangleArea,
+  triangleCentroid,
+  trianglePerimeter,
+} from './core/geometry';
+
+
+
+
 export type { Listener } from './core/emitter';
 export { Emitter } from './core/emitter';
 export { FunctionsQueue } from './core/functions-queue';
