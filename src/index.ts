@@ -23,8 +23,11 @@ export {
   validator,
   validator0,
 } from './core/checks';
+export type { FunctionDisposable, ObjectDisposable } from './core/disposers';
+export { disposers } from './core/disposers';
 export type { Listener } from './core/emitter';
 export { Emitter } from './core/emitter';
+export { Errors } from './core/errors';
 export { FunctionsQueue } from './core/functions-queue';
 export { lazyGetter } from './core/lazy-getter';
 export { ProgrammingError } from './core/manual-sorting';
