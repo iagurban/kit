@@ -84,14 +84,21 @@ class KeysetPaginator<T> {
 
 describe('Keyset paginator', () => {
   test('123', () => {
-    const kp = new KeysetPaginator<{ id: string; name: string; author: { id: string; name: string } }>([
+    type Model = { id: string; name: string; author: { id: string; name: string } };
+
+    const kp = new KeysetPaginator<Model>([
       { name: 'asc' },
       { author: { name: 'desc' } },
       { id: 'asc' },
       { author: { id: 'asc' } },
     ]);
-    console.dir(kp.cursorSelectClause(), { depth: null });
-    console.dir(kp.whereClause({ id: '123', name: 'abc', author: { id: '456', name: 'def' } }), {
+
+    expect(kp.cursorSelectClause()).toEqual({ name: true, author: { name: true, id: true }, id: true });
+
+    /// TODO need implement nulls comparation
+
+    const cursor = { id: '123', name: 'abc', author: { id: '456', name: 'def' } };
+    console.dir(kp.whereClause(cursor), {
       depth: null,
     });
   });
