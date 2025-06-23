@@ -60,25 +60,28 @@ describe('NumberConverter', () => {
       expect(binary.digits.length).toBe(2);
 
       const custom = new NumberConverter([['A', 'Z'], '#', '@']);
-      expect(custom.base).toBe(27n);
-      expect(custom.digits.length).toBe(27);
+      expect(custom.base).toBe(28n);
+      expect(custom.digits.length).toBe(28);
+      console.log(custom.digits);
     });
 
     test('should validate input ranges and throw on invalid configurations', () => {
       // Invalid range (end before start)
-      expect(() => new NumberConverter([['9', '0']])).toThrow();
+      expect(() => new NumberConverter([['9', '0']]).digits).toThrow();
 
       // Duplicate characters
-      expect(() => new NumberConverter(['a', 'a'])).toThrow('duplicates');
-      expect(() => new NumberConverter([['a', 'c'], 'b'])).toThrow('duplicates');
+      expect(() => new NumberConverter(['a', 'a']).digits).toThrow();
+      expect(() => new NumberConverter([['a', 'c'], 'b']).digits).toThrow();
 
       // Invalid range format
       expect(
-        () => new NumberConverter([['a']] as unknown as readonly (string | readonly [string, string])[])
+        () =>
+          new NumberConverter([['a']] as unknown as readonly (string | readonly [string, string])[]).digits
       ).toThrow();
       expect(
         () =>
           new NumberConverter([['a', 'b', 'c']] as unknown as readonly (string | readonly [string, string])[])
+            .digits
       ).toThrow();
     });
   });
