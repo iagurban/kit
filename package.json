@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "yarn eslint \"packages/*/src/**/*.{ts,tsx}\" --fix"
+    "lint": "yarn workspaces foreach -Apt run lint"
   },
   "workspaces": [
     "packages/*"
