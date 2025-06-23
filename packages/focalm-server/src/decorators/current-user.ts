@@ -1,4 +1,4 @@
-import { notNull } from '@freyja/kit/src';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 

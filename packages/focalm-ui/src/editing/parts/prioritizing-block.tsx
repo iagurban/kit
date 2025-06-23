@@ -1,4 +1,5 @@
-import { samples } from '@freyja/kit/utils/array-utils';
+import { distance00to11, distanceTo00 } from '@gurban/kit/core/geometry';
+import { samples } from '@gurban/kit/utils/array-utils';
 import { Flex, Input, Popover, Slider } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { observer } from 'mobx-react-lite';
@@ -6,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 import { Ratio2DGraph } from '../../components/ratio2-d-graph';
 import { gainHue, gainHueFor0, gainHueFor1, gainPointColor, lightColor } from '../../shared/const';
 import { TaskCardStore } from '../../storage/task-card-store';
-import { distance00to11, distanceTo00 } from '../../utils/geometry';
 import { useAnimationConfig } from '../../utils/react-contexts';
 import classNames from '../editing.module.scss';
 

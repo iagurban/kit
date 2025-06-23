@@ -1,4 +1,5 @@
-import { ExSet, isDefined } from '@freyja/kit/src';
+import { ExSet } from '@gurban/kit/collections/ex-set';
+import { isDefined } from '@gurban/kit/core/checks';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { Args, Field, Mutation, ObjectType, Query, ResolveField, Resolver, Root } from '@nestjs/graphql';
 

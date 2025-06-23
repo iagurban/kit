@@ -1,4 +1,4 @@
-import { notNull } from '@freyja/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Flex, FlexProps, Grid, Input, Select, Slider, Switch } from '@mantine/core';
 import { reaction, runInAction } from 'mobx';
 import { getSnapshot, Model, model, modelAction, prop } from 'mobx-keystone';

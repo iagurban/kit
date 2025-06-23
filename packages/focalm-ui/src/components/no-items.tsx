@@ -1,7 +1,7 @@
-import { observer } from 'mobx-react-lite';
-import { PropsWithChildren } from 'react';
 import { Box, Text, TextProps } from '@mantine/core';
 import { IconCircleOff } from '@tabler/icons-react';
+import { observer } from 'mobx-react-lite';
+import { PropsWithChildren } from 'react';
 
 export const NoItems = observer<PropsWithChildren<TextProps>>(function NoItems({ children, ...props }) {
   return (

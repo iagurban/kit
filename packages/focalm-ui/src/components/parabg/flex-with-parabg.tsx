@@ -1,4 +1,4 @@
-import { useResizeObserverWithCallback } from '@freyja/kit/mobx/use-resize-observer';
+import { useResizeObserverWithCallback } from '@freyja/kit-ui/mobx/use-resize-observer';
 import { Box, BoxProps, Flex, FlexProps } from '@mantine/core';
 import clsx from 'clsx';
 import { computed, makeAutoObservable, runInAction } from 'mobx';

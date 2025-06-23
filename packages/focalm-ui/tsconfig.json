@@ -25,7 +25,7 @@
       "@focalm/core/*": ["../core/src/*"],
       "@focalm/server/*": ["../focalm-server/src/*"],
       "@freyja/kit-ui/*": ["../kit-ui/src/*"],
-      "@freyja/kit/*": ["../kit/src/*"]
+      "@gurban/kit/*": ["../kit/src/*"]
     }
   },
   "include": ["src", "test", "111eslint.config.mjs", ".prettierrc.js"],

@@ -1,5 +1,5 @@
-import { emptySymbol } from '@freyja/kit/core/const';
-import { Nullish } from '@freyja/kit/utils/types';
+import { emptySymbol } from '@gurban/kit/core/string-const';
+import { Nullish } from '@gurban/kit/utils/types';
 import {
   ActionIcon,
   Avatar,

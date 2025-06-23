@@ -1,4 +1,4 @@
-import { sleep } from '@freyja/kit/utils/async-utils';
+import { sleep } from '@freyja/kit-ui/utils/async-utils';
 import {
   AnyVariables,
   Client,

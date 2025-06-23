@@ -1,4 +1,4 @@
-import { uidGenerator } from '@freyja/kit/core/uid-generator';
+import { uidGenerator } from '@gurban/kit/core/uid-generator';
 import { computed, IComputedValue, onBecomeUnobserved } from 'mobx';
 import { CSSProperties } from 'react';
 

@@ -9,10 +9,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
+import { ProjectsModule } from './projects/projects.module';
+import { ProjectsResolver } from './projects/projects.resolver';
 import { TasksModule } from './tasks/tasks.module';
 import { UsersModule } from './users/users.module';
-import { ProjectsResolver } from './projects/projects.resolver';
-import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [

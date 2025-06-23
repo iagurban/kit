@@ -16,7 +16,8 @@
     "fc-server:full-dev": "yarn node --max-old-space-size=2048 $(yarn bin concurrently) -n nest,prisma -c cyan,magenta \"sleep 2 && yarn fc-server:start-dev\" \"yarn fc-server:prisma-dev\"",
     "fc-prisma:migrate": "yarn pnpify prisma migrate dev --skip-generate",
     "fc-prisma:migrate-reset": "yarn pnpify prisma migrate reset --skip-generate",
-    "fc-prisma:seed": "yarn prisma db seed"
+    "fc-prisma:seed": "yarn prisma db seed",
+    "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "prisma": {
     "seed": "yarn ts-node ./prisma/seed.ts"
@@ -25,7 +26,7 @@
     "@apollo/server": "^4.12.0",
     "@eslint/js": "^9.24.0",
     "@focalm/core": "workspace:*",
-    "@freyja/kit": "workspace:*",
+    "@gurban/kit": "workspace:*",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^11.0.17",
     "@nestjs/core": "^11.0.17",

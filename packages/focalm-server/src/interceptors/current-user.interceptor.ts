@@ -1,4 +1,4 @@
-import { notNull } from '@freyja/kit/src';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { defer, Observable } from 'rxjs';
 

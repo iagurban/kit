@@ -1,3 +1,4 @@
+import { secondsOffsetToString } from '@gurban/kit/core/seconds-offset';
 import { Box, Popover } from '@mantine/core';
 import dayjs from 'dayjs';
 import { observer } from 'mobx-react-lite';
@@ -5,7 +6,6 @@ import { useMemo, useState } from 'react';
 
 import { editableLabelDecoration } from '../editing/parts/title-block';
 import { useDatesFormats } from '../utils/react-contexts';
-import { secondsOffsetToString } from '../utils/seconds-offset';
 import { DateTimeSelector, DateTimeSelectorProps } from './date-time-selector';
 import classNames from './popover-shadow-fix.module.scss';
 

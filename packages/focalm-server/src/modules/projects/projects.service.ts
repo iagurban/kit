@@ -1,4 +1,4 @@
-import { notNull } from '@freyja/kit/src';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable } from '@nestjs/common';
 
 import { ProjectSelect } from '../../generated/db-client/models/Project';

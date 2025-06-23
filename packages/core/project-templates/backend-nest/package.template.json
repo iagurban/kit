@@ -21,7 +21,7 @@
   "dependencies": {
     "@apollo/server": "^4.12.0",
     "@eslint/js": "^9.24.0",
-    "@freyja/kit": "workspace:*",
+    "@gurban/kit": "workspace:*",
     "@nestjs/apollo": "^13.1.0",
     "@nestjs/common": "^11.0.17",
     "@nestjs/core": "^11.0.17",

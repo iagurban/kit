@@ -36,7 +36,7 @@
     "@fontsource-variable/roboto-serif": "^5.2.6",
     "@fontsource-variable/roboto-slab": "^5.2.6",
     "@fontsource/inter": "^5.2.6",
-    "@freyja/kit": "workspace:*",
+    "@gurban/kit": "workspace:*",
     "@jelovnik/server": "workspace:*",
     "@mantine/core": "8.1.0",
     "@mantine/dropzone": "^8.1.0",

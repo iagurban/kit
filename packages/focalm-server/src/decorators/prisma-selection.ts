@@ -1,4 +1,5 @@
-import { isDefined, isROArray, isTruthy, notNull } from '@freyja/kit/src';
+import { isDefined, isROArray, isTruthy } from '@gurban/kit/core/checks';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 

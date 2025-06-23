@@ -1,11 +1,11 @@
-import { uidGenerator } from '@freyja/kit/core/uid-generator';
+import { distance00to11 } from '@gurban/kit/core/geometry';
+import { uidGenerator } from '@gurban/kit/core/uid-generator';
 import { Box, Tooltip } from '@mantine/core';
 import { hsl } from 'chroma.ts';
 import { observer } from 'mobx-react-lite';
 import { CSSProperties, useMemo } from 'react';
 
 import { gainHue, gainPointColor } from '../shared/const';
-import { distance00to11 } from '../utils/geometry';
 import { observerWithForwardRef } from '../utils/mobx-util';
 import { useAnimationConfig } from '../utils/react-contexts';
 

@@ -1,7 +1,6 @@
-import { ManualSortingAlphabet } from '@freyja/kit/manual-sorting';
+import { ManualSortingAlphabet } from '@gurban/kit/core/manual-sorting';
+import { scaleFrom01 } from '@gurban/kit/utils/numeric-utils';
 import { hsl } from 'chroma.ts';
-
-import { scaleFrom01 } from '../utils/numeric';
 
 export const dangerColorMantine = 'red.6';
 

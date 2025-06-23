@@ -1,5 +1,5 @@
-import { isTruthy } from '@freyja/kit/asserts';
-import { once } from '@freyja/kit/core/once';
+import { isTruthy } from '@gurban/kit/core/checks';
+import { once } from '@gurban/kit/core/once';
 import { AppShell } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { computed } from 'mobx';

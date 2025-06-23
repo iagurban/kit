@@ -1,7 +1,7 @@
 // import 'vite/client';
 import '@mantine/core/styles.css';
 
-import { notNull } from '@freyja/kit/src';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ROARR } from 'roarr';

@@ -1,4 +1,5 @@
-import { sleep, uidGenerator } from '@freyja/kit/index';
+import { sleep } from '@freyja/kit-ui/utils/async-utils';
+import { uidGenerator } from '@gurban/kit/index';
 import {
   action,
   computed,

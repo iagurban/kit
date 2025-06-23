@@ -1,4 +1,4 @@
-import { notNull } from '@freyja/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { observer } from 'mobx-react-lite';
 import { PropsWithChildren, useMemo } from 'react';
 import { useClient } from 'urql';

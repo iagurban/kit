@@ -1,11 +1,10 @@
+import { secondsOffsetToString, timeStringToSecondsOffset } from '@gurban/kit/core/seconds-offset';
 import { ActionIcon, Flex } from '@mantine/core';
 import { Calendar, TimePicker } from '@mantine/dates';
 import { IconCheck } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { observer } from 'mobx-react-lite';
 import { useMemo, useState } from 'react';
-
-import { secondsOffsetToString, timeStringToSecondsOffset } from '../utils/seconds-offset';
 
 export type DateTimeSelectorProps = {
   date: string | null | undefined;

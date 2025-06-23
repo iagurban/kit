@@ -13,7 +13,13 @@
     "noErrorTruncation": true,
     "skipLibCheck": true,
 
-    "types": ["node"]
+    "types": ["node"],
+
+    "baseUrl": ".",
+    "paths": {
+      "@gurban/kit/*": ["../kit/src/*"],
+      "@focalm/core/*": ["../core/src/*"]
+    }
   },
   "include": ["./src"]
 }

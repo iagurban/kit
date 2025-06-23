@@ -22,7 +22,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@freyja/kit/*": ["../kit/src/*"],
+      "@gurban/kit/*": ["../kit/src/*"],
       "@focalm/core/*": ["../core/src/*"]
     }
   },

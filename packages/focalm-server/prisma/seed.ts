@@ -1,4 +1,3 @@
-import { ExMap, isDefined, notNull, samplesBy } from '@freyja/kit/src';
 import { Injectable, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -12,6 +11,10 @@ import { TasksModule } from '../src/modules/tasks/tasks.module';
 import { PreparedTaskChangesGroup, TasksService } from '../src/modules/tasks/tasks.service';
 import TaskHistoryKey = $Enums.TaskHistoryKey;
 import { generateNewTaskId } from '@focalm/core/src/const';
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { isDefined } from '@gurban/kit/core/checks';
+import { samplesBy } from '@gurban/kit/utils/array-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 
 console.log(`[started]`);
 

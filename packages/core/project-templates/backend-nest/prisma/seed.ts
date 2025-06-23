@@ -1,4 +1,4 @@
-import { rndStr } from '@freyja/kit';
+import { rndStr } from '@gurban/kit';
 
 import { PrismaClient } from '../src/generated/db-client';
 import { manualSort } from '../src/manual-sort';

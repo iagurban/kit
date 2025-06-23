@@ -1,5 +1,5 @@
-import { notNull } from '@freyja/kit/utils/flow-utils';
-import { Nullish } from '@freyja/kit/utils/types';
+import { notNull } from '@gurban/kit/utils/flow-utils';
+import { Nullish } from '@gurban/kit/utils/types';
 import { JSONContent } from '@tiptap/react';
 import { computed, reaction, toJS } from 'mobx';
 import { createContext, idProp, Model, model, modelAction, prop } from 'mobx-keystone';

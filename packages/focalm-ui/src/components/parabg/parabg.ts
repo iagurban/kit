@@ -1,4 +1,4 @@
-import { isTruthy } from '@freyja/kit/asserts';
+import { isTruthy } from '@gurban/kit/core/checks';
 import { CSSProperties } from 'react';
 
 export const parabgVars = (o: {

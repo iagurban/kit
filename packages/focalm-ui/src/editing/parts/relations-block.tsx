@@ -1,4 +1,5 @@
-import { notNull } from '@freyja/kit/utils/flow-utils';
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import {
   ActionIcon,
   Box,
@@ -20,7 +21,6 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 
-import { ExMap } from '../../../../../../gurban/packages/kit/src/ex-map';
 import { NoItems } from '../../components/no-items';
 import { TaskToTaskRelationType } from '../../graphql.generated/_types';
 import { useSearchTasksQuery } from '../../graphql.generated/tasks';

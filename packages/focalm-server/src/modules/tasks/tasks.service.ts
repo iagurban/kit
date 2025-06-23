@@ -1,18 +1,5 @@
 import { randomUUID } from 'node:crypto';
 
-import {
-  checked,
-  compileIsAny,
-  ExMap,
-  ExSet,
-  isNull,
-  isNullish,
-  isNumber,
-  isString,
-  notNull,
-  PromiseValue,
-  samplesBy,
-} from '@freyja/kit/src';
 import { Injectable } from '@nestjs/common';
 import { groupBy, sortBy, sortedIndexBy } from 'lodash';
 
@@ -25,6 +12,12 @@ import TaskCreateArgs = Prisma.TaskCreateArgs;
 import JsonNull = Prisma.JsonNull;
 import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
 import CreatedAtFixReason = $Enums.CreatedAtFixReason;
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { ExSet } from '@gurban/kit/collections/ex-set';
+import { checked, isNull, isNullish, isNumber, isSomeOf, isString } from '@gurban/kit/core/checks';
+import { samplesBy } from '@gurban/kit/utils/array-utils';
+import { PromiseValue } from '@gurban/kit/utils/async-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { isPlainObject } from '@nestjs/common/utils/shared.utils';
 import { z } from 'zod';
 
@@ -80,7 +73,7 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
     case 'orderKey':
       return { key, value: checked(value, isString, () => `Invalid ${key}: ${value}`) };
     case 'parentId': {
-      const v = checked(value, compileIsAny(isString, isNull), () => `Invalid ${key}: ${value}`);
+      const v = checked(value, isSomeOf(isString, isNull), () => `Invalid ${key}: ${value}`);
       return { key, value: v != null ? (newIdsReplacements.get(v) ?? v) : null };
     }
     case 'ease':
@@ -101,7 +94,7 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
     case 'plannedStartDate':
     case 'dueToDate': {
       const str = checked(
-        checked(value, compileIsAny(isString, isNullish), () => `Invalid ${key}: ${value}`),
+        checked(value, isSomeOf(isString, isNullish), () => `Invalid ${key}: ${value}`),
         s => s == null || /^\d{4}-\d{2}-\d{2}$/.test(s),
         () => `Invalid date format: ${value}`
       );
@@ -117,7 +110,7 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
       return {
         key,
         value: checked(
-          checked(value, compileIsAny(isNumber, isNullish), () => `Invalid ${key}: ${value}`),
+          checked(value, isSomeOf(isNumber, isNullish), () => `Invalid ${key}: ${value}`),
           v => v == null || (v >= 0 && v < secondsIn24h),
           () => `Invalid offset: ${value}; expected 0..${secondsIn24h - 1}`
         ),

@@ -1,5 +1,5 @@
-import { buildEslintConfig } from '../kit/src/eslint-parts.mjs';
-import { frontConfig, frontRules } from '../kit/src/eslint-parts-front.mjs';
+import { buildEslintConfig } from '../kit/helpers/eslint-parts.mjs';
+import { frontConfig, frontRules } from '../kit-ui/helpers/eslint-parts-front.mjs';
 
 
 export default buildEslintConfig([

@@ -1,4 +1,4 @@
-import { ExMap } from '@freyja/kit/index';
+import { ExMap } from '@gurban/kit/index';
 import { computed, makeObservable } from 'mobx';
 
 export class ExTree<Item, ID> {
@@ -24,6 +24,7 @@ export class ExTree<Item, ID> {
     return this.byParentID.get(null);
   }
 
+  @computed
   get parentsKeys() {
     return this.byParentID.keys();
   }

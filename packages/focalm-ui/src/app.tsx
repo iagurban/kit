@@ -3,7 +3,7 @@ import '@mantine/dates/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@gfazioli/mantine-parallax/styles.css';
 
-import { uidGenerator } from '@freyja/kit/src';
+import { uidGenerator } from '@gurban/kit/core/uid-generator';
 import { MantineProvider } from '@mantine/core';
 import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';

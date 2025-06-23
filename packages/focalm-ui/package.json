@@ -14,7 +14,8 @@
     "test": "yarn jest",
     "test-watch": "yarn test --watch",
     "test-coverage": "yarn test --coverage",
-    "clean-cache": "rimraf ./.vite-cache && rimraf ./dist && rimraf ./node_modules"
+    "clean-cache": "rimraf ./.vite-cache && rimraf ./dist && rimraf ./node_modules",
+    "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "private": true,
   "dependencies": {
@@ -65,8 +66,8 @@
     "@fontsource/rye": "^5.2.6",
     "@fontsource/slabo-27px": "^5.2.6",
     "@fontsource/suwannaphum": "^5.2.6",
-    "@freyja/kit": "workspace:*",
     "@gfazioli/mantine-parallax": "^2.2.1",
+    "@gurban/kit": "workspace:*",
     "@jelovnik/server": "workspace:*",
     "@mantine/charts": "^8.1.0",
     "@mantine/core": "^8.1.1",

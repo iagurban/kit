@@ -5,6 +5,9 @@
   "author": "Igor Gurban <iagurban@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "lint": "yarn eslint \"packages/*/src/**/*.{ts,tsx}\" --fix"
+  },
   "workspaces": [
     "packages/*"
   ],

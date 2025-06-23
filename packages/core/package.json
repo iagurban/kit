@@ -5,7 +5,7 @@
     "node": ">= 12"
   },
   "devDependencies": {
-    "@freyja/kit": "workspace:*",
+    "@gurban/kit": "workspace:*",
     "@types/node": "^24.0.0"
   }
 }
