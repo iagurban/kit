@@ -18,4 +18,7 @@ export class TaskSumOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   dueToOffset?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  nnInProject?: `${SortOrder}`;
 }

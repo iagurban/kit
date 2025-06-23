@@ -17,7 +17,7 @@ export class FindFirstUserInTaskTagArgs {
   orderBy?: Array<UserInTaskTagOrderByWithRelationInput>;
 
   @Field(() => UserInTaskTagWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>;
+  cursor?: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>;
 
   @Field(() => Int, { nullable: true })
   take?: number;

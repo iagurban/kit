@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
+import { ParticipantRole } from '../participant-role/participant-role.model';
 import { UserInTask } from '../user-in-task/user-in-task.model';
 
 @ObjectType()
@@ -8,8 +9,11 @@ export class UserInTaskTag {
   userInTaskId!: string;
 
   @Field(() => String, { nullable: false })
-  tag!: string;
+  roleId!: string;
 
   @Field(() => UserInTask, { nullable: false })
   userInTask?: UserInTask;
+
+  @Field(() => ParticipantRole, { nullable: false })
+  role?: ParticipantRole;
 }

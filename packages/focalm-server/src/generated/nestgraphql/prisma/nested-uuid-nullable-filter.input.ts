@@ -23,6 +23,9 @@ export class NestedUuidNullableFilter {
   @Field(() => String, { nullable: true })
   gte?: string;
 
+  @Field(() => String, { nullable: true })
+  search?: string;
+
   @Field(() => NestedUuidNullableFilter, { nullable: true })
   not?: NestedUuidNullableFilter;
 }

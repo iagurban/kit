@@ -23,5 +23,5 @@ export class UserInTaskTagCreateNestedManyWithoutUserInTaskInput {
 
   @Field(() => [UserInTaskTagWhereUniqueInput], { nullable: true })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  connect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>>;
+  connect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>>;
 }

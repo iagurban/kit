@@ -8,6 +8,9 @@ import { TaskHistoryValueMinOrderByAggregateInput } from './task-history-value-m
 @InputType()
 export class TaskHistoryValueOrderByWithAggregationInput {
   @Field(() => SortOrder, { nullable: true })
+  id?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
   groupId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })

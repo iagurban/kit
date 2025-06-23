@@ -8,5 +8,5 @@ import { UserInTaskTagWhereUniqueInput } from './user-in-task-tag-where-unique.i
 export class FindUniqueUserInTaskTagArgs {
   @Field(() => UserInTaskTagWhereUniqueInput, { nullable: false })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  where!: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>;
+  where!: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>;
 }

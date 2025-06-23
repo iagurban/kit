@@ -3,6 +3,7 @@ fragment FullTask on Task {
 
     state
     title
+    description
     archived
 
     createdAt
@@ -26,11 +27,25 @@ fragment FullTask on Task {
     }
     responsibleId
     authorId
+    projectId
     participants {
         userId
         tags {
-            tag
+            role {
+                id
+                name
+                color
+            }
         }
+    }
+
+    relationsSrc {
+        dstId
+        typeId
+    }
+    relationsDst {
+        srcId
+        typeId
     }
 }
 
@@ -38,6 +53,7 @@ fragment BriefUser on User {
     id
     email
     name
+    abbrev
 }
 
 query GetTasks($updatedAfter: DateTime) {
@@ -47,6 +63,17 @@ query GetTasks($updatedAfter: DateTime) {
         }
         relatedUsers {
             ...BriefUser
+        }
+    }
+}
+
+
+query SearchTasks($titleLike: String) {
+    searchTasks(titleLike: $titleLike) {
+        tasks {
+            id
+            title
+            state
         }
     }
 }
@@ -66,4 +93,53 @@ mutation UpdateTasks($changes: [TasksChangesGroup!]!, $updatedAfter: DateTime) {
             }
         }
     }
+}
+
+
+query GetParticipantsRoles {
+    participantsRoles {
+        id
+        name
+        color
+    }
+}
+
+query GetUsers {
+    users {
+        id
+        email
+        name
+        abbrev
+    }
+}
+
+query GetProject($id: String) {
+    project(id: $id) {
+        id
+        name
+        relationTypes {
+            id
+            forward
+            inverse
+        }
+    }
+}
+
+query GetProjects {
+    projects {
+        id
+        name
+        relationTypes {
+            id
+            forward
+            inverse
+        }
+        ownOf {
+            id
+        }
+    }
+}
+
+query GetFailingQuery {
+    failingQuery
 }

@@ -8,6 +8,9 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 @InputType()
 export class TaskHistoryValueUncheckedUpdateWithoutGroupInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  id?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   taskId?: StringFieldUpdateOperationsInput;
 
   @Field(() => EnumTaskHistoryKeyFieldUpdateOperationsInput, { nullable: true })

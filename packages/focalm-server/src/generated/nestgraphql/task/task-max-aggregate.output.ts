@@ -58,4 +58,10 @@ export class TaskMaxAggregate {
 
   @Field(() => String, { nullable: true })
   orderKey?: string;
+
+  @Field(() => String, { nullable: true })
+  projectId?: string;
+
+  @Field(() => String, { nullable: true })
+  nnInProject?: bigint | number;
 }

@@ -8,5 +8,5 @@ export class UserInTaskTagUncheckedUpdateManyInput {
   userInTaskId?: StringFieldUpdateOperationsInput;
 
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  tag?: StringFieldUpdateOperationsInput;
+  roleId?: StringFieldUpdateOperationsInput;
 }

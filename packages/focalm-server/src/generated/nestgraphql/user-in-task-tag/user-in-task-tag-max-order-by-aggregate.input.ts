@@ -8,5 +8,5 @@ export class UserInTaskTagMaxOrderByAggregateInput {
   userInTaskId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  tag?: `${SortOrder}`;
+  roleId?: `${SortOrder}`;
 }

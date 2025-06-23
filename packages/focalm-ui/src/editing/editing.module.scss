@@ -31,3 +31,22 @@ $pointSizeRem: 1rem;
   width: $pointSizeRem;
   height: $pointSizeRem;
 }
+
+.hideCardsBigButton {
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: start;
+  z-index: 170;
+
+  svg {
+    transition: opacity 0.2s ease;
+    color: var(--mantine-color-dimmed);
+
+    opacity: 0;
+  }
+
+  &:hover svg {
+    opacity: 0.3;
+  }
+}

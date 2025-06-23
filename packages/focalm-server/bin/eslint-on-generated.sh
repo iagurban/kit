@@ -3,8 +3,8 @@ set -euo pipefail
 
 # Параметры
 ROOT_DIR="./src/generated"
-BATCH_SIZE=100      # число файлов в одном пакете
-PARALLEL_PROCS=4   # число параллельных ESLint-процессов
+BATCH_SIZE=200      # число файлов в одном пакете
+PARALLEL_PROCS=2   # число параллельных ESLint-процессов
 
 # Ваши аргументы ESLint
 ESLINT_ARGS=(

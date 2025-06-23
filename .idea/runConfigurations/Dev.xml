@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="2.0">
-    <runConfiguration name="server &gt; server:prisma-dev" type="npm" />
-    <runConfiguration name="ui &gt; generate:graphql-watch" type="npm" />
-    <runConfiguration name="server &gt; server:start-dev" type="npm" />
-    <runConfiguration name="ui &gt; ui:start-dev" type="npm" />
-    <method v="2" />
-  </configuration>
-</component>

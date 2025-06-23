@@ -9,7 +9,7 @@ import { UserWhereUniqueInput } from './user-where-unique.input';
 export class UserCreateOrConnectWithoutUploadedFilesInput {
   @Field(() => UserWhereUniqueInput, { nullable: false })
   @Type(() => UserWhereUniqueInput)
-  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 
   @Field(() => UserCreateWithoutUploadedFilesInput, { nullable: false })
   @Type(() => UserCreateWithoutUploadedFilesInput)

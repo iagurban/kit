@@ -1,4 +1,4 @@
-import { buildEslintConfig, commonRules, serverConfig } from '../kit/src/eslint-parts.mjs';
+import { buildEslintConfig, commonRules, serverConfig } from '../../../kit/src/eslint-parts.mjs';
 
 export default buildEslintConfig(
   ['node_modules/**', 'dist/**', 'src/generated/db-client/**'],

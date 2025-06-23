@@ -6,6 +6,9 @@ import { TaskHistoryOperation } from '../prisma/task-history-operation.enum';
 
 @InputType()
 export class TaskHistoryValueUncheckedCreateInput {
+  @Field(() => String, { nullable: true })
+  id?: string;
+
   @Field(() => String, { nullable: false })
   groupId!: string;
 

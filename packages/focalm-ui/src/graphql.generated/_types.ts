@@ -50,9 +50,82 @@ export type MutationUpdateTasksArgs = {
   changes: Array<TasksChangesGroup>;
 };
 
+export type ParticipantRole = {
+  __typename?: 'ParticipantRole';
+  _count: ParticipantRoleCount;
+  color: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  usersInTasks?: Maybe<Array<UserInTaskTag>>;
+};
+
+export type ParticipantRoleCount = {
+  __typename?: 'ParticipantRoleCount';
+  usersInTasks: Scalars['Int']['output'];
+};
+
+export enum PermissionInProject {
+  Participants = 'participants',
+  Tasks = 'tasks',
+}
+
+export enum PermissionKind {
+  Create = 'create',
+  Delete = 'delete',
+  Read = 'read',
+  Update = 'update',
+}
+
+export type Project = {
+  __typename?: 'Project';
+  _count: ProjectCount;
+  abbrev?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  ownOf?: Maybe<User>;
+  relationTypes?: Maybe<Array<TaskToTaskRelationType>>;
+  tasks?: Maybe<Array<Task>>;
+  tasksCounter: Scalars['String']['output'];
+  usersPermissions?: Maybe<Array<UserInProject>>;
+};
+
+export type Project2 = {
+  __typename?: 'Project2';
+  _count: ProjectCount;
+  abbrev?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  ownOf?: Maybe<User>;
+  relationTypes: Array<TaskToTaskRelationType>;
+  tasks: Array<Task>;
+  tasksCounter: Scalars['String']['output'];
+  usersPermissions?: Maybe<Array<UserInProject>>;
+};
+
+export type ProjectCount = {
+  __typename?: 'ProjectCount';
+  relationTypes: Scalars['Int']['output'];
+  tasks: Scalars['Int']['output'];
+  usersPermissions: Scalars['Int']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  failingQuery: Scalars['Boolean']['output'];
+  participantsRoles: Array<ParticipantRole>;
+  project: Project2;
+  projects: Array<Project2>;
+  searchTasks: TasksWithRelatedStuff;
   tasks: TasksWithRelatedStuff;
+  users: Array<User>;
+};
+
+export type QueryProjectArgs = {
+  id?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type QuerySearchTasksArgs = {
+  titleLike?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type QueryTasksArgs = {
@@ -92,18 +165,24 @@ export type Task = {
   authorId: Scalars['String']['output'];
   children?: Maybe<Array<Task>>;
   createdAt: Scalars['DateTime']['output'];
+  description: Scalars['JSON']['output'];
   dueToDate?: Maybe<Scalars['Date']['output']>;
   dueToOffset?: Maybe<Scalars['Int']['output']>;
   ease: Scalars['Float']['output'];
   historyValues?: Maybe<Array<TaskHistoryValue>>;
   id: Scalars['ID']['output'];
   impact: Scalars['Float']['output'];
+  nnInProject: Scalars['String']['output'];
   orderKey: Scalars['String']['output'];
   parent?: Maybe<Task>;
   parentId?: Maybe<Scalars['String']['output']>;
   participants?: Maybe<Array<UserInTask>>;
   plannedStartDate?: Maybe<Scalars['Date']['output']>;
   plannedStartOffset?: Maybe<Scalars['Int']['output']>;
+  project: Project;
+  projectId: Scalars['String']['output'];
+  relationsDst?: Maybe<Array<TaskToTaskRelation>>;
+  relationsSrc?: Maybe<Array<TaskToTaskRelation>>;
   responsible?: Maybe<User>;
   responsibleId?: Maybe<Scalars['String']['output']>;
   startAfterDate?: Maybe<Scalars['Date']['output']>;
@@ -118,6 +197,8 @@ export type TaskCount = {
   children: Scalars['Int']['output'];
   historyValues: Scalars['Int']['output'];
   participants: Scalars['Int']['output'];
+  relationsDst: Scalars['Int']['output'];
+  relationsSrc: Scalars['Int']['output'];
 };
 
 export type TaskFieldUpdateInput = {
@@ -146,6 +227,7 @@ export type TaskHistoryGroupCount = {
 export enum TaskHistoryKey {
   Archived = 'archived',
   AuthorId = 'authorId',
+  Description = 'description',
   DueToDate = 'dueToDate',
   DueToOffset = 'dueToOffset',
   Ease = 'ease',
@@ -155,6 +237,8 @@ export enum TaskHistoryKey {
   Participants = 'participants',
   PlannedStartDate = 'plannedStartDate',
   PlannedStartOffset = 'plannedStartOffset',
+  ProjectId = 'projectId',
+  Relations = 'relations',
   ResponsibleId = 'responsibleId',
   StartAfterDate = 'startAfterDate',
   StartAfterOffset = 'startAfterOffset',
@@ -172,6 +256,7 @@ export type TaskHistoryValue = {
   __typename?: 'TaskHistoryValue';
   group: TaskHistoryGroup;
   groupId: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   key: TaskHistoryKey;
   op: TaskHistoryOperation;
   task: Task;
@@ -184,6 +269,32 @@ export enum TaskState {
   Done = 'Done',
   Pending = 'Pending',
 }
+
+export type TaskToTaskRelation = {
+  __typename?: 'TaskToTaskRelation';
+  dst: Task;
+  dstId: Scalars['String']['output'];
+  src: Task;
+  srcId: Scalars['String']['output'];
+  type: TaskToTaskRelationType;
+  typeId: Scalars['String']['output'];
+};
+
+export type TaskToTaskRelationType = {
+  __typename?: 'TaskToTaskRelationType';
+  _count: TaskToTaskRelationTypeCount;
+  forward: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  inverse: Scalars['String']['output'];
+  project: Project;
+  projectId: Scalars['String']['output'];
+  relations?: Maybe<Array<TaskToTaskRelation>>;
+};
+
+export type TaskToTaskRelationTypeCount = {
+  __typename?: 'TaskToTaskRelationTypeCount';
+  relations: Scalars['Int']['output'];
+};
 
 export type TasksChangesGroup = {
   createdAt: Scalars['DateTime']['input'];
@@ -224,13 +335,17 @@ export type UploadedFile = {
 export type User = {
   __typename?: 'User';
   _count: UserCount;
+  abbrev?: Maybe<Scalars['String']['output']>;
   assignedTasks?: Maybe<Array<Task>>;
   authoredTaskChanges?: Maybe<Array<TaskHistoryGroup>>;
   authoredTasks?: Maybe<Array<Task>>;
   createdAt: Scalars['DateTime']['output'];
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  inProjects?: Maybe<Array<UserInProject>>;
   name: Scalars['String']['output'];
+  ownProject: Project;
+  ownProjectId: Scalars['String']['output'];
   participatingTasks?: Maybe<Array<UserInTask>>;
   passwordHash: Scalars['String']['output'];
   refreshTokens?: Maybe<Array<RefreshToken>>;
@@ -242,9 +357,20 @@ export type UserCount = {
   assignedTasks: Scalars['Int']['output'];
   authoredTaskChanges: Scalars['Int']['output'];
   authoredTasks: Scalars['Int']['output'];
+  inProjects: Scalars['Int']['output'];
   participatingTasks: Scalars['Int']['output'];
   refreshTokens: Scalars['Int']['output'];
   uploadedFiles: Scalars['Int']['output'];
+};
+
+export type UserInProject = {
+  __typename?: 'UserInProject';
+  kind: PermissionKind;
+  permission: PermissionInProject;
+  project: Project;
+  projectId: Scalars['String']['output'];
+  user: User;
+  userId: Scalars['String']['output'];
 };
 
 export type UserInTask = {
@@ -265,7 +391,8 @@ export type UserInTaskCount = {
 
 export type UserInTaskTag = {
   __typename?: 'UserInTaskTag';
-  tag: Scalars['String']['output'];
+  role: ParticipantRole;
+  roleId: Scalars['String']['output'];
   userInTask: UserInTask;
   userInTaskId: Scalars['String']['output'];
 };

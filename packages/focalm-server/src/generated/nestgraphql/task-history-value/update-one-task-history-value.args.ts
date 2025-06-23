@@ -13,5 +13,5 @@ export class UpdateOneTaskHistoryValueArgs {
 
   @Field(() => TaskHistoryValueWhereUniqueInput, { nullable: false })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  where!: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>;
+  where!: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>;
 }

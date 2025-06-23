@@ -3,6 +3,9 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class TaskHistoryValueCountAggregateInput {
   @Field(() => Boolean, { nullable: true })
+  id?: true;
+
+  @Field(() => Boolean, { nullable: true })
   groupId?: true;
 
   @Field(() => Boolean, { nullable: true })

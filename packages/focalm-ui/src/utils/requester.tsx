@@ -1,4 +1,4 @@
-import { uidGenerator } from '@freyja/kit/index';
+import { sleep, uidGenerator } from '@freyja/kit/index';
 import {
   action,
   computed,
@@ -270,10 +270,16 @@ export class CancelledError<T> extends Error {
 }
 
 export class ImperativeRequester<T> {
-  constructor(request: () => Promise<T> | PromiseWithCancel<T>) {
+  constructor(
+    request: () => Promise<T> | PromiseWithCancel<T>,
+    readonly options: { delayAfterFinish?: number } = {}
+  ) {
     this.request = request;
     makeObservable(this);
   }
+
+  @observable
+  lastFinishTime?: Date = undefined;
 
   @observable.ref
   request: () => Promise<T> | PromiseWithCancel<T>;
@@ -301,7 +307,18 @@ export class ImperativeRequester<T> {
     const key = Object.create(null);
     const { promise, cancel } = getPromiseWithCancel(this.request());
     this.requesting = {
-      promise: promise
+      promise: Promise.resolve()
+        .then(async () => {
+          if (this.lastFinishTime != null) {
+            const now = new Date();
+            const passed = +now - +this.lastFinishTime;
+            const needWait = Math.max(0, this.options.delayAfterFinish ?? 1000) - passed;
+            if (needWait > 0) {
+              await sleep(needWait);
+            }
+          }
+          return promise;
+        })
         .then(result => {
           if (key === this.requesting?.key) {
             this.setResults(result, null);
@@ -322,7 +339,10 @@ export class ImperativeRequester<T> {
         })
         .finally(() => {
           if (key === this.requesting?.key) {
-            runInAction(() => (this.requesting = null));
+            runInAction(() => {
+              this.requesting = null;
+              this.lastFinishTime = new Date();
+            });
           }
         }),
       cancel,

@@ -100,6 +100,24 @@ export class TasksResolver {
       tasks: await this.tasksService.getTasks(select, fetchOptions),
     };
   }
+
+  @Query(() => Boolean)
+  async failingQuery() {
+    throw new Error(`failing query`);
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @UseInterceptors(ContextualCurrentUserInterceptor)
+  @Query(() => TasksWithRelatedStuff)
+  async searchTasks(
+    @PrismaSelection({ path: [`tasks`], skip: TasksResolver.dynamicFields }) select?: Prisma.TaskSelect,
+    @Args('titleLike', { type: () => String, nullable: true })
+    titleLike?: string
+  ): Promise<TasksWithRelatedStuff> {
+    return {
+      tasks: await this.tasksService.searchTasks({ titleLike }, select),
+    };
+  }
 }
 
 @Resolver(() => TasksUpdateResult)

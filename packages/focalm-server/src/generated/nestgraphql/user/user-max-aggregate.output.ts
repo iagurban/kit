@@ -15,5 +15,11 @@ export class UserMaxAggregate {
   name?: string;
 
   @Field(() => String, { nullable: true })
+  abbrev?: string;
+
+  @Field(() => String, { nullable: true })
   passwordHash?: string;
+
+  @Field(() => String, { nullable: true })
+  ownProjectId?: string;
 }

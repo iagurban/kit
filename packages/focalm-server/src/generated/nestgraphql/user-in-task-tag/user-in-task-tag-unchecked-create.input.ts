@@ -6,5 +6,5 @@ export class UserInTaskTagUncheckedCreateInput {
   userInTaskId!: string;
 
   @Field(() => String, { nullable: false })
-  tag!: string;
+  roleId!: string;
 }

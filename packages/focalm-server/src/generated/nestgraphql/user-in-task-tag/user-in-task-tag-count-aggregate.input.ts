@@ -6,7 +6,7 @@ export class UserInTaskTagCountAggregateInput {
   userInTaskId?: true;
 
   @Field(() => Boolean, { nullable: true })
-  tag?: true;
+  roleId?: true;
 
   @Field(() => Boolean, { nullable: true })
   _all?: true;

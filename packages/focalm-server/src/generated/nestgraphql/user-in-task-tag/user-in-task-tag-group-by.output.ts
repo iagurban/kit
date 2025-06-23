@@ -10,7 +10,7 @@ export class UserInTaskTagGroupBy {
   userInTaskId!: string;
 
   @Field(() => String, { nullable: false })
-  tag!: string;
+  roleId!: string;
 
   @Field(() => UserInTaskTagCountAggregate, { nullable: true })
   _count?: UserInTaskTagCountAggregate;

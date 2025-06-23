@@ -18,7 +18,10 @@ export enum TaskScalarFieldEnum {
   authorId = 'authorId',
   responsibleId = 'responsibleId',
   parentId = 'parentId',
+  description = 'description',
   orderKey = 'orderKey',
+  projectId = 'projectId',
+  nnInProject = 'nnInProject',
 }
 
 registerEnumType(TaskScalarFieldEnum, { name: 'TaskScalarFieldEnum', description: undefined });

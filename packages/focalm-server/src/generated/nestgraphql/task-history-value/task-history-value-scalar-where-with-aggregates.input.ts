@@ -17,6 +17,9 @@ export class TaskHistoryValueScalarWhereWithAggregatesInput {
   NOT?: Array<TaskHistoryValueScalarWhereWithAggregatesInput>;
 
   @Field(() => UuidWithAggregatesFilter, { nullable: true })
+  id?: UuidWithAggregatesFilter;
+
+  @Field(() => UuidWithAggregatesFilter, { nullable: true })
   groupId?: UuidWithAggregatesFilter;
 
   @Field(() => UuidWithAggregatesFilter, { nullable: true })

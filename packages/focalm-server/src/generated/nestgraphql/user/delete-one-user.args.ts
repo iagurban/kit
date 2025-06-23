@@ -8,5 +8,5 @@ import { UserWhereUniqueInput } from './user-where-unique.input';
 export class DeleteOneUserArgs {
   @Field(() => UserWhereUniqueInput, { nullable: false })
   @Type(() => UserWhereUniqueInput)
-  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 }

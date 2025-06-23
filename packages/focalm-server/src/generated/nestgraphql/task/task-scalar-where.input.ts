@@ -1,11 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { BigIntFilter } from '../prisma/big-int-filter.input';
 import { BoolFilter } from '../prisma/bool-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { DateTimeNullableFilter } from '../prisma/date-time-nullable-filter.input';
 import { EnumTaskStateFilter } from '../prisma/enum-task-state-filter.input';
 import { FloatFilter } from '../prisma/float-filter.input';
 import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
+import { JsonFilter } from '../prisma/json-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
 import { UuidNullableFilter } from '../prisma/uuid-nullable-filter.input';
@@ -72,6 +74,15 @@ export class TaskScalarWhereInput {
   @Field(() => UuidNullableFilter, { nullable: true })
   parentId?: UuidNullableFilter;
 
+  @Field(() => JsonFilter, { nullable: true })
+  description?: JsonFilter;
+
   @Field(() => StringFilter, { nullable: true })
   orderKey?: StringFilter;
+
+  @Field(() => UuidFilter, { nullable: true })
+  projectId?: UuidFilter;
+
+  @Field(() => BigIntFilter, { nullable: true })
+  nnInProject?: BigIntFilter;
 }

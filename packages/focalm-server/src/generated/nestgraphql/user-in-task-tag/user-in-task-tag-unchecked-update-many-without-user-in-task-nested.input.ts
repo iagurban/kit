@@ -31,19 +31,19 @@ export class UserInTaskTagUncheckedUpdateManyWithoutUserInTaskNestedInput {
 
   @Field(() => [UserInTaskTagWhereUniqueInput], { nullable: true })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  set?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>>;
+  set?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>>;
 
   @Field(() => [UserInTaskTagWhereUniqueInput], { nullable: true })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  disconnect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>>;
+  disconnect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>>;
 
   @Field(() => [UserInTaskTagWhereUniqueInput], { nullable: true })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  delete?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>>;
+  delete?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>>;
 
   @Field(() => [UserInTaskTagWhereUniqueInput], { nullable: true })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  connect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>>;
+  connect?: Array<Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>>;
 
   @Field(() => [UserInTaskTagUpdateWithWhereUniqueWithoutUserInTaskInput], { nullable: true })
   @Type(() => UserInTaskTagUpdateWithWhereUniqueWithoutUserInTaskInput)

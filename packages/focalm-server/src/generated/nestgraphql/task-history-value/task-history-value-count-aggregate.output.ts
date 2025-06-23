@@ -3,6 +3,9 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class TaskHistoryValueCountAggregate {
   @Field(() => Int, { nullable: false })
+  id!: number;
+
+  @Field(() => Int, { nullable: false })
   groupId!: number;
 
   @Field(() => Int, { nullable: false })

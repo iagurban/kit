@@ -15,5 +15,11 @@ export class UserMinAggregateInput {
   name?: true;
 
   @Field(() => Boolean, { nullable: true })
+  abbrev?: true;
+
+  @Field(() => Boolean, { nullable: true })
   passwordHash?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  ownProjectId?: true;
 }

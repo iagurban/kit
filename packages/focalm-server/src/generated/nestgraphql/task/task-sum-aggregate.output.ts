@@ -16,4 +16,7 @@ export class TaskSumAggregate {
 
   @Field(() => Int, { nullable: true })
   dueToOffset?: number;
+
+  @Field(() => String, { nullable: true })
+  nnInProject?: bigint | number;
 }

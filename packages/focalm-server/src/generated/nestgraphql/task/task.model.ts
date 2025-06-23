@@ -1,8 +1,11 @@
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import * as Scalars from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-type-json';
 
 import { TaskState } from '../prisma/task-state.enum';
+import { Project } from '../project/project.model';
 import { TaskHistoryValue } from '../task-history-value/task-history-value.model';
+import { TaskToTaskRelation } from '../task-to-task-relation/task-to-task-relation.model';
 import { User } from '../user/user.model';
 import { UserInTask } from '../user-in-task/user-in-task.model';
 import { TaskCount } from './task-count.output';
@@ -60,8 +63,17 @@ export class Task {
   @Field(() => String, { nullable: true })
   parentId!: string | null;
 
+  @Field(() => GraphQLJSON, { defaultValue: '{"type":"doc"}', nullable: false })
+  description!: any;
+
   @Field(() => String, { nullable: false })
   orderKey!: string;
+
+  @Field(() => String, { nullable: false })
+  projectId!: string;
+
+  @Field(() => String, { nullable: false })
+  nnInProject!: bigint;
 
   @Field(() => User, { nullable: false })
   author?: User;
@@ -80,6 +92,15 @@ export class Task {
 
   @Field(() => [TaskHistoryValue], { nullable: true })
   historyValues?: Array<TaskHistoryValue>;
+
+  @Field(() => [TaskToTaskRelation], { nullable: true })
+  relationsSrc?: Array<TaskToTaskRelation>;
+
+  @Field(() => [TaskToTaskRelation], { nullable: true })
+  relationsDst?: Array<TaskToTaskRelation>;
+
+  @Field(() => Project, { nullable: false })
+  project?: Project;
 
   @Field(() => TaskCount, { nullable: false })
   _count?: TaskCount;

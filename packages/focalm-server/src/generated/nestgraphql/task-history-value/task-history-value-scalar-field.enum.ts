@@ -1,6 +1,7 @@
 import { registerEnumType } from '@nestjs/graphql';
 
 export enum TaskHistoryValueScalarFieldEnum {
+  id = 'id',
   groupId = 'groupId',
   taskId = 'taskId',
   key = 'key',

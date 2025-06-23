@@ -5,5 +5,5 @@ import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-
 @InputType()
 export class UserInTaskTagUncheckedUpdateManyWithoutUserInTaskInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  tag?: StringFieldUpdateOperationsInput;
+  roleId?: StringFieldUpdateOperationsInput;
 }

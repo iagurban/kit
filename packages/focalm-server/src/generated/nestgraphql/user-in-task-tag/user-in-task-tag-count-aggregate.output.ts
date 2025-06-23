@@ -6,7 +6,7 @@ export class UserInTaskTagCountAggregate {
   userInTaskId!: number;
 
   @Field(() => Int, { nullable: false })
-  tag!: number;
+  roleId!: number;
 
   @Field(() => Int, { nullable: false })
   _all!: number;

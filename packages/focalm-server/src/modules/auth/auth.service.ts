@@ -51,7 +51,7 @@ export class AuthService {
     });
   }
 
-  static readonly accessExpiresIn = '15m';
+  static readonly accessExpiresIn = '1m';
   static readonly refreshExpiresDays = 7;
 
   async issueTokens(payload: CurrentUserJwtPayload) {

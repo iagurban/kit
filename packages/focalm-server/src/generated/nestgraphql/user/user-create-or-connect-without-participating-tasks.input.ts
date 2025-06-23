@@ -9,7 +9,7 @@ import { UserWhereUniqueInput } from './user-where-unique.input';
 export class UserCreateOrConnectWithoutParticipatingTasksInput {
   @Field(() => UserWhereUniqueInput, { nullable: false })
   @Type(() => UserWhereUniqueInput)
-  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 
   @Field(() => UserCreateWithoutParticipatingTasksInput, { nullable: false })
   @Type(() => UserCreateWithoutParticipatingTasksInput)

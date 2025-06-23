@@ -10,4 +10,10 @@ export class TaskCount {
 
   @Field(() => Int, { nullable: false })
   historyValues?: number;
+
+  @Field(() => Int, { nullable: false })
+  relationsSrc?: number;
+
+  @Field(() => Int, { nullable: false })
+  relationsDst?: number;
 }

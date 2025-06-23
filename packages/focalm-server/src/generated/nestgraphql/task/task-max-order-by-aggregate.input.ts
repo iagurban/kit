@@ -57,4 +57,10 @@ export class TaskMaxOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   orderKey?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  projectId?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  nnInProject?: `${SortOrder}`;
 }

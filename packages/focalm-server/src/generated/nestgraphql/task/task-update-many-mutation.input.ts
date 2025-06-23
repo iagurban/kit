@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
+import { BigIntFieldUpdateOperationsInput } from '../prisma/big-int-field-update-operations.input';
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { EnumTaskStateFieldUpdateOperationsInput } from '../prisma/enum-task-state-field-update-operations.input';
@@ -52,6 +54,12 @@ export class TaskUpdateManyMutationInput {
   @Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
   updatedAt?: DateTimeFieldUpdateOperationsInput;
 
+  @Field(() => GraphQLJSON, { nullable: true })
+  description?: any;
+
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   orderKey?: StringFieldUpdateOperationsInput;
+
+  @Field(() => BigIntFieldUpdateOperationsInput, { nullable: true })
+  nnInProject?: BigIntFieldUpdateOperationsInput;
 }

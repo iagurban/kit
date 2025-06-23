@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { StringFilter } from '../prisma/string-filter.input';
+import { ParticipantRoleScalarRelationFilter } from '../participant-role/participant-role-scalar-relation-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
 import { UserInTaskScalarRelationFilter } from '../user-in-task/user-in-task-scalar-relation-filter.input';
-import { UserInTaskTagUserInTaskIdTagCompoundUniqueInput } from './user-in-task-tag-user-in-task-id-tag-compound-unique.input';
+import { UserInTaskTagUserInTaskIdRoleIdCompoundUniqueInput } from './user-in-task-tag-user-in-task-id-role-id-compound-unique.input';
 import { UserInTaskTagWhereInput } from './user-in-task-tag-where.input';
 
 @InputType()
 export class UserInTaskTagWhereUniqueInput {
-  @Field(() => UserInTaskTagUserInTaskIdTagCompoundUniqueInput, { nullable: true })
-  userInTaskId_tag?: UserInTaskTagUserInTaskIdTagCompoundUniqueInput;
+  @Field(() => UserInTaskTagUserInTaskIdRoleIdCompoundUniqueInput, { nullable: true })
+  userInTaskId_roleId?: UserInTaskTagUserInTaskIdRoleIdCompoundUniqueInput;
 
   @Field(() => [UserInTaskTagWhereInput], { nullable: true })
   AND?: Array<UserInTaskTagWhereInput>;
@@ -23,9 +23,12 @@ export class UserInTaskTagWhereUniqueInput {
   @Field(() => UuidFilter, { nullable: true })
   userInTaskId?: UuidFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  tag?: StringFilter;
+  @Field(() => UuidFilter, { nullable: true })
+  roleId?: UuidFilter;
 
   @Field(() => UserInTaskScalarRelationFilter, { nullable: true })
   userInTask?: UserInTaskScalarRelationFilter;
+
+  @Field(() => ParticipantRoleScalarRelationFilter, { nullable: true })
+  role?: ParticipantRoleScalarRelationFilter;
 }

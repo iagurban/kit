@@ -14,6 +14,12 @@ export class UserCreateManyInput {
   @Field(() => String, { nullable: false })
   name!: string;
 
+  @Field(() => String, { nullable: true })
+  abbrev?: string;
+
   @Field(() => String, { nullable: false })
   passwordHash!: string;
+
+  @Field(() => String, { nullable: false })
+  ownProjectId!: string;
 }

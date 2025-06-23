@@ -31,19 +31,19 @@ export class TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput {
 
   @Field(() => [TaskHistoryValueWhereUniqueInput], { nullable: true })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  set?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>>;
+  set?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>>;
 
   @Field(() => [TaskHistoryValueWhereUniqueInput], { nullable: true })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  disconnect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>>;
+  disconnect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>>;
 
   @Field(() => [TaskHistoryValueWhereUniqueInput], { nullable: true })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  delete?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>>;
+  delete?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>>;
 
   @Field(() => [TaskHistoryValueWhereUniqueInput], { nullable: true })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  connect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>>;
+  connect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>>;
 
   @Field(() => [TaskHistoryValueUpdateWithWhereUniqueWithoutTaskInput], { nullable: true })
   @Type(() => TaskHistoryValueUpdateWithWhereUniqueWithoutTaskInput)

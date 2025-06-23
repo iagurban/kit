@@ -23,5 +23,5 @@ export class TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput {
 
   @Field(() => [TaskHistoryValueWhereUniqueInput], { nullable: true })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  connect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>>;
+  connect?: Array<Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>>;
 }

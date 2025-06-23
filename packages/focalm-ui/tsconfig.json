@@ -22,6 +22,7 @@
     //    "types": ["node"]
     "baseUrl": ".",
     "paths": {
+      "@focalm/core/*": ["../core/src/*"],
       "@focalm/server/*": ["../focalm-server/src/*"],
       "@freyja/kit-ui/*": ["../kit-ui/src/*"],
       "@freyja/kit/*": ["../kit/src/*"]

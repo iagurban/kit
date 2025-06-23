@@ -55,4 +55,10 @@ export class TaskMaxAggregateInput {
 
   @Field(() => Boolean, { nullable: true })
   orderKey?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  projectId?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  nnInProject?: true;
 }

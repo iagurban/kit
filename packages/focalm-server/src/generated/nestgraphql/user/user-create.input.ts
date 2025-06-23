@@ -1,10 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ProjectCreateNestedOneWithoutOwnOfInput } from '../project/project-create-nested-one-without-own-of.input';
 import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
 import { TaskCreateNestedManyWithoutAuthorInput } from '../task/task-create-nested-many-without-author.input';
 import { TaskCreateNestedManyWithoutResponsibleInput } from '../task/task-create-nested-many-without-responsible.input';
 import { TaskHistoryGroupCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-create-nested-many-without-author.input';
 import { UploadedFileCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-create-nested-many-without-uploader.input';
+import { UserInProjectCreateNestedManyWithoutUserInput } from '../user-in-project/user-in-project-create-nested-many-without-user.input';
 import { UserInTaskCreateNestedManyWithoutUserInput } from '../user-in-task/user-in-task-create-nested-many-without-user.input';
 
 @InputType()
@@ -20,6 +22,9 @@ export class UserCreateInput {
 
   @Field(() => String, { nullable: false })
   name!: string;
+
+  @Field(() => String, { nullable: true })
+  abbrev?: string;
 
   @Field(() => String, { nullable: false })
   passwordHash!: string;
@@ -41,4 +46,10 @@ export class UserCreateInput {
 
   @Field(() => UserInTaskCreateNestedManyWithoutUserInput, { nullable: true })
   participatingTasks?: UserInTaskCreateNestedManyWithoutUserInput;
+
+  @Field(() => ProjectCreateNestedOneWithoutOwnOfInput, { nullable: false })
+  ownProject!: ProjectCreateNestedOneWithoutOwnOfInput;
+
+  @Field(() => UserInProjectCreateNestedManyWithoutUserInput, { nullable: true })
+  inProjects?: UserInProjectCreateNestedManyWithoutUserInput;
 }

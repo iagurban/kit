@@ -6,5 +6,5 @@ export class UserInTaskTagMinAggregate {
   userInTaskId?: string;
 
   @Field(() => String, { nullable: true })
-  tag?: string;
+  roleId?: string;
 }

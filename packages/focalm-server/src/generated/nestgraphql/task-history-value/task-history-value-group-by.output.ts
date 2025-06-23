@@ -10,6 +10,9 @@ import { TaskHistoryValueMinAggregate } from './task-history-value-min-aggregate
 @ObjectType()
 export class TaskHistoryValueGroupBy {
   @Field(() => String, { nullable: false })
+  id!: string;
+
+  @Field(() => String, { nullable: false })
   groupId!: string;
 
   @Field(() => String, { nullable: false })

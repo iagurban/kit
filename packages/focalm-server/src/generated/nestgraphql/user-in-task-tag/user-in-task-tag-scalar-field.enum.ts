@@ -2,7 +2,7 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum UserInTaskTagScalarFieldEnum {
   userInTaskId = 'userInTaskId',
-  tag = 'tag',
+  roleId = 'roleId',
 }
 
 registerEnumType(UserInTaskTagScalarFieldEnum, {

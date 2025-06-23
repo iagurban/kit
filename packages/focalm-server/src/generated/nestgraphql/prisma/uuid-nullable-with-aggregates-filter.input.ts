@@ -28,6 +28,9 @@ export class UuidNullableWithAggregatesFilter {
   @Field(() => String, { nullable: true })
   gte?: string;
 
+  @Field(() => String, { nullable: true })
+  search?: string;
+
   @Field(() => QueryMode, { nullable: true })
   mode?: `${QueryMode}`;
 

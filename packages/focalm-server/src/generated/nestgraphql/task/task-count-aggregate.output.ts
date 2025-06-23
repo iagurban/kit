@@ -54,7 +54,16 @@ export class TaskCountAggregate {
   parentId!: number;
 
   @Field(() => Int, { nullable: false })
+  description!: number;
+
+  @Field(() => Int, { nullable: false })
   orderKey!: number;
+
+  @Field(() => Int, { nullable: false })
+  projectId!: number;
+
+  @Field(() => Int, { nullable: false })
+  nnInProject!: number;
 
   @Field(() => Int, { nullable: false })
   _all!: number;

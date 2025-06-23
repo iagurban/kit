@@ -1,8 +1,11 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import * as Scalars from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-type-json';
 
 import { TaskState } from '../prisma/task-state.enum';
 import { TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput } from '../task-history-value/task-history-value-unchecked-create-nested-many-without-task.input';
+import { TaskToTaskRelationUncheckedCreateNestedManyWithoutDstInput } from '../task-to-task-relation/task-to-task-relation-unchecked-create-nested-many-without-dst.input';
+import { TaskToTaskRelationUncheckedCreateNestedManyWithoutSrcInput } from '../task-to-task-relation/task-to-task-relation-unchecked-create-nested-many-without-src.input';
 import { UserInTaskUncheckedCreateNestedManyWithoutTaskInput } from '../user-in-task/user-in-task-unchecked-create-nested-many-without-task.input';
 
 @InputType()
@@ -58,12 +61,27 @@ export class TaskUncheckedCreateWithoutChildrenInput {
   @Field(() => String, { nullable: true })
   parentId?: string;
 
+  @Field(() => GraphQLJSON, { nullable: true })
+  description?: any;
+
   @Field(() => String, { nullable: false })
   orderKey!: string;
+
+  @Field(() => String, { nullable: false })
+  projectId!: string;
+
+  @Field(() => String, { nullable: false })
+  nnInProject!: bigint | number;
 
   @Field(() => UserInTaskUncheckedCreateNestedManyWithoutTaskInput, { nullable: true })
   participants?: UserInTaskUncheckedCreateNestedManyWithoutTaskInput;
 
   @Field(() => TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput, { nullable: true })
   historyValues?: TaskHistoryValueUncheckedCreateNestedManyWithoutTaskInput;
+
+  @Field(() => TaskToTaskRelationUncheckedCreateNestedManyWithoutSrcInput, { nullable: true })
+  relationsSrc?: TaskToTaskRelationUncheckedCreateNestedManyWithoutSrcInput;
+
+  @Field(() => TaskToTaskRelationUncheckedCreateNestedManyWithoutDstInput, { nullable: true })
+  relationsDst?: TaskToTaskRelationUncheckedCreateNestedManyWithoutDstInput;
 }

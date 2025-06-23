@@ -15,7 +15,13 @@ export class UserCountAggregate {
   name!: number;
 
   @Field(() => Int, { nullable: false })
+  abbrev!: number;
+
+  @Field(() => Int, { nullable: false })
   passwordHash!: number;
+
+  @Field(() => Int, { nullable: false })
+  ownProjectId!: number;
 
   @Field(() => Int, { nullable: false })
   _all!: number;

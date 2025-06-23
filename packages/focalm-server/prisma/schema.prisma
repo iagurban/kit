@@ -4,13 +4,15 @@ datasource db {
 }
 
 generator oldClient {
-  provider = "prisma-client-js"
-  output   = "../src/generated/old-client"
+  provider        = "prisma-client-js"
+  output          = "../src/generated/old-client"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/db-client"
+  provider        = "prisma-client"
+  output          = "../src/generated/db-client"
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 generator json {
@@ -110,8 +112,9 @@ model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now())
 
-  email String @unique
-  name  String @unique
+  email  String  @unique
+  name   String  @unique
+  abbrev String?
 
   passwordHash String @map("externalId")
 
@@ -124,6 +127,11 @@ model User {
   authoredTaskChanges TaskHistoryGroup[]
 
   participatingTasks UserInTask[] @relation("user")
+
+  ownProjectId String  @unique @db.Uuid
+  ownProject   Project @relation("own", fields: [ownProjectId], references: [id], onDelete: Restrict)
+
+  inProjects UserInProject[]
 }
 
 model RefreshToken {
@@ -187,8 +195,11 @@ enum TaskHistoryKey {
   authorId
   responsibleId
   participants
+  relations
   orderKey
   parentId
+  projectId
+  description
 
   startAfterDate
   startAfterOffset
@@ -199,6 +210,8 @@ enum TaskHistoryKey {
 }
 
 model TaskHistoryValue {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
   groupId String           @db.Uuid
   group   TaskHistoryGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
@@ -209,8 +222,6 @@ model TaskHistoryValue {
   op  TaskHistoryOperation @default(Set)
 
   value Json
-
-  @@id([groupId, key])
 }
 
 enum CreatedAtFixReason {
@@ -230,6 +241,21 @@ model TaskHistoryGroup {
   localCreatedAt     DateTime
   createdAt          DateTime // fixed
   createdAtFixReason CreatedAtFixReason?
+}
+
+model Project {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  ownOf User? @relation("own")
+
+  tasksCounter BigInt  @default(0)
+  name         String
+  abbrev       String?
+
+  relationTypes TaskToTaskRelationType[]
+  tasks         Task[]
+
+  usersPermissions UserInProject[]
 }
 
 model Task {
@@ -261,13 +287,21 @@ model Task {
   responsibleId String? @db.Uuid
   responsible   User?   @relation("responsible", fields: [responsibleId], references: [id], onDelete: Restrict)
 
-  parentId String? @db.Uuid
-  parent   Task?   @relation("tree", fields: [parentId], references: [id], onDelete: SetNull)
-  children Task[]  @relation("tree")
-  orderKey String
+  parentId    String? @db.Uuid
+  parent      Task?   @relation("tree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Task[]  @relation("tree")
+  description Json    @default("{\"type\":\"doc\"}")
+  orderKey    String
 
   participants  UserInTask[]       @relation("task")
   historyValues TaskHistoryValue[]
+
+  relationsSrc TaskToTaskRelation[] @relation("src")
+  relationsDst TaskToTaskRelation[] @relation("dst")
+
+  projectId   String  @db.Uuid
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  nnInProject BigInt
 }
 
 model UserInTask {
@@ -282,11 +316,71 @@ model UserInTask {
   tags UserInTaskTag[]
 }
 
+model ParticipantRole {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name  String
+  color String
+
+  usersInTasks UserInTaskTag[]
+}
+
 model UserInTaskTag {
   userInTaskId String     @db.Uuid
   userInTask   UserInTask @relation(fields: [userInTaskId], references: [id], onDelete: Cascade)
 
-  tag String
+  roleId String          @db.Uuid
+  role   ParticipantRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  @@id([userInTaskId, tag])
+  @@id([userInTaskId, roleId])
+}
+
+model TaskToTaskRelationType {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  forward String
+  inverse String
+
+  relations TaskToTaskRelation[]
+
+  projectId String  @db.Uuid
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model TaskToTaskRelation {
+  srcId String @db.Uuid
+  src   Task   @relation("src", fields: [srcId], references: [id], onDelete: Cascade)
+
+  dstId String @db.Uuid
+  dst   Task   @relation("dst", fields: [dstId], references: [id], onDelete: Cascade)
+
+  typeId String                 @db.Uuid
+  type   TaskToTaskRelationType @relation(fields: [typeId], references: [id], onDelete: Cascade)
+
+  @@id([srcId, dstId, typeId])
+}
+
+enum PermissionKind {
+  read
+  update
+  create
+  delete
+}
+
+enum PermissionInProject {
+  tasks
+  participants
+}
+
+model UserInProject {
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  projectId String  @db.Uuid
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  permission PermissionInProject
+  kind       PermissionKind
+
+  @@id([userId, projectId, permission, kind])
 }

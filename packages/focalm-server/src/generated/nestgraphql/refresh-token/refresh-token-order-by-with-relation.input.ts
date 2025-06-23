@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { SortOrder } from '../prisma/sort-order.enum';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { RefreshTokenOrderByRelevanceInput } from './refresh-token-order-by-relevance.input';
 
 @InputType()
 export class RefreshTokenOrderByWithRelationInput {
@@ -22,4 +23,7 @@ export class RefreshTokenOrderByWithRelationInput {
 
   @Field(() => UserOrderByWithRelationInput, { nullable: true })
   user?: UserOrderByWithRelationInput;
+
+  @Field(() => RefreshTokenOrderByRelevanceInput, { nullable: true })
+  _relevance?: RefreshTokenOrderByRelevanceInput;
 }

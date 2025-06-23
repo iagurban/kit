@@ -16,4 +16,7 @@ export class TaskAvgAggregateInput {
 
   @Field(() => Boolean, { nullable: true })
   dueToOffset?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  nnInProject?: true;
 }

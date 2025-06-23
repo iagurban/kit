@@ -2,10 +2,13 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
+import { ProjectOrderByWithRelationInput } from '../project/project-order-by-with-relation.input';
 import { TaskHistoryValueOrderByRelationAggregateInput } from '../task-history-value/task-history-value-order-by-relation-aggregate.input';
+import { TaskToTaskRelationOrderByRelationAggregateInput } from '../task-to-task-relation/task-to-task-relation-order-by-relation-aggregate.input';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
 import { UserInTaskOrderByRelationAggregateInput } from '../user-in-task/user-in-task-order-by-relation-aggregate.input';
 import { TaskOrderByRelationAggregateInput } from './task-order-by-relation-aggregate.input';
+import { TaskOrderByRelevanceInput } from './task-order-by-relevance.input';
 
 @InputType()
 export class TaskOrderByWithRelationInput {
@@ -61,7 +64,16 @@ export class TaskOrderByWithRelationInput {
   parentId?: SortOrderInput;
 
   @Field(() => SortOrder, { nullable: true })
+  description?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
   orderKey?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  projectId?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  nnInProject?: `${SortOrder}`;
 
   @Field(() => UserOrderByWithRelationInput, { nullable: true })
   author?: UserOrderByWithRelationInput;
@@ -80,4 +92,16 @@ export class TaskOrderByWithRelationInput {
 
   @Field(() => TaskHistoryValueOrderByRelationAggregateInput, { nullable: true })
   historyValues?: TaskHistoryValueOrderByRelationAggregateInput;
+
+  @Field(() => TaskToTaskRelationOrderByRelationAggregateInput, { nullable: true })
+  relationsSrc?: TaskToTaskRelationOrderByRelationAggregateInput;
+
+  @Field(() => TaskToTaskRelationOrderByRelationAggregateInput, { nullable: true })
+  relationsDst?: TaskToTaskRelationOrderByRelationAggregateInput;
+
+  @Field(() => ProjectOrderByWithRelationInput, { nullable: true })
+  project?: ProjectOrderByWithRelationInput;
+
+  @Field(() => TaskOrderByRelevanceInput, { nullable: true })
+  _relevance?: TaskOrderByRelevanceInput;
 }

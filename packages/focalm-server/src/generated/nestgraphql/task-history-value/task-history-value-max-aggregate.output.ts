@@ -6,6 +6,9 @@ import { TaskHistoryOperation } from '../prisma/task-history-operation.enum';
 @ObjectType()
 export class TaskHistoryValueMaxAggregate {
   @Field(() => String, { nullable: true })
+  id?: string;
+
+  @Field(() => String, { nullable: true })
   groupId?: string;
 
   @Field(() => String, { nullable: true })

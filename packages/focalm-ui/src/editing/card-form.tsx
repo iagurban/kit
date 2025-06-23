@@ -1,30 +1,37 @@
 import {
   ActionIcon,
-  Badge,
   Box,
   Button,
   Card,
   Divider,
   Flex,
-  Loader,
   Overlay,
   Paper,
   Popover,
   Tabs,
+  Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconCheck, IconChevronsRight, IconCopyX, IconRestore, IconTrash, IconX } from '@tabler/icons-react';
-import { computed } from 'mobx';
+import { IconCheck, IconCopyX, IconInfoCircle, IconRestore, IconTrash, IconX } from '@tabler/icons-react';
+import { create } from 'jsondiffpatch';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { PropsWithChildren, ReactNode, useLayoutEffect, useMemo, useState } from 'react';
+import { lazy, PropsWithChildren, ReactNode, Suspense, useLayoutEffect, useMemo, useState } from 'react';
 
-import { dangerColorMantine } from '../const';
-import { TaskCardStore, useStorage } from '../storage';
+import { ButtonWithPopover } from '../components/button-with-popover';
+import { dangerColorMantine } from '../shared/const';
+import { useStorage } from '../storage/storage';
+import { TaskCardStore } from '../storage/task-card-store';
 import { useAnimationConfig } from '../utils/react-contexts';
-import { DateTimeEditableInput } from './date-time-editable-input';
-import { DateTimeSelectorProps } from './date-time-selector';
-import { PrioritizingInput } from './prioritizing-input';
-import { TitleInput } from './title-input';
+import { DatesManagementBlock } from './parts/dates-management-block';
+import { ParticipantsEditorBlock } from './parts/participants-editor-block';
+import { PrioritizingBlock } from './parts/prioritizing-block';
+import { RelationsBlock } from './parts/relations-block';
+import { TitleBlock } from './parts/title-block';
+
+const RichTextBlock = lazy(() => import('./parts/rich-text-block'));
+
+const jdp = create();
 
 const TaskFieldFormItem = observer<PropsWithChildren>(function TaskFieldFormItem({ children }) {
   return (
@@ -33,19 +40,6 @@ const TaskFieldFormItem = observer<PropsWithChildren>(function TaskFieldFormItem
         {children}
       </Flex>
       <Divider my="xs" />
-    </Flex>
-  );
-});
-
-const DateTimeEditableItem = observer<
-  DateTimeSelectorProps & {
-    title: string;
-  }
->(function DateTimeEditableItem({ title, ...props }) {
-  return (
-    <Flex align="baseline" justify="space-between" py="2">
-      <Box>{title}</Box>
-      <DateTimeEditableInput {...props} />
     </Flex>
   );
 });
@@ -61,21 +55,6 @@ const ProgressLabel = observer<{
       </Box>
       <Box style={{ zIndex: 100 }}>{label}</Box>
     </Box>
-  );
-});
-
-const UserButton = observer<{
-  userId: string | null;
-}>(function UserButton({ userId }) {
-  const storage = useStorage();
-  const user = useMemo(
-    () => computed(() => (userId ? storage.tasks.getUser(userId) : null)),
-    [storage, userId]
-  ).get();
-  return (
-    <Badge size="lg" color="white" autoContrast autoCapitalize="off">
-      {user === `loading` ? <Loader size="sm" /> : user ? user.email : `<unknown>`}
-    </Badge>
   );
 });
 
@@ -98,15 +77,39 @@ const BaldLine = observer<{
   );
 });
 
+const InnerCardOverlay = observer<{
+  isLast: boolean;
+  card: TaskCardStore;
+}>(function InnerCardOverlay({ card, isLast }) {
+  const storage = useStorage();
+
+  const { transitionAllEaseFull } = useAnimationConfig();
+
+  return (
+    <Overlay
+      pos="absolute"
+      gradient="linear-gradient(180deg, rgba(0, 0, 0, 0) 1rem, rgba(0, 0, 0, 0.4) 3rem, rgba(0, 0, 0, 0.5) 100%)"
+      onClick={e => {
+        e.preventDefault();
+        storage.tasks.revealCard(card.id);
+      }}
+      // style={{ '--overlay-z-index': 100 }}
+      blur={0.001}
+      style={{
+        transition: transitionAllEaseFull,
+        cursor: `pointer`,
+        opacity: isLast ? 0 : 1,
+        pointerEvents: isLast ? `none` : `all`,
+      }}
+    />
+  );
+});
+
 const TaskEditContent = observer<{
   card: TaskCardStore;
   isLast: boolean;
   hasChanges: boolean;
 }>(function TaskEditContent({ card, isLast, hasChanges }) {
-  const storage = useStorage();
-
-  const { transitionAllEaseFull } = useAnimationConfig();
-
   return (
     <Paper
       radius="md"
@@ -122,82 +125,44 @@ const TaskEditContent = observer<{
     >
       <BaldLine color={dangerColorMantine} visible={hasChanges} />
       <Flex direction="column" pt="xs">
-        <Overlay
-          pos="absolute"
-          gradient="linear-gradient(180deg, rgba(0, 0, 0, 0) 1rem, rgba(0, 0, 0, 0.4) 3rem, rgba(0, 0, 0, 0.5) 100%)"
-          onClick={() => {
-            storage.tasks.revealCard(card.id);
-          }}
-          // style={{ '--overlay-z-index': 100 }}
-          blur={0.001}
-          style={{
-            transition: transitionAllEaseFull,
-            cursor: `pointer`,
-            opacity: isLast ? 0 : 1,
-            pointerEvents: isLast ? `none` : `all`,
-          }}
-        />
+        <InnerCardOverlay card={card} isLast={isLast} />
 
         <TaskFieldFormItem>
-          <TitleInput
+          <TitleBlock
             value={card.actual.title || ``}
             onChange={value => card.setStringValue(`title`, value)}
           />
         </TaskFieldFormItem>
         <TaskFieldFormItem>
           <Flex>
-            <PrioritizingInput cardStore={card} />
-            <Flex direction="column" flex="1 0 auto">
-              <DateTimeEditableItem
-                title="Start After"
-                date={card.actual.startAfterDate}
-                timeOffset={card.actual.startAfterOffset}
-                onChange={(date, offset) => {
-                  card.setStringOrNullValue(`startAfterDate`, date);
-                  card.setNumberOrNullValue(`startAfterOffset`, offset);
-                }}
-              />
-              <DateTimeEditableItem
-                title="Planned Start"
-                date={card.actual.plannedStartDate}
-                timeOffset={card.actual.plannedStartOffset}
-                onChange={(date, offset) => {
-                  card.setStringOrNullValue(`plannedStartDate`, date);
-                  card.setNumberOrNullValue(`plannedStartOffset`, offset);
-                }}
-              />
-              <DateTimeEditableItem
-                title="Due To"
-                date={card.actual.dueToDate}
-                timeOffset={card.actual.dueToOffset}
-                onChange={(date, offset) => {
-                  card.setStringOrNullValue(`dueToDate`, date);
-                  card.setNumberOrNullValue(`dueToOffset`, offset);
-                }}
-              />
-            </Flex>
+            <PrioritizingBlock cardStore={card} />
+            <DatesManagementBlock card={card} />
           </Flex>
         </TaskFieldFormItem>
         <TaskFieldFormItem>
-          <Badge
-            size="xl"
-            style={{
-              '--badge-padding-x': `0.2rem`,
-              textTransform: `none`,
-              paddingLeft: `0.5rem`,
-            }}
-            rightSection={<UserButton userId={card.actual.responsibleId || null} />}
-          >
-            Responsible
-          </Badge>
+          <ParticipantsEditorBlock card={card} />
         </TaskFieldFormItem>
         <TaskFieldFormItem>
-          <Tabs>
+          <Tabs defaultValue="relations">
             <Tabs.List>
+              <Tabs.Tab value="description">description</Tabs.Tab>
               <Tabs.Tab value="relations">relations</Tabs.Tab>
               <Tabs.Tab value="history">history</Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value="relations">Relations</Tabs.Panel>
+            <Tabs.Panel value="description">
+              <Suspense fallback={<div>Loading...</div>}>
+                <RichTextBlock
+                  value={card.actual.description || { type: `doc` }}
+                  onChange={e => {
+                    card.setJsonValue(`description`, { ...e });
+                    console.log(e, jdp.diff(toJS(card.originalRef.maybeCurrent?.description ?? {}), e));
+                  }}
+                />
+              </Suspense>
+            </Tabs.Panel>
+            <Tabs.Panel value="relations">
+              <RelationsBlock card={card} />
+            </Tabs.Panel>
             <Tabs.Panel value="history">History</Tabs.Panel>
           </Tabs>
         </TaskFieldFormItem>
@@ -206,33 +171,26 @@ const TaskEditContent = observer<{
   );
 });
 
-const ButtonWithPopover = observer<{
-  renderTarget: (open: () => void, close: () => void) => ReactNode;
-  renderDropdown: (close: () => void) => ReactNode;
-}>(function ButtonWithPopover({ renderTarget, renderDropdown }) {
-  const [opened, { open, close }] = useDisclosure(false);
+const InfoButton = observer<{
+  card: TaskCardStore;
+}>(function InfoButton({ card }) {
+  const [opened, { close, open }] = useDisclosure(false);
 
   return (
-    <Popover withArrow opened={opened} onDismiss={close} shadow="0 0 10px rgba(0,0,0,0.4)">
-      <Popover.Dropdown>{renderDropdown(close)}</Popover.Dropdown>
-      <Popover.Target>{renderTarget(open, close)}</Popover.Target>
+    <Popover withArrow shadow="md" opened={opened}>
+      <Popover.Target>
+        <ActionIcon size="xl" variant="white" onMouseEnter={open} onMouseLeave={close}>
+          <IconInfoCircle />
+        </ActionIcon>
+      </Popover.Target>
+      <Popover.Dropdown>ID: [{card.taskId}]</Popover.Dropdown>
     </Popover>
   );
 });
 
-export const CardForm = observer<{
+const ResetButton = observer<{
   card: TaskCardStore;
-  isLast: boolean;
-  top: number;
-  onHover: (enter: boolean) => void;
-}>(function CardForm({ card, top, isLast, onHover }) {
-  const { timeMs, transitionAllEaseFull } = useAnimationConfig();
-
-  const [mounted, setMounted] = useState(false);
-  useLayoutEffect(() => {
-    setTimeout(() => setMounted(true), 10);
-  }, []);
-
+}>(function ResetButton({ card }) {
   const resetProps = useMemo(() => {
     const subProps = {
       renderTarget: (open: () => void): ReactNode => (
@@ -302,74 +260,107 @@ export const CardForm = observer<{
     } as const;
   }, [card]);
 
+  return <ButtonWithPopover {...resetProps} />;
+});
+
+const CardActionButtons = observer<{
+  card: TaskCardStore;
+  isLast: boolean;
+}>(function CardActionButtons({ card, isLast }) {
+  const { transitionAllEaseFull } = useAnimationConfig();
+
+  return (
+    <Flex
+      direction="column"
+      gap={8}
+      pos="absolute"
+      right={0}
+      p={8}
+      style={{
+        transition: transitionAllEaseFull,
+        transform: `translateX(100%)`,
+        opacity: isLast ? 1 : 0,
+        pointerEvents: isLast ? `all` : `none`,
+      }}
+    >
+      {card.hasChanges ? (
+        <>
+          <ActionIcon size="xl" onClick={() => card.submit()}>
+            <IconCheck />
+          </ActionIcon>
+          <ResetButton card={card} />
+        </>
+      ) : (
+        <>
+          <ActionIcon size="xl" variant="white" onClick={() => card.close()}>
+            <IconX />
+          </ActionIcon>
+          <Popover withArrow position="left">
+            <Popover.Target>
+              <ActionIcon size="xl" variant="outline">
+                <IconCopyX />
+                {/*<IconPentagonX />*/}
+              </ActionIcon>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <Flex align="center" gap="sm">
+                <Box>Close all unchanged cards?</Box>
+                <Button onClick={() => card.storage.closeAllCards()} color={dangerColorMantine}>
+                  Yes
+                </Button>
+              </Flex>
+            </Popover.Dropdown>
+          </Popover>
+          {/*<ActionIcon size="xl" variant="light" onClick={() => card.storage.setCardsHidden(true)}>*/}
+          {/*  <IconChevronsRight />*/}
+          {/*</ActionIcon>*/}
+
+          <ActionIcon size="xl" opacity={0} />
+
+          <InfoButton card={card} />
+        </>
+      )}
+    </Flex>
+  );
+});
+
+export const CardForm = observer<{
+  card: TaskCardStore;
+  isLast: boolean;
+  top: number;
+  onHover: (enter: boolean) => void;
+}>(function CardForm({ card, top, isLast, onHover }) {
+  const { timeMs } = useAnimationConfig();
+
+  const [mounted, setMounted] = useState(false);
+  useLayoutEffect(() => {
+    setTimeout(() => setMounted(true), 10);
+  }, []);
+
   return (
     <Flex
       style={{
         transition: `transform ${timeMs}ms ease`,
         transform: [
           `translateX(${mounted ? `0%` : `calc(100% + 4rem)`})`,
-          `translateY(calc(${top + (isLast ? 4 : 0)}rem - ${isLast ? 28 : 2}px))`,
-          `translateZ(${isLast ? 0 : -7}rem)`,
+          `translateY(calc(${top + (isLast ? 4 : 0)}rem - ${isLast ? 2 : 0.2}rem))`,
+          `translateZ(${isLast ? 0 : -6}rem)`,
           `rotateX(${isLast ? '0deg' : `-40deg`})`,
         ].join(` `),
+        transformOrigin: `top center`,
         position: `absolute`,
         right: `0.5rem`,
         pointerEvents: `all`,
         zIndex: 100,
         top: `-2rem`,
         width: `100%`,
+        cursor: `default`,
       }}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
     >
       <TaskEditContent card={card} isLast={isLast} hasChanges={card.hasChanges} />
-      <Flex
-        direction="column"
-        gap={8}
-        pos="absolute"
-        right={0}
-        p={8}
-        style={{
-          transition: transitionAllEaseFull,
-          transform: `translateX(100%)`,
-          opacity: isLast ? 1 : 0,
-          pointerEvents: isLast ? `all` : `none`,
-        }}
-      >
-        {card.hasChanges ? (
-          <>
-            <ActionIcon size="xl" onClick={() => card.submit()}>
-              <IconCheck />
-            </ActionIcon>
-            <ButtonWithPopover {...resetProps} />
-          </>
-        ) : (
-          <>
-            <ActionIcon size="xl" variant="white" onClick={() => card.close()}>
-              <IconX />
-            </ActionIcon>
-            <Popover withArrow position="left">
-              <Popover.Target>
-                <ActionIcon size="xl" variant="outline">
-                  <IconCopyX />
-                  {/*<IconPentagonX />*/}
-                </ActionIcon>
-              </Popover.Target>
-              <Popover.Dropdown>
-                <Flex align="center" gap="sm">
-                  <Box>Close all unchanged cards?</Box>
-                  <Button onClick={() => card.storage.closeAllCards()} color={dangerColorMantine}>
-                    Yes
-                  </Button>
-                </Flex>
-              </Popover.Dropdown>
-            </Popover>
-            <ActionIcon size="xl" variant="light" onClick={() => card.storage.setCardsHidden(true)}>
-              <IconChevronsRight />
-            </ActionIcon>
-          </>
-        )}
-      </Flex>
+      <CardActionButtons card={card} isLast={isLast} />
     </Flex>
   );
 });

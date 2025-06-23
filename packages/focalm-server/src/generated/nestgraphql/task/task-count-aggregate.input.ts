@@ -54,7 +54,16 @@ export class TaskCountAggregateInput {
   parentId?: true;
 
   @Field(() => Boolean, { nullable: true })
+  description?: true;
+
+  @Field(() => Boolean, { nullable: true })
   orderKey?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  projectId?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  nnInProject?: true;
 
   @Field(() => Boolean, { nullable: true })
   _all?: true;

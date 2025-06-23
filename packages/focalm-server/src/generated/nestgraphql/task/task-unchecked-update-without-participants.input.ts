@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
+import { BigIntFieldUpdateOperationsInput } from '../prisma/big-int-field-update-operations.input';
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { EnumTaskStateFieldUpdateOperationsInput } from '../prisma/enum-task-state-field-update-operations.input';
@@ -9,6 +11,8 @@ import { NullableIntFieldUpdateOperationsInput } from '../prisma/nullable-int-fi
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput } from '../task-history-value/task-history-value-unchecked-update-many-without-task-nested.input';
+import { TaskToTaskRelationUncheckedUpdateManyWithoutDstNestedInput } from '../task-to-task-relation/task-to-task-relation-unchecked-update-many-without-dst-nested.input';
+import { TaskToTaskRelationUncheckedUpdateManyWithoutSrcNestedInput } from '../task-to-task-relation/task-to-task-relation-unchecked-update-many-without-src-nested.input';
 import { TaskUncheckedUpdateManyWithoutParentNestedInput } from './task-unchecked-update-many-without-parent-nested.input';
 
 @InputType()
@@ -64,12 +68,27 @@ export class TaskUncheckedUpdateWithoutParticipantsInput {
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   parentId?: NullableStringFieldUpdateOperationsInput;
 
+  @Field(() => GraphQLJSON, { nullable: true })
+  description?: any;
+
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   orderKey?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  projectId?: StringFieldUpdateOperationsInput;
+
+  @Field(() => BigIntFieldUpdateOperationsInput, { nullable: true })
+  nnInProject?: BigIntFieldUpdateOperationsInput;
 
   @Field(() => TaskUncheckedUpdateManyWithoutParentNestedInput, { nullable: true })
   children?: TaskUncheckedUpdateManyWithoutParentNestedInput;
 
   @Field(() => TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput, { nullable: true })
   historyValues?: TaskHistoryValueUncheckedUpdateManyWithoutTaskNestedInput;
+
+  @Field(() => TaskToTaskRelationUncheckedUpdateManyWithoutSrcNestedInput, { nullable: true })
+  relationsSrc?: TaskToTaskRelationUncheckedUpdateManyWithoutSrcNestedInput;
+
+  @Field(() => TaskToTaskRelationUncheckedUpdateManyWithoutDstNestedInput, { nullable: true })
+  relationsDst?: TaskToTaskRelationUncheckedUpdateManyWithoutDstNestedInput;
 }

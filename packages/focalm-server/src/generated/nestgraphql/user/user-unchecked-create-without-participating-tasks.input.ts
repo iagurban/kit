@@ -5,6 +5,7 @@ import { TaskUncheckedCreateNestedManyWithoutAuthorInput } from '../task/task-un
 import { TaskUncheckedCreateNestedManyWithoutResponsibleInput } from '../task/task-unchecked-create-nested-many-without-responsible.input';
 import { TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput } from '../task-history-group/task-history-group-unchecked-create-nested-many-without-author.input';
 import { UploadedFileUncheckedCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-uploader.input';
+import { UserInProjectUncheckedCreateNestedManyWithoutUserInput } from '../user-in-project/user-in-project-unchecked-create-nested-many-without-user.input';
 
 @InputType()
 export class UserUncheckedCreateWithoutParticipatingTasksInput {
@@ -20,8 +21,14 @@ export class UserUncheckedCreateWithoutParticipatingTasksInput {
   @Field(() => String, { nullable: false })
   name!: string;
 
+  @Field(() => String, { nullable: true })
+  abbrev?: string;
+
   @Field(() => String, { nullable: false })
   passwordHash!: string;
+
+  @Field(() => String, { nullable: false })
+  ownProjectId!: string;
 
   @Field(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput, { nullable: true })
   uploadedFiles?: UploadedFileUncheckedCreateNestedManyWithoutUploaderInput;
@@ -37,4 +44,7 @@ export class UserUncheckedCreateWithoutParticipatingTasksInput {
 
   @Field(() => TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
   authoredTaskChanges?: TaskHistoryGroupUncheckedCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => UserInProjectUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
+  inProjects?: UserInProjectUncheckedCreateNestedManyWithoutUserInput;
 }

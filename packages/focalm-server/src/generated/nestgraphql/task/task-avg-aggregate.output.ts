@@ -16,4 +16,7 @@ export class TaskAvgAggregate {
 
   @Field(() => Float, { nullable: true })
   dueToOffset?: number;
+
+  @Field(() => Float, { nullable: true })
+  nnInProject?: number;
 }

@@ -34,8 +34,68 @@ type Mutation {
   updateTasks(changes: [TasksChangesGroup!]!): TasksUpdateResult!
 }
 
+type ParticipantRole {
+  _count: ParticipantRoleCount!
+  color: String!
+  id: ID!
+  name: String!
+  usersInTasks: [UserInTaskTag!]
+}
+
+type ParticipantRoleCount {
+  usersInTasks: Int!
+}
+
+enum PermissionInProject {
+  participants
+  tasks
+}
+
+enum PermissionKind {
+  create
+  delete
+  read
+  update
+}
+
+type Project {
+  _count: ProjectCount!
+  abbrev: String
+  id: ID!
+  name: String!
+  ownOf: User
+  relationTypes: [TaskToTaskRelationType!]
+  tasks: [Task!]
+  tasksCounter: String!
+  usersPermissions: [UserInProject!]
+}
+
+type Project2 {
+  _count: ProjectCount!
+  abbrev: String
+  id: ID!
+  name: String!
+  ownOf: User
+  relationTypes: [TaskToTaskRelationType!]!
+  tasks: [Task!]!
+  tasksCounter: String!
+  usersPermissions: [UserInProject!]
+}
+
+type ProjectCount {
+  relationTypes: Int!
+  tasks: Int!
+  usersPermissions: Int!
+}
+
 type Query {
+  failingQuery: Boolean!
+  participantsRoles: [ParticipantRole!]!
+  project(id: String): Project2!
+  projects: [Project2!]!
+  searchTasks(titleLike: String): TasksWithRelatedStuff!
   tasks(updatedAfter: DateTime): TasksWithRelatedStuff!
+  users: [User!]!
 }
 
 type RefreshToken {
@@ -67,18 +127,24 @@ type Task {
   authorId: String!
   children: [Task!]
   createdAt: DateTime!
+  description: JSON!
   dueToDate: Date
   dueToOffset: Int
   ease: Float!
   historyValues: [TaskHistoryValue!]
   id: ID!
   impact: Float!
+  nnInProject: String!
   orderKey: String!
   parent: Task
   parentId: String
   participants: [UserInTask!]
   plannedStartDate: Date
   plannedStartOffset: Int
+  project: Project!
+  projectId: String!
+  relationsDst: [TaskToTaskRelation!]
+  relationsSrc: [TaskToTaskRelation!]
   responsible: User
   responsibleId: String
   startAfterDate: Date
@@ -92,6 +158,8 @@ type TaskCount {
   children: Int!
   historyValues: Int!
   participants: Int!
+  relationsDst: Int!
+  relationsSrc: Int!
 }
 
 input TaskFieldUpdateInput {
@@ -118,6 +186,7 @@ type TaskHistoryGroupCount {
 enum TaskHistoryKey {
   archived
   authorId
+  description
   dueToDate
   dueToOffset
   ease
@@ -127,6 +196,8 @@ enum TaskHistoryKey {
   participants
   plannedStartDate
   plannedStartOffset
+  projectId
+  relations
   responsibleId
   startAfterDate
   startAfterOffset
@@ -143,6 +214,7 @@ enum TaskHistoryOperation {
 type TaskHistoryValue {
   group: TaskHistoryGroup!
   groupId: String!
+  id: ID!
   key: TaskHistoryKey!
   op: TaskHistoryOperation!
   task: Task!
@@ -154,6 +226,29 @@ enum TaskState {
   Active
   Done
   Pending
+}
+
+type TaskToTaskRelation {
+  dst: Task!
+  dstId: String!
+  src: Task!
+  srcId: String!
+  type: TaskToTaskRelationType!
+  typeId: String!
+}
+
+type TaskToTaskRelationType {
+  _count: TaskToTaskRelationTypeCount!
+  forward: String!
+  id: ID!
+  inverse: String!
+  project: Project!
+  projectId: String!
+  relations: [TaskToTaskRelation!]
+}
+
+type TaskToTaskRelationTypeCount {
+  relations: Int!
 }
 
 input TasksChangesGroup {
@@ -187,13 +282,17 @@ type UploadedFile {
 
 type User {
   _count: UserCount!
+  abbrev: String
   assignedTasks: [Task!]
   authoredTaskChanges: [TaskHistoryGroup!]
   authoredTasks: [Task!]
   createdAt: DateTime!
   email: String!
   id: ID!
+  inProjects: [UserInProject!]
   name: String!
+  ownProject: Project!
+  ownProjectId: String!
   participatingTasks: [UserInTask!]
   passwordHash: String!
   refreshTokens: [RefreshToken!]
@@ -204,9 +303,19 @@ type UserCount {
   assignedTasks: Int!
   authoredTaskChanges: Int!
   authoredTasks: Int!
+  inProjects: Int!
   participatingTasks: Int!
   refreshTokens: Int!
   uploadedFiles: Int!
+}
+
+type UserInProject {
+  kind: PermissionKind!
+  permission: PermissionInProject!
+  project: Project!
+  projectId: String!
+  user: User!
+  userId: String!
 }
 
 type UserInTask {
@@ -224,7 +333,8 @@ type UserInTaskCount {
 }
 
 type UserInTaskTag {
-  tag: String!
+  role: ParticipantRole!
+  roleId: String!
   userInTask: UserInTask!
   userInTaskId: String!
 }

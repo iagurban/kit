@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { GraphQLJSON } from 'graphql-type-json';
 
 import { TaskHistoryKey } from '../prisma/task-history-key.enum';
@@ -8,6 +8,9 @@ import { TaskHistoryGroup } from '../task-history-group/task-history-group.model
 
 @ObjectType()
 export class TaskHistoryValue {
+  @Field(() => ID, { nullable: false })
+  id!: string;
+
   @Field(() => String, { nullable: false })
   groupId!: string;
 

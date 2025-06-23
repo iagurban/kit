@@ -31,3 +31,9 @@ export const camelToText = (input: string, capitalizeFirst = true): string => {
 
   return capitalizeFirst ? result.charAt(0).toUpperCase() + result.slice(1) : result;
 };
+
+export const maybeUndefined = <T>(o: T): T | undefined => o;
+export const maybeNull = <T>(o: T): T | null => o;
+export const maybeNullish = <T>(o: T): T | undefined | null => o;
+
+export const capitalize1 = (val: string) => val[0].toLocaleUpperCase() + val.slice(1);

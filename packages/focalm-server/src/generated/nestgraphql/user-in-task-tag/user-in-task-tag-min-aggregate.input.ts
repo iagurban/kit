@@ -6,5 +6,5 @@ export class UserInTaskTagMinAggregateInput {
   userInTaskId?: true;
 
   @Field(() => Boolean, { nullable: true })
-  tag?: true;
+  roleId?: true;
 }

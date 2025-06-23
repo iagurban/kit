@@ -19,7 +19,7 @@ export class TaskHistoryValueAggregateArgs {
   orderBy?: Array<TaskHistoryValueOrderByWithRelationInput>;
 
   @Field(() => TaskHistoryValueWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>;
+  cursor?: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>;
 
   @Field(() => Int, { nullable: true })
   take?: number;

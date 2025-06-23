@@ -19,4 +19,7 @@ export class UserCount {
 
   @Field(() => Int, { nullable: false })
   participatingTasks?: number;
+
+  @Field(() => Int, { nullable: false })
+  inProjects?: number;
 }

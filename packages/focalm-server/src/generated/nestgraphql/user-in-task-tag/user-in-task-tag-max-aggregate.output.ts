@@ -6,5 +6,5 @@ export class UserInTaskTagMaxAggregate {
   userInTaskId?: string;
 
   @Field(() => String, { nullable: true })
-  tag?: string;
+  roleId?: string;
 }

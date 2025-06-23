@@ -24,7 +24,7 @@ export class UserUpdateOneRequiredWithoutParticipatingTasksNestedInput {
 
   @Field(() => UserWhereUniqueInput, { nullable: true })
   @Type(() => UserWhereUniqueInput)
-  connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 
   @Field(() => UserUpdateToOneWithWhereWithoutParticipatingTasksInput, { nullable: true })
   @Type(() => UserUpdateToOneWithWhereWithoutParticipatingTasksInput)

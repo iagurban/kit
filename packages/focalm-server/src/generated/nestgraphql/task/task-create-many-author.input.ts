@@ -1,5 +1,6 @@
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import * as Scalars from 'graphql-scalars';
+import { GraphQLJSON } from 'graphql-type-json';
 
 import { TaskState } from '../prisma/task-state.enum';
 
@@ -53,6 +54,15 @@ export class TaskCreateManyAuthorInput {
   @Field(() => String, { nullable: true })
   parentId?: string;
 
+  @Field(() => GraphQLJSON, { nullable: true })
+  description?: any;
+
   @Field(() => String, { nullable: false })
   orderKey!: string;
+
+  @Field(() => String, { nullable: false })
+  projectId!: string;
+
+  @Field(() => String, { nullable: false })
+  nnInProject!: bigint | number;
 }

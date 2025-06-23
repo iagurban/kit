@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
 import { UserInTaskTagScalarWhereInput } from './user-in-task-tag-scalar-where.input';
-import { UserInTaskTagUpdateManyMutationInput } from './user-in-task-tag-update-many-mutation.input';
+import { UserInTaskTagUncheckedUpdateManyWithoutUserInTaskInput } from './user-in-task-tag-unchecked-update-many-without-user-in-task.input';
 
 @InputType()
 export class UserInTaskTagUpdateManyWithWhereWithoutUserInTaskInput {
@@ -10,7 +10,7 @@ export class UserInTaskTagUpdateManyWithWhereWithoutUserInTaskInput {
   @Type(() => UserInTaskTagScalarWhereInput)
   where!: UserInTaskTagScalarWhereInput;
 
-  @Field(() => UserInTaskTagUpdateManyMutationInput, { nullable: false })
-  @Type(() => UserInTaskTagUpdateManyMutationInput)
-  data!: UserInTaskTagUpdateManyMutationInput;
+  @Field(() => UserInTaskTagUncheckedUpdateManyWithoutUserInTaskInput, { nullable: false })
+  @Type(() => UserInTaskTagUncheckedUpdateManyWithoutUserInTaskInput)
+  data!: UserInTaskTagUncheckedUpdateManyWithoutUserInTaskInput;
 }

@@ -7,6 +7,9 @@ import { TaskHistoryGroupCreateNestedOneWithoutValuesInput } from '../task-histo
 
 @InputType()
 export class TaskHistoryValueCreateWithoutTaskInput {
+  @Field(() => String, { nullable: true })
+  id?: string;
+
   @Field(() => TaskHistoryKey, { nullable: false })
   key!: `${TaskHistoryKey}`;
 

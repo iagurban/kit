@@ -6,14 +6,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "server:start-dev": "nodemon -e 'js,ts,mjs,md,jsx,tsx,yml,yaml,json,html,htm' -w './**/*.ts' -i '**/*.spec.ts' -x 'dotenv ts-node src/main.ts'",
+    "__server:start-dev": "nodemon -e 'js,ts,mjs,md,jsx,tsx,yml,yaml,json,html,htm' -w './**/*.ts' -i '**/*.spec.ts' -x 'dotenv ts-node src/main.ts'",
     "dev-hmr": "PATH=\"$HOME/.npm-global/bin:$PATH\" nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "after-client-generation": "yarn rimraf src/generated/old-client && prisma/bin/fix-prisma-imports.sh && ts-node prisma/bin/fix-nestgraphql.ts && yarn eslint --quiet --no-error-on-unmatched-pattern --rule '@typescript-eslint/no-empty-object-type: off' --rule '@typescript-eslint/no-explicit-any: off' --rule '@typescript-eslint/no-unnecessary-type-constraint: off' --rule '@typescript-eslint/no-unsafe-function-type: off' --rule '@typescript-eslint/no-namespace: off' --fix src/generated/**/*",
-    "prisma:generate-client": "NODE_ENV=production yarn pnpify prisma generate && yarn after-client-generation",
-    "server:prisma-dev": "nodemon -e 'prisma' -w './prisma/schema.prisma' -x 'yarn prisma:generate-client'",
-    "prisma:migrate": "yarn pnpify prisma migrate dev && yarn after-client-generation",
-    "prisma:migrate-reset": "yarn pnpify prisma migrate reset && yarn after-client-generation",
-    "prisma:seed": "yarn prisma db seed"
+    "__prisma:generate-client": "NODE_ENV=production yarn pnpify prisma generate && yarn after-client-generation",
+    "__server:prisma-dev": "nodemon -e 'prisma' -w './prisma/schema.prisma' -x 'yarn prisma:generate-client'",
+    "__prisma:migrate": "yarn pnpify prisma migrate dev && yarn after-client-generation",
+    "__prisma:migrate-reset": "yarn pnpify prisma migrate reset && yarn after-client-generation",
+    "__prisma:seed": "yarn prisma db seed"
   },
   "prisma": {
     "seed": "yarn ts-node ./prisma/seed.ts"
@@ -30,7 +30,7 @@
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.17",
     "@nestjs/testing": "^10.4.17",
-    "@prisma/client": "6.6.0",
+    "@prisma/client": "6.9.0",
     "@types/bcrypt": "^5",
     "@types/node": "^22.14.1",
     "@types/passport": "^0",
@@ -78,7 +78,7 @@
     "uuid": "^11.1.0",
     "webpack": "^5.99.5",
     "webpack-pnp-externals": "^1.1.0",
-    "zod": "^3.24.2"
+    "zod": "^3.25.64"
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "11.3.0",
@@ -90,7 +90,7 @@
     "@vegardit/prisma-generator-nestjs-dto": "^1.5.1",
     "@yarnpkg/pnpify": "^4.1.4",
     "nestjs-prisma-graphql-crud-gen": "1.0.4",
-    "prisma": "6.6.0",
+    "prisma": "6.9.0",
     "prisma-class-generator": "^0.2.11",
     "prisma-erd-generator": "^2.0.4",
     "prisma-generator-typescript-interfaces": "^2.1.0",

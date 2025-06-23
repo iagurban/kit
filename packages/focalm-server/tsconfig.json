@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "../..",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "experimentalDecorators": true,
@@ -22,7 +22,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@freyja/kit/*": ["packages/kit/src/*"]
+      "@freyja/kit/*": ["../kit/src/*"],
+      "@focalm/core/*": ["../core/src/*"]
     }
   },
   "include": ["src", "test", "eslint.config.mjs", ".prettierrc.js", "prisma/seed.ts"],

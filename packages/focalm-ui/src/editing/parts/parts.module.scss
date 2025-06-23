@@ -1,0 +1,25 @@
+.relationsBlockSomeItem {
+  position: relative;
+
+  .relationsHoverLine {
+    flex: 1 0 0;
+    border-bottom: 0.5px dashed var(--mantine-color-dimmed);
+    transform: translateY(calc(-50% - 0.2px));
+    transition: opacity 0.2s ease;
+
+    opacity: 0;
+  }
+
+  &:hover .relationsHoverLine {
+    opacity: 0.5;
+  }
+
+  .showOnParentHover {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover .showOnParentHover {
+    opacity: 1;
+  }
+}

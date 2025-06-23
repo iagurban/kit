@@ -9,12 +9,12 @@ import {
   isNullish,
   isNumber,
   isString,
-  isTruthy,
+  notNull,
   PromiseValue,
   samplesBy,
 } from '@freyja/kit/src';
 import { Injectable } from '@nestjs/common';
-import { sortBy, sortedIndexBy } from 'lodash';
+import { groupBy, sortBy, sortedIndexBy } from 'lodash';
 
 import { $Enums, Prisma, TaskHistoryKey, TaskState } from '../../generated/db-client';
 import { DbService } from '../db/db.service';
@@ -25,10 +25,28 @@ import TaskCreateArgs = Prisma.TaskCreateArgs;
 import JsonNull = Prisma.JsonNull;
 import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
 import CreatedAtFixReason = $Enums.CreatedAtFixReason;
+import { isPlainObject } from '@nestjs/common/utils/shared.utils';
+import { z } from 'zod';
+
 import { Task } from '../../generated/nestgraphql/task/task.model';
 import { currentUserCtx } from '../../interceptors/current-user-context';
 import { FetchAllTasksOptionsInput } from './fetch-all-tasks-options-input';
 import { TasksChangesGroup } from './tasks-changes-group';
+
+const participantsChangeSchema = z.object({
+  action: z.enum([`+`, `-`]),
+  userId: z.string(),
+  tag: z.string().optional(),
+});
+type ParticipantsChange = z.infer<typeof participantsChangeSchema>;
+
+const relationsChangeSchema = z.object({
+  action: z.enum([`+`, `-`]),
+  srcId: z.string(),
+  dstId: z.string(),
+  typeId: z.string(),
+});
+type RelationsChange = z.infer<typeof relationsChangeSchema>;
 
 const trimCreatedAt = (
   createdAt: Date,
@@ -58,6 +76,7 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
     case 'title':
     case 'authorId':
     case 'responsibleId':
+    case 'projectId':
     case 'orderKey':
       return { key, value: checked(value, isString, () => `Invalid ${key}: ${value}`) };
     case 'parentId': {
@@ -106,11 +125,17 @@ const getTypedChange = (key: TaskHistoryKey, value: JsonValue, newIdsReplacement
     case 'participants':
       return {
         key,
-        value: JSON.parse(checked(value, isString, () => `Invalid ${key}: ${value}`)) as {
-          action: `+` | `-`;
-          userId: string;
-          roleId?: string;
-        },
+        value: participantsChangeSchema.parse(value),
+      };
+    case 'relations':
+      return {
+        key,
+        value: relationsChangeSchema.parse(value),
+      };
+    case 'description':
+      return {
+        key,
+        value: checked(value, isPlainObject, () => `Invalid ${key}: ${value}`),
       };
     default:
       throw new Error(`Unknown update field ${key}`);
@@ -127,6 +152,7 @@ const taskUpdateCollector = (id: string, db: DbService) => {
     archived: boolean;
     orderKey: string;
     authorId: string;
+    projectId: string;
     responsibleId: string | null;
     parentId: string | null;
     startAfterDate: Date;
@@ -136,12 +162,9 @@ const taskUpdateCollector = (id: string, db: DbService) => {
     dueToDate: Date;
     dueToOffset?: number | null;
   }> = {};
+
   const participants: {
-    value: {
-      action: '+' | '-';
-      userId: string;
-      roleId?: string;
-    };
+    value: ParticipantsChange;
     createdAt: Date;
   }[] = [];
   let participantsNeedsFullRebuild = false;
@@ -154,11 +177,7 @@ const taskUpdateCollector = (id: string, db: DbService) => {
         select: { value: true, group: { select: { createdAt: true } } },
       })
     ).map(e => ({
-      value: e.value as {
-        action: '+' | '-';
-        userId: string;
-        roleId?: string;
-      },
+      value: e.value as ParticipantsChange,
       createdAt: e.group.createdAt,
     }));
   };
@@ -167,6 +186,8 @@ const taskUpdateCollector = (id: string, db: DbService) => {
     current: PromiseValue<ReturnType<typeof getCurrentSortedParticipantsChanges>>,
     add: (typeof participants)[number][]
   ) => {
+    // console.log(`current`, current);
+    // console.log(`add`, add);
     current = [...current];
     for (const v of add) {
       current.splice(
@@ -181,21 +202,23 @@ const taskUpdateCollector = (id: string, db: DbService) => {
   const changesToSnapshot = (
     changes: PromiseValue<ReturnType<typeof getCurrentSortedParticipantsChanges>>
   ) => {
+    const { tags, users } = groupBy(changes, c => (c.value.tag != null ? `tags` : `users`));
+
     const result: Record<string /*user*/, Set<string>> = {};
-    for (const c of changes) {
-      if (c.value.roleId != null) {
-        if (result[c.value.userId]) {
-          if (c.value.action === `+`) {
-            result[c.value.userId].add(c.value.roleId ?? ``);
-          } else {
-            result[c.value.userId].delete(c.value.roleId ?? ``);
-          }
-        }
+    for (const c of users || []) {
+      if (c.value.action === `+`) {
+        result[c.value.userId] ??= new Set(); // don't overwrite
       } else {
+        delete result[c.value.userId];
+      }
+    }
+
+    for (const c of tags || []) {
+      if (result[c.value.userId]) {
         if (c.value.action === `+`) {
-          result[c.value.userId] ??= new Set(); // don't overwrite
+          result[c.value.userId].add(c.value.tag!);
         } else {
-          delete result[c.value.userId];
+          result[c.value.userId].delete(c.value.tag!);
         }
       }
     }
@@ -207,13 +230,96 @@ const taskUpdateCollector = (id: string, db: DbService) => {
   ) => {
     await db.transaction.userInTask.deleteMany({ where: { taskId: id } });
     const snapshot = changesToSnapshot(changes);
-    await db.transaction.userInTask.createMany({
-      data: Object.entries(snapshot).map(([userId, roles]) => ({
-        userId,
-        taskId: id,
-        roles: [...roles].map(r => ({ create: { tag: r } })),
-      })),
-    });
+    // console.dir(changes, { depth: null });
+    // console.dir(snapshot, { depth: null });
+    for (const [userId, roles] of Object.entries(snapshot)) {
+      await db.transaction.userInTask.create({
+        data: {
+          userId,
+          taskId: id,
+          tags: { createMany: { data: [...roles].map(r => ({ roleId: r })) } },
+        },
+      });
+    }
+  };
+
+  const relations: {
+    value: RelationsChange;
+    createdAt: Date;
+  }[] = [];
+  let relationsNeedsFullRebuild = false;
+
+  const getCurrentSortedRelationsChanges = async () => {
+    return (
+      await db.transaction.taskHistoryValue.findMany({
+        where: { taskId: id, key: TaskHistoryKey.relations },
+        orderBy: { group: { createdAt: 'asc' } },
+        select: { value: true, group: { select: { createdAt: true } } },
+      })
+    ).map(e => ({
+      value: e.value as RelationsChange,
+      createdAt: e.group.createdAt,
+    }));
+  };
+
+  const relationsChangesToSnapshot = (
+    changes: PromiseValue<ReturnType<typeof getCurrentSortedRelationsChanges>>
+  ) => {
+    const result: Record<string /*user*/, Set<string>> = {};
+    for (const c of changes) {
+      if (c.value.action === `+`) {
+        (result[c.value.dstId] ??= new Set()).add(c.value.typeId); // don't overwrite
+      } else {
+        const o = result[c.value.dstId];
+        if (o) {
+          o.delete(c.value.typeId);
+          if (!o.size) {
+            delete result[c.value.dstId];
+          }
+        }
+      }
+    }
+
+    return result;
+  };
+
+  const addSortedRelationsChanges = (
+    current: PromiseValue<ReturnType<typeof getCurrentSortedRelationsChanges>>,
+    add: (typeof relations)[number][]
+  ) => {
+    // console.log(`current`, current);
+    // console.log(`add`, add);
+    current = [...current];
+    for (const v of add) {
+      current.splice(
+        sortedIndexBy(current, v, v => v.createdAt.getTime()),
+        0,
+        v
+      );
+    }
+    return current;
+  };
+
+  const rewriteRelations = async (
+    changes: PromiseValue<ReturnType<typeof getCurrentSortedRelationsChanges>>
+  ) => {
+    const bySrc = ExMap.groupedBy(changes, c => c.value.srcId);
+
+    const dstIds = changes.map(c => c.value.dstId);
+
+    // console.log(bySrc);
+
+    for (const [srcId, cc] of bySrc) {
+      await db.transaction.taskToTaskRelation.deleteMany({ where: { srcId: id } });
+      const snapshot = relationsChangesToSnapshot(cc);
+      for (const [dstId, typeIds] of Object.entries(snapshot)) {
+        for (const typeId of typeIds) {
+          await db.transaction.taskToTaskRelation.create({ data: { srcId, typeId, dstId } });
+        }
+      }
+    }
+
+    return new ExSet(bySrc.keys()).join(dstIds);
   };
 
   return {
@@ -222,21 +328,27 @@ const taskUpdateCollector = (id: string, db: DbService) => {
       changed = true;
     },
     addParticipantsChange(
-      part: {
-        key: 'participants';
-        value: {
-          action: '+' | '-';
-          userId: string;
-          roleId?: string;
-        };
-      },
+      part: ParticipantsChange,
       isOlderThanLast: boolean,
       cur: { value: JsonValue; createdAt: Date } | undefined,
       createdAt: Date
     ) {
-      participants.push({ value: part.value, createdAt });
+      // console.log(`addParticipantsChange`, part);
+      participants.push({ value: part, createdAt });
       if (isOlderThanLast) {
         participantsNeedsFullRebuild = true;
+      }
+    },
+    addRelationsChange(
+      part: RelationsChange,
+      isOlderThanLast: boolean,
+      cur: { value: JsonValue; createdAt: Date } | undefined,
+      createdAt: Date
+    ) {
+      // console.log(`addParticipantsChange`, part);
+      relations.push({ value: part, createdAt });
+      if (isOlderThanLast) {
+        relationsNeedsFullRebuild = true;
       }
     },
     async writeParticipantsChanges() {
@@ -247,20 +359,33 @@ const taskUpdateCollector = (id: string, db: DbService) => {
         addSortedParticipantsChanges(await getCurrentSortedParticipantsChanges(), participants)
       );
     },
+    async writeRelationsChanges() {
+      if (!relations.length) {
+        return new ExSet<string>();
+      }
+      const oldChanges = await getCurrentSortedRelationsChanges();
+      // console.log(`oldChanges:`);
+      // console.dir(oldChanges, { depth: null });
+      // console.log(`newChanges:`);
+      // console.dir(relations, { depth: null });
+      return await rewriteRelations(addSortedRelationsChanges(oldChanges, relations));
+    },
     get hasChanges() {
       return changed;
     },
-    get update(): TaskUpdateArgs[`data`] {
-      return update;
+    get update() {
+      return update satisfies TaskUpdateArgs[`data`];
     },
-    get create(): TaskCreateArgs[`data`] {
+    create(nnInProject: bigint) {
       return {
         ...update,
         id,
         authorId: checked(update.authorId, isString, () => `authorId missing on create`),
         title: update.title ?? ``,
         orderKey: update.orderKey ?? ``,
-      };
+        projectId: checked(update.projectId, isString, () => `projectId missing on create`),
+        nnInProject,
+      } satisfies TaskCreateArgs[`data`];
     },
   };
 };
@@ -269,7 +394,28 @@ export type PreparedTaskChangesGroup = {
   localCreatedAt: Date;
   createdAt: Date;
   createdAtFixReason?: CreatedAtFixReason;
-  valuesByTask: ExMap<string /* taskId */, ExMap<TaskHistoryKey, string /* JSON */>>;
+  valuesByTask: ExMap<
+    string /* taskId */,
+    readonly { key: TaskHistoryKey; stringValue: string /* JSON */ }[]
+  >;
+};
+
+const prepareForSearch = (s: string, ordered: boolean) => {
+  s = s.replace(/\W/g, ` `).trim();
+  if (!ordered) {
+    const parts = s.split(/\s+/g);
+    const reg = new ExSet<string>();
+    const result: string[] = [];
+    for (const part of parts) {
+      if (!reg.has(part)) {
+        reg.add(part);
+        result.push(part);
+      }
+    }
+    return result.join(`&`);
+  }
+
+  return s.split(/\s+/g).join(`<->`);
 };
 
 @Injectable()
@@ -280,10 +426,22 @@ export class TasksService {
   ) {}
 
   async getTasks(select?: Prisma.TaskSelect, fetchOptions?: FetchAllTasksOptionsInput): Promise<Task[]> {
-    return this.db.client.task.findMany({
+    return this.db.transaction.task.findMany({
       where: {
-        responsibleId: currentUserCtx.get().id,
+        authorId: currentUserCtx.get().id,
         updatedAt: fetchOptions?.updatedAfter != null ? { gt: fetchOptions.updatedAfter } : undefined,
+      },
+      select,
+    });
+  }
+
+  async searchTasks(o: { titleLike?: string }, select?: Prisma.TaskSelect): Promise<Task[]> {
+    // console.log(`o.titleLike`, o.titleLike && prepareForSearch(o.titleLike, false));
+    return this.db.transaction.task.findMany({
+      where: {
+        ...(o.titleLike
+          ? { title: { search: prepareForSearch(o.titleLike, false), mode: `insensitive` } }
+          : {}),
       },
       select,
     });
@@ -348,6 +506,16 @@ export class TasksService {
     };
   }
 
+  async popNnInProject(projectId: string) {
+    const u = await this.db.transaction.project.update({
+      where: { id: projectId },
+      data: { tasksCounter: { increment: 1 } },
+      select: { tasksCounter: true },
+    });
+
+    return u.tasksCounter;
+  }
+
   /**
    * Apply updates on existing tasks and write them to the history.
    *
@@ -362,20 +530,57 @@ export class TasksService {
       const preparedGroups = changes.map(group => ({
         localCreatedAt: group.localCreatedAt,
         ...trimCreatedAt(group.createdAt, group.createdAtFixReason),
-        values: new ExMap(
+        scalarValues: new ExMap(
           group.valuesByTask.toArray(
             (k2v, taskId) =>
               [
                 newIdsReplacements.get(taskId) ?? taskId,
-                k2v.toArray((value, key) => getTypedChange(key, JSON.parse(value), newIdsReplacements)),
+                k2v
+                  .filter(({ key }) => key !== `participants` && key !== `relations`)
+                  .map(({ stringValue, key }) =>
+                    getTypedChange(key, JSON.parse(stringValue), newIdsReplacements)
+                  ),
               ] as const
           )
         ),
+        participantsUpdates: new ExMap(
+          group.valuesByTask
+            .toArray(
+              (k2v, taskId) =>
+                [
+                  newIdsReplacements.get(taskId) ?? taskId,
+                  k2v
+                    .filter(({ key }) => key === `participants`)
+                    .map(
+                      ({ stringValue }) => (
+                        console.log(JSON.parse(stringValue)),
+                        participantsChangeSchema.parse(JSON.parse(stringValue))
+                      )
+                    ),
+                ] as const
+            )
+            .filter(([, v]) => v.length > 0)
+            .map(([taskId, v]) => [taskId, v])
+        ),
+        relationsUpdates: new ExMap(
+          group.valuesByTask
+            .toArray(
+              (k2v, taskId) =>
+                [
+                  newIdsReplacements.get(taskId) ?? taskId,
+                  k2v
+                    .filter(({ key }) => key === `relations`)
+                    .map(({ stringValue }) => relationsChangeSchema.parse(JSON.parse(stringValue))),
+                ] as const
+            )
+            .filter(([, v]) => v.length > 0)
+            .map(([taskId, v]) => [taskId, v])
+        ),
       }));
 
-      const allValues = sortBy(
+      const allScalarValues = sortBy(
         preparedGroups.flatMap(group =>
-          group.values
+          group.scalarValues
             .toArray((updates, taskId) =>
               updates.map(update => ({
                 taskId,
@@ -388,7 +593,48 @@ export class TasksService {
         e => e.group.createdAt.getTime()
       );
 
-      const updatesByTaskId = ExMap.groupedBy(allValues, value => value.taskId);
+      const allParticipantsValues = sortBy(
+        preparedGroups.flatMap(group =>
+          group.participantsUpdates
+            .toArray((updates, taskId) =>
+              updates.map(update => ({
+                taskId,
+                group,
+                ...update,
+              }))
+            )
+            .flat()
+        ),
+        e => e.group.createdAt.getTime()
+      );
+      const allRelationsValues = sortBy(
+        preparedGroups.flatMap(group =>
+          group.relationsUpdates
+            .toArray((updates, taskId) =>
+              updates.map(update => ({
+                taskId,
+                group,
+                ...update,
+              }))
+            )
+            .flat()
+        ),
+        e => e.group.createdAt.getTime()
+      );
+
+      console.log(`allRelationsValues`, allRelationsValues);
+
+      const updatesByTaskId = ExMap.groupedBy(allScalarValues, value => value.taskId);
+
+      const participantsChanges: ExMap<string, { value: ParticipantsChange; createdAt: Date }[]> =
+        ExMap.groupedBy(allParticipantsValues, value => value.taskId).mapEntries(v =>
+          v.map(v => ({ value: v, createdAt: v.group.createdAt }))
+        );
+
+      const relationsChanges: ExMap<string, { value: RelationsChange; createdAt: Date }[]> = ExMap.groupedBy(
+        allRelationsValues,
+        value => value.taskId
+      ).mapEntries(v => v.map(v => ({ value: v, createdAt: v.group.createdAt })));
 
       const newLastByTaskId = updatesByTaskId.mapEntries(values => {
         const u = new ExMap<TaskHistoryKey, { part: ReturnType<typeof getTypedChange>; createdAt: Date }>();
@@ -398,13 +644,26 @@ export class TasksService {
         return u;
       });
 
+      for (const taskId of participantsChanges.keys()) {
+        newLastByTaskId.getOrCreate(taskId, () => new ExMap());
+      }
+
+      for (const taskId of relationsChanges.keys()) {
+        newLastByTaskId.getOrCreate(taskId, () => new ExMap());
+      }
+
       const curLastByTaskId = await this.getLastFieldsValuesFromHistory(existingIds);
 
       const user = currentUserCtx.get();
 
-      await Promise.all([
-        ...newLastByTaskId
-          .toArray(async (newFields, taskId) => {
+      console.log(newIds, newIdsReplacements);
+
+      {
+        const needUpdateUpdatedAt = new ExSet<string>();
+        const didUpdateUpdatedAt = new ExSet<string>();
+
+        await Promise.all([
+          ...newLastByTaskId.toArray(async (newFields, taskId) => {
             const curFields = curLastByTaskId.get(taskId);
             const collector = taskUpdateCollector(taskId, this.db);
 
@@ -420,7 +679,10 @@ export class TasksService {
               createdAt: Date
             ) => {
               if (part.key === `participants`) {
-                collector.addParticipantsChange(part, isOlderThanLastExisting, cur, createdAt);
+                throw new Error(`Unexpected participants change`);
+                // collector.addParticipantsChange(part, isOlderThanLastExisting, cur, createdAt);
+              } else if (part.key === `relations`) {
+                throw new Error(`Unexpected relations change`);
               } else if (isOlderThanLastExisting) {
                 collector.addPart(part);
               }
@@ -437,46 +699,92 @@ export class TasksService {
                 add(true, part, undefined, createdAt);
               }
             }
+
+            for (const p of participantsChanges.get(taskId) ?? []) {
+              collector.addParticipantsChange(p.value, true, undefined, p.createdAt);
+            }
+
+            for (const p of relationsChanges.get(taskId) ?? []) {
+              collector.addRelationsChange(p.value, true, undefined, p.createdAt);
+            }
+
             if (newIds.has(taskId)) {
+              const dd = collector.create(
+                await this.popNnInProject(
+                  notNull(collector.update.projectId, () => `projectId missing on create`)
+                )
+              );
+              console.log(`create`, dd);
               await this.db.transaction.task.create({
-                data: { ...collector.create, updatedAt: new Date() },
+                data: {
+                  ...dd,
+                  updatedAt: new Date(),
+                },
               });
+              didUpdateUpdatedAt.add(taskId);
             } else if (collector.hasChanges) {
               await this.db.transaction.task.update({
                 where: { id: taskId },
-                data: { ...collector.update, updatedAt: new Date() },
+                data: {
+                  ...collector.update,
+                  updatedAt: new Date(),
+                },
               });
+              didUpdateUpdatedAt.add(taskId);
             }
-            await collector.writeParticipantsChanges();
-          })
-          .filter(isTruthy),
 
-        ...preparedGroups
-          .map(group =>
-            this.db.transaction.taskHistoryGroup.create({
-              data: {
-                author: { connect: { id: user.id } },
-                localCreatedAt: group.localCreatedAt,
-                createdAt: group.createdAt,
-                createdAtFixReason: group.createdAtFixReason,
-                values: {
-                  createMany: {
-                    data: group.values
-                      .toArray((values, taskId) =>
-                        values.map(value => ({
-                          taskId,
-                          key: value.key,
-                          value: value.value != null ? value.value : JsonNull,
-                        }))
-                      )
-                      .flat(),
-                  },
+            await collector.writeParticipantsChanges();
+            needUpdateUpdatedAt.join(await collector.writeRelationsChanges());
+          }),
+        ]);
+
+        needUpdateUpdatedAt.subtract(didUpdateUpdatedAt);
+        await this.db.transaction.task.updateMany({
+          where: { id: { in: [...needUpdateUpdatedAt] } },
+          data: { updatedAt: new Date() },
+        });
+      }
+
+      await Promise.all([
+        ...preparedGroups.flatMap(group =>
+          this.db.transaction.taskHistoryGroup.create({
+            data: {
+              author: { connect: { id: user.id } },
+              localCreatedAt: group.localCreatedAt,
+              createdAt: group.createdAt,
+              createdAtFixReason: group.createdAtFixReason,
+              values: {
+                createMany: {
+                  data: [
+                    ...group.scalarValues.toArray((values, taskId) =>
+                      values.map(value => ({
+                        taskId,
+                        key: value.key,
+                        value: value.value != null ? value.value : JsonNull,
+                      }))
+                    ),
+                    ...group.participantsUpdates.toArray((values, taskId) =>
+                      values.map(value => ({
+                        taskId,
+                        key: TaskHistoryKey.participants,
+                        value: value,
+                      }))
+                    ),
+                    ...group.relationsUpdates.toArray((values, taskId) =>
+                      values.map(value => ({
+                        taskId,
+                        key: TaskHistoryKey.relations,
+                        value: value,
+                      }))
+                    ),
+                  ].flat(),
                 },
               },
-            })
-          )
-          .flat(),
+            },
+          })
+        ),
       ]);
+
       return { newIdsReplacements, existingIds };
     });
   }
@@ -489,8 +797,8 @@ export class TasksService {
             createdAt: group.createdAt,
             localCreatedAt: group.localCreatedAt,
             createdAtFixReason: group.createdAtFixReason,
-            valuesByTask: ExMap.groupedBy(group.updates, u => u.taskId).mapEntries(
-              updates => new ExMap(updates.map(update => [update.field, update.stringValue] as const))
+            valuesByTask: ExMap.groupedBy(group.updates, u => u.taskId).mapEntries(updates =>
+              updates.map(update => ({ key: update.field, stringValue: update.stringValue }) as const)
             ),
           }) as const
       )

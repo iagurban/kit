@@ -62,7 +62,16 @@ export class TaskOrderByWithAggregationInput {
   parentId?: SortOrderInput;
 
   @Field(() => SortOrder, { nullable: true })
+  description?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
   orderKey?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  projectId?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  nnInProject?: `${SortOrder}`;
 
   @Field(() => TaskCountOrderByAggregateInput, { nullable: true })
   _count?: TaskCountOrderByAggregateInput;

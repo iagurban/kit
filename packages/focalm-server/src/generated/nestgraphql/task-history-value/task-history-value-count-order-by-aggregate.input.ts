@@ -5,6 +5,9 @@ import { SortOrder } from '../prisma/sort-order.enum';
 @InputType()
 export class TaskHistoryValueCountOrderByAggregateInput {
   @Field(() => SortOrder, { nullable: true })
+  id?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
   groupId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })

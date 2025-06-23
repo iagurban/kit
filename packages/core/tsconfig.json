@@ -12,7 +12,12 @@
     "noErrorTruncation": true,
     "skipLibCheck": true,
 
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "rootDir": "../..",
+    "paths": {
+      "@freyja/kit/*": ["../kit/src/*"]
+    }
   },
   "include": ["./src"]
 }

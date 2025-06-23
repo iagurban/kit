@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
+import { BigIntFieldUpdateOperationsInput } from '../prisma/big-int-field-update-operations.input';
 import { BoolFieldUpdateOperationsInput } from '../prisma/bool-field-update-operations.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { EnumTaskStateFieldUpdateOperationsInput } from '../prisma/enum-task-state-field-update-operations.input';
@@ -59,6 +61,15 @@ export class TaskUncheckedUpdateManyWithoutAuthorInput {
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   parentId?: NullableStringFieldUpdateOperationsInput;
 
+  @Field(() => GraphQLJSON, { nullable: true })
+  description?: any;
+
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   orderKey?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  projectId?: StringFieldUpdateOperationsInput;
+
+  @Field(() => BigIntFieldUpdateOperationsInput, { nullable: true })
+  nnInProject?: BigIntFieldUpdateOperationsInput;
 }

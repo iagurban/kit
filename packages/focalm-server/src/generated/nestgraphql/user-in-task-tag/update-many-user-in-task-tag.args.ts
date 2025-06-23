@@ -1,14 +1,14 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { UserInTaskTagUpdateManyMutationInput } from './user-in-task-tag-update-many-mutation.input';
+import { UserInTaskTagUncheckedUpdateManyInput } from './user-in-task-tag-unchecked-update-many.input';
 import { UserInTaskTagWhereInput } from './user-in-task-tag-where.input';
 
 @ArgsType()
 export class UpdateManyUserInTaskTagArgs {
-  @Field(() => UserInTaskTagUpdateManyMutationInput, { nullable: false })
-  @Type(() => UserInTaskTagUpdateManyMutationInput)
-  data!: UserInTaskTagUpdateManyMutationInput;
+  @Field(() => UserInTaskTagUncheckedUpdateManyInput, { nullable: false })
+  @Type(() => UserInTaskTagUncheckedUpdateManyInput)
+  data!: UserInTaskTagUncheckedUpdateManyInput;
 
   @Field(() => UserInTaskTagWhereInput, { nullable: true })
   @Type(() => UserInTaskTagWhereInput)

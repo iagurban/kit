@@ -1,11 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { RefreshTokenUncheckedUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-unchecked-update-many-without-user-nested.input';
 import { TaskUncheckedUpdateManyWithoutAuthorNestedInput } from '../task/task-unchecked-update-many-without-author-nested.input';
 import { TaskUncheckedUpdateManyWithoutResponsibleNestedInput } from '../task/task-unchecked-update-many-without-responsible-nested.input';
 import { TaskHistoryGroupUncheckedUpdateManyWithoutAuthorNestedInput } from '../task-history-group/task-history-group-unchecked-update-many-without-author-nested.input';
+import { UserInProjectUncheckedUpdateManyWithoutUserNestedInput } from '../user-in-project/user-in-project-unchecked-update-many-without-user-nested.input';
 import { UserInTaskUncheckedUpdateManyWithoutUserNestedInput } from '../user-in-task/user-in-task-unchecked-update-many-without-user-nested.input';
 
 @InputType()
@@ -22,8 +24,14 @@ export class UserUncheckedUpdateWithoutUploadedFilesInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   name?: StringFieldUpdateOperationsInput;
 
+  @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+  abbrev?: NullableStringFieldUpdateOperationsInput;
+
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   passwordHash?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  ownProjectId?: StringFieldUpdateOperationsInput;
 
   @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
   refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
@@ -39,4 +47,7 @@ export class UserUncheckedUpdateWithoutUploadedFilesInput {
 
   @Field(() => UserInTaskUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
   participatingTasks?: UserInTaskUncheckedUpdateManyWithoutUserNestedInput;
+
+  @Field(() => UserInProjectUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
+  inProjects?: UserInProjectUncheckedUpdateManyWithoutUserNestedInput;
 }

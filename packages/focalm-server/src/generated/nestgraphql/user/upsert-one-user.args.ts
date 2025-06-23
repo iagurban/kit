@@ -10,7 +10,7 @@ import { UserWhereUniqueInput } from './user-where-unique.input';
 export class UpsertOneUserArgs {
   @Field(() => UserWhereUniqueInput, { nullable: false })
   @Type(() => UserWhereUniqueInput)
-  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  where!: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 
   @Field(() => UserCreateInput, { nullable: false })
   @Type(() => UserCreateInput)

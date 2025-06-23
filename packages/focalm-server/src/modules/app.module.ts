@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { TasksModule } from './tasks/tasks.module';
 import { UsersModule } from './users/users.module';
+import { ProjectsResolver } from './projects/projects.resolver';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -73,6 +75,7 @@ import { UsersModule } from './users/users.module';
     }),
     FilesModule,
     TasksModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -81,6 +84,7 @@ import { UsersModule } from './users/users.module';
       provide: 'DateTime',
       useValue: GraphQLISODateTime,
     },
+    ProjectsResolver,
   ],
 })
 export class AppModule {}

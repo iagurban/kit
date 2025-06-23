@@ -24,7 +24,7 @@ export class UserUpdateOneRequiredWithoutUploadedFilesNestedInput {
 
   @Field(() => UserWhereUniqueInput, { nullable: true })
   @Type(() => UserWhereUniqueInput)
-  connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name'>;
+  connect?: Prisma.AtLeast<UserWhereUniqueInput, 'id' | 'email' | 'name' | 'ownProjectId'>;
 
   @Field(() => UserUpdateToOneWithWhereWithoutUploadedFilesInput, { nullable: true })
   @Type(() => UserUpdateToOneWithWhereWithoutUploadedFilesInput)

@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { ParticipantRoleUpdateOneRequiredWithoutUsersInTasksNestedInput } from '../participant-role/participant-role-update-one-required-without-users-in-tasks-nested.input';
 
 @InputType()
 export class UserInTaskTagUpdateWithoutUserInTaskInput {
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  tag?: StringFieldUpdateOperationsInput;
+  @Field(() => ParticipantRoleUpdateOneRequiredWithoutUsersInTasksNestedInput, { nullable: true })
+  role?: ParticipantRoleUpdateOneRequiredWithoutUsersInTasksNestedInput;
 }

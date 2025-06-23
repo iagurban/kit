@@ -1,0 +1,13 @@
+import { Field, InputType } from '@nestjs/graphql';
+
+import { EnumPermissionInProjectFieldUpdateOperationsInput } from '../prisma/enum-permission-in-project-field-update-operations.input';
+import { EnumPermissionKindFieldUpdateOperationsInput } from '../prisma/enum-permission-kind-field-update-operations.input';
+
+@InputType()
+export class UserInProjectUpdateManyMutationInput {
+  @Field(() => EnumPermissionInProjectFieldUpdateOperationsInput, { nullable: true })
+  permission?: EnumPermissionInProjectFieldUpdateOperationsInput;
+
+  @Field(() => EnumPermissionKindFieldUpdateOperationsInput, { nullable: true })
+  kind?: EnumPermissionKindFieldUpdateOperationsInput;
+}

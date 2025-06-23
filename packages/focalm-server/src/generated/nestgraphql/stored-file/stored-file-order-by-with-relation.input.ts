@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { SortOrder } from '../prisma/sort-order.enum';
 import { UploadedFileOrderByRelationAggregateInput } from '../uploaded-file/uploaded-file-order-by-relation-aggregate.input';
+import { StoredFileOrderByRelevanceInput } from './stored-file-order-by-relevance.input';
 
 @InputType()
 export class StoredFileOrderByWithRelationInput {
@@ -19,4 +20,7 @@ export class StoredFileOrderByWithRelationInput {
 
   @Field(() => UploadedFileOrderByRelationAggregateInput, { nullable: true })
   uploads?: UploadedFileOrderByRelationAggregateInput;
+
+  @Field(() => StoredFileOrderByRelevanceInput, { nullable: true })
+  _relevance?: StoredFileOrderByRelevanceInput;
 }

@@ -10,7 +10,7 @@ import { TaskHistoryValueWhereUniqueInput } from './task-history-value-where-uni
 export class UpsertOneTaskHistoryValueArgs {
   @Field(() => TaskHistoryValueWhereUniqueInput, { nullable: false })
   @Type(() => TaskHistoryValueWhereUniqueInput)
-  where!: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'groupId_key'>;
+  where!: Prisma.AtLeast<TaskHistoryValueWhereUniqueInput, 'id'>;
 
   @Field(() => TaskHistoryValueCreateInput, { nullable: false })
   @Type(() => TaskHistoryValueCreateInput)

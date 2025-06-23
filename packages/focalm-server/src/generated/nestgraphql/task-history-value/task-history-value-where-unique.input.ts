@@ -6,13 +6,12 @@ import { JsonFilter } from '../prisma/json-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
 import { TaskScalarRelationFilter } from '../task/task-scalar-relation-filter.input';
 import { TaskHistoryGroupScalarRelationFilter } from '../task-history-group/task-history-group-scalar-relation-filter.input';
-import { TaskHistoryValueGroupIdKeyCompoundUniqueInput } from './task-history-value-group-id-key-compound-unique.input';
 import { TaskHistoryValueWhereInput } from './task-history-value-where.input';
 
 @InputType()
 export class TaskHistoryValueWhereUniqueInput {
-  @Field(() => TaskHistoryValueGroupIdKeyCompoundUniqueInput, { nullable: true })
-  groupId_key?: TaskHistoryValueGroupIdKeyCompoundUniqueInput;
+  @Field(() => String, { nullable: true })
+  id?: string;
 
   @Field(() => [TaskHistoryValueWhereInput], { nullable: true })
   AND?: Array<TaskHistoryValueWhereInput>;

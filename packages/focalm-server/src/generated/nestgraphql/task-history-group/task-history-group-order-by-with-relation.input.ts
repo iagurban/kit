@@ -4,6 +4,7 @@ import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { TaskHistoryValueOrderByRelationAggregateInput } from '../task-history-value/task-history-value-order-by-relation-aggregate.input';
 import { UserOrderByWithRelationInput } from '../user/user-order-by-with-relation.input';
+import { TaskHistoryGroupOrderByRelevanceInput } from './task-history-group-order-by-relevance.input';
 
 @InputType()
 export class TaskHistoryGroupOrderByWithRelationInput {
@@ -27,4 +28,7 @@ export class TaskHistoryGroupOrderByWithRelationInput {
 
   @Field(() => UserOrderByWithRelationInput, { nullable: true })
   author?: UserOrderByWithRelationInput;
+
+  @Field(() => TaskHistoryGroupOrderByRelevanceInput, { nullable: true })
+  _relevance?: TaskHistoryGroupOrderByRelevanceInput;
 }

@@ -13,5 +13,5 @@ export class UpdateOneUserInTaskTagArgs {
 
   @Field(() => UserInTaskTagWhereUniqueInput, { nullable: false })
   @Type(() => UserInTaskTagWhereUniqueInput)
-  where!: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_tag'>;
+  where!: Prisma.AtLeast<UserInTaskTagWhereUniqueInput, 'userInTaskId_roleId'>;
 }

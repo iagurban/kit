@@ -18,8 +18,14 @@ export class UserGroupBy {
   @Field(() => String, { nullable: false })
   name!: string;
 
+  @Field(() => String, { nullable: true })
+  abbrev?: string;
+
   @Field(() => String, { nullable: false })
   passwordHash!: string;
+
+  @Field(() => String, { nullable: false })
+  ownProjectId!: string;
 
   @Field(() => UserCountAggregate, { nullable: true })
   _count?: UserCountAggregate;

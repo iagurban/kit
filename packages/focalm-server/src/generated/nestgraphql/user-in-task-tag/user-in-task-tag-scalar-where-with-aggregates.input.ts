@@ -1,6 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 
 @InputType()
@@ -17,6 +16,6 @@ export class UserInTaskTagScalarWhereWithAggregatesInput {
   @Field(() => UuidWithAggregatesFilter, { nullable: true })
   userInTaskId?: UuidWithAggregatesFilter;
 
-  @Field(() => StringWithAggregatesFilter, { nullable: true })
-  tag?: StringWithAggregatesFilter;
+  @Field(() => UuidWithAggregatesFilter, { nullable: true })
+  roleId?: UuidWithAggregatesFilter;
 }

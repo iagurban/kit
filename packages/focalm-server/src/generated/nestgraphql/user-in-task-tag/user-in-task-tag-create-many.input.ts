@@ -6,5 +6,5 @@ export class UserInTaskTagCreateManyInput {
   userInTaskId!: string;
 
   @Field(() => String, { nullable: false })
-  tag!: string;
+  roleId!: string;
 }

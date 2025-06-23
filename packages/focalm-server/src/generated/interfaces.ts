@@ -21,8 +21,11 @@ export enum TaskHistoryKey {
   authorId = 'authorId',
   responsibleId = 'responsibleId',
   participants = 'participants',
+  relations = 'relations',
   orderKey = 'orderKey',
   parentId = 'parentId',
+  projectId = 'projectId',
+  description = 'description',
   startAfterDate = 'startAfterDate',
   startAfterOffset = 'startAfterOffset',
   plannedStartDate = 'plannedStartDate',
@@ -37,11 +40,24 @@ export enum CreatedAtFixReason {
   Both = 'Both',
 }
 
+export enum PermissionKind {
+  read = 'read',
+  update = 'update',
+  create = 'create',
+  delete = 'delete',
+}
+
+export enum PermissionInProject {
+  tasks = 'tasks',
+  participants = 'participants',
+}
+
 export type User = {
   id: string;
   createdAt: Date;
   email: string;
   name: string;
+  abbrev: string | null;
   passwordHash: string;
   uploadedFiles?: UploadedFile[];
   refreshTokens?: RefreshToken[];
@@ -49,6 +65,9 @@ export type User = {
   authoredTasks?: Task[];
   authoredTaskChanges?: TaskHistoryGroup[];
   participatingTasks?: UserInTask[];
+  ownProjectId: string;
+  ownProject?: Project;
+  inProjects?: UserInProject[];
 };
 
 export type RefreshToken = {
@@ -80,6 +99,7 @@ export type UploadedFile = {
 };
 
 export type TaskHistoryValue = {
+  id: string;
   groupId: string;
   group?: TaskHistoryGroup;
   taskId: string;
@@ -97,6 +117,17 @@ export type TaskHistoryGroup = {
   localCreatedAt: Date;
   createdAt: Date;
   createdAtFixReason: CreatedAtFixReason | null;
+};
+
+export type Project = {
+  id: string;
+  ownOf?: User | null;
+  tasksCounter: bigint;
+  name: string;
+  abbrev: string | null;
+  relationTypes?: TaskToTaskRelationType[];
+  tasks?: Task[];
+  usersPermissions?: UserInProject[];
 };
 
 export type Task = {
@@ -121,9 +152,15 @@ export type Task = {
   parentId: string | null;
   parent?: Task | null;
   children?: Task[];
+  description: JsonValue;
   orderKey: string;
   participants?: UserInTask[];
   historyValues?: TaskHistoryValue[];
+  relationsSrc?: TaskToTaskRelation[];
+  relationsDst?: TaskToTaskRelation[];
+  projectId: string;
+  project?: Project;
+  nnInProject: bigint;
 };
 
 export type UserInTask = {
@@ -135,10 +172,45 @@ export type UserInTask = {
   tags?: UserInTaskTag[];
 };
 
+export type ParticipantRole = {
+  id: string;
+  name: string;
+  color: string;
+  usersInTasks?: UserInTaskTag[];
+};
+
 export type UserInTaskTag = {
   userInTaskId: string;
   userInTask?: UserInTask;
-  tag: string;
+  roleId: string;
+  role?: ParticipantRole;
+};
+
+export type TaskToTaskRelationType = {
+  id: string;
+  forward: string;
+  inverse: string;
+  relations?: TaskToTaskRelation[];
+  projectId: string;
+  project?: Project;
+};
+
+export type TaskToTaskRelation = {
+  srcId: string;
+  src?: Task;
+  dstId: string;
+  dst?: Task;
+  typeId: string;
+  type?: TaskToTaskRelationType;
+};
+
+export type UserInProject = {
+  userId: string;
+  user?: User;
+  projectId: string;
+  project?: Project;
+  permission: PermissionInProject;
+  kind: PermissionKind;
 };
 
 type JsonValue = string | number | boolean | { [key in string]?: JsonValue } | Array<JsonValue> | null;

@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
+import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 
@@ -27,6 +28,12 @@ export class UserScalarWhereWithAggregatesInput {
   @Field(() => StringWithAggregatesFilter, { nullable: true })
   name?: StringWithAggregatesFilter;
 
+  @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
+  abbrev?: StringNullableWithAggregatesFilter;
+
   @Field(() => StringWithAggregatesFilter, { nullable: true })
   passwordHash?: StringWithAggregatesFilter;
+
+  @Field(() => UuidWithAggregatesFilter, { nullable: true })
+  ownProjectId?: UuidWithAggregatesFilter;
 }
