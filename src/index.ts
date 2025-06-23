@@ -36,6 +36,7 @@ export { weakCache } from './core/weak-cache';
 export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export { NumberBase } from './numbers/number-base';
+export { NumberConverter } from './numbers/number-converter';
 export {
   ArrayMutators,
   buckets,
@@ -56,7 +57,7 @@ export {
   skipCalls,
 } from './utils/functions-utils';
 export { indexed, iterableUtils, iu, reversed } from './utils/iterable-utils';
-export { snap } from './utils/numeric-utils';
+export { clamp, scale, scaleFrom01, scaleTo01, snap } from './utils/numeric-utils';
 export { patchRR, PromiseController } from './utils/promise-util';
 export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
 export type { NotNullish, Nullish, OverrideFields, ValOrArr } from './utils/types';

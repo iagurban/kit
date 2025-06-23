@@ -2,25 +2,25 @@ export type Checker<T> = ((o: unknown) => o is T) & { type?: string };
 
 const cc = <T, Fn extends (o: unknown) => o is T>(fn: Fn, type: string) => Object.assign(fn, { type });
 
-export const isDefined = cc(<T>(o: T | undefined | null): o is T => o != null, `!nullish`);
+export const isDefined = <T>(o: T | undefined | null): o is T => o != null;
 
-export const isNotUndefined = cc(<T>(o: T | undefined): o is T => o !== undefined, `!undefined`);
+export const isNotUndefined = <T>(o: T | undefined): o is T => o !== undefined;
 
-export const isNotNull = cc(<T>(o: T | null): o is T => o !== null, `!null`);
+export const isNotNull = <T>(o: T | null): o is T => o !== null;
 
-export const isTruthy = cc(<T>(o: T | undefined | null | false | 0 | ''): o is T => !!o, `truthy`);
+export const isTruthy = <T>(o: T | undefined | null | false | 0 | ''): o is T => !!o;
 
-export const isUndefined = cc((o: unknown): o is undefined => o === undefined, 'undefined');
+export const isUndefined = (o: unknown): o is undefined => o === undefined;
 
-export const isNull = cc((o: unknown): o is null => o === null, 'null');
+export const isNull = (o: unknown): o is null => o === null;
 
-export const isNullish = cc((o: unknown): o is null | undefined => o == null, 'nullish');
+export const isNullish = (o: unknown): o is null | undefined => o == null;
 
-export const isString = cc((o: unknown): o is string => typeof o === 'string', 'string');
+export const isString = (o: unknown): o is string => typeof o === 'string';
 
-export const isNumber = cc((o: unknown): o is number => typeof o === 'number', 'number');
+export const isNumber = (o: unknown): o is number => typeof o === 'number';
 
-export const isInteger = cc((o: unknown): o is number => isNumber(o) && Math.trunc(o) === o, 'integer');
+export const isInteger = (o: unknown): o is number => isNumber(o) && Math.trunc(o) === o;
 
 export const isPlainObject = cc(
   <T, R>(o: T): o is T & Record<string, R> => !!o && Object.getPrototypeOf(o) === Object.prototype,

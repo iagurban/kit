@@ -38,7 +38,7 @@ export const NumberBase = {
   } as const),
 
   splitDigits10: (n: bigint): bigint[] => {
-    const b10 = NumberBase.b10.pows;
+    const b10 = NumberBase.b10.powers;
     const r: bigint[] = [];
     for (let i = 0; ; ++i) {
       const v = n / b10.get(i);
