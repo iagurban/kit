@@ -1,5 +1,9 @@
 import { sortedIndex } from 'lodash';
 
+/**
+ * Iterator implementation for Segments class
+ * Iterates over pairs of numbers representing segment boundaries
+ */
 class SegmentsIterator implements Iterator<readonly [number, number]> {
   constructor(readonly raw: Segments['raw']) {}
 
@@ -13,17 +17,35 @@ class SegmentsIterator implements Iterator<readonly [number, number]> {
   }
 }
 
+/** Symbol for accessing raw array data in Segments options */
 const rawSymbol: unique symbol = Symbol('Segments#rawSymbol');
 
+/** Type representing a single segment as a tuple of start and end points */
 export type Segment = readonly [number, number];
 
+/**
+ * Manages a collection of non-overlapping, ordered number segments
+ * Automatically merges adjacent or overlapping segments and maintains order
+ */
 export class Segments {
+  /** Strict equality comparison for segment boundaries */
   static strictEq = (a: number, b: number) => a === b;
+
+  /**
+   * Creates an epsilon-based equality comparison for segment boundaries
+   * @param e - Epsilon value for floating point comparison (default: 1e-4)
+   * @returns Comparison function that returns true if numbers differ by less than epsilon
+   */
   static epsilonEq =
     (e = 1e-4) =>
     (a: number, b: number) =>
       Math.abs(a - b) < e;
 
+  /**
+   * Creates a new Segments instance
+   * @param segments - Initial segments to add
+   * @param options - Configuration options including raw data array and equality comparison
+   */
   constructor(
     segments?: readonly Segment[],
     options?: { [rawSymbol]?: number[]; eq?: (a: number, b: number) => boolean }
@@ -46,18 +68,25 @@ export class Segments {
   private readonly raw: number[];
   private readonly eq: (a: number, b: number) => boolean;
 
+  /**
+   * Converts segments to an array of tuples
+   * @returns Array of [start, end] segments
+   */
   toSegments(): readonly (readonly [number, number])[] {
     return [...this];
   }
 
+  /** @returns String representation of segments */
   get [Symbol.toStringTag]() {
     return this.toSegments().toString();
   }
 
+  /** Makes class iterable over segments */
   [Symbol.iterator](): Iterator<readonly [number, number]> {
     return new SegmentsIterator(this.raw);
   }
 
+  /** @returns Number of segments */
   get size(): number {
     const l = this.raw.length / 2;
     const f = Math.floor(l);
@@ -67,10 +96,18 @@ export class Segments {
     return f;
   }
 
+  /** @returns Whether the collection contains no segments */
   get empty(): boolean {
     return this.raw.length === 0;
   }
 
+  /**
+   * Adds a new segment, merging with existing segments if they overlap
+   * @param start - Start point of new segment
+   * @param end - End point of new segment
+   * @returns This instance for chaining
+   * @mutates
+   */
   add(start: number, end: number): this {
     if (end < start || this.eq(start, end)) {
       return this;
@@ -110,6 +147,12 @@ export class Segments {
     return this;
   }
 
+  /**
+   * Creates a new Segments instance containing only segments that fall within the specified range
+   * @param start - Start of range to slice
+   * @param end - Optional end of range to slice
+   * @returns New Segments instance with segments in range
+   */
   slice(start: number, end?: number): Segments {
     const { raw } = this;
     if (!raw.length || (end !== undefined && end <= start)) {
@@ -138,6 +181,11 @@ export class Segments {
     return new Segments(undefined, { [rawSymbol]: r, eq: this.eq });
   }
 
+  /**
+   * Checks if a point is contained within any segment
+   * @param v - Point to check
+   * @returns true if point falls within any segment, false otherwise
+   */
   contains(v: number): boolean {
     const { raw } = this;
     const si = sortedIndex(raw, v);
