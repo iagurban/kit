@@ -167,6 +167,11 @@ export const pointInTriangle = (
 // ==================== ОБЩИЕ ====================
 
 /**
+ * Привязка значения к диапазону [min, max].
+ */
+export const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+/**
  * Приведение градусы ↔ радианы.
  */
 export const degToRad = (deg: number) => (deg * Math.PI) / 180;

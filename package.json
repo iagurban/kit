@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "yarn tsup src/index.ts --format cjs,esm --dts",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "coverage": "yarn test --coverage"
   },
   "dependencies": {
     "@eslint/js": "^9.29.0",
