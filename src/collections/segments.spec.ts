@@ -160,29 +160,6 @@ describe('Segments', () => {
       segments.add(1, 2).add(2, 3);
       expect([...segments]).toEqual([[1, 3]]);
     });
-
-    test('uses epsilon equality when specified', () => {
-      const segments = new Segments(undefined, { eq: Segments.epsilonEq(0.1) });
-      segments.add(1, 2.05).add(1.95, 3);
-      expect([...segments]).toEqual([[1, 3]]);
-    });
-
-    test('respects different epsilon values', () => {
-      const segmentsLoose = new Segments(undefined, { eq: Segments.epsilonEq(0.9) }); // increased epsilon
-      const segmentsStrict = new Segments(undefined, { eq: Segments.epsilonEq(0.01) });
-
-      // With gap 0.2:
-      // - With epsilon 0.5: segments merge because 0.5 > 0.2
-      // - With epsilon 0.01: segments stay separate because 0.01 < 0.2
-      segmentsLoose.add(1, 2).add(2.2, 3);
-      segmentsStrict.add(1, 2).add(2.2, 3);
-
-      expect([...segmentsStrict]).toEqual([
-        [1, 2],
-        [2.2, 3],
-      ]); // small epsilon -> stays separate
-      expect([...segmentsLoose]).toEqual([[1, 3]]); // large epsilon -> merges
-    });
   });
 
   describe('iteration and conversion', () => {

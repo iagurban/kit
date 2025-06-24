@@ -28,34 +28,16 @@ export type Segment = readonly [number, number];
  * Automatically merges adjacent or overlapping segments and maintains order
  */
 export class Segments {
-  /** Strict equality comparison for segment boundaries */
-  static strictEq = (a: number, b: number) => a === b;
-
-  /**
-   * Creates an epsilon-based equality comparison for segment boundaries
-   * @param e - Epsilon value for floating point comparison (default: 1e-4)
-   * @returns Comparison function that returns true if numbers differ by less than epsilon
-   */
-  static epsilonEq =
-    (e = 1e-4) =>
-    (a: number, b: number) =>
-      Math.abs(a - b) < e;
-
   /**
    * Creates a new Segments instance
    * @param segments - Initial segments to add
    * @param options - Configuration options including raw data array and equality comparison
    */
-  constructor(
-    segments?: readonly Segment[],
-    options?: { [rawSymbol]?: number[]; eq?: (a: number, b: number) => boolean }
-  ) {
+  constructor(segments?: readonly Segment[], options?: { [rawSymbol]?: number[] }) {
     if (options) {
       this.raw = options?.[rawSymbol] || [];
-      this.eq = options?.eq || Segments.strictEq;
     } else {
       this.raw = [];
-      this.eq = Segments.strictEq;
     }
 
     if (segments) {
@@ -66,7 +48,6 @@ export class Segments {
   }
 
   private readonly raw: number[];
-  private readonly eq: (a: number, b: number) => boolean;
 
   /**
    * Converts segments to an array of tuples
@@ -109,7 +90,7 @@ export class Segments {
    * @mutates
    */
   add(start: number, end: number): this {
-    if (end < start || this.eq(start, end)) {
+    if (end <= start) {
       return this;
     }
 
@@ -126,7 +107,7 @@ export class Segments {
     }
 
     let ei = sortedIndex(raw, end);
-    if (this.eq(raw[ei], end)) {
+    if (raw[ei] === end) {
       ++ei;
     }
     const rm = ei - si;
@@ -162,7 +143,7 @@ export class Segments {
     let si = sortedIndex(raw, start);
     let addStart = false;
     if (si % 2) {
-      if (this.eq(start, raw[si])) {
+      if (start === raw[si]) {
         ++si;
       } else {
         addStart = true;
@@ -178,7 +159,7 @@ export class Segments {
       ei % 2 && r.push(end);
     }
     addStart && r.unshift(start);
-    return new Segments(undefined, { [rawSymbol]: r, eq: this.eq });
+    return new Segments(undefined, { [rawSymbol]: r });
   }
 
   /**
