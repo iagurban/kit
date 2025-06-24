@@ -81,7 +81,7 @@ export {
   syncArray,
 } from './utils/array-utils';
 export type { PromiseValue } from './utils/async-utils';
-export { isPromise } from './utils/async-utils';
+export { isPromise, resolveRecord, retryingAsync, sleep } from './utils/async-utils';
 export { catching, notNull, NullError, throwing, warnCatch } from './utils/flow-utils';
 export {
   addReturn,
