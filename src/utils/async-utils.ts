@@ -1,3 +1,5 @@
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const isPromise = <T>(o: unknown): o is Promise<T> => {
   return o != null && (o as { then?: unknown }).then != null;
 };
