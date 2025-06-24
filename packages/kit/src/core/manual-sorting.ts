@@ -44,7 +44,10 @@ class Balancer {
   constructor(
     private readonly keyIndex: number,
     private readonly originalSorted: readonly string[],
-    private readonly extendWindow: (b: Balancer) => { left: number; right: number } = () => ({
+    private readonly extendWindow: (b: Balancer) => {
+      left: number;
+      right: number;
+    } = () => ({
       left: 1,
       right: 2,
     })
@@ -125,7 +128,10 @@ type ManualSortingAlphabetOptions = Readonly<{
   fromCodePoint: number;
   toCodePoint: number;
 
-  extendWindow?: (b: Balancer) => { readonly left: number; readonly right: number };
+  extendWindow?: (b: Balancer) => {
+    readonly left: number;
+    readonly right: number;
+  };
   prependingStrategy?: 'evenly' | 'right-of-mid';
 }>;
 

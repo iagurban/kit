@@ -4,11 +4,15 @@ enum ServiceState {
   Created,
 }
 
-export const createIoCContainer = <T extends Record<string, unknown>>(schema: { [K in keyof T]: null }) => {
+export const createIoCContainer = <T extends Record<string, unknown>>(schema: {
+  [K in keyof T]: null;
+}) => {
   const container: T = {} as T;
   const states: { [key: string]: ServiceState | undefined } = {};
   const fabrics: { [key: string]: ((container: T) => unknown) | undefined } = {};
-  const fabricsProxy = {} as { [K in keyof T]: ((container: T) => T[K]) | undefined };
+  const fabricsProxy = {} as {
+    [K in keyof T]: ((container: T) => T[K]) | undefined;
+  };
 
   for (const key of Object.keys(schema)) {
     Object.defineProperty(fabricsProxy, key, {

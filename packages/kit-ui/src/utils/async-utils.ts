@@ -12,7 +12,7 @@ export type CancellablePromise<T> = {
   cancel: (reason: CancelPayload) => void;
 };
 
-export const simpleSleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // export const cancellableSleep = (ms: number): CancellablePromise<void> => {
 //   let preCancelled: CancelPayload | undefined;
 //   let cancel: ((cp?: CancelPayload) => void) | undefined;
@@ -38,9 +38,9 @@ export const simpleSleep = (ms: number) => new Promise(resolve => setTimeout(res
 //   };
 // };
 
-export const sleep = Object.assign(simpleSleep, {
-  // cancellable: cancellableSleep,
-});
+// Object.assign(simpleSleep, {
+//   // cancellable: cancellableSleep,
+// });
 
 export type PromisesRecordValue<T> = { [K in keyof T]: PromiseValue<T[K]> };
 

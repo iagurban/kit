@@ -18232,12 +18232,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "jelovnik@workspace:."
   dependencies:
+    "@eslint/js": "npm:^9.29.0"
     "@nestjs/common": "npm:^10.4.17"
     "@parcel/packager-ts": "npm:2.14.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@parcel/transformer-typescript-types": "npm:2.14.4"
+    "@typescript-eslint/eslint-plugin": "npm:^8.34.1"
+    "@typescript-eslint/parser": "npm:^8.34.1"
+    eslint: "npm:^9.29.0"
+    eslint-config-next: "npm:^15.3.4"
+    eslint-config-prettier: "npm:^10.1.5"
+    eslint-plugin-import: "npm:^2.32.0"
+    eslint-plugin-prettier: "npm:^5.5.0"
+    eslint-plugin-react: "npm:^7.37.5"
+    eslint-plugin-simple-import-sort: "npm:^12.1.1"
+    eslint-plugin-unicorn: "npm:^59.0.1"
+    eslint-plugin-unused-imports: "npm:^4.1.4"
     globals: "npm:^16.0.0"
+    prettier: "npm:^3.6.0"
     typescript: "npm:^5.8.3"
+    typescript-eslint: "npm:^8.34.1"
   dependenciesMeta:
     "@nestjs/common@11.0.17":
       unplugged: true
@@ -21788,6 +21802,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10c0/3880cb90b9dc0635819ab52ff571518c35bd7f15a6e80a2054c05dbc8a3aa6e74f135519e91197de63705bcb38388ded7e7230e2178432a1468005406238b877
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "prettier@npm:3.6.0"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 10c0/636897c8084b71ef1f740a46199df0d8f6ed896aa497212cc8cc229d3026b9dca82fa92f61e55924c4708cea11e39a88478e2d93c4818741c55b7408a9ac6d91
   languageName: node
   linkType: hard
 
