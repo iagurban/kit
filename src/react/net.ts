@@ -1,4 +1,4 @@
-import { isDefined } from '../../../kit/src/core/asserts';
+import { isDefined } from '@gurban/kit/core/checks';
 
 export const parseCookies = (s: string) =>
   Object.fromEntries(

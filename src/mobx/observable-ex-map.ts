@@ -1,6 +1,5 @@
+import { ExMap } from '@gurban/kit/collections/ex-map';
 import { makeObservable, observable } from 'mobx';
-
-import { ExMap } from '../../../kit/src/collections/ex-map';
 
 export class ObservableExMap<Key, Value> extends ExMap<Key, Value> {
   constructor(pairs?: Iterable<[Key, Value]>) {

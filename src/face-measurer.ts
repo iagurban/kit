@@ -1,3 +1,6 @@
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { svgNS } from '@gurban/kit/core/string-const';
+import { mergeFunctions } from '@gurban/kit/utils/functions-utils';
 import {
   _isComputingDerivation,
   computed,
@@ -8,9 +11,6 @@ import {
   onBecomeUnobserved,
 } from 'mobx';
 
-import { ExMap } from '../../kit/src/collections/ex-map';
-import { svgNS } from '../../kit/src/core/string-const';
-import { mergeFunctions } from '../../kit/src/utils/functions-utils';
 import type { FontInfo } from './font-info';
 
 export class MeasuredWord {

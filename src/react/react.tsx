@@ -1,7 +1,6 @@
+import { notNull } from '@gurban/kit/utils/flow-utils';
+import { Nullish } from '@gurban/kit/utils/types';
 import { Context, createContext, Provider, useContext } from 'react';
-
-import { notNull } from '../../../kit/src/utils/flow-utils';
-import { Nullish } from '../../../kit/src/utils/types';
 
 export const interleaveWithObject = <T,>(a: T[], o: (prev: T, i: number) => T) => {
   if (a.length < 2) {

@@ -9,7 +9,7 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals/index.js';
 import tseslint from 'typescript-eslint';
 
-import { commonRules, fixAfterPrettier } from './src/eslint-parts.mjs';
+import { commonRules, fixAfterPrettier } from '../kit/helpers/eslint-parts.mjs';
 
 export default [
   js.configs.recommended,

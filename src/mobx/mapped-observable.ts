@@ -1,7 +1,6 @@
+import { syncArray } from '@gurban/kit/utils/array-utils';
+import { Nullish } from '@gurban/kit/utils/types';
 import { autorun, observable } from 'mobx';
-
-import { syncArray } from '../../../kit/src/utils/array-utils';
-import { Nullish } from '../../../kit/src/utils/types';
 
 export const mappedObservable = <Derived, Input, ID>(
   watch: () => readonly Input[],

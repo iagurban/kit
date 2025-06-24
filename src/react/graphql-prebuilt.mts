@@ -17,9 +17,8 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client';
+import { isTruthy } from '@gurban/kit/core/checks';
 import { GraphQLFormattedError } from 'graphql';
-
-import { isTruthy } from '../../../kit/src/core/asserts';
 
 const assureNotMaskedPromise = <T,>(o: Promise<FetchResult<MaybeMasked<T>>>) => o as Promise<FetchResult<T>>;
 const assureNotMaskedQueryPromise = <T,>(o: Promise<ApolloQueryResult<MaybeMasked<T>>>) =>

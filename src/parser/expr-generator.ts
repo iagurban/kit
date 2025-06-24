@@ -1,8 +1,9 @@
-import { ExMap } from '../../../kit/src/collections/ex-map';
-import { once } from '../../../kit/src/core/once';
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { checked } from '@gurban/kit/core/checks';
+import { once } from '@gurban/kit/core/once';
+import { notNull } from '@gurban/kit/utils/flow-utils';
+
 import { Dictionary } from './tokenizer-def';
-import { notNull } from '../../../kit/src/utils/flow-utils';
-import {checked} from "../../../kit/src";
 
 export type OperatorDef = {
   symbol?: string;
