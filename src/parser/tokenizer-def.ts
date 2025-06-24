@@ -1,4 +1,4 @@
-import { AnyAnyFunction } from '../../../kit/src/utils/types';
+import { AnyAnyFunction } from '@gurban/kit/utils/types';
 
 export type Dictionary<Value = unknown> = Record<string, Value>;
 

@@ -1,7 +1,6 @@
+import type { AccentType } from '@gurban/kit/unsorted/accent-utils';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { CSSProperties } from 'react';
-
-import type { AccentType } from '../../kit/src/unsorted/accent-utils';
 
 type AccentDefIn = string | { c: string; style?: Partial<CSSProperties>; shift?: number; shiftUp?: number };
 export type AccentDef = { c: string; style?: Partial<CSSProperties>; shift: number; shiftUp: number };

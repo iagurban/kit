@@ -2,11 +2,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": "../..",
 
     "jsx": "react-jsx",
     "experimentalDecorators": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@gurban/kit/*": ["../kit/src/*"]
+    }
   },
   "references": [],
   "include": ["./src/**/*"]

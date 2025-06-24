@@ -1,4 +1,4 @@
-import { notNull } from '../../../kit/src/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 
 export const buildWithOddMask = (parts: string[], mask: number) => {
   const count = Math.ceil(parts.length / 2);

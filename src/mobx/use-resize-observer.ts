@@ -1,6 +1,5 @@
+import { once } from '@gurban/kit/core/once';
 import { useCallback, useEffect, useRef } from 'react';
-
-import { once } from '../../../kit/src/core/once';
 
 class GraphNodeViewStore {
   callback: ((e: ResizeObserverEntry) => void) | null = null;

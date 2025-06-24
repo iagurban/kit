@@ -1,12 +1,17 @@
 // noinspection JSUnusedLocalSymbols
 
+import { ExMap } from '@gurban/kit/collections/ex-map';
+import { ExSet } from '@gurban/kit/collections/ex-set';
+import { isDefined, isROArray, isTruthy } from '@gurban/kit/core/checks';
+import { aggregation } from '@gurban/kit/numbers/aggregation';
+import { samplesBy } from '@gurban/kit/utils/array-utils';
+import { notNull } from '@gurban/kit/utils/flow-utils';
+import { reversed } from '@gurban/kit/utils/iterable-utils';
+import { allCodePoints, makeMatchingTree } from '@gurban/kit/utils/string-util';
+import { Nullish } from '@gurban/kit/utils/types';
 import { thru } from 'lodash';
 
-import { isDefined, isTruthy } from '../../../kit/src/core/asserts';
-import { ExMap } from '../../../kit/src/collections/ex-map';
-import { ExSet } from '../../../kit/src/collections/ex-set';
 import { Expr, ExprGenerator, Operand, OperatorDef } from './expr-generator';
-import { sum } from '../../../kit/src/numbers/aggregation';
 import {
   AnyAst,
   AstFromTokenizer,
@@ -19,12 +24,6 @@ import {
   TokenizerResult,
   ValueOrGetter,
 } from './tokenizer-def';
-import { samplesBy } from '../../../kit/src/utils/array-utils';
-import { notNull } from '../../../kit/src/utils/flow-utils';
-import { reversed } from '../../../kit/src/utils/iterable-utils';
-import { allCodePoints, makeMatchingTree } from '../../../kit/src/utils/string-util';
-import { Nullish } from '../../../kit/src/utils/types';
-import {isROArray} from "../../../kit/src";
 
 // recursive JSON-like object
 
@@ -217,7 +216,7 @@ const $t = {
         });
 
         return {
-          length: sum(matches.map(m => m.length)),
+          length: aggregation.sum(matches.map(m => m.length)),
           result: matches,
         };
       },
@@ -273,7 +272,7 @@ const $t = {
         }
 
         return {
-          length: sum(matches.map(m => m.length)),
+          length: aggregation.sum(matches.map(m => m.length)),
           result: matches,
         };
       },
