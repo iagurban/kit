@@ -2,7 +2,9 @@ import { NumberConverter } from './number-converter';
 
 type Doubled<T extends Record<string | number, unknown>> = {
   [P in keyof T as P extends string | number ? `${P}` : never]: NumberConverter;
-} & { [K in keyof T as K extends string | number ? `b${K}` : never]: NumberConverter };
+} & {
+  [K in keyof T as K extends string | number ? `b${K}` : never]: NumberConverter;
+};
 
 const typed = <T extends Record<string | number, readonly (string | readonly [string, string])[]>>(
   o: T

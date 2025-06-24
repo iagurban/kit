@@ -66,7 +66,11 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
       throw new Error('inconsistency');
     }
     const stamp = Object.create(null);
-    return (lanes.pendingLane = { stamp, p: executeFullLane(stamp), o: collect(null, ...args) }).p;
+    return (lanes.pendingLane = {
+      stamp,
+      p: executeFullLane(stamp),
+      o: collect(null, ...args),
+    }).p;
   };
 
   return Object.assign(
