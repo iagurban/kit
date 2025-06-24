@@ -3,6 +3,7 @@ import {
   boundingBox,
   circleArea,
   circleCircumference,
+  clamp,
   degToRad,
   distance,
   distance00to11,
@@ -116,6 +117,12 @@ describe('Triangles', () => {
 });
 
 describe('Helpers and Conversions', () => {
+  test('clamp below, within, above', () => {
+    expect(clamp(-1, 0, 10)).toBe(0);
+    expect(clamp(5, 0, 10)).toBe(5);
+    expect(clamp(11, 0, 10)).toBe(10);
+  });
+
   test('degToRad and radToDeg roundtrip', () => {
     const deg = 180;
     const rad = degToRad(deg);
