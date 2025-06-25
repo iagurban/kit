@@ -22,7 +22,7 @@
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
-    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --hidePageTitle --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --out .temp-docs) && (yarn concat-md .temp-docs > ../kit-wiki/Home.md)"
+    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ../kit-wiki/Home.md)"
   },
   "dependencies": {
     "@eslint/js": "^9.29.0",
@@ -62,6 +62,7 @@
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
+    "tsx": "^4.20.3",
     "typedoc": "^0.28.5",
     "typedoc-plugin-markdown": "^4.7.0",
     "typescript": "^5.8.3"
