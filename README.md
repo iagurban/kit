@@ -10,7 +10,7 @@ My collection for every fullstack project — personal TypeScript utilities and 
 - Everything here *comes from the wild* — resuing in actual production or recurring experiments
 
 **Docs:**  
-See [/wiki](./wiki) — API and usage notes are auto-generated.
+See [/wiki](../../../wiki) — API and usage notes are auto-generated.
 
 **tldr:**  
 - Use as a workspace package in a monorepo with a shared root `tsconfig.json`.  
