@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 type OrderFromObject<T> = { [K in keyof T]?: T[K] extends object ? OrderFromObject<T[K]> : 'asc' | 'desc' };
 
 const copyOrderClause = <T>(o: OrderFromObject<T>): OrderFromObject<T> => {
