@@ -32,10 +32,11 @@ function cleanMarkdown(text: string): string {
     return `${header} ${codeblock}`;
   });
   // Превращаем Defined in в курсивную ссылку (как выше)
-  text = text.replace(
-    /^Defined in: (packages\/[^\s:]+):(\d+)$/gm,
-    (_m, filepath, line) => `_Defined in: [${filepath}:${line}](${filepath}#L${line})_`
-  );
+  text = text.replace(/^Defined in: (packages\/[^\s:]+):(\d+)$/gm, (_m, filepath, line) => {
+    const prefix = `../src/branch/main`;
+    const link = filepath.startsWith(`packages/kit/`) ? filepath.replace(/^packages\/kit/, prefix) : filepath;
+    return `_Defined in: [${filepath}:${line}](${link}#L${line})_`;
+  });
   // Можно добавить сюда любые другие твои правила!
   return text;
 }
