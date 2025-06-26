@@ -18,8 +18,8 @@ export abstract class AuthServiceBase<
 > {
   protected constructor(
     readonly jwtService: JwtService,
-    protected refreshCookieOptions: {
-      secret: string;
+    readonly refreshCookieOptions: {
+      cookieSecret: string;
       accessExpiresIn: string | number;
       refreshExpiresDays: number;
     }
@@ -59,7 +59,7 @@ export abstract class AuthServiceBase<
     const userId = payload.sub;
     const accessToken = await this.jwtService.signAsync(payload, {
       expiresIn: this.refreshCookieOptions.accessExpiresIn,
-      secret: this.refreshCookieOptions.secret,
+      secret: this.refreshCookieOptions.cookieSecret,
     });
 
     const tokenValue = randomBytes(32).toString('hex');
