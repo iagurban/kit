@@ -69,5 +69,9 @@
   },
   "engines": {
     "node": ">= 12"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "*",
+    "@nestjs/graphql": "*"
   }
 }

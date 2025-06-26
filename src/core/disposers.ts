@@ -1,6 +1,6 @@
 import { Errors } from './errors';
 
-export type FunctionDisposable = () => void;
+export type FunctionDisposable = () => () => void;
 export type ObjectDisposable = { init(): void; destroy(): void };
 
 /**
@@ -47,7 +47,7 @@ export const disposers = (
   const disposers: (() => void)[] = [];
   for (const i of initializers) {
     if (typeof i === `function`) {
-      disposers.push(i);
+      disposers.push(i());
     } else {
       i.init();
       disposers.push(() => i.destroy());
