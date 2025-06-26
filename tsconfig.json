@@ -6,7 +6,7 @@
 
     "jsx": "react-jsx",
     "experimentalDecorators": true,
-    "types": ["node"],
+    "types": ["jest","node"],
     "baseUrl": ".",
     "paths": {
       "@gurban/kit/*": ["../kit/src/*"]
