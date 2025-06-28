@@ -1,5 +1,4 @@
 import { notNull } from '@gurban/kit/utils/flow-utils';
-import { Nullish } from '@gurban/kit/utils/types';
 import { Context, createContext, Provider, useContext } from 'react';
 
 export const interleaveWithObject = <T,>(a: T[], o: (prev: T, i: number) => T) => {
@@ -24,29 +23,29 @@ export const joinNodesWithText = (o: JSX.Element[], text: string, key = text) =>
   ));
 
 export const makeUseNotNullContext = <T,>(
-  ctx: Context<T | Nullish>,
+  ctx: Context<T | undefined>,
   name: string
-): readonly [() => T, () => T | Nullish, Provider<T | Nullish>] => {
+): readonly [() => T, () => T | undefined, Provider<T | undefined>] => {
   const message = `${name} not provided`;
   return [() => notNull(useContext(ctx), message), () => useContext(ctx), ctx.Provider] as const;
 };
 
 export const createUseContext = <T,>(
   name: string
-): readonly [() => T, () => T | Nullish, Provider<T | Nullish>, Context<T | Nullish>] => {
-  const ctx = createContext<T | Nullish>(undefined);
+): readonly [() => T, () => T | undefined, Provider<T | undefined>, Context<T | undefined>] => {
+  const ctx = createContext<T | undefined>(undefined);
   return [...makeUseNotNullContext(ctx, name), ctx];
 };
 
 export const createUsableContext = <T,>(
   name: string
 ): {
-  ctx: Context<T | Nullish>;
+  ctx: Context<T | undefined>;
   use: () => T;
-  useIfProvided: () => T | Nullish;
-  provider: Provider<T | Nullish>;
+  useIfProvided: () => T | undefined;
+  provider: Provider<T | undefined>;
 } => {
-  const ctx = createContext<T | Nullish>(undefined);
+  const ctx = createContext<T | undefined>(undefined);
   const [use, useIfProvided, provider] = makeUseNotNullContext(ctx, name);
   return { ctx, use, useIfProvided, provider };
 };
