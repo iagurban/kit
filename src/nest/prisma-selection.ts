@@ -77,20 +77,14 @@ const gqlSelectionTraverser = (fragments: Record<string, FragmentDefinition>, sk
 
 type Args = { path?: readonly string[]; skip?: readonly string[] };
 
-const prismaSelectionFromGqlExecutionCtx = (
-  ctx: GqlExecutionContext,
-  opts: readonly string[] | Args | undefined
-) => {
-  const {
+export const getPrismaSelectionFromInfo = (
+  {
     fieldName,
     fieldNodes: [fieldNode],
     fragments,
-  } = ctx.getInfo<{
-    fieldName: string;
-    fieldNodes: Field[];
-    fragments: Record<string, FragmentDefinition>;
-  }>();
-
+  }: { fieldName: string; fieldNodes: Field[]; fragments: Record<string, FragmentDefinition> },
+  opts?: readonly string[] | Args | undefined
+) => {
   // console.log(`opts`, opts);
 
   const { path, skip } = isROArray(opts) ? { path: opts } : (opts ?? {});
@@ -105,6 +99,13 @@ const prismaSelectionFromGqlExecutionCtx = (
 
   const r = s.collectSelection(root.selectionSet?.selections, path?.join(`.`) || ``);
   return typeof r === `object` ? r['select'] : undefined;
+};
+
+const prismaSelectionFromGqlExecutionCtx = (
+  ctx: GqlExecutionContext,
+  opts: readonly string[] | Args | undefined
+) => {
+  return getPrismaSelectionFromInfo(ctx.getInfo(), opts);
 };
 
 export const PrismaSelection = createParamDecorator(

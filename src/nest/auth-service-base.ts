@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { CookieOptions } from 'express';
 
+import { UnauthenticatedError } from './unauthenticated-error';
+
 const saltOrRounds = 10;
 
 export const hashing = {
@@ -76,17 +78,21 @@ export abstract class AuthServiceBase<
   async refresh(compositeToken: string) {
     const [id, rawValue] = compositeToken.split(':');
     if (!id || !rawValue) {
-      throw new UnauthorizedException();
+      throw new UnauthenticatedError(`no token`);
     }
 
     const stored = await this.findRefreshToken(id);
 
-    if (!stored || stored.expiresAt < new Date()) {
-      throw new UnauthorizedException();
+    if (!stored) {
+      throw new UnauthenticatedError(`not stored`);
+    }
+
+    if (stored.expiresAt < new Date()) {
+      throw new UnauthenticatedError(`expired`);
     }
 
     if (!(await bcrypt.compare(rawValue, stored.hash))) {
-      throw new UnauthorizedException();
+      throw new UnauthenticatedError(`wrong token`);
     }
 
     await this.deleteRefreshToken(stored.id); // ротация
@@ -106,5 +112,20 @@ export abstract class AuthServiceBase<
       path: '/',
       maxAge: 1000 * 60 * 60 * 24 * this.refreshCookieOptions.refreshExpiresDays,
     };
+  }
+
+  accessTokenToPayload(rawToken: string): CurrentUserJwtPayload {
+    if (!rawToken) {
+      throw new UnauthenticatedError('Access token is required');
+    }
+
+    try {
+      // верифицируем и распаковываем payload
+      return this.jwtService.verify<CurrentUserJwtPayload>(rawToken, {
+        secret: this.refreshCookieOptions.cookieSecret,
+      });
+    } catch (e) {
+      throw new UnauthenticatedError(String(e));
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 import { AuthServiceBase } from './auth-service-base';
+import { UnauthenticatedError } from './unauthenticated-error';
 
 export class AuthControllerBase<
   User extends { id: string; passwordHash: string },
@@ -13,7 +13,7 @@ export class AuthControllerBase<
     const oldRefreshToken = req.cookies['refresh_token'];
 
     if (!oldRefreshToken) {
-      throw new UnauthorizedException('Missing refresh token');
+      throw new UnauthenticatedError('Missing refresh token');
     }
 
     const { accessToken, refreshToken } = await this.authService.refresh(oldRefreshToken);
