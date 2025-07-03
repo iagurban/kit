@@ -14,10 +14,33 @@ export const hashing = {
   check: (password: string, hash: string) => bcrypt.compare(password, hash),
 } as const;
 
+/**
+ * Base class for implementing authentication service in NestJS applications.
+ * Provides complete JWT-based authentication flow with access and refresh tokens.
+ *
+ * This service handles:
+ * - User authentication with username/password
+ * - JWT access token generation and validation
+ * - Refresh token rotation with secure cookie storage
+ * - User session management
+ *
+ * @template User - User entity type that must contain 'id' and 'passwordHash' properties
+ * @template CurrentUserJwtPayload - JWT payload type that must contain a 'sub' property
+ */
 export abstract class AuthServiceBase<
   User extends { id: string; passwordHash: string },
   CurrentUserJwtPayload extends { sub: string },
 > {
+  /**
+   * Creates an instance of AuthServiceBase.
+   *
+   * @param {JwtService} jwtService - NestJS JWT service for token operations
+   * @param {Object} refreshCookieOptions - Configuration for refresh tokens
+   * @param {string} refreshCookieOptions.cookieSecret - Secret for signing JWTs
+   * @param {string|number} refreshCookieOptions.accessExpiresIn - Access token lifetime
+   * @param {number} refreshCookieOptions.refreshExpiresDays - Refresh token lifetime in days
+   * @protected
+   */
   protected constructor(
     readonly jwtService: JwtService,
     readonly refreshCookieOptions: {
@@ -27,19 +50,61 @@ export abstract class AuthServiceBase<
     }
   ) {}
 
+  /**
+   * Finds a user by their username or email address.
+   * Used during the initial authentication process.
+   *
+   * @param {string} nameOrMail - Username or email to search for
+   * @returns {Promise<User | null>} The found user or null if not found
+   */
   abstract findByUsernameOrEmail(nameOrMail: string): Promise<User | null>;
 
+  /**
+   * Stores a new refresh token in the database.
+   *
+   * @param {string} userId - ID of the user the token belongs to
+   * @param {string} hash - Hashed value of the refresh token
+   * @param {Date} expiresAt - Token expiration date
+   * @returns {Promise<string>} ID of the stored refresh token
+   */
   abstract saveRefreshToken(userId: string, hash: string, expiresAt: Date): Promise<string>;
 
-  abstract findRefreshToken(
-    id: string
-  ): Promise<{ id: string; expiresAt: Date; hash: string; user: Omit<User, `passwordHash`> } | null>;
+  /**
+   * Retrieves a refresh token from storage by its ID.
+   *
+   * @param {string} id - ID of the refresh token to find
+   * @returns {Promise<{id: string; expiresAt: Date; hash: string; user: Omit<User, 'passwordHash'>} | null>}
+   */
+  abstract findRefreshToken(id: string): Promise<{
+    id: string;
+    expiresAt: Date;
+    hash: string;
+    user: Omit<User, 'passwordHash'>;
+  } | null>;
 
+  /**
+   * Deletes a specific refresh token from storage.
+   *
+   * @param {string} id - ID of the refresh token to delete
+   */
   abstract deleteRefreshToken(id: string): Promise<void>;
 
+  /**
+   * Deletes all refresh tokens belonging to a specific user.
+   * Used for logging out from all devices.
+   *
+   * @param {string} userId - ID of the user whose tokens should be deleted
+   */
   abstract deleteRefreshTokensOfUser(userId: string): Promise<void>;
 
-  abstract userToPayload(user: Omit<User, `passwordHash`>): CurrentUserJwtPayload;
+  /**
+   * Converts a user object to a JWT payload.
+   * Implementing classes should define how user data maps to token claims.
+   *
+   * @param {Omit<User, 'passwordHash'>} user - User object without password hash
+   * @returns {CurrentUserJwtPayload} JWT payload object
+   */
+  abstract userToPayload(user: Omit<User, 'passwordHash'>): CurrentUserJwtPayload;
 
   async validateUser(nameOrMail: string, pass: string): Promise<Omit<User, `passwordHash`>> {
     const user = await this.findByUsernameOrEmail(nameOrMail);
