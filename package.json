@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@eslint/js": "^9.29.0",
+    "@loancrate/prisma-schema-parser": "^3.0.0",
     "@mrleebo/prisma-ast": "^0.12.1",
     "@swc/helpers": "^0.5.17",
     "@typescript-eslint/eslint-plugin": "^8.35.0",

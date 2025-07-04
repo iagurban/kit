@@ -1,286 +1,195 @@
-// import { ExMap } from '../collections/ex-map';
-// import { notNull } from '../utils/flow-utils';
-// import { once } from './once';
-//
-// export type SortDirection = 'asc' | 'desc';
-//
-// export type SortField = {
-//   name: string;
-//   direction: SortDirection;
-//   nullsLast?: boolean;
-// };
-//
-// export type ResolvedSortField = SortField & {
-//   cursor: unknown;
-// };
-//
-// export type OrderByValue = {
-//   sort: SortDirection;
-//   nulls?: 'last';
-// };
-//
-// // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-// export interface NestedOrderBy extends Record<string, NestedOrderBy | OrderByValue> {}
-//
-// export type LexicographicWhere<T> =
-//   | { [K in keyof T]?: { [Op in keyof T[K]]?: T[K][Op] } }
-//   | { AND?: LexicographicWhere<T>[]; OR?: LexicographicWhere<T>[] };
-//
-// export type SelectShape<T> = {
-//   [K in keyof T]?: T[K] extends object ? SelectShape<T[K]> : boolean;
-// };
-//
-// export function buildOrderBy(sortFields: ResolvedSortField[]): NestedOrderBy[] {
-//   return sortFields.map(({ name, direction, nullsLast }) => {
-//     const parts = name.split('.');
-//     const leaf: OrderByValue = { sort: direction, ...(nullsLast ? { nulls: 'last' } : {}) };
-//     return parts.reduceRight<OrderByValue | NestedOrderBy>(
-//       (acc, key) => ({ [key]: acc }),
-//       leaf
-//     ) as NestedOrderBy;
-//   });
-// }
-//
-// export function buildKeysetWhereClause(sortFields: ResolvedSortField[]): LexicographicWhere<any> {
-//   return {
-//     OR: sortFields.map((_, i) => ({
-//       AND: sortFields
-//         .slice(0, i)
-//         .map(
-//           (field): Record<string, { [s: string]: unknown }> => ({
-//             [field.name]: { equals: field.cursor },
-//           })
-//         )
-//         .concat([
-//           {
-//             [sortFields[i].name]: {
-//               [sortFields[i].direction === 'asc' ? 'gt' : 'lt']: sortFields[i].cursor,
-//             },
-//           },
-//         ]),
-//     })),
-//   };
-// }
-//
-// export function getNestedValue(obj: any, path: string): unknown {
-//   return path.split('.').reduce((acc, key) => acc?.[key], obj);
-// }
-//
-// export function buildSelectFromSortFields(sortFields: SortField[]): SelectShape<any> {
-//   const select: SelectShape<any> = {};
-//   for (const { name } of sortFields) {
-//     const parts = name.split('.');
-//     let current = select;
-//     for (let i = 0; i < parts.length; i++) {
-//       const part = parts[i]!;
-//       if (!current[part]) {
-//         current[part] = {};
-//       }
-//       if (i === parts.length - 1) {
-//         current[part] = true;
-//       } else {
-//         current = current[part] as any;
-//       }
-//     }
-//   }
-//   return select;
-// }
-//
-// export function expandSortWithRequiredRelationIds(
-//   sortFields: SortField[],
-//   model: ModelMetadata
-// ): {
-//   sortings: ResolvedSortField[];
-//   select: SelectShape<any>;
-// } {
-//   const additional: SortField[] = [];
-//   const requiredSelect: SelectShape<any> = {};
-//
-//   const visit = (field: string, direction: SortDirection, context: ModelMetadata, basePath: string[]) => {
-//     const [head, ...rest] = field.split('.');
-//     const meta = context.field(head);
-//     if (!meta.relation) {
-//       const name = [...basePath, head].join('.');
-//       additional.push(
-//         ...context.idFields.map(id => ({
-//           name: `${name.split('.').slice(0, -1).join('.')}.${id}`,
-//           direction,
-//         }))
-//       );
-//       return;
-//     }
-//
-//     const relationModel = meta.type;
-//     requiredSelect[head] ||= {};
-//     visit(rest.join('.'), direction, relationModel, [...basePath, head]);
-//     for (const id of relationModel.idFields) {
-//       additional.push({ name: [...basePath, head, id].join('.'), direction });
-//     }
-//   };
-//
-//   for (const { name, direction, nullsLast } of sortFields) {
-//     const base = name.split('.');
-//     const fieldMeta = model.field(base[0]!);
-//     if (!fieldMeta.relation) {
-//       continue;
-//     }
-//     visit(name, direction, model, []);
-//   }
-//
-//   return {
-//     sortings: [...sortFields, ...additional.map(f => ({ ...f, cursor: undefined! }))],
-//     select: buildSelectFromSortFields([...sortFields, ...additional]),
-//   };
-// }
-//
-// export type ModelMetadata = {
-//   idFields: string[];
-//   field(name: string): { relation: boolean; type: any };
-// };
-//
-// export type ParsedFieldMeta = {
-//   name: string;
-//   relation: boolean;
-//   type: string | ParsedModelMeta;
-//   isScalar: boolean;
-//   isArray: boolean;
-//   isRequired: boolean;
-//   hasDefault: boolean;
-// };
-//
-// export type ParsedModelMeta = {
-//   name: string;
-//   idFields: string[];
-//   uniqueFields: string[][];
-//   fields: ParsedFieldMeta[];
-//   fieldsByName: ExMap<string, ParsedFieldMeta>;
-//   field(name: string): ParsedFieldMeta;
-// };
-//
-// export function extractPrismaMetadata(schema: any): ExMap<string, ParsedModelMeta> {
-//   return ExMap.mappedBy(
-//     schema.models.map((m: any) => {
-//       const fieldsByName = ExMap.mappedBy(
-//         m.fields.map(
-//           (f: any): ParsedFieldMeta => ({
-//             name: f.name,
-//             relation: !!f.relationName,
-//             type: f.type,
-//             isScalar: !f.relationName,
-//             isArray: f.isList,
-//             isRequired: f.isRequired,
-//             hasDefault: !!f.hasDefaultValue,
-//           })
-//         ),
-//         f => f.name
-//       );
-//
-//       return {
-//         name: m.name,
-//         idFields: m.idFields,
-//         uniqueFields: m.uniqueFields,
-//         fields: [...fieldsByName.values()],
-//         fieldsByName,
-//         field(name) {
-//           return notNull(fieldsByName.get(name), `Unknown field '${name}' in model '${m.name}'`);
-//         },
-//       };
-//     }),
-//     m => m.name
-//   );
-// }
-//
-// export const prismaMetadata = {
-//   get modelsById(): ExMap<string, ParsedModelMeta> {
-//     return once(this, 'modelsById', extractPrismaMetadata(require('.prisma/client').dmmf.datamodel));
-//   },
-//
-//   model(name: string): ParsedModelMeta {
-//     return notNull(this.modelsById.get(name), `Unknown model '${name}'`);
-//   },
-// };
-//
-// export class KeysetPaginationCache {
-//   static cache = new Map<string, { result: CachedPaginationInfo; accessedAt: number }>();
-//
-//   get(
-//     model: { name: string },
-//     sortFields: SortField[],
-//     compute: (model: { name: string }) => CachedPaginationInfo
-//   ): CachedPaginationInfo {
-//     const key = `${model.name}::${JSON.stringify(sortFields)}`;
-//     const cached = KeysetPaginationCache.cache.get(key);
-//     if (cached) {
-//       cached.accessedAt = Date.now();
-//       return cached.result;
-//     }
-//     const result = compute(model);
-//     KeysetPaginationCache.cache.set(key, { result, accessedAt: Date.now() });
-//     return result;
-//   }
-//
-//   prune(maxAgeMs: number) {
-//     const now = Date.now();
-//     for (const [key, { accessedAt }] of KeysetPaginationCache.cache) {
-//       if (now - accessedAt > maxAgeMs) {
-//         KeysetPaginationCache.cache.delete(key);
-//       }
-//     }
-//   }
-// }
-//
-// export type CachedPaginationInfo = {
-//   sortings: ResolvedSortField[];
-//   select: Record<string, unknown>;
-//   orderBy: Record<string, unknown>[];
-// };
-//
-// export class KeysetPaginator<Instance, FindManyArgs, UniqueArgs extends { where: Record<string, unknown> }> {
-//   private readonly modelMeta?: ReturnType<typeof prismaMetadata.model>;
-//   private readonly cache = new KeysetPaginationCache();
-//
-//   constructor(
-//     private readonly modelManager: {
-//       findMany(args: FindManyArgs): Promise<Instance[]>;
-//       findUnique(args: UniqueArgs): Promise<Instance | null>;
-//       $name?: string;
-//       name?: string;
-//     },
-//     private readonly prismaMetadata?: typeof prismaMetadata
-//   ) {
-//     this.modelMeta = prismaMetadata?.model(
-//       notNull(modelManager.$name ?? modelManager.name, () => `Can't get model name from Prisma model manager`)
-//     );
-//   }
-//
-//   getPaginationArgs(baseSort: SortField[], cursor: Record<keyof Instance, unknown>) {
-//     if (!this.modelMeta) {
-//       const sortings = baseSort as ResolvedSortField[];
-//       return {
-//         where: {},
-//         orderBy: buildOrderBy(sortings),
-//         select: buildSelectFromSortFields(baseSort),
-//       };
-//     }
-//
-//     const { sortings, select } = this.cache.get(this.modelMeta, baseSort, model => {
-//       return expandSortWithRequiredRelationIds(baseSort, this.modelMeta!);
-//     });
-//
-//     const cursorInstance = notNull(
-//       await this.modelManager.findUnique({ where: cursor } as UniqueArgs),
-//       'Cursor instance not found'
-//     );
-//
-//     const resolved = sortings.map(f => ({
-//       ...f,
-//       cursor: getNestedValue(cursorInstance, f.name),
-//     }));
-//
-//     return {
-//       where: buildKeysetWhereClause(resolved),
-//       orderBy: buildOrderBy(resolved),
-//       select,
-//     };
-//   }
-// }
+import {
+  BlockAttribute,
+  FieldDeclaration,
+  ModelDeclaration,
+  ModelDeclarationMember,
+  parsePrismaSchema,
+} from '@loancrate/prisma-schema-parser';
+
+import { ExMap } from '../collections/ex-map';
+import { notNull } from '../utils/flow-utils';
+import { once } from './once';
+
+const isFieldMdm = (m: ModelDeclarationMember): m is FieldDeclaration => m.kind === 'field';
+const isBlockAttributeMdm = (m: ModelDeclarationMember): m is BlockAttribute => m.kind === 'blockAttribute';
+
+class ModelBlockAttribute {
+  constructor(readonly raw: BlockAttribute) {}
+}
+
+class ModelFieldMeta {
+  constructor(readonly raw: FieldDeclaration) {}
+
+  get name() {
+    return this.raw.name.value;
+  }
+
+  get attributes() {
+    return this.raw.attributes || [];
+  }
+
+  @once
+  get hasIdAttribute() {
+    return this.attributes.some(a => a.path.value.length === 1 && a.path.value[0] === `id`);
+  }
+}
+
+class ModelMeta {
+  constructor(readonly raw: ModelDeclaration) {}
+
+  @once
+  get fields() {
+    return this.raw.members.filter(isFieldMdm).map(m => new ModelFieldMeta(m));
+  }
+
+  @once
+  get fieldsByName() {
+    return ExMap.mappedBy(this.fields, f => f.name);
+  }
+
+  @once
+  get blockAttributes() {
+    return this.raw.members.filter(isBlockAttributeMdm).map(m => new ModelBlockAttribute(m));
+  }
+
+  @once
+  get idBlockAttribute() {
+    const ba = this.blockAttributes.find(b => b.raw.path.value.length === 1 && b.raw.path.value[0] === `id`);
+    if (!ba) {
+      return null;
+    }
+
+    const args = notNull(ba.raw.args);
+    if (args.length !== 1) {
+      throw new Error(`unsupported schema: @@id is in unknown format`);
+    }
+    const [arg] = args;
+    if (arg.kind !== `array`) {
+      throw new Error(`unsupported schema: @@id is in unknown format`);
+    }
+
+    return arg.items.map(a => {
+      if (a.kind !== `path` || a.value.length !== 1) {
+        throw new Error(`unsupported schema: @@id is in unknown format`);
+      }
+      const [name] = a.value;
+      return notNull(this.fieldsByName.get(name), () => `field ${name} not declared`);
+    });
+  }
+
+  @once
+  get allIdFields() {
+    return [...new Set([...(this.idBlockAttribute || []), ...this.fields.filter(f => f.hasIdAttribute)])];
+  }
+}
+
+export const getModelsMetadataFromString = (s: string) => {
+  const schema = parsePrismaSchema(s);
+
+  const models = new ExMap<string, ModelMeta>();
+
+  for (const d of schema.declarations) {
+    switch (d.kind) {
+      case 'model':
+        models.set(d.name.value, new ModelMeta(d));
+        break;
+    }
+  }
+
+  return { models };
+};
+
+type OrderFromObject<T> = { [K in keyof T]?: T[K] extends object ? OrderFromObject<T[K]> : 'asc' | 'desc' };
+
+export class KeysetPaginatorBuilder<T> {
+  constructor(
+    orders: readonly OrderFromObject<T>[],
+    readonly meta: ModelMeta
+  ) {
+    const requiredKeys = new Set(meta.allIdFields.map(f => f.name));
+    for (const o of orders) {
+      const keys = Object.keys(o);
+      if (keys.length !== 1) {
+        throw new Error(`unsupported schema: order by ${keys.join(`, `)}`);
+      }
+      const [key] = keys;
+      if (requiredKeys.has(key) && typeof o[key as keyof typeof o] === `string`) {
+        requiredKeys.delete(key);
+      }
+    }
+
+    if (requiredKeys.size) {
+      const ordersMutable = [...orders];
+      for (const key of requiredKeys) {
+        ordersMutable.push({ [key]: `asc` } as OrderFromObject<T>);
+      }
+      this.orders = ordersMutable;
+    } else {
+      this.orders = orders;
+    }
+  }
+
+  readonly orders: readonly OrderFromObject<T>[];
+
+  cursorSelectClause() {
+    const select = {};
+
+    const valueFor = (o: OrderFromObject<T>) => {
+      let selectTail: { [s: string]: object | boolean } = select;
+
+      let to: unknown = o;
+      while (to) {
+        const key = Object.keys(to)[0] as keyof typeof to;
+        if (typeof to[key] === `string`) {
+          selectTail[key] ??= true;
+          return;
+        }
+        selectTail = (selectTail[key] as typeof selectTail) ??= {};
+        to = to[key];
+      }
+      throw new Error(`not found`);
+    };
+
+    for (const o of this.orders) {
+      valueFor(o);
+    }
+
+    return select;
+  }
+
+  whereClause(cursor: T) {
+    const valueFor = (o: OrderFromObject<T>, isLast: boolean) => {
+      const root1 = {};
+      let tail1: { [s: string]: object } = root1;
+
+      const root2 = {};
+      let tail2: { [s: string]: object } = root2;
+
+      let c: unknown = cursor;
+      let to: unknown = o;
+      while (c && to) {
+        const key = Object.keys(to)[0] as keyof typeof c;
+        if (typeof to[key] === `string`) {
+          tail1[key] = { equals: c[key] };
+          tail2[key] = { [to[key] === `asc` ? `gt` : `lt`]: c[key] };
+          return { eq: isLast ? undefined : root1, neq: root2 };
+        }
+        tail1 = (tail1[key] as object) = {};
+        tail2 = (tail2[key] as object) = {};
+        c = c[key] as T[keyof T];
+        to = to[key];
+      }
+      throw new Error(`not found`);
+    };
+
+    const withValues = this.orders.map((o, i, a) => valueFor(o, i >= a.length - 1));
+    const ands = [];
+    const prev = [];
+    for (const v of withValues) {
+      ands.push(prev.length ? { AND: [...prev, v.neq] } : v.neq);
+      prev.push(v.eq);
+    }
+
+    return { OR: ands };
+  }
+}

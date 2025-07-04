@@ -1,107 +1,66 @@
-// @ts-nocheck
+import { notNull } from '../utils/flow-utils';
+import { getModelsMetadataFromString, KeysetPaginatorBuilder } from './keyset-paginator';
 
-type OrderFromObject<T> = { [K in keyof T]?: T[K] extends object ? OrderFromObject<T[K]> : 'asc' | 'desc' };
+describe('Keyset paginator builder', () => {
+  test('single id creation', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic { 
+        id String @id
+      }`);
 
-const copyOrderClause = <T>(o: OrderFromObject<T>): OrderFromObject<T> => {
-  const root = {};
-  let tail: object = root;
+    const kp = new KeysetPaginatorBuilder<{ id: string; name: string; author: { id: string; name: string } }>(
+      [{ name: 'asc' }, { author: { name: 'desc' } }, { id: 'asc' }, { author: { id: 'asc' } }],
+      notNull(metadata.models.get(`Topic`))
+    );
+    expect(kp.orders.length).toBe(4);
+  });
 
-  let to: object = o;
-  while (to) {
-    const key = Object.keys(to)[0] as keyof typeof to;
-    if (typeof to[key] === `string`) {
-      tail[key] = to[key];
-      return { root, tail, tailKey: key };
-    }
-    tail = (tail[key] as object) = {};
-    to = to[key];
-  }
-};
+  test('single id creation when not full orders', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic { 
+        id String @id
+      }`);
 
-class KeysetPaginator<T> {
-  constructor(readonly orders: readonly OrderFromObject<T>[]) {}
+    const kp = new KeysetPaginatorBuilder<{ id: string; name: string; author: { id: string; name: string } }>(
+      [{ name: 'asc' }, { author: { name: 'desc' } }, { author: { id: 'asc' } }],
+      notNull(metadata.models.get(`Topic`))
+    );
+    expect(kp.orders.length).toBe(4);
+  });
 
-  cursorSelectClause() {
-    const select = {};
+  test('cursor select', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic { 
+        id String @id
+        b String
+      }`);
 
-    const valueFor = (o: OrderFromObject<T>) => {
-      let selectTail: object = select;
-
-      let to: unknown = o;
-      while (to) {
-        const key = Object.keys(to)[0] as keyof typeof to;
-        if (typeof to[key] === `string`) {
-          selectTail[key] ??= true;
-          return;
-        }
-        selectTail = (selectTail[key] as object) ??= {};
-        to = to[key];
-      }
-      throw new Error(`not found`);
-    };
-
-    for (const o of this.orders) {
-      valueFor(o);
-    }
-
-    return select;
-  }
-
-  whereClause(cursor: T) {
-    const valueFor = (o: OrderFromObject<T>, isLast: boolean) => {
-      const root1 = {};
-      let tail1: object = root1;
-
-      const root2 = {};
-      let tail2: object = root2;
-
-      let c: unknown = cursor;
-      let to: unknown = o;
-      while (c && to) {
-        const key = Object.keys(to)[0] as keyof typeof c;
-        if (typeof to[key] === `string`) {
-          tail1[key] = { equals: to[key] };
-          tail2[key] = { [to[key] === `asc` ? `gt` : `lt`]: to[key] };
-          return { eq: isLast ? undefined : root1, neq: root2 };
-        }
-        tail1 = (tail1[key] as object) = {};
-        tail2 = (tail2[key] as object) = {};
-        c = c[key] as T[keyof T];
-        to = to[key];
-      }
-      throw new Error(`not found`);
-    };
-
-    const withValues = this.orders.map((o, i, a) => valueFor(o, i >= a.length - 1));
-    const ands = [];
-    const prev = [];
-    for (const v of withValues) {
-      ands.push(prev.length ? { AND: [...prev, v.neq] } : v.neq);
-      prev.push(v.eq);
-    }
-
-    return { OR: ands };
-  }
-}
-
-describe('Keyset paginator', () => {
-  test('123', () => {
-    type Model = { id: string; name: string; author: { id: string; name: string } };
-
-    const kp = new KeysetPaginator<Model>([
-      { name: 'asc' },
-      { author: { name: 'desc' } },
-      { id: 'asc' },
-      { author: { id: 'asc' } },
-    ]);
+    const kp = new KeysetPaginatorBuilder<{ id: string; name: string; author: { id: string; name: string } }>(
+      [{ name: 'asc' }, { author: { name: 'desc' } }, { id: 'asc' }, { author: { id: 'asc' } }],
+      notNull(metadata.models.get(`Topic`))
+    );
 
     expect(kp.cursorSelectClause()).toEqual({ name: true, author: { name: true, id: true }, id: true });
 
-    /// TODO need implement nulls comparation
-
     const cursor = { id: '123', name: 'abc', author: { id: '456', name: 'def' } };
-    console.dir(kp.whereClause(cursor), {
-      depth: null,
+    expect(kp.whereClause(cursor)).toEqual({
+      OR: [
+        { name: { gt: 'abc' } },
+        {
+          AND: [{ name: { equals: 'abc' } }, { author: { name: { lt: 'def' } } }],
+        },
+        {
+          AND: [{ name: { equals: 'abc' } }, { author: { name: { equals: 'def' } } }, { id: { gt: '123' } }],
+        },
+        {
+          AND: [
+            { name: { equals: 'abc' } },
+            { author: { name: { equals: 'def' } } },
+            { id: { equals: '123' } },
+            { author: { id: { gt: '456' } } },
+          ],
+        },
+      ],
     });
   });
 });

@@ -8,7 +8,11 @@ export const overwriteGetter = <T, K extends keyof O, O>(target: O, key: K, valu
   return value;
 };
 
-export function once<T, O, K extends keyof O>(target: O, key: K, d: TypedPropertyDescriptor<T>): void;
+export function once<T, O, K extends keyof O>(
+  target: O,
+  key: K,
+  d: TypedPropertyDescriptor<T>
+): TypedPropertyDescriptor<T>;
 export function once<T, O, K extends keyof O>(target: O, key: K, replace: true, value: T): T;
 
 export function once<T, K extends keyof O, O>(
@@ -16,9 +20,9 @@ export function once<T, K extends keyof O, O>(
   key: K,
   descriptorOrFlag: true | TypedPropertyDescriptor<T>,
   value?: T
-): T | void {
+): T | TypedPropertyDescriptor<T> {
   if (descriptorOrFlag === true) {
-    return overwriteGetter(target, key, value);
+    return overwriteGetter(target, key, value!);
   }
 
   const { get, set } = descriptorOrFlag;
@@ -26,11 +30,11 @@ export function once<T, K extends keyof O, O>(
     throw new Error('decorator must be called on getters only');
   }
 
-  Object.defineProperty(target, key, {
+  return {
     get() {
-      return overwriteGetter(this, key, get.call(this));
+      return overwriteGetter(this, key as keyof typeof this, get.call(this));
     },
     enumerable: true,
     configurable: true,
-  });
+  };
 }
