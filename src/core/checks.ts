@@ -1,7 +1,5 @@
 export type Checker<T> = ((o: unknown) => o is T) & { type?: string };
 
-const cc = <T, Fn extends (o: unknown) => o is T>(fn: Fn, type: string) => Object.assign(fn, { type });
-
 export const isDefined = <T>(o: T | undefined | null): o is T => o != null;
 
 export const isNotUndefined = <T>(o: T | undefined): o is T => o !== undefined;
@@ -22,15 +20,10 @@ export const isNumber = (o: unknown): o is number => typeof o === 'number';
 
 export const isInteger = (o: unknown): o is number => isNumber(o) && Math.trunc(o) === o;
 
-export const isPlainObject = cc(
-  <T, R>(o: T): o is T & Record<string, R> => !!o && Object.getPrototypeOf(o) === Object.prototype,
-  'plain object'
-);
+export const isPlainObject = <T, R>(o: T): o is T & Record<string, R> =>
+  !!o && Object.getPrototypeOf(o) === Object.prototype;
 
-export const isROArray = cc(
-  <A>(a: unknown | A[] | readonly A[]): a is readonly A[] => Array.isArray(a),
-  'readonly array'
-);
+export const isROArray = <A>(a: unknown | A[] | readonly A[]): a is readonly A[] => Array.isArray(a);
 
 export const isArray =
   <K>(isK: (o: unknown) => o is K) =>

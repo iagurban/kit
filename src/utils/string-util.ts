@@ -73,3 +73,24 @@ export const makeMatchingTree = (samples: Iterable<string>) => {
     },
   };
 };
+
+/**
+ * Binary search to find a key in sorted array
+ */
+export const binaryStringSearch = (sorted: readonly string[], key: string): number => {
+  let left = 0;
+  let right = sorted.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (sorted[mid] === key) {
+      return mid;
+    }
+    if (sorted[mid] < key) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  return -1;
+};

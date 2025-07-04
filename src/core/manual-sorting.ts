@@ -1,23 +1,4 @@
-/**
- * Binary search to find a key in sorted array
- */
-const binarySearch = (sorted: readonly string[], key: string): number => {
-  let left = 0;
-  let right = sorted.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    if (sorted[mid] === key) {
-      return mid;
-    }
-    if (sorted[mid] < key) {
-      left = mid + 1;
-    } else {
-      right = mid - 1;
-    }
-  }
-  return -1;
-};
+import { binaryStringSearch } from '../utils/string-util';
 
 /**
  * Indicates a programming error in the sorting algorithm implementation
@@ -525,7 +506,7 @@ export class ManualSortingAlphabet {
     key: string,
     count: number
   ): { newKeys: string[]; updated: Map<string, string> } {
-    const keyIndex = binarySearch(sorted, key);
+    const keyIndex = binaryStringSearch(sorted, key);
     if (keyIndex === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);
     }
@@ -537,7 +518,7 @@ export class ManualSortingAlphabet {
     key: string,
     count: number
   ): { newKeys: string[]; updated: Map<string, string> } {
-    const index = binarySearch(sorted, key);
+    const index = binaryStringSearch(sorted, key);
     if (index === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);
     }
