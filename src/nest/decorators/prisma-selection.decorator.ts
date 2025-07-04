@@ -1,8 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { isDefined, isROArray, isTruthy } from '../core/checks';
-import { notNull } from '../utils/flow-utils';
+import { isDefined, isROArray, isTruthy } from '../../core/checks';
+import { notNull } from '../../utils/flow-utils';
 
 type Loc = { start: number; end: number };
 type Name = { kind: `Name`; value: string; loc: Loc };
