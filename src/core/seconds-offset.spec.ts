@@ -51,6 +51,6 @@ describe('timeStringToSecondsOffset', () => {
   });
 
   it('бросает ошибку при неверном формате', () => {
-    expect(() => timeStringToSecondsOffset('abc')).toThrowError('wrong time format: abc');
+    expect(() => timeStringToSecondsOffset('abc')).toThrow('wrong time format: abc');
   });
 });

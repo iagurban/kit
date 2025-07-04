@@ -24,6 +24,7 @@ class ModelFieldMeta {
     return this.raw.name.value;
   }
 
+  @once
   get attributes() {
     return this.raw.attributes || [];
   }
@@ -191,5 +192,17 @@ export class KeysetPaginatorBuilder<T> {
     }
 
     return { OR: ands };
+  }
+}
+
+export class KeySetPaginator<T, WhereUniqueInput, WhereInput, Select> {
+  constructor(
+    readonly findUnique: (where: WhereUniqueInput, select: Select) => Promise<T>,
+    readonly findMany: (where: WhereInput, select: Select) => Promise<T[]>
+  ) {}
+
+  async fetch(whereCursor: WhereUniqueInput, builder: KeysetPaginatorBuilder<T>, select: Select) {
+    const cursor = await this.findUnique(whereCursor, builder.cursorSelectClause() as Select);
+    return this.findMany(builder.whereClause(cursor) as WhereInput, select);
   }
 }

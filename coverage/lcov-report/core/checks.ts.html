@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -336,11 +336,11 @@ export const isROArray = cc(
 export const isArray =
 <span class="fstat-no" title="function not covered" >  &lt;K&gt;(i</span>sK: (o: unknown) =&gt; o is K) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  (o</span>: unknown): o is K[] =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!Array.isArray(o)) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!Array.isArray(o)) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 <span class="cstat-no" title="statement not covered" >    for (const e of o) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!isK(e)) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!isK(e)) {</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
     }
@@ -354,7 +354,7 @@ export const isInstanceOf =
   ) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  (o</span>: unknown): o is C =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    for (const c of classes) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (o instanceof c) {</span>
+<span class="cstat-no" title="statement not covered" >      if (o instanceof c) {</span>
 <span class="cstat-no" title="statement not covered" >        return true;</span>
       }
     }
@@ -367,7 +367,7 @@ export const isSomeOf =
 <span class="fstat-no" title="function not covered" >  &lt;Vs extends readonly unknown[]&gt;(.</span>..isK: Checkers&lt;Vs&gt;) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  (o</span>: unknown): o is Vs[number] =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    for (const e of isK) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (e(o)) {</span>
+<span class="cstat-no" title="statement not covered" >      if (e(o)) {</span>
 <span class="cstat-no" title="statement not covered" >        return true;</span>
       }
     }
@@ -377,11 +377,11 @@ export const isSomeOf =
 export const isTuple =
 <span class="fstat-no" title="function not covered" >  &lt;Vs extends readonly unknown[]&gt;(.</span>..isK: Checkers&lt;Vs&gt;) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  (o</span>: unknown): o is Vs =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!Array.isArray(o) || o.length !== isK.length) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!Array.isArray(o) || o.length !== isK.length) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 <span class="cstat-no" title="statement not covered" >    for (const [i, element] of isK.entries()) {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!element(o[i])) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!element(o[i])) {</span>
 <span class="cstat-no" title="statement not covered" >        return false;</span>
       }
     }
@@ -394,7 +394,7 @@ export const isTuples = <span class="fstat-no" title="function not covered" >&lt
 export const validator =
 <span class="fstat-no" title="function not covered" >  &lt;K&gt;(i</span>sK: Checker&lt;K&gt;) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  &lt;R&gt;(o</span>: unknown, fn: (o: K) =&gt; R) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isK(o)) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!isK(o)) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`check ${isK.type == null ? '' : `of type ${isK.type} `}failed, got ${o}`);</span>
     }
 <span class="cstat-no" title="statement not covered" >    return fn(o);</span>
@@ -403,7 +403,7 @@ export const validator =
 export const validator0 =
 <span class="fstat-no" title="function not covered" >  &lt;K&gt;(i</span>sK: Checker&lt;K&gt;) =&gt;
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  (o</span>: unknown) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isK(o)) {</span>
+<span class="cstat-no" title="statement not covered" >    if (!isK(o)) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error(`check ${isK.type == null ? '' : `of type ${isK.type} `}failed, got ${o}`);</span>
     }
 <span class="cstat-no" title="statement not covered" >    return o;</span>
@@ -412,7 +412,7 @@ export const validator0 =
 export function checked&lt;T, R extends T&gt;(v: T, check: (v: T) =&gt; v is R, message: (v: T) =&gt; string): R;
 export function checked&lt;T&gt;(v: T, check: (v: T) =&gt; unknown, message: (v: T) =&gt; string): T;
 export function <span class="fstat-no" title="function not covered" >checked&lt;</span>T, R extends T&gt;(v: T, check: (v: T) =&gt; unknown, message: (v: T) =&gt; string): R {
-<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (!check(v)) {</span>
+<span class="cstat-no" title="statement not covered" >  if (!check(v)) {</span>
 <span class="cstat-no" title="statement not covered" >    throw new Error(message(v));</span>
   }
 <span class="cstat-no" title="statement not covered" >  return v as R;</span>
@@ -424,7 +424,7 @@ export function <span class="fstat-no" title="function not covered" >checked&lt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-23T20:32:52.116Z
+                at 2025-07-04T19:24:27.793Z
             </div>
         <script src="../prettify.js"></script>
         <script>
