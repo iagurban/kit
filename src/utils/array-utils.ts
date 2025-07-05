@@ -124,3 +124,9 @@ export const syncArray = <Derived, Input, ID>(
     }
   }
 };
+
+export const mapArrayIfNotEmpty = <T, U>(
+  array: T[],
+  mapper: (t: T, i: number, arr: readonly T[]) => U,
+  empty: () => U
+): U[] => (array.length === 0 ? [empty()] : array.map(mapper));

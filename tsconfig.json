@@ -4,6 +4,8 @@
     "outDir": "dist",
     "rootDir": "src",
 
+    "jsx": "react-jsx",
+
     "experimentalDecorators": true,
     "types": ["jest", "node"]
   },
