@@ -4,8 +4,8 @@ import { getSnapshot, Model, model, prop } from 'mobx-keystone';
 import { observer } from 'mobx-react-lite';
 import { CSSProperties, useMemo } from 'react';
 
-import { notNull } from '../../utils/flow-utils';
-import { useMobxRootStoreRegistration } from '../mobx/mobx-util';
+import { notNull } from '../../../utils/flow-utils';
+import { useMobxRootStoreRegistration } from '../mobx-util';
 import { AnimatedSVGGradientBackground } from './animated-svg-gradient-background';
 
 export const restoreStorage = () => {

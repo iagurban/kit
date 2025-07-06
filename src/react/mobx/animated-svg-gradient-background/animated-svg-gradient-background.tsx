@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { computedFn } from 'mobx-utils';
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 
-import { uidGenerator } from '../../core/uid-generator';
-import { enhanceStepsEvenly, KeyframesBuilder } from '../keyframes-builder';
+import { uidGenerator } from '../../../core/uid-generator';
+import { enhanceStepsEvenly, KeyframesBuilder } from '../../keyframes-builder';
 
 const bgMovingKeyframesBuilder = new KeyframesBuilder();
 
