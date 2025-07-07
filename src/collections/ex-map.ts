@@ -89,10 +89,20 @@ export class ExMap<Key, Value> {
    * @returns Map of keys to arrays of values
    */
   public static groupedBy<Value, Key>(
-    input: readonly Value[],
+    input: Iterable<Value>,
     by: (value: Value) => Key
   ): ExMap<Key, Value[]> {
-    return input.reduce((r, v) => r.update(by(v), old => [...(old || []), v]), new ExMap<Key, Value[]>());
+    const r = new ExMap<Key, Value[]>();
+    for (const v of input) {
+      r.update(by(v), old => {
+        if (old) {
+          old.push(v);
+          return old;
+        }
+        return [v];
+      });
+    }
+    return r;
   }
 
   /**
@@ -101,8 +111,12 @@ export class ExMap<Key, Value> {
    * @param by - Function to derive the key for each element
    * @returns Map of derived keys to original values
    */
-  public static mappedBy<Value, Key>(input: readonly Value[], by: (value: Value) => Key): ExMap<Key, Value> {
-    return input.reduce((r, v) => r.set(by(v), v), new ExMap<Key, Value>());
+  public static mappedBy<Value, Key>(input: Iterable<Value>, by: (value: Value) => Key): ExMap<Key, Value> {
+    const r = new ExMap<Key, Value>();
+    for (const v of input) {
+      r.set(by(v), v);
+    }
+    return r;
   }
 
   // Extended Interface Methods
@@ -264,3 +278,7 @@ export class ExMap<Key, Value> {
     return 'ExMap';
   }
 }
+
+export type ExMapKey<M extends ExMap<unknown, unknown>> = M extends ExMap<infer K, unknown> ? K : never;
+
+export type ExMapValue<M extends ExMap<unknown, unknown>> = M extends ExMap<unknown, infer V> ? V : never;
