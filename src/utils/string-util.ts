@@ -26,25 +26,20 @@ type CPsTreeNode = { match?: string; sub?: CPsTree };
 type CPsTree = ExMap<number, CPsTreeNode>;
 
 export const makeMatchingTree = (samples: Iterable<string>) => {
-  const root: CPsTreeNode = {
-    sub: new ExMap(),
-    get match() {
-      return undefined;
-    },
-    set match(_s) {
-      throw new Error(`can't set match on root`);
-    },
+  const root = {
+    sub: new ExMap() as CPsTree,
   };
 
   for (const s of samples) {
-    if (!s.length) {
+    const firstCp = s.codePointAt(0);
+    if (firstCp === undefined) {
       console.warn(`empty string; skipping, remove it`);
       continue;
     }
 
-    let current = root;
+    let current = root.sub.getOrCreate(firstCp, () => ({}));
 
-    for (let i = 0; ; ++i) {
+    for (let i = 1; ; ++i) {
       const cp = s.codePointAt(i);
       if (cp === undefined) {
         notNull(current).match = s;
@@ -57,9 +52,20 @@ export const makeMatchingTree = (samples: Iterable<string>) => {
   return {
     tree: root.sub,
     match: (input: string, pos: number): string | undefined => {
-      let current = root;
-      let lastMatch: string | undefined = undefined;
-      for (let i = pos; ; ++i) {
+      const firstCp = input.codePointAt(pos);
+      if (firstCp === undefined) {
+        return undefined;
+      }
+
+      const firstCurrent = root.sub.get(firstCp);
+      if (!firstCurrent) {
+        return undefined;
+      }
+
+      let current = firstCurrent;
+      let lastMatch = current.match;
+
+      for (let i = pos + 1; ; ++i) {
         const cp = input.codePointAt(i);
         const next = cp !== undefined && current.sub?.get(cp);
         if (!next) {

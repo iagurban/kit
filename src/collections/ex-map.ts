@@ -3,7 +3,7 @@
  * @template Key - The type of keys in the map
  * @template Value - The type of values in the map
  */
-export class ExMap<Key, Value> {
+export class ExMap<Key, Value> implements ReadonlyMap<Key, Value>, Map<Key, Value> {
   protected readonly _m: Map<Key, Value>;
 
   /**
@@ -254,22 +254,22 @@ export class ExMap<Key, Value> {
   // Iterator Methods
 
   /** @returns Iterator for [key, value] pairs */
-  [Symbol.iterator](): IterableIterator<[Key, Value]> {
+  [Symbol.iterator](): MapIterator<[Key, Value]> {
     return this._m[Symbol.iterator]();
   }
 
   /** @returns Iterator for [key, value] pairs */
-  entries(): IterableIterator<[Key, Value]> {
+  entries(): MapIterator<[Key, Value]> {
     return this._m.entries();
   }
 
   /** @returns Iterator for map keys */
-  keys(): IterableIterator<Key> {
+  keys(): MapIterator<Key> {
     return this._m.keys();
   }
 
   /** @returns Iterator for map values */
-  values(): IterableIterator<Value> {
+  values(): MapIterator<Value> {
     return this._m.values();
   }
 

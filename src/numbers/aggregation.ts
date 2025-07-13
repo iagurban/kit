@@ -37,7 +37,7 @@ const basic = {
 } satisfies Record<string, (nn: readonly number[]) => number>;
 
 const basic2 = {
-  // Variance: average squared deviation from the mean
+  // Population Variance: average squared deviation from the mean
   variance: nn => {
     if (nn.length < 2) {
       return 0;
@@ -56,13 +56,21 @@ export const aggregation = {
 
     // Median: middle value (or average of two middles)
     med: nn => {
-      if (nn.length < 2) {
-        return nn.length ? nn[0] : 0;
+      // Для пустого массива возвращаем 0
+      if (nn.length === 0) {
+        return 0;
       }
+      // Сортируем копию массива
       const sorted = [...nn].sort((a, b) => a - b);
-      const mid = sorted.length / 2;
-      const lo = Math.trunc(mid);
-      return lo === mid ? sorted[lo] : (sorted[lo] + sorted[lo + 1]) / 2;
+      const len = sorted.length;
+      const mid = Math.floor(len / 2);
+
+      // Если нечётная длина — берём центральный элемент
+      if (len % 2 === 1) {
+        return sorted[mid];
+      }
+      // Если чётная — среднее двух «сердечных» элементов
+      return (sorted[mid - 1] + sorted[mid]) / 2;
     },
 
     // Product of all elements (or 0 if empty)
@@ -97,7 +105,7 @@ export const aggregation = {
 
     ...basic2,
 
-    // Standard deviation: square root of variance
+    // Population Standard deviation: square root of variance
     std: nn => Math.sqrt(basic2.variance(nn)),
 
     // Geometric mean: nth root of product (all values must be > 0)

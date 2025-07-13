@@ -45,8 +45,6 @@ export const reverse = <T>(a: ArrayLike<T>) => {
 type IterableUtils = {
   filter<T, R extends T>(iterable: Iterable<T>, filter: (o: T) => o is R): Iterable<R>;
   filter<T>(iterable: Iterable<T>, filter: (o: T) => unknown): Iterable<T>;
-
-  reversed<T>(iterable: Iterable<T>): Iterable<T>;
 };
 
 export const iterableUtils: IterableUtils = {
@@ -70,7 +68,6 @@ export const iterableUtils: IterableUtils = {
       },
     };
   },
-  reversed,
 };
 
 export const iu = iterableUtils;

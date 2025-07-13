@@ -2,7 +2,7 @@ import { Box } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 
 export const DropLineReference = observer<{
-  ml: number;
+  ml: number | string;
   color?: string;
   isTop?: boolean;
   visible: boolean;
@@ -27,7 +27,7 @@ export const DropLineReference = observer<{
     >
       <Box
         pos="absolute"
-        left={-2}
+        left={0}
         top={`50%`}
         w="0.75rem"
         h="0.75rem"
@@ -35,7 +35,7 @@ export const DropLineReference = observer<{
           borderRadius: `50%`,
           border: `2px solid ${color ?? 'var(--mantine-color-blue-6)'}`,
           background: `#fff`,
-          transform: `translateY(-50%)`,
+          transform: `translateX(-100%) translateY(-50%)`,
         }}
       />
     </Box>

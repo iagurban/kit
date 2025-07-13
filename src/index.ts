@@ -23,6 +23,12 @@ export {
   validator,
   validator0,
 } from './core/checks';
+export type { FunctionDisposable, ObjectDisposable } from './core/disposers';
+export { disposers } from './core/disposers';
+export type { Listener } from './core/emitter';
+export { Emitter } from './core/emitter';
+export { Errors } from './core/errors';
+export { FunctionsQueue } from './core/functions-queue';
 export {
   angleBetween,
   boundingBox,
@@ -50,16 +56,6 @@ export {
   triangleCentroid,
   trianglePerimeter,
 } from './core/geometry';
-
-
-
-
-export type { FunctionDisposable, ObjectDisposable } from './core/disposers';
-export { disposers } from './core/disposers';
-export type { Listener } from './core/emitter';
-export { Emitter } from './core/emitter';
-export { Errors } from './core/errors';
-export { FunctionsQueue } from './core/functions-queue';
 export { lazyGetter } from './core/lazy-getter';
 export { ProgrammingError } from './core/manual-sorting';
 export { ManualSortingAlphabet } from './core/manual-sorting';
@@ -71,15 +67,7 @@ export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export { NumberBase } from './numbers/number-base';
 export { NumberConverter } from './numbers/number-converter';
-export {
-  ArrayMutators,
-  buckets,
-  fromEntries,
-  pickRandomItems,
-  samples,
-  samplesBy,
-  syncArray,
-} from './utils/array-utils';
+export { ArrayMutators, buckets, pickRandomItems, samples, samplesBy, syncArray } from './utils/array-utils';
 export type { PromiseValue } from './utils/async-utils';
 export { isPromise, resolveRecord, retryingAsync, sleep } from './utils/async-utils';
 export { catching, notNull, NullError, throwing, warnCatch } from './utils/flow-utils';
@@ -92,6 +80,7 @@ export {
 } from './utils/functions-utils';
 export { indexed, iterableUtils, iu, reversed } from './utils/iterable-utils';
 export { clamp, scale, scaleFrom01, scaleTo01, snap } from './utils/numeric-utils';
+export { fromEntries } from './utils/object-utils';
 export { patchRR, PromiseController } from './utils/promise-util';
 export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
 export type { NotNullish, Nullish, OverrideFields, ValOrArr } from './utils/types';

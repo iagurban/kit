@@ -20,13 +20,13 @@ import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { CSS, getEventCoordinates } from '@dnd-kit/utilities';
 import { Box, BoxProps, Flex } from '@mantine/core';
 import { ElementProps } from '@mantine/core/lib/core';
+import { clsx } from 'clsx';
 import { sortBy, sortedIndexBy } from 'lodash';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import {
   CSSProperties,
   MouseEvent,
-  MouseEventHandler,
   PropsWithChildren,
   ReactNode,
   RefObject,
@@ -35,11 +35,13 @@ import {
   useRef,
 } from 'react';
 
+import { ExSet } from '../../../collections/ex-set';
 import { ManualSortingAlphabet } from '../../../core/manual-sorting';
 import { notNull } from '../../../utils/flow-utils';
 import { clamp } from '../../../utils/numeric-utils';
 import { createUsableContext } from '../../react';
 import { ObservableExSet } from '../observable-ex-set';
+import classNames from './dnd-tree.module.scss';
 
 const preDroppableId = `!!!PRE!!!`;
 
@@ -68,6 +70,7 @@ const pickDropPoint = (
   { min, max, points }: Readonly<{ points: readonly DropPoint[]; min: number; max: number }>,
   levelShift: number
 ) => {
+  // console.log(`levelShift`, levelShift, `min`, min, `max`, max, `path`, path, `points`, points);
   for (let ls = clamp(levelShift, min, max), els = ls + path.length + 1; ls < els; ++ls) {
     //console.log(`ls`, levelShift, min, max, ls);
     const q = points.find(i => i.levelDelta === ls);
@@ -83,7 +86,12 @@ const detectLevelShift = (active: Active) =>
     ? Math.floor((active.rect.current.translated.left - active.rect.current.initial.left) / 24)
     : null;
 
-export type DropPoint = { levelDelta: number; inside: string | null; after: string | null };
+export type DropPoint = {
+  levelDelta: number;
+  inside: string | null;
+  after: string | null;
+  parents: Set<string>;
+};
 
 export class DndTreeState<Item extends { id: string; parentId?: string | null; orderKey: string }> {
   constructor(
@@ -97,6 +105,18 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
     readonly manualSort: ManualSortingAlphabet
   ) {
     makeObservable(this);
+  }
+
+  getPath(id: string) {
+    const path: string[] = [id];
+    let node = this.getById(id);
+    while (node) {
+      node = (node.parentId && notNull(this.getById(node.parentId))) || null;
+      if (node) {
+        path.unshift(node.id);
+      }
+    }
+    return path;
   }
 
   readonly getAvailableDropPoints = (overId: string, item: Item) => {
@@ -142,59 +162,69 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
       return true;
     };
 
-    const pointToStr = (dp: DropPoint) => ({
-      ...dp,
-      after: dp.after ? `[${getById(dp.after)?.id || '---'}]` : null,
-      inside: dp.inside ? `[${getById(dp.inside)?.id || '---'}]` : null,
-    });
-
     if (overId === preDroppableId) {
-      return { points: [{ after: null, inside: null, levelDelta: 0 }], min: 0, max: 0 };
+      return {
+        points: [{ after: null, inside: null, levelDelta: 0, parents: new Set<string>() }],
+        min: 0,
+        max: 0,
+      };
     }
 
-    const path: string[] = [];
-    {
-      let node = getById(overId);
-      while (node) {
-        node = (node.parentId && notNull(getById(node.parentId))) || null;
-        if (node) {
-          path.push(node.id);
-        }
-      }
-    }
+    const path = this.getPath(overId);
+
+    // console.log(`path`, path);
     const currRowLevel = path.length;
     const nextRowLevel = findNextRowAfter(currRowLevel, overId);
-    // console.log(currRowLevel, nextRowLevel);
+    // console.log(`currRowLevel, nextRowLevel`, currRowLevel, nextRowLevel);
+
     const delta = nextRowLevel - currRowLevel;
+    // id dela <= 0, overId is not expanded
+
     // console.log(`delta =`, delta, ` after ${path.join(' -> ')} -> ${overId}`);
 
     const levels: DropPoint[] = [];
 
     if (delta < 0) {
-      let p: string | undefined | null = notNull(getById(overId)).parentId;
+      let p = notNull(getById(overId)).parentId;
 
       const upperLevels: DropPoint[] = [];
-      for (let i = -1; i >= delta - 1; i--) {
-        const node: Item | undefined = p ? notNull(getById(p)) : undefined;
-        if (node) {
-          upperLevels.push({ levelDelta: i, after: node.id, inside: node.parentId ?? null });
-        }
-        p = node?.parentId;
+      for (let i = -1; p && i >= delta; i--) {
+        const node = notNull(getById(p));
+        upperLevels.push({
+          levelDelta: i,
+          after: node.id,
+          inside: node.parentId ?? null,
+          parents: new Set(path.slice(0, i - 1)),
+        });
+
+        p = node.parentId;
       }
-      // console.log(`upper`, ...upperLevels.map(pointToStr));
+      // console.log(`upper`, ...upperLevels);
       levels.push(...upperLevels);
     }
 
     if (delta <= 0) {
-      const nearLevel: DropPoint = { levelDelta: 0, after: overId, inside: path.at(-1) ?? null };
+      // same level as overId, next after it
+      const nearLevel: DropPoint = {
+        levelDelta: 0,
+        after: overId,
+        inside: path.at(0) ?? null,
+        parents: new Set(path.slice(0, -1)),
+      };
       levels.push(nearLevel);
-      // console.log(`near`, pointToStr(nearLevel));
+      // console.log(`near`, nearLevel);
     }
-    // if (delta >= 0)
+
     {
-      const deeperLevel: DropPoint = { levelDelta: 1, after: null, inside: overId };
+      // first inside overId
+      const deeperLevel: DropPoint = {
+        levelDelta: 1,
+        after: null,
+        inside: overId,
+        parents: new Set(path),
+      };
       levels.push(deeperLevel);
-      // console.log(`deeper`, pointToStr(deeperLevel));
+      // console.log(`deeper`, deeperLevel);
     }
     // console.log(`levels:`, ...levels);
     // console.log(`----`);
@@ -202,6 +232,7 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
       levels.filter(l => canBeInserted(item, l.inside)),
       l => l.levelDelta
     );
+    // console.log(`sortedPoints`, sortedPoints);
     return {
       points: sortedPoints,
       min: sortedPoints.at(0)?.levelDelta ?? 0,
@@ -215,6 +246,7 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
     if (!dropPoint || !activeId) {
       return;
     }
+    this.setDropPoint(null);
 
     const srcNode = notNull(getById(activeId));
     const srcParent = (srcNode.parentId && notNull(getById(srcNode.parentId))) || null;
@@ -293,7 +325,7 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
 
   @action
   setDropPoint(point: DropPoint | null) {
-    // console.log(`point`, point);
+    // console.log(`setDropPoint`, point);
     this.dropPoint = point;
   }
 
@@ -311,7 +343,25 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
       this.expanded.delete(id);
     }
   }
+
+  @action
+  expandRecursively(id: string, prevIds = new ExSet<string>()) {
+    const { getSortedChildrenOfId } = this;
+    const children = getSortedChildrenOfId(id);
+    if (prevIds.has(id)) {
+      // real recursion
+      return;
+    }
+    prevIds = prevIds.or([id]);
+    if (children) {
+      this.setExpanded(id, true);
+      for (const child of children) {
+        this.expandRecursively(child.id, prevIds);
+      }
+    }
+  }
 }
+
 /**
  * Creates context accessors for DndTreeState (which user must provide with ProvideDndTreeState) and
  * components for rendering tree bound to that context.
@@ -416,14 +466,29 @@ export const dndTreeFabric = <
       other: { isDrag: RefObject<boolean> }
     ) => ReactNode;
     expandButton: (props: {
-      onClick: MouseEventHandler<HTMLElement>;
+      onClick: (e: MouseEvent<HTMLElement>) => void;
       visible: boolean;
       opened: boolean;
     }) => ReactNode;
     dragging: (props: { itemId: string }) => ReactNode;
-    dropLine: (props: { ml: number; color?: string; isTop?: boolean; visible: boolean }) => ReactNode;
+    dropLine: (props: {
+      ml: number | string;
+      color?: string;
+      isTop?: boolean;
+      visible: boolean;
+    }) => ReactNode;
   },
-  { mlStep }: { mlStep: number }
+  {
+    mlStep,
+    offsetWidth,
+    getDropBoxProps,
+    getDroppingParentProps,
+  }: {
+    mlStep: number;
+    offsetWidth: (depth: number) => number | string;
+    getDropBoxProps?: (isTop: boolean) => BoxProps;
+    getDroppingParentProps?: (visible: boolean) => BoxProps;
+  }
 ) => {
   const { use: useDndTreeState, provider: DndTreeStateProvider } = createUsableContext<State>(`DndTreeState`);
 
@@ -434,19 +499,14 @@ export const dndTreeFabric = <
       isOver: isOverDown,
     } = useDroppable({ id: preDroppableId });
 
+    const dropBoxProps = getDropBoxProps?.(true);
+
     return (
       <>
         <Box
-          pos={`absolute`}
           ref={setNodeRefDown}
-          style={{
-            top: `-50%`,
-            height: `100%`,
-            left: 0,
-            width: `100%`,
-            pointerEvents: `none`,
-            // border: `1px solid #f00`,
-          }}
+          {...dropBoxProps}
+          className={clsx(classNames.topDropBox, dropBoxProps?.className)}
         >
           {methods.dropLine({ ml: mlStep, isTop: true, visible: !!activeDown && isOverDown })}
         </Box>
@@ -493,6 +553,19 @@ export const dndTreeFabric = <
     );
   });
 
+  const DragParentCover = observer<{
+    item: Item;
+  }>(function DragParentCover({ item }) {
+    const store = useDndTreeState();
+    const visible = useMemo(() => computed(() => store.dropPoint?.parents.has(item.id)), [item, store]);
+
+    const props = (
+      getDroppingParentProps || (visible => ({ className: undefined, style: { opacity: visible ? 0.2 : 0 } }))
+    )(visible.get() || false);
+
+    return <Box {...props} className={clsx(classNames.droppingParent, props.className)} />;
+  });
+
   const InnerContent = observer<{
     item: Item;
     path: readonly string[];
@@ -513,7 +586,7 @@ export const dndTreeFabric = <
       if (picked) {
         store.setDropPoint(picked);
       }
-    }, [over?.id, active?.id, active?.rect.current, path, store, item]);
+    }, [over?.id, active?.id, active?.rect.current.translated, path, store, item]);
 
     const mouseDownPos = useRef<{ x: number; y: number } | null>(null);
     const isDrag = useRef(false);
@@ -554,6 +627,7 @@ export const dndTreeFabric = <
             { isDrag }
           )}
         </Flex>
+        <DragParentCover item={item} />
       </>
     );
   });
@@ -562,13 +636,12 @@ export const dndTreeFabric = <
     ownerID: string;
     path: readonly string[] | null;
     sortedItems?: readonly Item[];
-    ml: number;
-  }>(function TreeNodeChildren({ sortedItems, ownerID, path, ml }) {
+  }>(function TreeNodeChildren({ sortedItems, ownerID, path }) {
     const subPath = useMemo(() => (path ? [...path, ownerID] : []), [path, ownerID]);
     return sortedItems?.length ? (
       <>
         {sortedItems.map((i, index) => (
-          <TreeNode key={i.id} item={i} path={subPath} ml={ml} index={index} />
+          <TreeNode key={i.id} item={i} path={subPath} index={index} />
         ))}
       </>
     ) : null;
@@ -577,9 +650,8 @@ export const dndTreeFabric = <
   const TreeNode = observer<{
     path: readonly string[];
     item: Item;
-    ml: number;
     index: number;
-  }>(function TreeNode({ item, path, ml, index }) {
+  }>(function TreeNode({ item, path, index }) {
     const store = useDndTreeState();
 
     const sortedItems = useMemo(
@@ -595,44 +667,55 @@ export const dndTreeFabric = <
       isOver: isOverDown,
     } = useDroppable({ id: item.id });
 
+    const ow = useMemo(() => offsetWidth(path.length - 1), [path]);
+
+    const dropBoxProps = getDropBoxProps?.(false);
+
+    const expand = (e: MouseEvent<HTMLElement, globalThis.MouseEvent>) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+      if (e.ctrlKey) {
+        store.expandRecursively(item.id);
+      } else {
+        store.setExpanded(item.id, !opened);
+      }
+    };
+
     return (
       <>
-        <Flex pos={`relative`} ml={ml} align="center">
-          {methods.expandButton({
-            onClick: e => {
-              e.preventDefault();
-              store.setExpanded(item.id, !opened);
-            },
-            visible: !!sortedItems?.length,
-            opened: opened,
-          })}
-
+        <Flex pos={`relative`} align="center">
           <Box
-            pos={`absolute`}
             ref={setNodeRefDown}
-            style={{
-              top: `50%`,
-              height: `100%`,
-              left: 0,
-              width: `100%`,
-              pointerEvents: `none`,
-              // border: `1px solid #00f`,
-            }}
+            {...dropBoxProps}
+            className={clsx(classNames.dropBox, dropBoxProps?.className)}
           />
+          <Flex
+            w={ow}
+            maw={ow}
+            miw={ow}
+            h="100%"
+            justify="end"
+            onClick={expand}
+            style={sortedItems?.length ? { cursor: `pointer` } : {}}
+          />
+          <Flex pos={`relative`} flex="1 0 0" miw={0} align="center">
+            {methods.expandButton({ onClick: expand, visible: !!sortedItems?.length, opened: opened })}
+            {index === 0 && path.length === 1 && <FakeBeginningDroppable />}
 
-          {index === 0 && path.length === 1 && <FakeBeginningDroppable />}
-
-          <Flex pos={`relative`} direction={`column`} justify={`stretch`} flex={`1 1 auto`} p={5} miw={0}>
-            <InnerContent item={item} path={path} />
+            <Flex pos={`relative`} direction={`column`} justify={`stretch`} flex={`1 1 auto`} p={5} miw={0}>
+              <InnerContent item={item} path={path} />
+            </Flex>
 
             {methods.dropLine({
-              ml: mlStep * Math.max(-path.length - 1, store.dropPoint?.levelDelta ?? 0),
+              ml: offsetWidth((store.dropPoint?.levelDelta ?? 0) + 1),
               visible: !!activeDown && isOverDown && store.dropPoint != null,
             })}
           </Flex>
         </Flex>
         {opened && sortedItems?.length ? (
-          <TreeNodeChildren sortedItems={sortedItems} path={path} ownerID={item.id} ml={ml + mlStep} />
+          <TreeNodeChildren sortedItems={sortedItems} path={path} ownerID={item.id} />
         ) : null}
       </>
     );
@@ -640,10 +723,11 @@ export const dndTreeFabric = <
 
   const RootLevel = observer(function RootLevel() {
     const store = useDndTreeState();
+
     return (
       <>
         {store.getSortedChildrenOfId(null).map((t, index) => (
-          <TreeNode key={t.id} item={t} path={[t.id]} ml={0} index={index} />
+          <TreeNode key={t.id} item={t} path={[t.id]} index={index} />
         ))}
       </>
     );

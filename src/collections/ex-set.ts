@@ -9,7 +9,7 @@ export type ReadonlyExSet<Value> = Omit<
  * Provides both standard Set interface and additional functionality for set operations.
  * @template Value - The type of elements in the set
  */
-export class ExSet<Value> {
+export class ExSet<Value> implements ReadonlySet<Value>, Set<Value> {
   protected readonly _s: Set<Value>;
 
   /**
@@ -221,7 +221,7 @@ export class ExSet<Value> {
   // Iterator Methods
 
   /** @returns An iterator over the values in the set */
-  [Symbol.iterator](): IterableIterator<Value> {
+  [Symbol.iterator](): SetIterator<Value> {
     return this._s[Symbol.iterator]();
   }
 
@@ -231,17 +231,17 @@ export class ExSet<Value> {
   }
 
   /** @returns An iterator over [value, value] pairs for Set compatibility */
-  entries(): IterableIterator<[Value, Value]> {
+  entries(): SetIterator<[Value, Value]> {
     return this._s.entries();
   }
 
   /** @returns An iterator over the values in the set */
-  keys(): IterableIterator<Value> {
+  keys(): SetIterator<Value> {
     return this._s.keys();
   }
 
   /** @returns An iterator over the values in the set */
-  values(): IterableIterator<Value> {
+  values(): SetIterator<Value> {
     return this._s.values();
   }
 }

@@ -150,6 +150,9 @@ describe('NumberConverter', () => {
       expect(hex.mask(3)).toBe('fff');
       expect(hex.maxSafeDigits).toBe(hex.from10(BigInt(Number.MAX_SAFE_INTEGER)).length - 1);
 
+      // maxSafeDigits = fixedWidthRandomGenerator(8).length = 8
+      expect(new NumberConverter([[' ', 'z']]).fixedWidthRandomGenerator(8)().length).toBe(8);
+
       // Test fixed width generator edge cases
       expect(() => hex.fixedWidthRandomGenerator(0)).toThrow();
       expect(() => hex.fixedWidthRandomGenerator(-1)).toThrow();

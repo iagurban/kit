@@ -1,6 +1,3 @@
-import { ExMap } from '../collections/ex-map';
-import { Nullish } from './types';
-
 export const buckets = <T>(a: readonly T[], size: number) => {
   const r: T[][] = [];
   let offset = 0;
@@ -50,79 +47,6 @@ export const ArrayMutators = {
     copy[pos] = value;
     return copy;
   },
-};
-
-export const fromEntries = <T extends string | number | symbol, V>(
-  pairs: readonly (readonly [T, V])[]
-): Record<T, V> => Object.fromEntries(pairs) as Record<T, V>;
-
-export const syncArray = <Derived, Input, ID>(
-  input: readonly Input[],
-  getInputId: (v: Input) => ID,
-  /* mutated */ array: Derived[],
-  create: (v: Input) => Derived,
-  update: (data: Derived, v: Input) => void,
-  deleted: ((v: Derived) => void) | Nullish,
-  getID: (v: Derived) => ID
-) => {
-  const oldById = ExMap.mappedBy(
-    array.map((v, i) => ({ v, i })),
-    ({ v }) => getID(v)
-  );
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (oldById.size !== array.length) {
-      throw new Error(`array length mismatch, not unique ids at input`);
-    }
-  }
-
-  const insert = (v: Derived, id: ID, idx: number) => {
-    array.splice(idx, 0, v);
-    oldById.delete(id);
-    oldById.forEach(v => v.i >= idx && ++v.i);
-  };
-
-  const remove = (idx: number) => {
-    const [old] = array.splice(idx, 1);
-    oldById.forEach(v => v.i >= idx && --v.i);
-    return old;
-  };
-
-  for (const [idx, src] of input.entries()) {
-    const id = getInputId(src);
-    const old = oldById.get(id);
-    if (old) {
-      if (process.env.NODE_ENV !== 'production') {
-        if (id !== getID(old.v)) {
-          throw new Error(`mismatch (possible something wrong with indexes in algo)`);
-        }
-      }
-      if (old.i !== idx) {
-        insert(remove(old.i), id, idx);
-      }
-      update(old.v, src);
-    } else {
-      insert(create(src), id, idx);
-    }
-  }
-
-  if (deleted) {
-    for (const { v } of oldById.values()) {
-      deleted(v);
-    }
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    const m = ExMap.mappedBy(array, getID);
-    if (m.size !== array.length) {
-      throw new Error(`array length mismatch, not unique ids`);
-    }
-    for (const [idx, o] of array.entries()) {
-      if (getID(o) !== getInputId(input[idx])) {
-        throw new Error(`wrong order at final`);
-      }
-    }
-  }
 };
 
 export const mapArrayIfNotEmpty = <T, U>(
