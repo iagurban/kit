@@ -1,4 +1,5 @@
 import { once } from '../../core/once';
+import { NumberBase } from '../../numbers/number-base';
 import { fromEntries } from '../../utils/object-utils';
 import { $t, $u } from '../define';
 import { AnyAst, Tokenizer, TokenizerResult } from '../tokenizer-def';
@@ -16,48 +17,47 @@ export const jsonPresets = {
     return once(this, `ws`, true, $t.repeat(this.ws1, 1)($u.mute));
   },
 
-  get fixedEscapesEnd() {
-    return once(
-      this,
-      `fixedEscapesEnd`,
-      true,
-      $t.or([
-        ...(
-          [
-            [`n`, `\n`],
-            [`t`, `\t`],
-            [`r`, `\r`],
-            [`b`, `\b`],
-            [`f`, `\f`],
-            [`\\`, `\\`],
-          ] as const
-        ).map(([a, b]) => $t.cps(a)(() => b)),
-        $t.seq(
-          $t.cps(`u`).mute(),
-          $t.repeat(
-            $t.cp(b => b.digits().range(`af`).range(`AF`)).mute(),
-            1
-          )((ast, info) => String.fromCodePoint(+$u.nodeText(info)))
-        ),
-        $t.failure(`unknown escape sequence`),
-      ])
-    );
-  },
+  stringLiteral(quote: string) {
+    const fixedEscapeContentRules = (
+      [
+        [`n`, `\n`],
+        [`t`, `\t`],
+        [`r`, `\r`],
+        [`b`, `\b`],
+        [`f`, `\f`],
+        [quote, quote],
+        [`\\`, `\\`],
+      ] as const
+    )
+      .map(([a, b]) => [a, b] as const)
+      .map(([a, b]) => $t.cps(a)(() => b));
 
-  escapeSeq(quote: string) {
-    return $t.seq(
+    const numericEscapeContent = $t.seq(
+      $t.cps(`u`).mute(),
+      $t.repeat(
+        $t.cp(b => b.digits().range(`af`).range(`AF`)).mute(),
+        4,
+        4
+      )((none, info) => $u.nodeText(info).toLowerCase())
+    )(([, cp]) => String.fromCodePoint(Number(NumberBase.b16.to10(cp))));
+
+    const escape = $t.seq(
       $t.cps(`\\`).mute(),
-      $t.or([$t.cps(quote).mute(), this.fixedEscapesEnd])
+      $t.or([...fixedEscapeContentRules, numericEscapeContent, $t.failure(`unknown escape sequence`)])
     )(([, value]) => value);
-  },
 
-  stringLiteral<R extends AnyAst>(quote: string, fn: (value: string) => R) {
     return $t.seq(
       $t.cps(quote).mute(),
       $t.repeat(
-        $t.or([this.escapeSeq(quote), $t.notCps(quote).mute()]).mute(),
+        $t.or([
+          escape,
+          $t.repeat(
+            $t.notCps(`\\"`)(({ cp }) => cp),
+            1
+          )(r => String.fromCodePoint(...r)),
+        ]),
         0
-      )((none, info) => fn($u.nodeText(info))),
+      ),
       $t.cps(quote).mute()
     )(([, s]) => s);
   },
@@ -125,7 +125,7 @@ type ObjectType = { [key: string]: ValueType };
 export const defineJsonParser = () => {
   const { mbws } = jsonPresets;
 
-  const doubleQuoteString = jsonPresets.stringLiteral(`"`, s => s);
+  const doubleQuoteString = jsonPresets.stringLiteral(`"`)(r => r.join(''));
 
   const value = $t.or([
     () => object,

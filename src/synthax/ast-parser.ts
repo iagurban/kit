@@ -27,7 +27,7 @@ export type ParenAst = AstBase<{
 
 export type AstToken = VarAst | OpAst | NumberAst | BooleanAst | StringAst | ExprAst | ParenAst;
 
-const tsLanguageOperators = {
+export const tsLanguageOperators = {
   accessOrCallOps: () =>
     [
       [
@@ -191,7 +191,7 @@ const tsLanguageOperators = {
     ] as const,
 } as const;
 
-const tsOpDefs = () => {
+export const tsOpDefs = () => {
   return (
     [
       ...tsLanguageOperators.accessOrCallOps(),
@@ -205,7 +205,7 @@ const tsOpDefs = () => {
       ...tsLanguageOperators.assignmentOps(),
       ...tsLanguageOperators.separatorOps(),
     ] as const
-  ).flatMap((s, i) => s.map(s => ({ ...s, priority: i }) as const)) satisfies OperatorDef[];
+  ).flatMap((s, i) => s.map(s => ({ ...s, priority: -i }) as const)) satisfies OperatorDef[];
 };
 
 export const printExpr = (t: ExprAst, wrapDepth: number = 2) => {
@@ -257,7 +257,7 @@ export const printExpr = (t: ExprAst, wrapDepth: number = 2) => {
   const printExpr = <Ast extends AstToken>(o: Expr<Ast>, depth: number, ident: boolean) => {
     // console.dir(o.operator, { depth: null });
     return printRaw(
-      o.operator.def.symbol ?? o.operator.def.uid ?? `UNKNOWN[${o.operator.def.description}]`,
+      o.operator.symbol ?? o.operator.uid ?? `UNKNOWN[${o.operator.description}]`,
       ident => o.operands.map(o => printSomething(o, depth + 1, ident)).filter(isTruthy),
       depth,
       ident
@@ -294,7 +294,7 @@ export const flattenCommas = (data: Operand<AstToken>, candidates: readonly stri
   const recur = (data: Operand<AstToken>): Operand<AstToken>[] => {
     if (isExprOperand(data)) {
       for (const [i, candidate] of candidates.entries()) {
-        if (data.operator.def.symbol === candidate && data.operator.def.args === 2) {
+        if (data.operator.symbol === candidate && data.operator.args === 2) {
           const cc = candidates.slice(i);
           return cc.length ? data.operands.flatMap(t => flattenCommas(t, cc)) : data.operands;
         }
@@ -590,12 +590,10 @@ export const definePinqLisplLang = () => {
 
   const scalar = $t.or([numberScalar]);
 
-  const stringScalar = $t.or(
-    ([[`'`], [`"`], ['`']] as const).map(([q]) => jsonPresets.stringLiteral(q, s => s))
-  )(
+  const stringScalar = $t.or(([[`'`], [`"`], ['`']] as const).map(([q]) => jsonPresets.stringLiteral(q)))(
     (item, info): StringAst => ({
       kind: `string`,
-      data: item,
+      data: item.join(``),
       ...briefInfo(info),
     })
   );

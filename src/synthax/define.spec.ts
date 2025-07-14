@@ -1,4 +1,5 @@
 import { $t } from './define';
+import { jsonPresets } from './examples/json-parser';
 import { AnyAst, Tokenizer, TokenizerResult } from './tokenizer-def';
 
 const testParser = <Ast extends AnyAst>(
@@ -37,5 +38,13 @@ describe(`define cps, seq, repeat`, () => {
       .pipe(([first, rest]) => [first, ...rest]);
 
     testParser(`abb cab. jhg`, sentence, { length: 7, result: [`abb`, `cab`] });
+  });
+
+  test(`define quoted string`, () => {
+    testParser(
+      `"ab\\u1234cd\\\\\\"'efg'"`,
+      jsonPresets.stringLiteral(`"`)(r => r.join('')),
+      { length: 21, result: `abሴcd\\"'efg'` }
+    );
   });
 });

@@ -203,7 +203,7 @@ export const $t = {
 
         const ctx: NotReadonly<ProcessorCtx> = { ...inCtx };
 
-        for (;;) {
+        for (; max == null || matches.length < max; ) {
           try {
             const r = unwrap(token).tokenize(ctx);
             matches.push(r);
@@ -253,7 +253,7 @@ export const $t = {
       (): { length: number; result: null } => {
         throw new Error(`$t.failure: ${message}`);
       },
-      () => null
+      () => null as never
     );
   },
 };
@@ -270,7 +270,7 @@ export const $o = {
     uid?: Uid
   ) => ({ symbol, description, uid }) as const,
 
-  ltr: <A extends number>(a: A) => ({ args: a }) as const,
+  ltr: <A extends number>(a: A) => ({ args: a, ltr: true }) as const,
   rtl: <A extends number>(a: A) => ({ args: a, ltr: false }) as const,
 
   unary: <S extends string | undefined>(s: S) => ({ description: `${s}a`, symbol: s }) as const,

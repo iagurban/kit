@@ -38,8 +38,8 @@ describe('parser', () => {
     ).toBe(
       unpad(`(do
       (=>
-        0
         (do a b c d)
+        0
       )
       2
       (do
@@ -330,7 +330,7 @@ describe('parser', () => {
           }
         }
 
-        switch (e.operator.def.symbol) {
+        switch (e.operator.symbol) {
           case `=`: {
             if (e.operands.length !== 2) {
               throw new Error(`asledfgnsljkdfg`);
@@ -384,7 +384,7 @@ describe('parser', () => {
             return { expr: e, type: `#boolean`, hints: and([ctx.hints, or([l.hints, r.hints])]) };
           }
           default: {
-            throw new Error(`unhandled operator: ${e.operator.def.symbol}`);
+            throw new Error(`unhandled operator: ${e.operator.symbol}`);
           }
         }
       };
