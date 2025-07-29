@@ -1,11 +1,13 @@
-import { isDefined } from '../core/checks';
-import { reversed } from '../utils/iterable-utils';
-import { Nullish } from '../utils/types';
+import { isDefined } from '../../core/checks';
+import { reversed } from '../../utils/iterable-utils';
+import { Nullish } from '../../utils/types';
+import { $t } from '../define';
+import { Expr, isExprOperand, Operand } from '../operands-tree-builder';
+import { AnyAst } from '../tokenizer-def';
 import {
   AstToken,
   Condition,
   definePinqLisplLang,
-  defineTsLikeLang,
   ExprAst,
   Op,
   printExpr,
@@ -13,52 +15,8 @@ import {
   TypeHint,
   VarAst,
 } from './ast-parser';
-import { $t } from './define';
-import { Expr, isExprOperand, Operand } from './operands-tree-builder';
-import { AnyAst } from './tokenizer-def';
 
 describe('parser', () => {
-  test('first', () => {
-    // testParse('123  456', $t.seq(NumberScalar, WSs, NumberScalar));
-
-    const unpad = (s: string) =>
-      s
-        .split(`\n`)
-        .map(s => s.trim())
-        .join(`\n`);
-
-    const { expression } = defineTsLikeLang();
-    // console.log(printExpr(testParse(`(0+1,2+3,4+5,6+7)`, Expression).result));
-    expect(
-      unpad(
-        printExpr(
-          $t.run(`(a, b, c, d) => 0, 2, (1 +2, 2+ 3), e(1) ,123.2+ (a + 2, 4, 3-2)*456`, expression).result
-        )
-      )
-    ).toBe(
-      unpad(`(do
-      (=>
-        (do a b c d)
-        0
-      )
-      2
-      (do
-        (+ 1 2)
-        (+ 2 3)
-      )
-      (#call
-        e
-        1
-      )
-      (+
-        123.2
-        (* (do (+ a 2) 4 (- 3 2)) 456)
-      )
-    )`)
-    );
-    // console.log(printExpr(testParse(`1 ?? 456`, Expression).result));
-  });
-
   test('types comb', () => {
     const resolveTypes = (ops: TypeHint<string>) => resolveTypesBase(v => v, ops);
 
@@ -195,22 +153,6 @@ describe('parser', () => {
     ).toBe(`(!t1 & t3) | (!t1 & t4)`);
   });
 
-  test('hjli', () => {
-    // testParse('123  456', $t.seq(NumberScalar, WSs, NumberScalar));
-
-    const { impExpression } = defineTsLikeLang();
-    // console.log(printExpr(testParse(`(0+1,2+3,4+5,6+7)`, Expression).result));
-    console.log(
-      printExpr(
-        $t.run(
-          `a(), a[1234]; a[1234 - 2], a[1234 + 1]; 1+ a[((1234 + 1), (4 / 4))], (1 + a)[123, 2]`,
-          impExpression
-        ).result
-      )
-    );
-    // console.log(printExpr(testParse(`1 ?? 456`, Expression).result));
-  });
-
   test('pinql', () => {
     const { expression } = definePinqLisplLang();
 
@@ -317,7 +259,7 @@ describe('parser', () => {
                 hints: null,
               };
             }
-            case `var`: {
+            case `identifier`: {
               return {
                 expr: e,
                 type: `#symbol`,
@@ -359,7 +301,7 @@ describe('parser', () => {
               }
             };
 
-            if (!isExprOperand(e.operands[0]) && e.operands[0].kind === `var`) {
+            if (!isExprOperand(e.operands[0]) && e.operands[0].kind === `identifier`) {
               /* TODO !!! commented beacuse of build problens */
               // addHint(e.operands[0], { value: r.type });
             }
@@ -389,7 +331,7 @@ describe('parser', () => {
         }
       };
 
-      return e.data.map(e => compileOperand(e, { hints: null }));
+      return compileOperand(e.data, { hints: null });
     };
 
     const resolveTypes = (ops: TypeHint<string>) => resolveTypesBase(v => v, ops);
@@ -402,10 +344,7 @@ describe('parser', () => {
       console.log(printExpr(r.result));
       console.dir(cc, { depth: 10 });
       console.dir(
-        cc.map(
-          cc =>
-            cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)]))
-        ),
+        cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
         { depth: 10 }
       );
     }
@@ -418,10 +357,7 @@ describe('parser', () => {
       console.log(printExpr(r.result));
       console.dir(cc, { depth: 10 });
       console.dir(
-        cc.map(
-          cc =>
-            cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)]))
-        ),
+        cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
         { depth: 10 }
       );
     }

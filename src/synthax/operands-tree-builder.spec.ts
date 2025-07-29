@@ -1,5 +1,5 @@
 import { notNull } from '../utils/flow-utils';
-import { tsOpDefs } from './ast-parser';
+import { tsOperators } from './examples/ts-ast-parser';
 import { Operand, OperandsTreeBuilder, OperatorDef } from './operands-tree-builder';
 
 type TestToken = {
@@ -14,7 +14,7 @@ describe('OperandsTreeBuilder', () => {
 
   beforeEach(() => {
     // Define common operators
-    operators = tsOpDefs();
+    operators = tsOperators();
 
     // Initialize builder with non-symbolic operator handler
     builder = new OperandsTreeBuilder<TestToken>(operators, (_left: Operand<TestToken>, right: TestToken) => {
@@ -30,7 +30,7 @@ describe('OperandsTreeBuilder', () => {
   describe('Basic Operations', () => {
     it('should handle simple binary operations', () => {
       builder.onOperand({ kind: 'number', value: '1' });
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       builder.onOperand({ kind: 'number', value: '2' });
       builder.onFinish();
 
@@ -45,7 +45,7 @@ describe('OperandsTreeBuilder', () => {
       const a = builder.operands.length + builder.operators.length;
       builder.onOperand({ kind: 'number', value: '1' });
       expect(builder.operands.length + builder.operators.length).toBe(a);
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       expect(builder.operands.length + builder.operators.length).toBe(a);
       builder.onFinish();
       expect(builder.operands.length + builder.operators.length).toBe(a);
@@ -60,28 +60,28 @@ describe('OperandsTreeBuilder', () => {
               { priority: 1, args: 1, symbol: `+`, description: ``, ltr: true },
             ],
             () => undefined as unknown as OperatorDef
-          ).bySymbolByArgsByLtr
+          ).bySymbol
       ).toThrow();
     });
 
     it('should throw error if missing next operand/operator', () => {
       builder.onOperand({ kind: 'number', value: '1' });
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       expect(() => builder.result).toThrow();
       expect(() => builder.onFinish()).toThrow();
       builder.onOperand({ kind: 'number', value: '1' });
       builder.onFinish();
 
       const a = builder.operands.length + builder.operators.length;
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       expect(builder.operands.length + builder.operators.length).toBe(a);
     });
 
     it('should handle operator precedence', () => {
       builder.onOperand({ kind: 'number', value: '1' });
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       builder.onOperand({ kind: 'number', value: '2' });
-      builder.onOperator({ kind: 'operator', value: '*' }, '*');
+      builder.onOperator('*');
       builder.onOperand({ kind: 'number', value: '3' });
       builder.onFinish();
 
@@ -157,7 +157,7 @@ describe('OperandsTreeBuilder', () => {
 
   describe('Complex Expressions', () => {
     it('should handle unary operators', () => {
-      builder.onOperator({ kind: 'operator', value: '-' }, '-');
+      builder.onOperator('-');
       builder.onOperand({ kind: 'number', value: '1' });
       builder.onFinish();
 
@@ -169,9 +169,9 @@ describe('OperandsTreeBuilder', () => {
 
     it('should handle chained operations with correct associativity', () => {
       builder.onOperand({ kind: 'number', value: '1' });
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       builder.onOperand({ kind: 'number', value: '2' });
-      builder.onOperator({ kind: 'operator', value: '+' }, '+');
+      builder.onOperator('+');
       builder.onOperand({ kind: 'number', value: '3' });
       builder.onFinish();
 
@@ -185,7 +185,7 @@ describe('OperandsTreeBuilder', () => {
 
   describe('Unary operators', () => {
     it('should parse single prefix operator', () => {
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
+      builder.onOperator('++');
       builder.onOperand({ kind: 'number', value: '5' });
       builder.onFinish();
 
@@ -196,8 +196,8 @@ describe('OperandsTreeBuilder', () => {
     });
 
     it('should parse chained prefix operators RTL', () => {
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
-      builder.onOperator({ kind: 'operator', value: '--' }, '--');
+      builder.onOperator('++');
+      builder.onOperator('--');
       builder.onOperand({ kind: 'number', value: '7' });
       builder.onFinish();
 
@@ -214,7 +214,7 @@ describe('OperandsTreeBuilder', () => {
 
     it('should parse single postfix operator', () => {
       builder.onOperand({ kind: 'number', value: '8' });
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
+      builder.onOperator('++');
       builder.onFinish();
 
       expect(builder.result).toEqual({
@@ -225,8 +225,8 @@ describe('OperandsTreeBuilder', () => {
 
     it('should parse chained postfix operators LTR', () => {
       builder.onOperand({ kind: 'number', value: '3' });
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
-      builder.onOperator({ kind: 'operator', value: '--' }, '--');
+      builder.onOperator('++');
+      builder.onOperator('--');
       builder.onFinish();
 
       // ((3++)--)
@@ -243,9 +243,9 @@ describe('OperandsTreeBuilder', () => {
 
     it('should mix prefix and postfix with correct binding', () => {
       // ++a++  → prefix binds right, postfix binds left
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
+      builder.onOperator('++');
       builder.onOperand({ kind: 'identifier', value: 'a' });
-      builder.onOperator({ kind: 'operator', value: '++' }, '++');
+      builder.onOperator('++');
       builder.onFinish();
 
       // should be interpreted as ( ++ ( a++ ) )
@@ -258,6 +258,16 @@ describe('OperandsTreeBuilder', () => {
           },
         ],
       });
+    });
+
+    it(`more complex unary stacking`, () => {
+      builder.onOperator('+');
+      builder.onOperator('new');
+      builder.onOperand({ kind: 'identifier', value: 'Date' });
+      builder.onOperand({ kind: 'paren', open: '(' });
+      builder.onFinish();
+
+      console.dir(builder.result, { depth: null });
     });
   });
 });

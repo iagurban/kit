@@ -1,3 +1,4 @@
+import { isTruthy } from '../../core/checks';
 import { once } from '../../core/once';
 import { NumberBase } from '../../numbers/number-base';
 import { fromEntries } from '../../utils/object-utils';
@@ -17,7 +18,7 @@ export const jsonPresets = {
     return once(this, `ws`, true, $t.repeat(this.ws1, 1)($u.mute));
   },
 
-  stringLiteral(quote: string) {
+  escape(quote?: string) {
     const fixedEscapeContentRules = (
       [
         [`n`, `\n`],
@@ -25,10 +26,11 @@ export const jsonPresets = {
         [`r`, `\r`],
         [`b`, `\b`],
         [`f`, `\f`],
-        [quote, quote],
+        quote ? [quote, quote] : null,
         [`\\`, `\\`],
       ] as const
     )
+      .filter(isTruthy)
       .map(([a, b]) => [a, b] as const)
       .map(([a, b]) => $t.cps(a)(() => b));
 
@@ -41,16 +43,18 @@ export const jsonPresets = {
       )((none, info) => $u.nodeText(info).toLowerCase())
     )(([, cp]) => String.fromCodePoint(Number(NumberBase.b16.to10(cp))));
 
-    const escape = $t.seq(
+    return $t.seq(
       $t.cps(`\\`).mute(),
       $t.or([...fixedEscapeContentRules, numericEscapeContent, $t.failure(`unknown escape sequence`)])
     )(([, value]) => value);
+  },
 
+  stringLiteral(quote: string) {
     return $t.seq(
       $t.cps(quote).mute(),
       $t.repeat(
         $t.or([
-          escape,
+          this.escape(quote),
           $t.repeat(
             $t.notCps(`\\"`)(({ cp }) => cp),
             1

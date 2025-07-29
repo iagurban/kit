@@ -1,5 +1,5 @@
-import { ExSet } from '../collections/ex-set';
-import { allCodePoints } from '../utils/string-util';
+import { ExSet } from '../../collections/ex-set';
+import { allCodePoints } from '../../utils/string-util';
 
 const parseCodePointsRange = (pair: string) => {
   if (pair.length > 2) {

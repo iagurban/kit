@@ -8,6 +8,7 @@ export type Tokenizer<Ast extends AnyAst> = {
   <OutAst extends AnyAst>(ast: PipeFn<Ast, OutAst>): Tokenizer<OutAst>;
   pipe<OutAst extends AnyAst>(ast: PipeFn<Ast, OutAst>): Tokenizer<OutAst>;
   mute(): Tokenizer<null>;
+  maybe(): Tokenizer<{ item: Ast | null | undefined }>;
   readonly tokenize: (ctx: ProcessorCtx) => TokenizerResult<Ast>;
 };
 

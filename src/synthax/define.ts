@@ -1,11 +1,11 @@
-import { maxBy, thru } from 'lodash';
+import { maxBy, sortedLastIndexBy, thru } from 'lodash';
 
 import { isROArray } from '../core/checks';
 import { aggregation } from '../numbers/aggregation';
 import { samplesBy } from '../utils/array-utils';
+import { notNull } from '../utils/flow-utils';
 import { makeMatchingTree } from '../utils/string-util';
 import { AnyAnyFunction } from '../utils/types';
-import { CodePointsBuilder } from './code-points-builder';
 import {
   AnyAst,
   Dictionary,
@@ -15,17 +15,26 @@ import {
   TokenizerResult,
   ValueOrGetter,
 } from './tokenizer-def';
+import { CodePointsBuilder } from './util/code-points-builder';
 
 const indexFoundOr = (n: number, fallback: () => number) => (n < 0 ? fallback() : n);
 
 class UnmatchedError extends Error {
-  constructor(readonly ctx: ProcessorCtx) {
+  readonly ctx: ProcessorCtx;
+
+  constructor(ctx: ProcessorCtx) {
+    super(`unmatched error`);
+    this.ctx = { ...ctx };
+  }
+
+  get message() {
+    const { ctx } = this;
     const s = indexFoundOr(ctx.input.indexOf('\n', ctx.pos), () => 0);
     const e = indexFoundOr(ctx.input.lastIndexOf('\n', ctx.pos), () => ctx.input.length);
-    super(`unexpected '${ctx.input.slice(ctx.pos, ctx.pos + 1)}' at pos ${ctx.pos}
+    return `unexpected '${ctx.input.slice(ctx.pos, ctx.pos + 1)}' at pos ${ctx.pos}
 ${ctx.input.slice(s, e)}
 ${samplesBy(ctx.pos - s, () => ' ').join('')}^
-`);
+`;
   }
 }
 
@@ -40,7 +49,7 @@ const defineTokenizer = <InAst extends AnyAst, OutAst extends AnyAst>(
   const pipe = <OutAst2 extends AnyAst>(newAst: PipeFn<OutAst, OutAst2>): Tokenizer<OutAst2> =>
     defineTokenizer(tokenize, (data, info) => newAst(pipeFn(data, info), info));
 
-  return Object.assign(pipe, {
+  const ret = Object.assign(pipe, {
     pipe,
     mute: () => defineTokenizer(tokenize, () => null),
     tokenize: (ctx: ProcessorCtx): TokenizerResult<OutAst> => {
@@ -48,7 +57,12 @@ const defineTokenizer = <InAst extends AnyAst, OutAst extends AnyAst>(
       const ret = { ...data, pos: ctx.pos, source: ctx.input };
       return { ...ret, result: pipeFn(data.result, ret) };
     },
+    maybe: (): Tokenizer<{ item: OutAst | null | undefined }> => {
+      return $t.maybe(ret);
+    },
   } as const);
+
+  return ret;
 };
 
 const singleCodePointTokenizer = (
@@ -126,10 +140,31 @@ export const $t = {
     apply(b);
     return codePointsTokenizer(b.cps);
   },
+
   cps(cps: string) {
     return codePointsTokenizer(Array.from(cps, s => s.codePointAt(0)!));
   },
 
+  cpRanges(ranges: readonly [number, number][]) {
+    return singleCodePointTokenizer((cp): cp is number => {
+      if (cp === undefined) {
+        return false;
+      }
+      const idx = sortedLastIndexBy(ranges, [cp, Number.POSITIVE_INFINITY] as const, r => r[0]);
+      if (idx === 0) {
+        return false;
+      }
+
+      const [start, end] = ranges[idx - 1];
+      return cp >= start && cp <= end;
+    });
+  },
+
+  /**
+   * Builds a matching tree for keywords and tries to match the longest possible keyword
+   * (e.g. [`some`, `someone`] will try to match `someone` first and then will fall back to `some`)
+   * @param keywords some set (iterable) of strings to match with
+   */
   keywords(keywords: Iterable<string>) {
     const { match } = makeMatchingTree(keywords);
     return defineTokenizer(
@@ -152,13 +187,62 @@ export const $t = {
     return singleCodePointTokenizer((cp): cp is number => cp !== undefined && !set.has(cp));
   },
 
-  seq<
-    InTokens extends readonly ValueOrGetter<Tokenizer<AnyAst | AnyAst[]> | TokenizerFabric<AnyAst, AnyAst>>[],
-  >(...tokens: InTokens) {
+  not<InAst extends ExtractNotArray<AnyAst>>(tokenizer: ValueOrGetter<Tokenizer<InAst>>) {
     return defineTokenizer(
       inCtx => {
         const ctx: NotReadonly<ProcessorCtx> = { ...inCtx };
-        const matches = tokens.map(t => {
+
+        try {
+          unwrap(tokenizer).tokenize(ctx);
+        } catch (error) {
+          if (error instanceof UnmatchedError) {
+            const cp = inCtx.input.codePointAt(inCtx.pos);
+
+            return { length: 1, result: notNull(cp, () => `unexpected end of input`) };
+          }
+          throw error;
+        }
+        throw new UnmatchedError(inCtx);
+      },
+      cp => ({ cp })
+    );
+  },
+
+  eof() {
+    return defineTokenizer(
+      ctx => {
+        if (ctx.pos === ctx.input.length) {
+          return { length: 0, result: undefined };
+        }
+        throw new UnmatchedError(ctx);
+      },
+      () => null as never
+    );
+  },
+
+  look<InAst extends ExtractNotArray<AnyAst>>(tokenizer: ValueOrGetter<Tokenizer<InAst>>) {
+    return defineTokenizer(
+      inCtx => {
+        const ctx: NotReadonly<ProcessorCtx> = { ...inCtx };
+
+        if (unwrap(tokenizer).tokenize(ctx).length) {
+          return { length: 0, result: undefined };
+        }
+        throw new UnmatchedError(inCtx);
+      },
+      () => null as never
+    );
+  },
+
+  seq<
+    InTokenizers extends readonly ValueOrGetter<
+      Tokenizer<AnyAst | AnyAst[]> | TokenizerFabric<AnyAst, AnyAst>
+    >[],
+  >(...tokenizers: InTokenizers) {
+    return defineTokenizer(
+      inCtx => {
+        const ctx: NotReadonly<ProcessorCtx> = { ...inCtx };
+        const matches = tokenizers.map(t => {
           const r = unwrap(t).tokenize(ctx);
           ctx.pos += r.length;
           return r;
@@ -169,16 +253,23 @@ export const $t = {
           result: matches,
         };
       },
-      matches => matches.map(m => m.result) as /* TODO */ MapTokensInputArrayToAst<InTokens>
+      matches => matches.map(m => m.result) as /* TODO */ MapTokensInputArrayToAst<InTokenizers>
     );
   },
-  or<InTokens extends ValueOrGetter<Tokenizer<AnyAst>>>(tokens: readonly InTokens[]) {
+
+  /**
+   * Tries to match tokenizers sequentially in passed order unless one of them has success. So it works by
+   * the "first match winner" strategy like "A / B" PUG-rule.
+   *
+   * @param tokenizers
+   */
+  or<InTokenizers extends ValueOrGetter<Tokenizer<AnyAst>>>(tokenizers: readonly InTokenizers[]) {
     return defineTokenizer(
       ctx => {
         const errors: UnmatchedError[] = [];
-        for (const t of tokens) {
+        for (const t of tokenizers) {
           try {
-            return unwrap(t).tokenize(ctx) as /* TODO */ TokenizerResult<AstFromTokenizer<InTokens>>;
+            return unwrap(t).tokenize(ctx) as /* TODO */ TokenizerResult<AstFromTokenizer<InTokenizers>>;
           } catch (error) {
             if (error instanceof UnmatchedError) {
               errors.push(error);
@@ -192,8 +283,9 @@ export const $t = {
       forward => forward
     );
   },
+
   repeat<InAst extends ExtractNotArray<AnyAst>>(
-    token: ValueOrGetter<Tokenizer<InAst>>,
+    tokenizer: ValueOrGetter<Tokenizer<InAst>>,
     min: number,
     max?: number
   ) {
@@ -205,7 +297,7 @@ export const $t = {
 
         for (; max == null || matches.length < max; ) {
           try {
-            const r = unwrap(token).tokenize(ctx);
+            const r = unwrap(tokenizer).tokenize(ctx);
             matches.push(r);
             ctx.pos += r.length;
           } catch (error) {
@@ -228,13 +320,14 @@ export const $t = {
       matches => matches.map(m => m.result)
     );
   },
-  maybe<InAst extends AnyAst>(token: ValueOrGetter<Tokenizer<InAst>>) {
+
+  maybe<InAst extends AnyAst>(tokenizer: ValueOrGetter<Tokenizer<InAst>>) {
     return defineTokenizer(
       inCtx => {
         const ctx: NotReadonly<ProcessorCtx> = { ...inCtx };
 
         try {
-          const { length, result } = unwrap(token).tokenize(ctx);
+          const { length, result } = unwrap(tokenizer).tokenize(ctx);
           return { length, result };
         } catch (error) {
           if (error instanceof UnmatchedError) {
@@ -253,6 +346,7 @@ export const $t = {
       (): { length: number; result: null } => {
         throw new Error(`$t.failure: ${message}`);
       },
+      /* istanbul ignore next */
       () => null as never
     );
   },
@@ -267,31 +361,25 @@ export const $o = {
   op: <S extends string, Q extends string | undefined, Uid extends string | undefined>(
     description: S,
     symbol: Q,
-    uid?: Uid
-  ) => ({ symbol, description, uid }) as const,
+    uid?: Uid,
+    requireSpaces?: boolean
+  ) => ({ symbol, description, uid, requireSpaces }) as const,
 
   ltr: <A extends number>(a: A) => ({ args: a, ltr: true }) as const,
   rtl: <A extends number>(a: A) => ({ args: a, ltr: false }) as const,
 
-  unary: <S extends string | undefined>(s: S) => ({ description: `${s}a`, symbol: s }) as const,
-  binary: <S extends string | undefined>(s: S) => ({ description: `a ${s} b`, symbol: s }) as const,
+  unary: <S extends string | undefined>(s: S, requireSpaces?: boolean) =>
+    ({ description: `${s}a`, symbol: s, requireSpaces }) as const,
+  binary: <S extends string | undefined>(s: S, requireSpaces?: boolean) =>
+    ({ description: `a ${s} b`, symbol: s, requireSpaces }) as const,
 };
 
 export const $u = {
   mute: (): null => null,
   nodeText: (ast: Omit<TokenizerResult<AnyAst>, `result`>) => ast.source.slice(ast.pos, ast.pos + ast.length),
-  noop: <T extends AnyAst | AnyAst[]>(o: T) => o,
 };
 
-export const briefInfo = ({ pos, length }: TokenizerResult<unknown>) => ({ pos, length });
-
-export const fullSpan =
-  <T extends Dictionary>(fn: (data: string) => T) =>
-  (ast: unknown, info: TokenizerResult<unknown>) =>
-    ({
-      ...fn($u.nodeText(info)),
-      ...briefInfo(info),
-    }) as const;
+export const locationInfo = ({ pos, length }: TokenizerResult<unknown>) => ({ pos, length });
 
 export const rawSpan =
   <T extends Dictionary>(fn: (data: string) => T) =>
@@ -299,3 +387,14 @@ export const rawSpan =
     fn($u.nodeText(info));
 
 export type InferTokenizer<T> = T extends Tokenizer<infer U> ? U : never;
+export const testParser = <Ast extends AnyAst>(
+  input: string,
+  tokenizer: Tokenizer<Ast>,
+  expectation: Omit<TokenizerResult<Ast>, `source` | `pos`>
+) => {
+  expect($t.run(input, tokenizer, { allowPartial: true })).toStrictEqual({
+    source: input,
+    pos: 0,
+    ...expectation,
+  });
+};

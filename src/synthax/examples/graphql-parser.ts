@@ -1,7 +1,7 @@
 import { isTruthy } from '../../core/checks';
-import { CodePointsBuilder } from '../code-points-builder';
 import { $t, $u, InferTokenizer, rawSpan } from '../define';
 import { Tokenizer } from '../tokenizer-def';
+import { CodePointsBuilder } from '../util/code-points-builder';
 import { defineJsonParser, jsonPresets } from './json-parser';
 
 type TypeDeclType = { kind: `type`; name: string; nullable: boolean };
@@ -82,6 +82,7 @@ export const defineGraphqlParser = () => {
         0
       )
     ),
+    mbws,
     $t.cps(`)`).mute()
   )(([, , first, rest]) => [first, ...(rest.item || [])]);
 
@@ -279,7 +280,7 @@ export const defineGraphqlParser = () => {
   );
 
   const root = $t.repeat(
-    $t.seq(mbws, $t.or([block, fragment, type, union]))(([comment, q]) => ({ ...q, comment })),
+    $t.seq(mbws, $t.or([block, fragment, type, union]), mbws)(([comment, q]) => ({ ...q, comment })),
     0
   );
 

@@ -1,5 +1,7 @@
+import { maxBy, thru } from 'lodash';
+
 import { ExMap } from '../collections/ex-map';
-import { checked, isROArray } from '../core/checks';
+import { isROArray } from '../core/checks';
 import { once } from '../core/once';
 import { notNull } from '../utils/flow-utils';
 import { Dictionary } from './tokenizer-def';
@@ -34,133 +36,6 @@ export type Operand<Ast extends Dictionary> = Ast | Expr<Ast>;
  * });
  * ```
  */
-// export class OperandsTreeBuilder<Token extends Dictionary> {
-//   constructor(
-//     /**
-//      * Known operators definition. `symbol` used for matching. Some operators can't have symbol (e.g. call
-//      * or braces-access). User can use `uid` for tagging and searching purposes, including searching
-//      * non-symbolic operators to return them from getNonSymbolicOp.
-//      */
-//     readonly definitions: readonly OperatorDef[],
-//     /**
-//      * function to choose an operator for handling two consecutive operands without any operator between them.
-//      * E.g. `a()`, `a[]`, `[]{}`, `a b` are all examples of such cases.
-//      */
-//     readonly getNonSymbolicOp: (left: Operand<Token>, node: Token) => OperatorDef
-//   ) {}
-//
-//   readonly operands: Operand<Token>[] = [];
-//   readonly operators: ParsedOp<Token>[] = [];
-//
-//   private wasOperator = true;
-//
-//   @once
-//   get bySymbolByArgsByLtr() {
-//     return ExMap.groupedBy(
-//       this.definitions.filter((s): s is Omit<typeof s, `symbol`> & { symbol: string } => !!s.symbol),
-//       o => o.symbol
-//     ).mapEntries(v =>
-//       ExMap.groupedBy(v, o => o.args).mapEntries(v =>
-//         checked(
-//           ExMap.mappedBy(v, v => v.ltr),
-//           r => r.size === v.length,
-//           () => {
-//             console.log(v);
-//             return `asedfsdfsdfsd`;
-//           }
-//         )
-//       )
-//     );
-//   }
-//
-//   private buildOperation() {
-//     const o = notNull(this.operators.pop(), `programming error`);
-//     const ops = Array.from({ length: o.def.args }, () => notNull(this.operands.pop(), `programming error`));
-//     o.def.ltr !== false && ops.reverse();
-//     this.operands.push({ operator: o, operands: ops });
-//   }
-//
-//   private onOperation(node: Token | undefined, def: OperatorDef) {
-//     const { operators } = this;
-//     if (!operators.length || def.priority < operators[operators.length - 1].def.priority) {
-//       operators.push({ def, node });
-//     } else {
-//       this.buildOperation();
-//       this.onOperation(node, def);
-//     }
-//     this.wasOperator = true;
-//   }
-//
-//   private check(warn: string) {
-//     if (this.finishCalled) {
-//       console.warn(warn);
-//       return false;
-//     }
-//     return true;
-//   }
-//
-//   onOperator(node: Token, op: string) {
-//     if (!this.check(`onOperand() called after onFinish(); ignoring...`)) {
-//       return;
-//     }
-//
-//     const args = this.wasOperator ? 1 : 2;
-//     const def = notNull(
-//       this.bySymbolByArgsByLtr.get(op)?.get(args),
-//       () => `operator for '${op}' with args count ${args}`
-//     );
-//
-//     /// TODO how to know, is it ltr or rtl operator? compare priority to previous operator maybe?
-//     if (def.size > 1) {
-//       throw new Error(`multiple definitions for '${op}' with args count ${args}`);
-//     }
-//
-//     const dd = def.values().next().value!;
-//     this.onOperation(node, dd);
-//   }
-//
-//   onOperand(node: Token) {
-//     if (!this.check(`onOperand() called after onFinish(); ignoring...`)) {
-//       return;
-//     }
-//
-//     if ((this.operators.length || this.operands.length) && !this.wasOperator) {
-//       /// TODO function call, invalid syntax, etc.
-//
-//       this.onOperation(undefined, this.getNonSymbolicOp(this.operands[this.operands.length - 1], node));
-//       this.onOperand(node);
-//
-//       return;
-//     }
-//     this.operands.push(node);
-//
-//     this.wasOperator = false;
-//   }
-//
-//   private finishCalled = false;
-//
-//   onFinish() {
-//     if (!this.check(`double call onFinish not allowed`)) {
-//       return;
-//     }
-//
-//     while (this.operators.length) {
-//       this.buildOperation();
-//     }
-//     this.finishCalled = true;
-//   }
-//
-//   get result() {
-//     if (!this.finishCalled) {
-//       throw new Error(`you didn't call this.onFinish(), but you must`);
-//     }
-//     if (this.operands.length !== 1) {
-//       throw new Error(`tyghvj`);
-//     }
-//     return this.operands[0];
-//   }
-// }
-
 export class OperandsTreeBuilder<Token extends Dictionary> {
   constructor(
     /**
@@ -176,51 +51,32 @@ export class OperandsTreeBuilder<Token extends Dictionary> {
     readonly getNonSymbolicOp: (left: Operand<Token>, node: Token) => OperatorDef
   ) {}
 
-  // readonly operands: Operand<Token>[] = [];
-  // readonly operators: ParsedOp<Token>[] = [];
-
-  // private wasOperator = true;
-
   operands: Operand<Token>[] = [];
   operators: OperatorDef[] = [];
   private expectOperand = true; // true = до операнда (префикс), false = после (постфикс/бинарник)
 
   @once
-  get bySymbolByArgsByLtr() {
+  get bySymbol() {
     return ExMap.groupedBy(
       this.definitions.filter((s): s is Omit<typeof s, `symbol`> & { symbol: string } => !!s.symbol),
       o => o.symbol
     ).mapEntries(v =>
-      ExMap.groupedBy(v, o => o.args).mapEntries(v =>
-        checked(
-          ExMap.mappedBy(v, v => v.ltr),
-          r => r.size === v.length,
-          () => {
-            console.log(v);
-            return `asedfsdfsdfsd`;
+      thru(
+        ExMap.groupedBy(v, o => o.args === 1 && !o.ltr),
+        r => {
+          for (const v of r.values()) {
+            const mapping = ExMap.mappedBy(v, v => `${v.ltr}:${v.args}`);
+            if (mapping.size !== v.length) {
+              throw new Error(
+                `duplicate operator definition: "${v[0].symbol}" (args: ${v[0].args}, ltr: ${v[0].ltr})`
+              );
+            }
           }
-        )
+          return r;
+        }
       )
     );
   }
-
-  // private buildOperation() {
-  //   const o = notNull(this.operators.pop(), `programming error`);
-  //   const ops = Array.from({ length: o.def.args }, () => notNull(this.operands.pop(), `programming error`));
-  //   o.def.ltr !== false && ops.reverse();
-  //   this.operands.push({ operator: o, operands: ops });
-  // }
-
-  // private onOperation(node: Token | undefined, def: OperatorDef) {
-  //   const { operators } = this;
-  //   if (!operators.length || def.priority < operators[operators.length - 1].def.priority) {
-  //     operators.push({ def, node });
-  //   } else {
-  //     this.buildOperation();
-  //     this.onOperation(node, def);
-  //   }
-  //   this.wasOperator = true;
-  // }
 
   private check(warn: string) {
     if (this.finishCalled) {
@@ -244,31 +100,17 @@ export class OperandsTreeBuilder<Token extends Dictionary> {
     }
   }
 
-  onOperator(node: Token, symbol: string) {
-    if (!this.check(`onOperand() called after onFinish(); ignoring...`)) {
-      return;
-    }
-
-    const defs = this.definitions.filter(d => d.symbol === symbol);
-    if (defs.length === 0) {
-      throw new Error(`Unknown operator: ${symbol}`);
-    }
-
-    let candidates: OperatorDef[];
-    if (this.expectOperand) {
-      // Ждём операнд => префиксные унарники (args=1, RTL)
-      candidates = defs.filter(d => d.args === 1 && !d.ltr);
-    } else {
-      // После операнда => постфиксные унарники (args=1, LTR) или бинарники (args=2)
-      candidates = defs.filter(d => (d.args === 1 && d.ltr) || d.args === 2);
-    }
+  protected pickOperator(symbol: string): OperatorDef {
+    // Ждём операнд => префиксные унарники (args=1, RTL)
+    // После операнда => постфиксные унарники (args=1, LTR) или бинарники (args=2)
+    const candidates = this.bySymbol.get(symbol)?.get(this.expectOperand) || [];
     if (candidates.length === 0) {
       throw new Error(`No valid form for '${symbol}' in current context`);
     }
+    return notNull(maxBy(candidates, o => o.priority));
+  }
 
-    candidates.sort((a, b) => b.priority - a.priority);
-    const op = candidates[0];
-
+  protected buildAllStronger(op: OperatorDef) {
     while (this.operators.length > 0) {
       const top = this.operators[this.operators.length - 1];
       const higher = top.priority > op.priority || (top.priority === op.priority && top.ltr && op.ltr);
@@ -277,16 +119,23 @@ export class OperandsTreeBuilder<Token extends Dictionary> {
       }
       this.build(this.operators.pop()!);
     }
+  }
 
-    if (op.args === 1 && op.ltr) {
+  onOperator(symbol: string) {
+    if (!this.check(`onOperand() called after onFinish(); ignoring...`)) {
+      return;
+    }
+
+    const operator = this.pickOperator(symbol);
+    this.buildAllStronger(operator);
+
+    if (operator.args === 1 && operator.ltr) {
       // постфикс
-      const operand = notNull(this.operands.pop());
-      const node = { operator: op, operands: [operand] };
-      this.operands.push(node);
+      this.operands.push({ operator: operator, operands: [notNull(this.operands.pop())] });
       this.expectOperand = false;
     } else {
       // префикс или бинарник
-      this.operators.push(op);
+      this.operators.push(operator);
       this.expectOperand = true;
     }
   }
@@ -296,33 +145,20 @@ export class OperandsTreeBuilder<Token extends Dictionary> {
       return;
     }
 
-    // if ((this.operators.length || this.operands.length) && !this.wasOperator) {
-    //   /// TODO function call, invalid syntax, etc.
-    //
-    //   this.onOperation(undefined, this.getNonSymbolicOp(this.operands[this.operands.length - 1], node));
-    //   this.onOperand(node);
-    //
-    //   return;
-    // }
-    // this.operands.push(node);
-    //
-    // this.wasOperator = false;
-
     if (!this.expectOperand) {
-      // два операнда подряд — получаем определение оператора между ними
-      const left = notNull(this.operands.pop());
-      const opBetween = this.getNonSymbolicOp(left, node);
-      if (opBetween.args !== 2) {
-        throw new Error(`Operator between operands must be binary, got ${opBetween.symbol}`);
+      const operator = this.getNonSymbolicOp(notNull(this.operands[this.operands.length - 1]), node);
+      if (operator.args !== 2) {
+        throw new Error(`Operator between operands must be binary, got ${operator.symbol}`);
       }
-      // Создаём объединённый узел
-      const combined = { operator: opBetween, operands: [left, node] };
-      this.operands.push(combined);
-      // После объединения ожидаем снова оператор или следующий постфикс
+
+      this.buildAllStronger(operator);
+
+      this.operands.push({ operator: operator, operands: [notNull(this.operands.pop()), node] });
       this.expectOperand = false;
       return;
     }
 
+    // обычный случай — первый операнд в выражении
     this.operands.push(node);
     this.expectOperand = false;
   }

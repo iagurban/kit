@@ -1,18 +1,5 @@
-import { $t } from './define';
+import { $t, testParser } from './define';
 import { jsonPresets } from './examples/json-parser';
-import { AnyAst, Tokenizer, TokenizerResult } from './tokenizer-def';
-
-const testParser = <Ast extends AnyAst>(
-  input: string,
-  tokenizer: Tokenizer<Ast>,
-  expectation: Omit<TokenizerResult<Ast>, `source` | `pos`>
-) => {
-  expect($t.run(input, tokenizer, { allowPartial: true })).toStrictEqual({
-    source: input,
-    pos: 0,
-    ...expectation,
-  });
-};
 
 describe(`define cps, seq, repeat`, () => {
   test(`basics`, () => {
@@ -26,7 +13,7 @@ describe(`define cps, seq, repeat`, () => {
 
     const word = letters.pipe(w => String.fromCodePoint(...w));
 
-    const ws = $t.cps(` `).mute();
+    const ws = $t.cp(b => b.any(` `)).mute();
     const sentence = $t
       .seq(
         word,
@@ -37,6 +24,7 @@ describe(`define cps, seq, repeat`, () => {
       )
       .pipe(([first, rest]) => [first, ...rest]);
 
+    expect(() => $t.run(`abb cab. jhg`, sentence)).toThrow(`partially matched`);
     testParser(`abb cab. jhg`, sentence, { length: 7, result: [`abb`, `cab`] });
   });
 
@@ -46,5 +34,21 @@ describe(`define cps, seq, repeat`, () => {
       jsonPresets.stringLiteral(`"`)(r => r.join('')),
       { length: 21, result: `abሴcd\\"'efg'` }
     );
+  });
+
+  test(`throw inside pipe`, () => {
+    const or = $t.or([$t.keywords([`some`]), $t.failure(`fail123`)]);
+    expect(() => $t.run(`none`, or)).toThrow(`fail123`);
+
+    const repeat = $t.repeat($t.failure(`fail123`), 0);
+    expect(() => $t.run(`none`, repeat)).toThrow(`fail123`);
+
+    const maybe = $t.maybe($t.failure(`fail123`));
+    expect(() => $t.run(`none`, maybe)).toThrow(`fail123`);
+  });
+
+  test(`keywords matching longest`, () => {
+    testParser(`somehow`, $t.keywords([`some`, `someone`]), { length: 4, result: { match: `some` } });
+    testParser(`someoneelse`, $t.keywords([`some`, `someone`]), { length: 7, result: { match: `someone` } });
   });
 });
