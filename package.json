@@ -1,0 +1,8 @@
+{
+  "name": "poslah",
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "packageManager": "yarn@4.9.4"
+}
