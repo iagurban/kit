@@ -1,0 +1,8 @@
+{
+  "name": "util",
+  "root": "libs/util",
+  "sourceRoot": "libs/util/src",
+  "projectType": "application",
+  "targets": {},
+  "tags": []
+}

@@ -1,3 +1,35 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json"
+  "defaultProject": "gateway",
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["^build"]
+    },
+    "serve": {
+      "cache": false
+    },
+    "test": {
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    }
+  ]
 }

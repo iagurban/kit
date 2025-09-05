@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": ["ESNext","ESNext.AsyncIterable"],
+    "module": "CommonJS",
+    "strict": true,
+    "declaration": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "../../dist",
+    "rootDir": "../..",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@gurban/kit/*": ["../../libs/kit/src/*"],
+      "@poslah/database/*": ["../../libs/database/src/*"],
+      "@poslah/util/*": ["../../libs/util/src/*"]
+    }
+  },
+  "include": ["src", "test", "eslint.config.mjs", ".prettierrc.js", "prisma/seed.ts"],
+  "exclude": ["node_modules", "dist"]
+}

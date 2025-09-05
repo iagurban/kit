@@ -1,0 +1,9 @@
+# Куда подключаться
+keyspace: "poslah_messenger"
+contactpoints: "localhost"
+port: 9042
+
+# Где лежат скрипты миграций
+scripts:
+  locations:
+    - "./cql" # Используйте абсолютный путь

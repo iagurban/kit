@@ -1,0 +1,130 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+// generator oldClient {
+//   provider        = "prisma-client-js"
+//   output          = "../src/generated/old-client"
+//   previewFeatures = ["fullTextSearchPostgres"]
+// }
+
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/db-client"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+generator json {
+  provider = "yarn prisma-json-types-generator"
+}
+
+generator nestgraphql {
+  provider = "yarn prisma-nestjs-graphql"
+  output   = "../src/generated/nestgraphql"
+
+  prismaClientImport = "../../db-client"
+  purgeOutput        = true
+
+  emitInputBinding = true // ← экспортирует типы ввода
+  useInputType     = true // ← делает все non-null поля — non-null в GraphQL
+
+  fields_Scalars_from   = "graphql-scalars"
+  fields_Scalars_input  = true
+  fields_Scalars_output = true
+  fields_Scalars_model  = true
+  fields_Scalars_args   = true
+}
+
+// generator erd {
+//   provider = "prisma-erd-generator"
+//
+//   output   = "../prisma/ERD.svg" // svg (default: ./prisma/ERD.svg), png, pdf, md
+//   // theme    = "forest" // default, forest, dark, neutral
+//   mmdcPath = "./CI"
+//
+//   // tableOnly = true
+//   // ignoreEnums = true
+//   includeRelationFromFields = true
+//   // disableEmoji = true
+//   // puppeteerConfig = "../puppeteerConfig.json"
+// }
+
+// generator zod {
+//   provider = "yarn prisma-zod-generator"
+//   output   = "../src/generated/zod"
+//
+//   isGenerateSelect  = true
+//   isGenerateInclude = true
+// }
+
+generator typescriptInterfaces {
+  provider = "yarn prisma-generator-typescript-interfaces"
+
+  output      = "../src/generated/interfaces.ts"
+  modelType   = "type"
+  enumType    = "enum"
+  decimalType = "number"
+  // optionalNullables = true
+  // prettier    = true
+}
+
+// generator crudGrahql {
+//   provider = "nestjs-prisma-graphql-crud-gen"
+//   output   = "../generated/crud"
+// }
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now())
+
+  email  String  @unique
+  name   String  @unique
+  abbrev String?
+
+  passwordHash String @map("externalId")
+
+  uploadedFiles UploadedFile[]
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  hash String
+}
+
+model StoredFile {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid // 'abcdefgh' means path ab/cd/efgh
+
+  hash String
+  size Int
+
+  createdAt DateTime @default(now())
+
+  uploads UploadedFile[]
+
+  @@index([hash])
+}
+
+model UploadedFile {
+  id String @id @default(uuid())
+
+  originalName String
+  mimetype     String
+
+  uploadedAt DateTime @default(now())
+
+  uploaderId String @db.Uuid
+  uploader   User   @relation(fields: [uploaderId], references: [id])
+
+  storedFileId String     @db.Uuid
+  storedFile   StoredFile @relation(fields: [storedFileId], references: [id], onDelete: Restrict)
+}

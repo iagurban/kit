@@ -1,0 +1,63 @@
+{
+  "name": "database",
+  "root": "libs/database",
+  "sourceRoot": "libs/database/src",
+  "projectType": "application",
+  "targets": {
+    "_clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma migrate reset --skip-generate",
+        "cwd": "libs/database"
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma migrate dev --skip-generate {args}",
+        "cwd": "libs/database"
+      },
+      "configurations": {
+        "clean": {
+          "dependsOn": ["_clean"]
+        }
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn prisma db seed",
+        "cwd": "libs/database"
+      }
+    },
+    "postprocess-generated": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn rimraf src/generated/old-client && ./bin/fix-prisma-imports.sh && ts-node ./bin/fix-nestgraphql.ts && echo '[eslint]' && ./bin/eslint-on-generated.sh && echo '[finish]'",
+        "cwd": "libs/database"
+      }
+    },
+    "generate-client-slow": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "NODE_ENV=production yarn prisma generate --no-hints && yarn nx run database:postprocess-generated",
+        "cwd": "libs/database"
+      }
+    },
+    "generate-client": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "./bin/run-cached-input.sh -i './prisma/schema.prisma' -t './.gen-cli-cache' -x 'yarn nx run database:generate-client-slow'",
+        "cwd": "libs/database"
+      }
+    },
+    "generate-client-watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon -d 5 -e 'prisma' -w './prisma/schema.prisma' -x 'yarn nx run database:generate-client'",
+        "cwd": "libs/database"
+      }
+    }
+  },
+  "tags": []
+}

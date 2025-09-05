@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL - для реляционных данных (пользователи, чаты и т.д.)
+  poslah-db:
+    image: postgres:15-alpine
+    container_name: poslah-db
+    environment:
+      POSTGRES_USER: poslah
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: poslah
+    ports:
+      - "5432:5432" # Пробрасываем стандартный порт Postgres на ваш localhost
+    volumes:
+      - ./.data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # 2. ScyllaDB - высокопроизводительная NoSQL база для хранения сообщений
+  poslah-scylla:
+    image: scylladb/scylla:5.4
+    container_name: poslah-scylla
+    command: --smp 1 --memory 1G --developer-mode 1
+    ports:
+      - "9042:9042" # Порт для CQL (языка запросов ScyllaDB/Cassandra)
+    volumes:
+      - ./.data/scylla:/var/lib/scylla
+    restart: unless-stopped
+
+  # 3. Redis - для кэширования, Pub/Sub и счетчиков
+  poslah-redis:
+    image: redis:7-alpine
+    container_name: poslah-redis
+    ports:
+      - "6379:6379" # Стандартный порт Redis
+    volumes:
+      - ./.data/redis:/data
+    restart: unless-stopped
+
+  # 4. Zookeeper - необходим для работы Kafka
+  poslah-zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: poslah-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    volumes:
+      - ./.data/zookeeper/data:/var/lib/zookeeper/data:z
+      - ./.data/zookeeper/log:/var/lib/zookeeper/log:z
+    restart: unless-stopped
+
+  # 5. Kafka - для надежной обработки событий (например, новых сообщений)
+  poslah-kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: poslah-kafka
+    depends_on:
+      - poslah-zookeeper
+    ports:
+      - "29092:29092" # Порт для подключения с вашего localhost (из NestJS)
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'poslah-zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://poslah-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    volumes:
+      - ./.data/kafka:/var/lib/kafka/data:z
+    restart: unless-stopped
+

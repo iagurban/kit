@@ -1,0 +1,66 @@
+{
+  "name": "messages-service",
+  "root": "apps/messages-service",
+  "sourceRoot": "apps/messages-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/messages-service",
+        "main": "apps/messages-service/src/main.ts",
+        "tsConfig": "apps/messages-service/tsconfig.build.json",
+        "assets": [
+          {
+            "glob": "**/*.proto",
+            "input": "apps/messages-service",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "messages-service:build",
+        "watch": true
+      }
+    },
+    "gen-proto": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "mkdir -p ./src/generated.grpc && $(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true --ts_proto_out=./src/generated.grpc ./src/grpc/messages.proto",
+        "cwd": "apps/messages-service"
+      }
+    },
+
+    "_cassandra-clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn cassandra-migration clean -c ./cassandra-migration.yml",
+        "cwd": "apps/messages-service"
+      }
+    },
+    "_cassandra-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn cassandra-migration migrate -c ./cassandra-migration.yml",
+        "cwd": "apps/messages-service"
+      },
+      "configurations": {
+        "clean": {
+          "dependsOn": ["_cassandra-clean"]
+        }
+      }
+    },
+
+    "migrate": {
+      "dependsOn": [
+        { "target": "_cassandra-migrate", "projects": "self", "params": "forward" },
+        { "target": "_redis-migrate", "projects": "self", "params": "forward" }
+      ]
+    }
+  },
+  "tags": []
+}

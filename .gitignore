@@ -55,3 +55,6 @@ build/
 
 # Environment variables
 .env
+.gen-cli-cache/
+/.data/
+.eslintcache

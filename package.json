@@ -4,5 +4,19 @@
     "apps/*",
     "libs/*"
   ],
-  "packageManager": "yarn@4.9.4"
+  "packageManager": "yarn@4.9.4",
+  "devDependencies": {
+    "@nx/eslint": "^21.4.1",
+    "@nx/webpack": "^21.4.1",
+    "@types/source-map-support": "^0",
+    "grpc-tools": "^1.13.0",
+    "nx": "21.4.1",
+    "source-map-support": "^0.5.21",
+    "ts-proto": "^2.7.7"
+  },
+  "dependencies": {
+    "@nx/nest": "21.4.1",
+    "jsonc-parser": "^3.3.1",
+    "ts-node": "^10.9.2"
+  }
 }
