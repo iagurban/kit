@@ -8,7 +8,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const UploadStatus = {
+  ACTIVE: 'ACTIVE',
+  FINALIZING: 'FINALIZING',
+  FAILED: 'FAILED'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type UploadStatus = (typeof UploadStatus)[keyof typeof UploadStatus]

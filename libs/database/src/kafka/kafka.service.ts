@@ -1,15 +1,15 @@
-import { ContextualLogger } from '@gurban/util/logger/logger.module';
 import { Injectable, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientKafka } from '@nestjs/microservices';
+import { Logger } from '@poslah/util/logger/logger.module';
 
 @Injectable()
 export class KafkaService extends ClientKafka {
   static readonly autoconnectionProvider: Provider = {
     provide: KafkaService,
-    inject: [ConfigService, ContextualLogger],
+    inject: [ConfigService, Logger],
 
-    useFactory: async (configService: ConfigService, parentLogger: ContextualLogger) => {
+    useFactory: async (configService: ConfigService, parentLogger: Logger) => {
       const logger = parentLogger.logger.child({ context: 'KafkaServiceInit' });
 
       const client = new KafkaService(configService);

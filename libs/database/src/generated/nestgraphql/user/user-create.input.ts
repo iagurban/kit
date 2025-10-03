@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventCreateNestedManyWithoutAuthorInput } from '../chat-event/chat-event-create-nested-many-without-author.input';
 import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
-import { UploadedFileCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-create-nested-many-without-uploader.input';
+import { StoredFileCreateNestedManyWithoutUploadedByUserInput } from '../stored-file/stored-file-create-nested-many-without-uploaded-by-user.input';
 
 @InputType()
 export class UserCreateInput {
@@ -23,9 +24,12 @@ export class UserCreateInput {
   @Field(() => String, { nullable: false })
   passwordHash!: string;
 
-  @Field(() => UploadedFileCreateNestedManyWithoutUploaderInput, { nullable: true })
-  uploadedFiles?: UploadedFileCreateNestedManyWithoutUploaderInput;
+  @Field(() => StoredFileCreateNestedManyWithoutUploadedByUserInput, { nullable: true })
+  uploadedFiles?: StoredFileCreateNestedManyWithoutUploadedByUserInput;
 
   @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, { nullable: true })
   refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput;
+
+  @Field(() => ChatEventCreateNestedManyWithoutAuthorInput, { nullable: true })
+  chatEvents?: ChatEventCreateNestedManyWithoutAuthorInput;
 }

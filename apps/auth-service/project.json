@@ -1,0 +1,66 @@
+{
+  "name": "auth-service",
+  "root": "apps/auth-service",
+  "sourceRoot": "apps/auth-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/auth-service",
+        "main": "apps/auth-service/src/main.ts",
+        "tsConfig": "apps/auth-service/tsconfig.build.json",
+        "assets": [
+          {
+            "glob": "**/*.proto",
+            "input": "apps/auth-service",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "auth-service:build",
+        "watch": true
+      }
+    },
+    "gen-proto": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "mkdir -p ./src/generated.grpc && $(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true --ts_proto_out=./src/generated.grpc ./src/grpc/auth.proto",
+        "cwd": "apps/auth-service"
+      }
+    },
+
+    "_cassandra-clean": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn cassandra-migration clean -c ./cassandra-migration.yml",
+        "cwd": "apps/auth-service"
+      }
+    },
+    "_cassandra-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn cassandra-migration migrate -c ./cassandra-migration.yml",
+        "cwd": "apps/auth-service"
+      },
+      "configurations": {
+        "clean": {
+          "dependsOn": ["_cassandra-clean"]
+        }
+      }
+    },
+
+    "migrate": {
+      "dependsOn": [
+        { "target": "_cassandra-migrate", "projects": "self", "params": "forward" },
+        { "target": "_redis-migrate", "projects": "self", "params": "forward" }
+      ]
+    }
+  },
+  "tags": []
+}

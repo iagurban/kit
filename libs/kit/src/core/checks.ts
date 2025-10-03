@@ -23,6 +23,9 @@ export const isInteger = (o: unknown): o is number => isNumber(o) && Math.trunc(
 export const isPlainObject = <T, R>(o: T): o is T & Record<string, R> =>
   !!o && Object.getPrototypeOf(o) === Object.prototype;
 
+export const isSomeObject = <T, R>(o: T): o is T & Record<string, R> =>
+  typeof o === 'object' && o != null && !Array.isArray(o);
+
 export const isROArray = <A>(a: unknown | A[] | readonly A[]): a is readonly A[] => Array.isArray(a);
 
 export const isArray =

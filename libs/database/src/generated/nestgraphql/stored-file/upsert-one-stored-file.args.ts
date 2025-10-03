@@ -10,7 +10,7 @@ import { StoredFileWhereUniqueInput } from './stored-file-where-unique.input';
 export class UpsertOneStoredFileArgs {
   @Field(() => StoredFileWhereUniqueInput, { nullable: false })
   @Type(() => StoredFileWhereUniqueInput)
-  where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
+  where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id' | 'storageKey' | 'checksum_sizeBytes'>;
 
   @Field(() => StoredFileCreateInput, { nullable: false })
   @Type(() => StoredFileCreateInput)

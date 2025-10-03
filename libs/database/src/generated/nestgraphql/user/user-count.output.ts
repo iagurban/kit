@@ -7,4 +7,7 @@ export class UserCount {
 
   @Field(() => Int, { nullable: false })
   refreshTokens?: number;
+
+  @Field(() => Int, { nullable: false })
+  chatEvents?: number;
 }

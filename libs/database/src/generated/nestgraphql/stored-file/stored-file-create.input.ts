@@ -1,6 +1,8 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
-import { UploadedFileCreateNestedManyWithoutStoredFileInput } from '../uploaded-file/uploaded-file-create-nested-many-without-stored-file.input';
+import { UploadSessionCreateNestedOneWithoutFileInput } from '../upload-session/upload-session-create-nested-one-without-file.input';
+import { UserCreateNestedOneWithoutUploadedFilesInput } from '../user/user-create-nested-one-without-uploaded-files.input';
 
 @InputType()
 export class StoredFileCreateInput {
@@ -8,14 +10,35 @@ export class StoredFileCreateInput {
   id?: string;
 
   @Field(() => String, { nullable: false })
-  hash!: string;
+  checksum!: string;
 
-  @Field(() => Int, { nullable: false })
-  size!: number;
+  @Field(() => String, { nullable: false })
+  sizeBytes!: bigint | number;
+
+  @Field(() => String, { nullable: false })
+  originalFilename!: string;
+
+  @Field(() => String, { nullable: false })
+  mimeType!: string;
+
+  @Field(() => String, { nullable: false })
+  storageKey!: string;
+
+  @Field(() => String, { nullable: false })
+  cdnUrl!: string;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  metadata?: any;
 
   @Field(() => Date, { nullable: true })
   createdAt?: Date | string;
 
-  @Field(() => UploadedFileCreateNestedManyWithoutStoredFileInput, { nullable: true })
-  uploads?: UploadedFileCreateNestedManyWithoutStoredFileInput;
+  @Field(() => Date, { nullable: true })
+  updatedAt?: Date | string;
+
+  @Field(() => UserCreateNestedOneWithoutUploadedFilesInput, { nullable: false })
+  uploadedByUser!: UserCreateNestedOneWithoutUploadedFilesInput;
+
+  @Field(() => UploadSessionCreateNestedOneWithoutFileInput, { nullable: true })
+  uploadSession?: UploadSessionCreateNestedOneWithoutFileInput;
 }

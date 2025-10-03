@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Poslah Run Commands Executor",
+  "description": "Runs a sequence of shell commands.",
+  "type": "object",
+  "properties": {
+    "commands": {
+      "type": "array",
+      "description": "An array of commands to execute in sequence.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "A command to run in the shell."
+          },
+          {
+            "type": "object",
+            "properties": {
+              "cmd": {
+                "type": "string",
+                "description": "The command to run."
+              },
+              "args": {
+                "type": "array",
+                "description": "Arguments to pass to the command.",
+                "items": { "type": "string" }
+              }
+            },
+            "required": ["cmd"]
+          }
+        ]
+      }
+    },
+    "stopOnFail": {
+      "type": "boolean",
+      "description": "If true, stops executing commands after the first one fails.",
+      "default": true
+    },
+    "cwd": {
+      "type": "string",
+      "description": "The working directory to run commands from. Will be created if it doesn't exist."
+    }
+  },
+  "required": ["commands"]
+}

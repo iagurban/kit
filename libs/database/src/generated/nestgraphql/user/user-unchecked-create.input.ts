@@ -1,7 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventUncheckedCreateNestedManyWithoutAuthorInput } from '../chat-event/chat-event-unchecked-create-nested-many-without-author.input';
 import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
-import { UploadedFileUncheckedCreateNestedManyWithoutUploaderInput } from '../uploaded-file/uploaded-file-unchecked-create-nested-many-without-uploader.input';
+import { StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput } from '../stored-file/stored-file-unchecked-create-nested-many-without-uploaded-by-user.input';
 
 @InputType()
 export class UserUncheckedCreateInput {
@@ -23,9 +24,12 @@ export class UserUncheckedCreateInput {
   @Field(() => String, { nullable: false })
   passwordHash!: string;
 
-  @Field(() => UploadedFileUncheckedCreateNestedManyWithoutUploaderInput, { nullable: true })
-  uploadedFiles?: UploadedFileUncheckedCreateNestedManyWithoutUploaderInput;
+  @Field(() => StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput, { nullable: true })
+  uploadedFiles?: StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput;
 
   @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
   refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+
+  @Field(() => ChatEventUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
+  chatEvents?: ChatEventUncheckedCreateNestedManyWithoutAuthorInput;
 }

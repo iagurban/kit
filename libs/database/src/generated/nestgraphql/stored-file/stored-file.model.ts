@@ -1,7 +1,8 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
-import { UploadedFile } from '../uploaded-file/uploaded-file.model';
-import { StoredFileCount } from './stored-file-count.output';
+import { UploadSession } from '../upload-session/upload-session.model';
+import { User } from '../user/user.model';
 
 @ObjectType()
 export class StoredFile {
@@ -9,17 +10,38 @@ export class StoredFile {
   id!: string;
 
   @Field(() => String, { nullable: false })
-  hash!: string;
+  checksum!: string;
 
-  @Field(() => Int, { nullable: false })
-  size!: number;
+  @Field(() => String, { nullable: false })
+  sizeBytes!: bigint;
+
+  @Field(() => String, { nullable: false })
+  originalFilename!: string;
+
+  @Field(() => String, { nullable: false })
+  mimeType!: string;
+
+  @Field(() => String, { nullable: false })
+  storageKey!: string;
+
+  @Field(() => String, { nullable: false })
+  cdnUrl!: string;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  metadata!: any | null;
+
+  @Field(() => String, { nullable: false })
+  uploadedByUserId!: string;
 
   @Field(() => Date, { nullable: false })
   createdAt!: Date;
 
-  @Field(() => [UploadedFile], { nullable: true })
-  uploads?: Array<UploadedFile>;
+  @Field(() => Date, { nullable: false })
+  updatedAt!: Date;
 
-  @Field(() => StoredFileCount, { nullable: false })
-  _count?: StoredFileCount;
+  @Field(() => User, { nullable: false })
+  uploadedByUser?: User;
+
+  @Field(() => UploadSession, { nullable: true })
+  uploadSession?: UploadSession | null;
 }

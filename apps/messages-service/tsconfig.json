@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2024",
-    "lib": ["ESNext","ESNext.AsyncIterable"],
+    "lib": ["ESNext", "ESNext.AsyncIterable"],
     "module": "CommonJS",
     "strict": true,
     "declaration": true,
@@ -11,8 +11,6 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "outDir": "../../dist",
-    "rootDir": "../..",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "experimentalDecorators": true,
@@ -20,12 +18,14 @@
     "allowSyntheticDefaultImports": true,
 
     "baseUrl": ".",
+    "rootDir": "../..",
+    "outDir": "dist",
     "paths": {
       "@gurban/kit/*": ["../../libs/kit/src/*"],
       "@poslah/database/*": ["../../libs/database/src/*"],
-      "@poslah/util/*": ["../../libs/util/src/*"]
+      "@poslah/util/*": ["../../libs/util/src/*"],
+      "@poslah/chats-service/*": ["../../apps/chats-service/src/*"]
     }
   },
-  "include": ["src", "test", "eslint.config.mjs", ".prettierrc.js", "prisma/seed.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "test"]
 }

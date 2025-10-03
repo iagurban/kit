@@ -8,11 +8,32 @@ export class StoredFileCountOrderByAggregateInput {
   id?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  hash?: `${SortOrder}`;
+  checksum?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  size?: `${SortOrder}`;
+  sizeBytes?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  originalFilename?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  mimeType?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  storageKey?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  cdnUrl?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  metadata?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  uploadedByUserId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
   createdAt?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  updatedAt?: `${SortOrder}`;
 }

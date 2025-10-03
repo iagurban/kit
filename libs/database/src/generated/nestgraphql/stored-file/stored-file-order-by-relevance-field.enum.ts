@@ -2,7 +2,12 @@ import { registerEnumType } from '@nestjs/graphql';
 
 export enum StoredFileOrderByRelevanceFieldEnum {
   id = 'id',
-  hash = 'hash',
+  checksum = 'checksum',
+  originalFilename = 'originalFilename',
+  mimeType = 'mimeType',
+  storageKey = 'storageKey',
+  cdnUrl = 'cdnUrl',
+  uploadedByUserId = 'uploadedByUserId',
 }
 
 registerEnumType(StoredFileOrderByRelevanceFieldEnum, {

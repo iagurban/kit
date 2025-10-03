@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "paths": {
+      "@gurban/kit/*": ["libs/kit/src/*"],
+      "@poslah/util/*": ["libs/util/src/*"]
+    }
+  },
+  "files": [],
+  "include": ["nodemon", "concurrently", "run"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "kit",
+  "root": "libs/kit",
+  "sourceRoot": "libs/kit/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "nx:noop",
+      "dependsOn": []
+    }
+  },
+  "tags": []
+}

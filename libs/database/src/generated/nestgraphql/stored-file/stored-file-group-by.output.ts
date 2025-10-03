@@ -1,4 +1,5 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { GraphQLJSON } from 'graphql-type-json';
 
 import { StoredFileAvgAggregate } from './stored-file-avg-aggregate.output';
 import { StoredFileCountAggregate } from './stored-file-count-aggregate.output';
@@ -12,13 +13,34 @@ export class StoredFileGroupBy {
   id!: string;
 
   @Field(() => String, { nullable: false })
-  hash!: string;
+  checksum!: string;
 
-  @Field(() => Int, { nullable: false })
-  size!: number;
+  @Field(() => String, { nullable: false })
+  sizeBytes!: bigint | number;
+
+  @Field(() => String, { nullable: false })
+  originalFilename!: string;
+
+  @Field(() => String, { nullable: false })
+  mimeType!: string;
+
+  @Field(() => String, { nullable: false })
+  storageKey!: string;
+
+  @Field(() => String, { nullable: false })
+  cdnUrl!: string;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  metadata?: any;
+
+  @Field(() => String, { nullable: false })
+  uploadedByUserId!: string;
 
   @Field(() => Date, { nullable: false })
   createdAt!: Date | string;
+
+  @Field(() => Date, { nullable: false })
+  updatedAt!: Date | string;
 
   @Field(() => StoredFileCountAggregate, { nullable: true })
   _count?: StoredFileCountAggregate;

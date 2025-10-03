@@ -55,9 +55,35 @@ export type RefreshToken = Prisma.RefreshTokenModel
  */
 export type StoredFile = Prisma.StoredFileModel
 /**
- * Model UploadedFile
+ * Model UploadSession
  * 
  */
-export type UploadedFile = Prisma.UploadedFileModel
+export type UploadSession = Prisma.UploadSessionModel
+/**
+ * Model UploadChunk
+ * 
+ */
+export type UploadChunk = Prisma.UploadChunkModel
+/**
+ * Model Chat
+ * 
+ */
+export type Chat = Prisma.ChatModel
+/**
+ * Model ChatEventsCounter
+ * 
+ */
+export type ChatEventsCounter = Prisma.ChatEventsCounterModel
+/**
+ * Model MessagesCounter
+ * 
+ */
+export type MessagesCounter = Prisma.MessagesCounterModel
+/**
+ * Model ChatEvent
+ * 
+ */
+export type ChatEvent = Prisma.ChatEventModel
 
-
+export type UploadStatus = $Enums.UploadStatus
+export const UploadStatus = $Enums.UploadStatus

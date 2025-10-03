@@ -6,11 +6,29 @@ export class StoredFileMinAggregateInput {
   id?: true;
 
   @Field(() => Boolean, { nullable: true })
-  hash?: true;
+  checksum?: true;
 
   @Field(() => Boolean, { nullable: true })
-  size?: true;
+  sizeBytes?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  originalFilename?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  mimeType?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  storageKey?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  cdnUrl?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  uploadedByUserId?: true;
 
   @Field(() => Boolean, { nullable: true })
   createdAt?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  updatedAt?: true;
 }

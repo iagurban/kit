@@ -1,10 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventUpdateManyWithoutAuthorNestedInput } from '../chat-event/chat-event-update-many-without-author-nested.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { RefreshTokenUpdateManyWithoutUserNestedInput } from '../refresh-token/refresh-token-update-many-without-user-nested.input';
-import { UploadedFileUpdateManyWithoutUploaderNestedInput } from '../uploaded-file/uploaded-file-update-many-without-uploader-nested.input';
+import { StoredFileUpdateManyWithoutUploadedByUserNestedInput } from '../stored-file/stored-file-update-many-without-uploaded-by-user-nested.input';
 
 @InputType()
 export class UserUpdateInput {
@@ -26,9 +27,12 @@ export class UserUpdateInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   passwordHash?: StringFieldUpdateOperationsInput;
 
-  @Field(() => UploadedFileUpdateManyWithoutUploaderNestedInput, { nullable: true })
-  uploadedFiles?: UploadedFileUpdateManyWithoutUploaderNestedInput;
+  @Field(() => StoredFileUpdateManyWithoutUploadedByUserNestedInput, { nullable: true })
+  uploadedFiles?: StoredFileUpdateManyWithoutUploadedByUserNestedInput;
 
   @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, { nullable: true })
   refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
+
+  @Field(() => ChatEventUpdateManyWithoutAuthorNestedInput, { nullable: true })
+  chatEvents?: ChatEventUpdateManyWithoutAuthorNestedInput;
 }

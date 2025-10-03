@@ -1,0 +1,27 @@
+import { Field, InputType } from '@nestjs/graphql';
+
+import { ChatEventUncheckedUpdateManyWithoutChatNestedInput } from '../chat-event/chat-event-unchecked-update-many-without-chat-nested.input';
+import { ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput } from '../chat-events-counter/chat-events-counter-unchecked-update-one-without-chat-nested.input';
+import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
+import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+
+@InputType()
+export class ChatUncheckedUpdateWithoutMessagesCounterInput {
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  id?: StringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  title?: StringFieldUpdateOperationsInput;
+
+  @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+  bio?: NullableStringFieldUpdateOperationsInput;
+
+  @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+  avatar?: NullableStringFieldUpdateOperationsInput;
+
+  @Field(() => ChatEventUncheckedUpdateManyWithoutChatNestedInput, { nullable: true })
+  events?: ChatEventUncheckedUpdateManyWithoutChatNestedInput;
+
+  @Field(() => ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput, { nullable: true })
+  eventsCounter?: ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput;
+}

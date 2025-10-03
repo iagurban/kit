@@ -397,7 +397,12 @@ export const ModelName = {
   User: 'User',
   RefreshToken: 'RefreshToken',
   StoredFile: 'StoredFile',
-  UploadedFile: 'UploadedFile'
+  UploadSession: 'UploadSession',
+  UploadChunk: 'UploadChunk',
+  Chat: 'Chat',
+  ChatEventsCounter: 'ChatEventsCounter',
+  MessagesCounter: 'MessagesCounter',
+  ChatEvent: 'ChatEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -413,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "refreshToken" | "storedFile" | "uploadedFile"
+    modelProps: "user" | "refreshToken" | "storedFile" | "uploadSession" | "uploadChunk" | "chat" | "chatEventsCounter" | "messagesCounter" | "chatEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -639,77 +644,447 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    UploadedFile: {
-      payload: Prisma.$UploadedFilePayload<ExtArgs>
-      fields: Prisma.UploadedFileFieldRefs
+    UploadSession: {
+      payload: Prisma.$UploadSessionPayload<ExtArgs>
+      fields: Prisma.UploadSessionFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.UploadedFileFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload> | null
+          args: Prisma.UploadSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.UploadedFileFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         findFirst: {
-          args: Prisma.UploadedFileFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload> | null
+          args: Prisma.UploadSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.UploadedFileFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         findMany: {
-          args: Prisma.UploadedFileFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>[]
+          args: Prisma.UploadSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
         }
         create: {
-          args: Prisma.UploadedFileCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         createMany: {
-          args: Prisma.UploadedFileCreateManyArgs<ExtArgs>
+          args: Prisma.UploadSessionCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.UploadedFileCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>[]
+          args: Prisma.UploadSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
         }
         delete: {
-          args: Prisma.UploadedFileDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         update: {
-          args: Prisma.UploadedFileUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         deleteMany: {
-          args: Prisma.UploadedFileDeleteManyArgs<ExtArgs>
+          args: Prisma.UploadSessionDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.UploadedFileUpdateManyArgs<ExtArgs>
+          args: Prisma.UploadSessionUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.UploadedFileUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>[]
+          args: Prisma.UploadSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>[]
         }
         upsert: {
-          args: Prisma.UploadedFileUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadedFilePayload>
+          args: Prisma.UploadSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadSessionPayload>
         }
         aggregate: {
-          args: Prisma.UploadedFileAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateUploadedFile>
+          args: Prisma.UploadSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUploadSession>
         }
         groupBy: {
-          args: Prisma.UploadedFileGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UploadedFileGroupByOutputType>[]
+          args: Prisma.UploadSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UploadSessionGroupByOutputType>[]
         }
         count: {
-          args: Prisma.UploadedFileCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.UploadedFileCountAggregateOutputType> | number
+          args: Prisma.UploadSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UploadSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    UploadChunk: {
+      payload: Prisma.$UploadChunkPayload<ExtArgs>
+      fields: Prisma.UploadChunkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UploadChunkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UploadChunkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        findFirst: {
+          args: Prisma.UploadChunkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UploadChunkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        findMany: {
+          args: Prisma.UploadChunkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>[]
+        }
+        create: {
+          args: Prisma.UploadChunkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        createMany: {
+          args: Prisma.UploadChunkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UploadChunkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>[]
+        }
+        delete: {
+          args: Prisma.UploadChunkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        update: {
+          args: Prisma.UploadChunkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        deleteMany: {
+          args: Prisma.UploadChunkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UploadChunkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UploadChunkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>[]
+        }
+        upsert: {
+          args: Prisma.UploadChunkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UploadChunkPayload>
+        }
+        aggregate: {
+          args: Prisma.UploadChunkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUploadChunk>
+        }
+        groupBy: {
+          args: Prisma.UploadChunkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UploadChunkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UploadChunkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UploadChunkCountAggregateOutputType> | number
+        }
+      }
+    }
+    Chat: {
+      payload: Prisma.$ChatPayload<ExtArgs>
+      fields: Prisma.ChatFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        findFirst: {
+          args: Prisma.ChatFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        findMany: {
+          args: Prisma.ChatFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>[]
+        }
+        create: {
+          args: Prisma.ChatCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        createMany: {
+          args: Prisma.ChatCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChatCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>[]
+        }
+        delete: {
+          args: Prisma.ChatDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        update: {
+          args: Prisma.ChatUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChatUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChatUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatPayload>
+        }
+        aggregate: {
+          args: Prisma.ChatAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChat>
+        }
+        groupBy: {
+          args: Prisma.ChatGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatCountAggregateOutputType> | number
+        }
+      }
+    }
+    ChatEventsCounter: {
+      payload: Prisma.$ChatEventsCounterPayload<ExtArgs>
+      fields: Prisma.ChatEventsCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatEventsCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatEventsCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.ChatEventsCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatEventsCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        findMany: {
+          args: Prisma.ChatEventsCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>[]
+        }
+        create: {
+          args: Prisma.ChatEventsCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        createMany: {
+          args: Prisma.ChatEventsCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChatEventsCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.ChatEventsCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        update: {
+          args: Prisma.ChatEventsCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatEventsCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatEventsCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChatEventsCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChatEventsCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventsCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.ChatEventsCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChatEventsCounter>
+        }
+        groupBy: {
+          args: Prisma.ChatEventsCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatEventsCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatEventsCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatEventsCounterCountAggregateOutputType> | number
+        }
+      }
+    }
+    MessagesCounter: {
+      payload: Prisma.$MessagesCounterPayload<ExtArgs>
+      fields: Prisma.MessagesCounterFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MessagesCounterFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MessagesCounterFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        findFirst: {
+          args: Prisma.MessagesCounterFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MessagesCounterFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        findMany: {
+          args: Prisma.MessagesCounterFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>[]
+        }
+        create: {
+          args: Prisma.MessagesCounterCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        createMany: {
+          args: Prisma.MessagesCounterCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MessagesCounterCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>[]
+        }
+        delete: {
+          args: Prisma.MessagesCounterDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        update: {
+          args: Prisma.MessagesCounterUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        deleteMany: {
+          args: Prisma.MessagesCounterDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MessagesCounterUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MessagesCounterUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>[]
+        }
+        upsert: {
+          args: Prisma.MessagesCounterUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MessagesCounterPayload>
+        }
+        aggregate: {
+          args: Prisma.MessagesCounterAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMessagesCounter>
+        }
+        groupBy: {
+          args: Prisma.MessagesCounterGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MessagesCounterGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MessagesCounterCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MessagesCounterCountAggregateOutputType> | number
+        }
+      }
+    }
+    ChatEvent: {
+      payload: Prisma.$ChatEventPayload<ExtArgs>
+      fields: Prisma.ChatEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        findFirst: {
+          args: Prisma.ChatEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        findMany: {
+          args: Prisma.ChatEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>[]
+        }
+        create: {
+          args: Prisma.ChatEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        createMany: {
+          args: Prisma.ChatEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChatEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>[]
+        }
+        delete: {
+          args: Prisma.ChatEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        update: {
+          args: Prisma.ChatEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChatEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChatEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatEventPayload>
+        }
+        aggregate: {
+          args: Prisma.ChatEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChatEvent>
+        }
+        groupBy: {
+          args: Prisma.ChatEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatEventCountAggregateOutputType> | number
         }
       }
     }
@@ -777,24 +1152,83 @@ export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[k
 
 export const StoredFileScalarFieldEnum = {
   id: 'id',
-  hash: 'hash',
-  size: 'size',
-  createdAt: 'createdAt'
+  checksum: 'checksum',
+  sizeBytes: 'sizeBytes',
+  originalFilename: 'originalFilename',
+  mimeType: 'mimeType',
+  storageKey: 'storageKey',
+  cdnUrl: 'cdnUrl',
+  metadata: 'metadata',
+  uploadedByUserId: 'uploadedByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type StoredFileScalarFieldEnum = (typeof StoredFileScalarFieldEnum)[keyof typeof StoredFileScalarFieldEnum]
 
 
-export const UploadedFileScalarFieldEnum = {
+export const UploadSessionScalarFieldEnum = {
   id: 'id',
-  originalName: 'originalName',
-  mimetype: 'mimetype',
-  uploadedAt: 'uploadedAt',
-  uploaderId: 'uploaderId',
-  storedFileId: 'storedFileId'
+  storageUploadId: 'storageUploadId',
+  fileId: 'fileId',
+  totalChunks: 'totalChunks',
+  status: 'status',
+  failReason: 'failReason',
+  totalFailureCount: 'totalFailureCount',
+  createdAt: 'createdAt'
 } as const
 
-export type UploadedFileScalarFieldEnum = (typeof UploadedFileScalarFieldEnum)[keyof typeof UploadedFileScalarFieldEnum]
+export type UploadSessionScalarFieldEnum = (typeof UploadSessionScalarFieldEnum)[keyof typeof UploadSessionScalarFieldEnum]
+
+
+export const UploadChunkScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  partNumber: 'partNumber',
+  eTag: 'eTag',
+  leasedAt: 'leasedAt'
+} as const
+
+export type UploadChunkScalarFieldEnum = (typeof UploadChunkScalarFieldEnum)[keyof typeof UploadChunkScalarFieldEnum]
+
+
+export const ChatScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  bio: 'bio',
+  avatar: 'avatar'
+} as const
+
+export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
+
+
+export const ChatEventsCounterScalarFieldEnum = {
+  chatId: 'chatId',
+  lastNn: 'lastNn'
+} as const
+
+export type ChatEventsCounterScalarFieldEnum = (typeof ChatEventsCounterScalarFieldEnum)[keyof typeof ChatEventsCounterScalarFieldEnum]
+
+
+export const MessagesCounterScalarFieldEnum = {
+  chatId: 'chatId',
+  lastNn: 'lastNn'
+} as const
+
+export type MessagesCounterScalarFieldEnum = (typeof MessagesCounterScalarFieldEnum)[keyof typeof MessagesCounterScalarFieldEnum]
+
+
+export const ChatEventScalarFieldEnum = {
+  id: 'id',
+  nn: 'nn',
+  chatId: 'chatId',
+  authorId: 'authorId',
+  type: 'type',
+  payload: 'payload',
+  createdAt: 'createdAt'
+} as const
+
+export type ChatEventScalarFieldEnum = (typeof ChatEventScalarFieldEnum)[keyof typeof ChatEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -803,6 +1237,21 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -841,23 +1290,78 @@ export const RefreshTokenOrderByRelevanceFieldEnum = {
 export type RefreshTokenOrderByRelevanceFieldEnum = (typeof RefreshTokenOrderByRelevanceFieldEnum)[keyof typeof RefreshTokenOrderByRelevanceFieldEnum]
 
 
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
 export const StoredFileOrderByRelevanceFieldEnum = {
   id: 'id',
-  hash: 'hash'
+  checksum: 'checksum',
+  originalFilename: 'originalFilename',
+  mimeType: 'mimeType',
+  storageKey: 'storageKey',
+  cdnUrl: 'cdnUrl',
+  uploadedByUserId: 'uploadedByUserId'
 } as const
 
 export type StoredFileOrderByRelevanceFieldEnum = (typeof StoredFileOrderByRelevanceFieldEnum)[keyof typeof StoredFileOrderByRelevanceFieldEnum]
 
 
-export const UploadedFileOrderByRelevanceFieldEnum = {
+export const UploadSessionOrderByRelevanceFieldEnum = {
   id: 'id',
-  originalName: 'originalName',
-  mimetype: 'mimetype',
-  uploaderId: 'uploaderId',
-  storedFileId: 'storedFileId'
+  storageUploadId: 'storageUploadId',
+  fileId: 'fileId',
+  failReason: 'failReason'
 } as const
 
-export type UploadedFileOrderByRelevanceFieldEnum = (typeof UploadedFileOrderByRelevanceFieldEnum)[keyof typeof UploadedFileOrderByRelevanceFieldEnum]
+export type UploadSessionOrderByRelevanceFieldEnum = (typeof UploadSessionOrderByRelevanceFieldEnum)[keyof typeof UploadSessionOrderByRelevanceFieldEnum]
+
+
+export const UploadChunkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  eTag: 'eTag'
+} as const
+
+export type UploadChunkOrderByRelevanceFieldEnum = (typeof UploadChunkOrderByRelevanceFieldEnum)[keyof typeof UploadChunkOrderByRelevanceFieldEnum]
+
+
+export const ChatOrderByRelevanceFieldEnum = {
+  id: 'id',
+  title: 'title',
+  bio: 'bio',
+  avatar: 'avatar'
+} as const
+
+export type ChatOrderByRelevanceFieldEnum = (typeof ChatOrderByRelevanceFieldEnum)[keyof typeof ChatOrderByRelevanceFieldEnum]
+
+
+export const ChatEventsCounterOrderByRelevanceFieldEnum = {
+  chatId: 'chatId'
+} as const
+
+export type ChatEventsCounterOrderByRelevanceFieldEnum = (typeof ChatEventsCounterOrderByRelevanceFieldEnum)[keyof typeof ChatEventsCounterOrderByRelevanceFieldEnum]
+
+
+export const MessagesCounterOrderByRelevanceFieldEnum = {
+  chatId: 'chatId'
+} as const
+
+export type MessagesCounterOrderByRelevanceFieldEnum = (typeof MessagesCounterOrderByRelevanceFieldEnum)[keyof typeof MessagesCounterOrderByRelevanceFieldEnum]
+
+
+export const ChatEventOrderByRelevanceFieldEnum = {
+  chatId: 'chatId',
+  authorId: 'authorId',
+  type: 'type'
+} as const
+
+export type ChatEventOrderByRelevanceFieldEnum = (typeof ChatEventOrderByRelevanceFieldEnum)[keyof typeof ChatEventOrderByRelevanceFieldEnum]
 
 
 
@@ -895,6 +1399,34 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -905,6 +1437,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UploadStatus'
+ */
+export type EnumUploadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'UploadStatus[]'
+ */
+export type ListEnumUploadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UploadStatus[]'>
     
 
 
@@ -1007,7 +1553,12 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   refreshToken?: Prisma.RefreshTokenOmit
   storedFile?: Prisma.StoredFileOmit
-  uploadedFile?: Prisma.UploadedFileOmit
+  uploadSession?: Prisma.UploadSessionOmit
+  uploadChunk?: Prisma.UploadChunkOmit
+  chat?: Prisma.ChatOmit
+  chatEventsCounter?: Prisma.ChatEventsCounterOmit
+  messagesCounter?: Prisma.MessagesCounterOmit
+  chatEvent?: Prisma.ChatEventOmit
 }
 
 /* Types for Logging */

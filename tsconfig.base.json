@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable"
+    ],
+    "module": "CommonJS",
+    "strict": true,
+    "declaration": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "rootDirs": [
+      "apps",
+      "libs"
+    ],
+    "paths": {
+      "nx-poslah": [
+        "libs/nx-poslah/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "apps",
+    "libs"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

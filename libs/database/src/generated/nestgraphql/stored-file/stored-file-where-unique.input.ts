@@ -1,15 +1,25 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { BigIntFilter } from '../prisma/big-int-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { IntFilter } from '../prisma/int-filter.input';
+import { JsonNullableFilter } from '../prisma/json-nullable-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
-import { UploadedFileListRelationFilter } from '../uploaded-file/uploaded-file-list-relation-filter.input';
+import { UuidFilter } from '../prisma/uuid-filter.input';
+import { UploadSessionNullableScalarRelationFilter } from '../upload-session/upload-session-nullable-scalar-relation-filter.input';
+import { UserScalarRelationFilter } from '../user/user-scalar-relation-filter.input';
+import { StoredFileChecksumSizeBytesCompoundUniqueInput } from './stored-file-checksum-size-bytes-compound-unique.input';
 import { StoredFileWhereInput } from './stored-file-where.input';
 
 @InputType()
 export class StoredFileWhereUniqueInput {
   @Field(() => String, { nullable: true })
   id?: string;
+
+  @Field(() => String, { nullable: true })
+  storageKey?: string;
+
+  @Field(() => StoredFileChecksumSizeBytesCompoundUniqueInput, { nullable: true })
+  checksum_sizeBytes?: StoredFileChecksumSizeBytesCompoundUniqueInput;
 
   @Field(() => [StoredFileWhereInput], { nullable: true })
   AND?: Array<StoredFileWhereInput>;
@@ -21,14 +31,35 @@ export class StoredFileWhereUniqueInput {
   NOT?: Array<StoredFileWhereInput>;
 
   @Field(() => StringFilter, { nullable: true })
-  hash?: StringFilter;
+  checksum?: StringFilter;
 
-  @Field(() => IntFilter, { nullable: true })
-  size?: IntFilter;
+  @Field(() => BigIntFilter, { nullable: true })
+  sizeBytes?: BigIntFilter;
+
+  @Field(() => StringFilter, { nullable: true })
+  originalFilename?: StringFilter;
+
+  @Field(() => StringFilter, { nullable: true })
+  mimeType?: StringFilter;
+
+  @Field(() => StringFilter, { nullable: true })
+  cdnUrl?: StringFilter;
+
+  @Field(() => JsonNullableFilter, { nullable: true })
+  metadata?: JsonNullableFilter;
+
+  @Field(() => UuidFilter, { nullable: true })
+  uploadedByUserId?: UuidFilter;
 
   @Field(() => DateTimeFilter, { nullable: true })
   createdAt?: DateTimeFilter;
 
-  @Field(() => UploadedFileListRelationFilter, { nullable: true })
-  uploads?: UploadedFileListRelationFilter;
+  @Field(() => DateTimeFilter, { nullable: true })
+  updatedAt?: DateTimeFilter;
+
+  @Field(() => UserScalarRelationFilter, { nullable: true })
+  uploadedByUser?: UserScalarRelationFilter;
+
+  @Field(() => UploadSessionNullableScalarRelationFilter, { nullable: true })
+  uploadSession?: UploadSessionNullableScalarRelationFilter;
 }

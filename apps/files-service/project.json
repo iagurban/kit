@@ -1,0 +1,32 @@
+{
+  "name": "files-service",
+  "root": "apps/files-service",
+  "sourceRoot": "apps/files-service/src",
+  "projectType": "application",
+  "targets": {
+    "run-and-watch-backend": {},
+    "build-and-watch-backend": {},
+    "serve-backend": {},
+    "kill-nx-daemon": {},
+    "build-service-ts": {},
+    "copy-assets": {},
+
+    "build": {
+      "executor": "nx:noop",
+      "outputs": [],
+      "dependsOn": ["build-service-ts", "copy-assets"]
+    },
+
+    "serve": {
+      "executor": "nx:noop",
+      "dependsOn": ["serve-backend"]
+    },
+
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "files"
+      }
+    }
+  },
+  "tags": []
+}

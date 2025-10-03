@@ -1,10 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventListRelationFilter } from '../chat-event/chat-event-list-relation-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-list-relation-filter.input';
-import { UploadedFileListRelationFilter } from '../uploaded-file/uploaded-file-list-relation-filter.input';
+import { StoredFileListRelationFilter } from '../stored-file/stored-file-list-relation-filter.input';
 import { UserWhereInput } from './user-where.input';
 
 @InputType()
@@ -36,9 +37,12 @@ export class UserWhereUniqueInput {
   @Field(() => StringFilter, { nullable: true })
   passwordHash?: StringFilter;
 
-  @Field(() => UploadedFileListRelationFilter, { nullable: true })
-  uploadedFiles?: UploadedFileListRelationFilter;
+  @Field(() => StoredFileListRelationFilter, { nullable: true })
+  uploadedFiles?: StoredFileListRelationFilter;
 
   @Field(() => RefreshTokenListRelationFilter, { nullable: true })
   refreshTokens?: RefreshTokenListRelationFilter;
+
+  @Field(() => ChatEventListRelationFilter, { nullable: true })
+  chatEvents?: ChatEventListRelationFilter;
 }

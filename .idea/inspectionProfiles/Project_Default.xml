@@ -400,6 +400,7 @@
     <inspection_tool class="JRubyUnusedImportInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JSArrowFunctionBracesCanBeRemoved" enabled="true" level="TEXT ATTRIBUTES" enabled_by_default="true" editorAttributes="TEXT_STYLE_SUGGESTION" />
     <inspection_tool class="JSClassNamingConvention" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="m_regex" value="[A-Z][0-9a-zA-Z]*" />
       <option name="m_minLength" value="1" />
     </inspection_tool>
     <inspection_tool class="JSEqualityComparisonWithCoercion.TS" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -478,7 +479,7 @@
     <inspection_tool class="ListRemoveInLoop" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LocalVariableName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="LocalVariableNamingConventionJS" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_regex" value="[_a-z][A-Za-z]*" />
+      <option name="m_regex" value="[_a-z][0-9A-Za-z]*" />
       <option name="m_minLength" value="1" />
       <option name="m_maxLength" value="32" />
     </inspection_tool>
@@ -631,7 +632,7 @@
     <inspection_tool class="PackageName" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="ParameterCanBeLocal" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ParameterNamingConventionJS" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="m_regex" value="[_a-z][A-Za-z]*" />
+      <option name="m_regex" value="[_a-z][0-9A-Za-z]*" />
       <option name="m_minLength" value="1" />
       <option name="m_maxLength" value="32" />
     </inspection_tool>

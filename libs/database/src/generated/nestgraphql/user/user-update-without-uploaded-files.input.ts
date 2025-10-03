@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventUpdateManyWithoutAuthorNestedInput } from '../chat-event/chat-event-update-many-without-author-nested.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
@@ -27,4 +28,7 @@ export class UserUpdateWithoutUploadedFilesInput {
 
   @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, { nullable: true })
   refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
+
+  @Field(() => ChatEventUpdateManyWithoutAuthorNestedInput, { nullable: true })
+  chatEvents?: ChatEventUpdateManyWithoutAuthorNestedInput;
 }

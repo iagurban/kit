@@ -5,5 +5,5 @@ import { SortOrder } from '../prisma/sort-order.enum';
 @InputType()
 export class StoredFileAvgOrderByAggregateInput {
   @Field(() => SortOrder, { nullable: true })
-  size?: `${SortOrder}`;
+  sizeBytes?: `${SortOrder}`;
 }

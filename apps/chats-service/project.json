@@ -1,0 +1,35 @@
+{
+  "name": "chats-service",
+  "root": "apps/chats-service",
+  "sourceRoot": "apps/chats-service/src",
+  "projectType": "application",
+  "targets": {
+    "run-and-watch-backend": {},
+    "build-and-watch-backend": {},
+    "serve-backend": {},
+    "kill-nx-daemon": {},
+    "build-service-ts": {},
+    "copy-assets": {},
+
+    "pre-build": {
+      "dependsOn": ["generate-proto-code"]
+    },
+
+    "build": {
+      "executor": "nx:noop",
+      "dependsOn": ["build-service-ts", "copy-assets"]
+    },
+
+    "serve": {
+      "executor": "nx:noop",
+      "dependsOn": ["serve-backend"]
+    },
+
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "chats"
+      }
+    }
+  },
+  "tags": []
+}

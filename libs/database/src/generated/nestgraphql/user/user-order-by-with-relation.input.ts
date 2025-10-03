@@ -1,9 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventOrderByRelationAggregateInput } from '../chat-event/chat-event-order-by-relation-aggregate.input';
 import { SortOrder } from '../prisma/sort-order.enum';
 import { SortOrderInput } from '../prisma/sort-order.input';
 import { RefreshTokenOrderByRelationAggregateInput } from '../refresh-token/refresh-token-order-by-relation-aggregate.input';
-import { UploadedFileOrderByRelationAggregateInput } from '../uploaded-file/uploaded-file-order-by-relation-aggregate.input';
+import { StoredFileOrderByRelationAggregateInput } from '../stored-file/stored-file-order-by-relation-aggregate.input';
 import { UserOrderByRelevanceInput } from './user-order-by-relevance.input';
 
 @InputType()
@@ -26,11 +27,14 @@ export class UserOrderByWithRelationInput {
   @Field(() => SortOrder, { nullable: true })
   passwordHash?: `${SortOrder}`;
 
-  @Field(() => UploadedFileOrderByRelationAggregateInput, { nullable: true })
-  uploadedFiles?: UploadedFileOrderByRelationAggregateInput;
+  @Field(() => StoredFileOrderByRelationAggregateInput, { nullable: true })
+  uploadedFiles?: StoredFileOrderByRelationAggregateInput;
 
   @Field(() => RefreshTokenOrderByRelationAggregateInput, { nullable: true })
   refreshTokens?: RefreshTokenOrderByRelationAggregateInput;
+
+  @Field(() => ChatEventOrderByRelationAggregateInput, { nullable: true })
+  chatEvents?: ChatEventOrderByRelationAggregateInput;
 
   @Field(() => UserOrderByRelevanceInput, { nullable: true })
   _relevance?: UserOrderByRelevanceInput;

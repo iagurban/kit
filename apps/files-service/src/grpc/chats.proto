@@ -1,0 +1,54 @@
+// Указываем, что используем 3-ю версию синтаксиса
+syntax = "proto3";
+
+// Определяем пакет, чтобы избежать конфликтов имен
+package messages;
+
+// Импортируем стандартный тип для временных меток
+import "google/protobuf/timestamp.proto";
+
+// Сервис, который будет реализовывать наш messages-service
+service MessagesService {
+  // Метод для создания сообщения (используется GraphQL-мутацией)
+  // Внутри он будет публиковать событие в Kafka
+  rpc create_message (CreateMessageRequest) returns (CreateMessageResponse);
+
+  // Метод для получения сообщений чата (используется GraphQL-квери)
+  rpc get_messages_by_chat_id (GetMessagesByChatIdRequest) returns (GetMessagesByChatIdResponse);
+}
+
+// --- Определения структур данных (сообщений) ---
+
+// Основная сущность сообщения
+message Message {
+  string id = 1;
+  string text = 2;
+  string chatId = 3;
+  string authorId = 4;
+  google.protobuf.Timestamp createdAt = 5;
+}
+
+// Запрос на создание сообщения
+message CreateMessageRequest {
+  string text = 1;
+  string chatId = 2;
+  string authorId = 3;
+}
+
+// Ответ после создания (возвращаем созданный объект)
+message CreateMessageResponse {
+  Message message = 1;
+}
+
+// Запрос на получение сообщений
+message GetMessagesByChatIdRequest {
+  string chatId = 1;
+  // Опциональные параметры для пагинации
+  optional int32 limit = 2;
+  optional int32 offset = 3;
+}
+
+// Ответ со списком сообщений
+message GetMessagesByChatIdResponse {
+  repeated Message messages = 1;
+}

@@ -84,9 +84,11 @@ model User {
 
   passwordHash String @map("externalId")
 
-  uploadedFiles UploadedFile[]
+  uploadedFiles StoredFile[]
 
   refreshTokens RefreshToken[]
+
+  chatEvents ChatEvent[]
 }
 
 model RefreshToken {
@@ -101,30 +103,124 @@ model RefreshToken {
   hash String
 }
 
-model StoredFile {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid // 'abcdefgh' means path ab/cd/efgh
-
-  hash String
-  size Int
-
-  createdAt DateTime @default(now())
-
-  uploads UploadedFile[]
-
-  @@index([hash])
+// This enum now describes the state of the upload process itself.
+enum UploadStatus {
+  ACTIVE
+  FINALIZING
+  FAILED
 }
 
-model UploadedFile {
-  id String @id @default(uuid())
+model StoredFile {
+  id               String   @id @default(uuid()) @db.Uuid
+  // status         FileStatus @default(UPLOADING) // THIS LINE IS REMOVED
+  checksum         String
+  sizeBytes        BigInt
+  originalFilename String
+  mimeType         String
+  storageKey       String   @unique
+  cdnUrl           String
+  metadata         Json?
+  uploadedByUserId String   @db.Uuid
+  uploadedByUser   User     @relation(fields: [uploadedByUserId], references: [id], onDelete: Restrict)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  originalName String
-  mimetype     String
+  // The status is now implicitly defined by this relation.
+  uploadSession UploadSession?
 
-  uploadedAt DateTime @default(now())
+  @@unique([checksum, sizeBytes])
+  @@index([uploadedByUserId])
+}
 
-  uploaderId String @db.Uuid
-  uploader   User   @relation(fields: [uploaderId], references: [id])
+model UploadSession {
+  id              String     @id @default(uuid()) @db.Uuid
+  storageUploadId String     @unique
+  fileId          String     @unique @db.Uuid
+  file            StoredFile @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  totalChunks     Int
 
-  storedFileId String     @db.Uuid
-  storedFile   StoredFile @relation(fields: [storedFileId], references: [id], onDelete: Restrict)
+  // Status of the upload process. THIS is the source of truth.
+  status            UploadStatus @default(ACTIVE)
+  failReason        String?
+  totalFailureCount Int          @default(0)
+
+  chunks    UploadChunk[]
+  createdAt DateTime      @default(now())
+}
+
+// This table tracks the status of each individual chunk.
+model UploadChunk {
+  id        String        @id @default(uuid()) @db.Uuid
+  sessionId String        @db.Uuid
+  session   UploadSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  // The part number (1, 2, 3, ...).
+  partNumber Int
+
+  // The ETag returned by S3 after a successful chunk upload.
+  // It's nullable because initially the chunk is not uploaded.
+  eTag String?
+
+  leasedAt DateTime? // when last user took for job
+
+  // Composite unique key to prevent duplicate records for the same chunk.
+  @@unique([sessionId, partNumber])
+}
+
+model Chat {
+  id String @id @default(uuid()) @db.Uuid
+
+  title  String
+  bio    String?
+  avatar String?
+
+  events          ChatEvent[]
+  eventsCounter   ChatEventsCounter? // it MUST exist at business logic
+  messagesCounter MessagesCounter? // it MUST exist at business logic
+}
+
+model ChatEventsCounter {
+  chatId String @id @db.Uuid
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  lastNn BigInt @default(0)
+}
+
+model MessagesCounter {
+  chatId String @id @db.Uuid
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  lastNn BigInt @default(0)
+}
+
+/// @DtoName MessagePayload
+/// @DtoShape { "text": "string", "replyToNn": "bigint | null", "tempId": "string | null" }
+
+/// @DtoName ChatInfoPayload
+/// @DtoShape { "title": "string | null", "bio": "string | null", "avatar": "string | null" }
+
+model ChatEvent {
+  id BigInt @id @default(autoincrement())
+
+  // Локальный, бизнес-ID события внутри чата
+  nn BigInt
+
+  chatId String @db.Uuid
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  authorId String @db.Uuid
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Денормализованный тип события для быстрой фильтрации
+  type String // "message", "info", "user_added", etc.
+
+  // Типизированный JSONB payload
+  /// @DtoName ChatEventPayload
+  /// @DtoType { "message": MessagePayload; "info": ChatInfoInfoPayload }
+  payload Json
+
+  createdAt DateTime
+
+  @@unique([chatId, nn])
+  @@index([authorId, chatId])
 }

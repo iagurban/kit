@@ -1,0 +1,8 @@
+{
+  "name": "react-kit",
+  "root": "libs/react-kit",
+  "sourceRoot": "libs/react-kit/src",
+  "projectType": "library",
+  "targets": {},
+  "tags": []
+}

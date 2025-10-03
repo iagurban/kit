@@ -1,0 +1,19 @@
+{
+  "executors": {
+    "nodemon": {
+      "implementation": "./nodemon/nodemon.ts",
+      "schema": "./nodemon/schema.json",
+      "description": "nodemon executor"
+    },
+    "concurrently": {
+      "implementation": "./concurrently/concurrently.ts",
+      "schema": "./concurrently/schema.json",
+      "description": "concurrently executor"
+    },
+    "run": {
+      "implementation": "./run/run.ts",
+      "schema": "./run/schema.json",
+      "description": "run executor"
+    }
+  }
+}

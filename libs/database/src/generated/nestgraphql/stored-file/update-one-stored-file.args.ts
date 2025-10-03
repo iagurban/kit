@@ -13,5 +13,5 @@ export class UpdateOneStoredFileArgs {
 
   @Field(() => StoredFileWhereUniqueInput, { nullable: false })
   @Type(() => StoredFileWhereUniqueInput)
-  where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
+  where!: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id' | 'storageKey' | 'checksum_sizeBytes'>;
 }

@@ -17,7 +17,7 @@ export class FindFirstStoredFileOrThrowArgs {
   orderBy?: Array<StoredFileOrderByWithRelationInput>;
 
   @Field(() => StoredFileWhereUniqueInput, { nullable: true })
-  cursor?: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id'>;
+  cursor?: Prisma.AtLeast<StoredFileWhereUniqueInput, 'id' | 'storageKey' | 'checksum_sizeBytes'>;
 
   @Field(() => Int, { nullable: true })
   take?: number;

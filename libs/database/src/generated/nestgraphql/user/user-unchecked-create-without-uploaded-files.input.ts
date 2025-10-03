@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatEventUncheckedCreateNestedManyWithoutAuthorInput } from '../chat-event/chat-event-unchecked-create-nested-many-without-author.input';
 import { RefreshTokenUncheckedCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-unchecked-create-nested-many-without-user.input';
 
 @InputType()
@@ -24,4 +25,7 @@ export class UserUncheckedCreateWithoutUploadedFilesInput {
 
   @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
   refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
+
+  @Field(() => ChatEventUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
+  chatEvents?: ChatEventUncheckedCreateNestedManyWithoutAuthorInput;
 }

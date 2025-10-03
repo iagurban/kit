@@ -1,14 +1,14 @@
-import { ContextualLogger } from '@gurban/util/logger/logger.module';
 import { Injectable, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from '@poslah/util/logger/logger.module';
 import { Client } from 'cassandra-driver';
 
 @Injectable()
 export class ScyllaService extends Client {
   static readonly autoconnectionProvider: Provider = {
     provide: ScyllaService,
-    inject: [ConfigService, ContextualLogger],
-    useFactory: async (configService: ConfigService, parentLogger: ContextualLogger) => {
+    inject: [ConfigService, Logger],
+    useFactory: async (configService: ConfigService, parentLogger: Logger) => {
       const logger = parentLogger.logger.child({ context: 'ScyllaServiceInit' });
 
       const client = new ScyllaService(configService);

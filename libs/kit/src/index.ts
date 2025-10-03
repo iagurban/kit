@@ -67,7 +67,14 @@ export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export { NumberBase } from './numbers/number-base';
 export { NumberConverter } from './numbers/number-converter';
-export { ArrayMutators, buckets, pickRandomItems, samples, samplesBy, syncArray } from './utils/array-utils';
+export {
+  ArrayMutators,
+  buckets,
+  mapArrayIfNotEmpty,
+  pickRandomItems,
+  samples,
+  samplesBy,
+} from './utils/array-utils';
 export type { PromiseValue } from './utils/async-utils';
 export { isPromise, resolveRecord, retryingAsync, sleep } from './utils/async-utils';
 export { catching, notNull, NullError, throwing, warnCatch } from './utils/flow-utils';

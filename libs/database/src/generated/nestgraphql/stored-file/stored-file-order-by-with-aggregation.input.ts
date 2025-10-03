@@ -1,6 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 import { SortOrder } from '../prisma/sort-order.enum';
+import { SortOrderInput } from '../prisma/sort-order.input';
 import { StoredFileAvgOrderByAggregateInput } from './stored-file-avg-order-by-aggregate.input';
 import { StoredFileCountOrderByAggregateInput } from './stored-file-count-order-by-aggregate.input';
 import { StoredFileMaxOrderByAggregateInput } from './stored-file-max-order-by-aggregate.input';
@@ -13,13 +14,34 @@ export class StoredFileOrderByWithAggregationInput {
   id?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  hash?: `${SortOrder}`;
+  checksum?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
-  size?: `${SortOrder}`;
+  sizeBytes?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  originalFilename?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  mimeType?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  storageKey?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  cdnUrl?: `${SortOrder}`;
+
+  @Field(() => SortOrderInput, { nullable: true })
+  metadata?: SortOrderInput;
+
+  @Field(() => SortOrder, { nullable: true })
+  uploadedByUserId?: `${SortOrder}`;
 
   @Field(() => SortOrder, { nullable: true })
   createdAt?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  updatedAt?: `${SortOrder}`;
 
   @Field(() => StoredFileCountOrderByAggregateInput, { nullable: true })
   _count?: StoredFileCountOrderByAggregateInput;

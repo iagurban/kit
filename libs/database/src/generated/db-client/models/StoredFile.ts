@@ -28,63 +28,101 @@ export type AggregateStoredFile = {
 }
 
 export type StoredFileAvgAggregateOutputType = {
-  size: number | null
+  sizeBytes: number | null
 }
 
 export type StoredFileSumAggregateOutputType = {
-  size: number | null
+  sizeBytes: bigint | null
 }
 
 export type StoredFileMinAggregateOutputType = {
   id: string | null
-  hash: string | null
-  size: number | null
+  checksum: string | null
+  sizeBytes: bigint | null
+  originalFilename: string | null
+  mimeType: string | null
+  storageKey: string | null
+  cdnUrl: string | null
+  uploadedByUserId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type StoredFileMaxAggregateOutputType = {
   id: string | null
-  hash: string | null
-  size: number | null
+  checksum: string | null
+  sizeBytes: bigint | null
+  originalFilename: string | null
+  mimeType: string | null
+  storageKey: string | null
+  cdnUrl: string | null
+  uploadedByUserId: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type StoredFileCountAggregateOutputType = {
   id: number
-  hash: number
-  size: number
+  checksum: number
+  sizeBytes: number
+  originalFilename: number
+  mimeType: number
+  storageKey: number
+  cdnUrl: number
+  metadata: number
+  uploadedByUserId: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type StoredFileAvgAggregateInputType = {
-  size?: true
+  sizeBytes?: true
 }
 
 export type StoredFileSumAggregateInputType = {
-  size?: true
+  sizeBytes?: true
 }
 
 export type StoredFileMinAggregateInputType = {
   id?: true
-  hash?: true
-  size?: true
+  checksum?: true
+  sizeBytes?: true
+  originalFilename?: true
+  mimeType?: true
+  storageKey?: true
+  cdnUrl?: true
+  uploadedByUserId?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type StoredFileMaxAggregateInputType = {
   id?: true
-  hash?: true
-  size?: true
+  checksum?: true
+  sizeBytes?: true
+  originalFilename?: true
+  mimeType?: true
+  storageKey?: true
+  cdnUrl?: true
+  uploadedByUserId?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type StoredFileCountAggregateInputType = {
   id?: true
-  hash?: true
-  size?: true
+  checksum?: true
+  sizeBytes?: true
+  originalFilename?: true
+  mimeType?: true
+  storageKey?: true
+  cdnUrl?: true
+  metadata?: true
+  uploadedByUserId?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -176,9 +214,16 @@ export type StoredFileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type StoredFileGroupByOutputType = {
   id: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata: unknown | null
+  uploadedByUserId: string
   createdAt: Date
+  updatedAt: Date
   _count: StoredFileCountAggregateOutputType | null
   _avg: StoredFileAvgAggregateOutputType | null
   _sum: StoredFileSumAggregateOutputType | null
@@ -206,37 +251,69 @@ export type StoredFileWhereInput = {
   OR?: Prisma.StoredFileWhereInput[]
   NOT?: Prisma.StoredFileWhereInput | Prisma.StoredFileWhereInput[]
   id?: Prisma.UuidFilter<"StoredFile"> | string
-  hash?: Prisma.StringFilter<"StoredFile"> | string
-  size?: Prisma.IntFilter<"StoredFile"> | number
+  checksum?: Prisma.StringFilter<"StoredFile"> | string
+  sizeBytes?: Prisma.BigIntFilter<"StoredFile"> | bigint | number
+  originalFilename?: Prisma.StringFilter<"StoredFile"> | string
+  mimeType?: Prisma.StringFilter<"StoredFile"> | string
+  storageKey?: Prisma.StringFilter<"StoredFile"> | string
+  cdnUrl?: Prisma.StringFilter<"StoredFile"> | string
+  metadata?: Prisma.JsonNullableFilter<"StoredFile">
+  uploadedByUserId?: Prisma.UuidFilter<"StoredFile"> | string
   createdAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
-  uploads?: Prisma.UploadedFileListRelationFilter
+  updatedAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
+  uploadedByUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  uploadSession?: Prisma.XOR<Prisma.UploadSessionNullableScalarRelationFilter, Prisma.UploadSessionWhereInput> | null
 }
 
 export type StoredFileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  hash?: Prisma.SortOrder
-  size?: Prisma.SortOrder
+  checksum?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
+  originalFilename?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  storageKey?: Prisma.SortOrder
+  cdnUrl?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  uploads?: Prisma.UploadedFileOrderByRelationAggregateInput
+  updatedAt?: Prisma.SortOrder
+  uploadedByUser?: Prisma.UserOrderByWithRelationInput
+  uploadSession?: Prisma.UploadSessionOrderByWithRelationInput
   _relevance?: Prisma.StoredFileOrderByRelevanceInput
 }
 
 export type StoredFileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  storageKey?: string
+  checksum_sizeBytes?: Prisma.StoredFileChecksumSizeBytesCompoundUniqueInput
   AND?: Prisma.StoredFileWhereInput | Prisma.StoredFileWhereInput[]
   OR?: Prisma.StoredFileWhereInput[]
   NOT?: Prisma.StoredFileWhereInput | Prisma.StoredFileWhereInput[]
-  hash?: Prisma.StringFilter<"StoredFile"> | string
-  size?: Prisma.IntFilter<"StoredFile"> | number
+  checksum?: Prisma.StringFilter<"StoredFile"> | string
+  sizeBytes?: Prisma.BigIntFilter<"StoredFile"> | bigint | number
+  originalFilename?: Prisma.StringFilter<"StoredFile"> | string
+  mimeType?: Prisma.StringFilter<"StoredFile"> | string
+  cdnUrl?: Prisma.StringFilter<"StoredFile"> | string
+  metadata?: Prisma.JsonNullableFilter<"StoredFile">
+  uploadedByUserId?: Prisma.UuidFilter<"StoredFile"> | string
   createdAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
-  uploads?: Prisma.UploadedFileListRelationFilter
-}, "id">
+  updatedAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
+  uploadedByUser?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  uploadSession?: Prisma.XOR<Prisma.UploadSessionNullableScalarRelationFilter, Prisma.UploadSessionWhereInput> | null
+}, "id" | "storageKey" | "checksum_sizeBytes">
 
 export type StoredFileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  hash?: Prisma.SortOrder
-  size?: Prisma.SortOrder
+  checksum?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
+  originalFilename?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  storageKey?: Prisma.SortOrder
+  cdnUrl?: Prisma.SortOrder
+  metadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.StoredFileCountOrderByAggregateInput
   _avg?: Prisma.StoredFileAvgOrderByAggregateInput
   _max?: Prisma.StoredFileMaxOrderByAggregateInput
@@ -249,62 +326,127 @@ export type StoredFileScalarWhereWithAggregatesInput = {
   OR?: Prisma.StoredFileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.StoredFileScalarWhereWithAggregatesInput | Prisma.StoredFileScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"StoredFile"> | string
-  hash?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
-  size?: Prisma.IntWithAggregatesFilter<"StoredFile"> | number
+  checksum?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
+  sizeBytes?: Prisma.BigIntWithAggregatesFilter<"StoredFile"> | bigint | number
+  originalFilename?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
+  mimeType?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
+  storageKey?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
+  cdnUrl?: Prisma.StringWithAggregatesFilter<"StoredFile"> | string
+  metadata?: Prisma.JsonNullableWithAggregatesFilter<"StoredFile">
+  uploadedByUserId?: Prisma.UuidWithAggregatesFilter<"StoredFile"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StoredFile"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StoredFile"> | Date | string
 }
 
 export type StoredFileCreateInput = {
   id?: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Date | string
-  uploads?: Prisma.UploadedFileCreateNestedManyWithoutStoredFileInput
+  updatedAt?: Date | string
+  uploadedByUser: Prisma.UserCreateNestedOneWithoutUploadedFilesInput
+  uploadSession?: Prisma.UploadSessionCreateNestedOneWithoutFileInput
 }
 
 export type StoredFileUncheckedCreateInput = {
   id?: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId: string
   createdAt?: Date | string
-  uploads?: Prisma.UploadedFileUncheckedCreateNestedManyWithoutStoredFileInput
+  updatedAt?: Date | string
+  uploadSession?: Prisma.UploadSessionUncheckedCreateNestedOneWithoutFileInput
 }
 
 export type StoredFileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploads?: Prisma.UploadedFileUpdateManyWithoutStoredFileNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedByUser?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput
+  uploadSession?: Prisma.UploadSessionUpdateOneWithoutFileNestedInput
 }
 
 export type StoredFileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  uploads?: Prisma.UploadedFileUncheckedUpdateManyWithoutStoredFileNestedInput
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadSession?: Prisma.UploadSessionUncheckedUpdateOneWithoutFileNestedInput
 }
 
 export type StoredFileCreateManyInput = {
   id?: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId: string
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type StoredFileUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type StoredFileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StoredFileListRelationFilter = {
+  every?: Prisma.StoredFileWhereInput
+  some?: Prisma.StoredFileWhereInput
+  none?: Prisma.StoredFileWhereInput
+}
+
+export type StoredFileOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type StoredFileOrderByRelevanceInput = {
@@ -313,33 +455,57 @@ export type StoredFileOrderByRelevanceInput = {
   search: string
 }
 
+export type StoredFileChecksumSizeBytesCompoundUniqueInput = {
+  checksum: string
+  sizeBytes: bigint | number
+}
+
 export type StoredFileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  hash?: Prisma.SortOrder
-  size?: Prisma.SortOrder
+  checksum?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
+  originalFilename?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  storageKey?: Prisma.SortOrder
+  cdnUrl?: Prisma.SortOrder
+  metadata?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type StoredFileAvgOrderByAggregateInput = {
-  size?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
 }
 
 export type StoredFileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  hash?: Prisma.SortOrder
-  size?: Prisma.SortOrder
+  checksum?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
+  originalFilename?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  storageKey?: Prisma.SortOrder
+  cdnUrl?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type StoredFileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  hash?: Prisma.SortOrder
-  size?: Prisma.SortOrder
+  checksum?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
+  originalFilename?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
+  storageKey?: Prisma.SortOrder
+  cdnUrl?: Prisma.SortOrder
+  uploadedByUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type StoredFileSumOrderByAggregateInput = {
-  size?: Prisma.SortOrder
+  sizeBytes?: Prisma.SortOrder
 }
 
 export type StoredFileScalarRelationFilter = {
@@ -347,151 +513,359 @@ export type StoredFileScalarRelationFilter = {
   isNot?: Prisma.StoredFileWhereInput
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type StoredFileCreateNestedManyWithoutUploadedByUserInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput> | Prisma.StoredFileCreateWithoutUploadedByUserInput[] | Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput[]
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput | Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput[]
+  createMany?: Prisma.StoredFileCreateManyUploadedByUserInputEnvelope
+  connect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
 }
 
-export type StoredFileCreateNestedOneWithoutUploadsInput = {
-  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadsInput, Prisma.StoredFileUncheckedCreateWithoutUploadsInput>
-  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadsInput
+export type StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput> | Prisma.StoredFileCreateWithoutUploadedByUserInput[] | Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput[]
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput | Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput[]
+  createMany?: Prisma.StoredFileCreateManyUploadedByUserInputEnvelope
+  connect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+}
+
+export type StoredFileUpdateManyWithoutUploadedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput> | Prisma.StoredFileCreateWithoutUploadedByUserInput[] | Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput[]
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput | Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput[]
+  upsert?: Prisma.StoredFileUpsertWithWhereUniqueWithoutUploadedByUserInput | Prisma.StoredFileUpsertWithWhereUniqueWithoutUploadedByUserInput[]
+  createMany?: Prisma.StoredFileCreateManyUploadedByUserInputEnvelope
+  set?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  disconnect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  delete?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  connect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  update?: Prisma.StoredFileUpdateWithWhereUniqueWithoutUploadedByUserInput | Prisma.StoredFileUpdateWithWhereUniqueWithoutUploadedByUserInput[]
+  updateMany?: Prisma.StoredFileUpdateManyWithWhereWithoutUploadedByUserInput | Prisma.StoredFileUpdateManyWithWhereWithoutUploadedByUserInput[]
+  deleteMany?: Prisma.StoredFileScalarWhereInput | Prisma.StoredFileScalarWhereInput[]
+}
+
+export type StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput> | Prisma.StoredFileCreateWithoutUploadedByUserInput[] | Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput[]
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput | Prisma.StoredFileCreateOrConnectWithoutUploadedByUserInput[]
+  upsert?: Prisma.StoredFileUpsertWithWhereUniqueWithoutUploadedByUserInput | Prisma.StoredFileUpsertWithWhereUniqueWithoutUploadedByUserInput[]
+  createMany?: Prisma.StoredFileCreateManyUploadedByUserInputEnvelope
+  set?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  disconnect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  delete?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  connect?: Prisma.StoredFileWhereUniqueInput | Prisma.StoredFileWhereUniqueInput[]
+  update?: Prisma.StoredFileUpdateWithWhereUniqueWithoutUploadedByUserInput | Prisma.StoredFileUpdateWithWhereUniqueWithoutUploadedByUserInput[]
+  updateMany?: Prisma.StoredFileUpdateManyWithWhereWithoutUploadedByUserInput | Prisma.StoredFileUpdateManyWithWhereWithoutUploadedByUserInput[]
+  deleteMany?: Prisma.StoredFileScalarWhereInput | Prisma.StoredFileScalarWhereInput[]
+}
+
+export type BigIntFieldUpdateOperationsInput = {
+  set?: bigint | number
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
+}
+
+export type StoredFileCreateNestedOneWithoutUploadSessionInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadSessionInput, Prisma.StoredFileUncheckedCreateWithoutUploadSessionInput>
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadSessionInput
   connect?: Prisma.StoredFileWhereUniqueInput
 }
 
-export type StoredFileUpdateOneRequiredWithoutUploadsNestedInput = {
-  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadsInput, Prisma.StoredFileUncheckedCreateWithoutUploadsInput>
-  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadsInput
-  upsert?: Prisma.StoredFileUpsertWithoutUploadsInput
+export type StoredFileUpdateOneRequiredWithoutUploadSessionNestedInput = {
+  create?: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadSessionInput, Prisma.StoredFileUncheckedCreateWithoutUploadSessionInput>
+  connectOrCreate?: Prisma.StoredFileCreateOrConnectWithoutUploadSessionInput
+  upsert?: Prisma.StoredFileUpsertWithoutUploadSessionInput
   connect?: Prisma.StoredFileWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.StoredFileUpdateToOneWithWhereWithoutUploadsInput, Prisma.StoredFileUpdateWithoutUploadsInput>, Prisma.StoredFileUncheckedUpdateWithoutUploadsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StoredFileUpdateToOneWithWhereWithoutUploadSessionInput, Prisma.StoredFileUpdateWithoutUploadSessionInput>, Prisma.StoredFileUncheckedUpdateWithoutUploadSessionInput>
 }
 
-export type StoredFileCreateWithoutUploadsInput = {
+export type StoredFileCreateWithoutUploadedByUserInput = {
   id?: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadSession?: Prisma.UploadSessionCreateNestedOneWithoutFileInput
 }
 
-export type StoredFileUncheckedCreateWithoutUploadsInput = {
+export type StoredFileUncheckedCreateWithoutUploadedByUserInput = {
   id?: string
-  hash: string
-  size: number
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadSession?: Prisma.UploadSessionUncheckedCreateNestedOneWithoutFileInput
 }
 
-export type StoredFileCreateOrConnectWithoutUploadsInput = {
+export type StoredFileCreateOrConnectWithoutUploadedByUserInput = {
   where: Prisma.StoredFileWhereUniqueInput
-  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadsInput, Prisma.StoredFileUncheckedCreateWithoutUploadsInput>
+  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput>
 }
 
-export type StoredFileUpsertWithoutUploadsInput = {
-  update: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadsInput, Prisma.StoredFileUncheckedUpdateWithoutUploadsInput>
-  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadsInput, Prisma.StoredFileUncheckedCreateWithoutUploadsInput>
+export type StoredFileCreateManyUploadedByUserInputEnvelope = {
+  data: Prisma.StoredFileCreateManyUploadedByUserInput | Prisma.StoredFileCreateManyUploadedByUserInput[]
+  skipDuplicates?: boolean
+}
+
+export type StoredFileUpsertWithWhereUniqueWithoutUploadedByUserInput = {
+  where: Prisma.StoredFileWhereUniqueInput
+  update: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedUpdateWithoutUploadedByUserInput>
+  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedCreateWithoutUploadedByUserInput>
+}
+
+export type StoredFileUpdateWithWhereUniqueWithoutUploadedByUserInput = {
+  where: Prisma.StoredFileWhereUniqueInput
+  data: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadedByUserInput, Prisma.StoredFileUncheckedUpdateWithoutUploadedByUserInput>
+}
+
+export type StoredFileUpdateManyWithWhereWithoutUploadedByUserInput = {
+  where: Prisma.StoredFileScalarWhereInput
+  data: Prisma.XOR<Prisma.StoredFileUpdateManyMutationInput, Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserInput>
+}
+
+export type StoredFileScalarWhereInput = {
+  AND?: Prisma.StoredFileScalarWhereInput | Prisma.StoredFileScalarWhereInput[]
+  OR?: Prisma.StoredFileScalarWhereInput[]
+  NOT?: Prisma.StoredFileScalarWhereInput | Prisma.StoredFileScalarWhereInput[]
+  id?: Prisma.UuidFilter<"StoredFile"> | string
+  checksum?: Prisma.StringFilter<"StoredFile"> | string
+  sizeBytes?: Prisma.BigIntFilter<"StoredFile"> | bigint | number
+  originalFilename?: Prisma.StringFilter<"StoredFile"> | string
+  mimeType?: Prisma.StringFilter<"StoredFile"> | string
+  storageKey?: Prisma.StringFilter<"StoredFile"> | string
+  cdnUrl?: Prisma.StringFilter<"StoredFile"> | string
+  metadata?: Prisma.JsonNullableFilter<"StoredFile">
+  uploadedByUserId?: Prisma.UuidFilter<"StoredFile"> | string
+  createdAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"StoredFile"> | Date | string
+}
+
+export type StoredFileCreateWithoutUploadSessionInput = {
+  id?: string
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedByUser: Prisma.UserCreateNestedOneWithoutUploadedFilesInput
+}
+
+export type StoredFileUncheckedCreateWithoutUploadSessionInput = {
+  id?: string
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StoredFileCreateOrConnectWithoutUploadSessionInput = {
+  where: Prisma.StoredFileWhereUniqueInput
+  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadSessionInput, Prisma.StoredFileUncheckedCreateWithoutUploadSessionInput>
+}
+
+export type StoredFileUpsertWithoutUploadSessionInput = {
+  update: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadSessionInput, Prisma.StoredFileUncheckedUpdateWithoutUploadSessionInput>
+  create: Prisma.XOR<Prisma.StoredFileCreateWithoutUploadSessionInput, Prisma.StoredFileUncheckedCreateWithoutUploadSessionInput>
   where?: Prisma.StoredFileWhereInput
 }
 
-export type StoredFileUpdateToOneWithWhereWithoutUploadsInput = {
+export type StoredFileUpdateToOneWithWhereWithoutUploadSessionInput = {
   where?: Prisma.StoredFileWhereInput
-  data: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadsInput, Prisma.StoredFileUncheckedUpdateWithoutUploadsInput>
+  data: Prisma.XOR<Prisma.StoredFileUpdateWithoutUploadSessionInput, Prisma.StoredFileUncheckedUpdateWithoutUploadSessionInput>
 }
 
-export type StoredFileUpdateWithoutUploadsInput = {
+export type StoredFileUpdateWithoutUploadSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedByUser?: Prisma.UserUpdateOneRequiredWithoutUploadedFilesNestedInput
 }
 
-export type StoredFileUncheckedUpdateWithoutUploadsInput = {
+export type StoredFileUncheckedUpdateWithoutUploadSessionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  hash?: Prisma.StringFieldUpdateOperationsInput | string
-  size?: Prisma.IntFieldUpdateOperationsInput | number
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  uploadedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-
-/**
- * Count Type StoredFileCountOutputType
- */
-
-export type StoredFileCountOutputType = {
-  uploads: number
+export type StoredFileCreateManyUploadedByUserInput = {
+  id?: string
+  checksum: string
+  sizeBytes: bigint | number
+  originalFilename: string
+  mimeType: string
+  storageKey: string
+  cdnUrl: string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
-export type StoredFileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  uploads?: boolean | StoredFileCountOutputTypeCountUploadsArgs
+export type StoredFileUpdateWithoutUploadedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadSession?: Prisma.UploadSessionUpdateOneWithoutFileNestedInput
 }
 
-/**
- * StoredFileCountOutputType without action
- */
-export type StoredFileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StoredFileCountOutputType
-   */
-  select?: Prisma.StoredFileCountOutputTypeSelect<ExtArgs> | null
+export type StoredFileUncheckedUpdateWithoutUploadedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadSession?: Prisma.UploadSessionUncheckedUpdateOneWithoutFileNestedInput
 }
 
-/**
- * StoredFileCountOutputType without action
- */
-export type StoredFileCountOutputTypeCountUploadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UploadedFileWhereInput
+export type StoredFileUncheckedUpdateManyWithoutUploadedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  checksum?: Prisma.StringFieldUpdateOperationsInput | string
+  sizeBytes?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  originalFilename?: Prisma.StringFieldUpdateOperationsInput | string
+  mimeType?: Prisma.StringFieldUpdateOperationsInput | string
+  storageKey?: Prisma.StringFieldUpdateOperationsInput | string
+  cdnUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  metadata?: unknown | Prisma.NullableJsonNullValueInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
+
 
 
 export type StoredFileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  hash?: boolean
-  size?: boolean
+  checksum?: boolean
+  sizeBytes?: boolean
+  originalFilename?: boolean
+  mimeType?: boolean
+  storageKey?: boolean
+  cdnUrl?: boolean
+  metadata?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
-  uploads?: boolean | Prisma.StoredFile$uploadsArgs<ExtArgs>
-  _count?: boolean | Prisma.StoredFileCountOutputTypeDefaultArgs<ExtArgs>
+  updatedAt?: boolean
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  uploadSession?: boolean | Prisma.StoredFile$uploadSessionArgs<ExtArgs>
 }, ExtArgs["result"]["storedFile"]>
 
 export type StoredFileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  hash?: boolean
-  size?: boolean
+  checksum?: boolean
+  sizeBytes?: boolean
+  originalFilename?: boolean
+  mimeType?: boolean
+  storageKey?: boolean
+  cdnUrl?: boolean
+  metadata?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storedFile"]>
 
 export type StoredFileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  hash?: boolean
-  size?: boolean
+  checksum?: boolean
+  sizeBytes?: boolean
+  originalFilename?: boolean
+  mimeType?: boolean
+  storageKey?: boolean
+  cdnUrl?: boolean
+  metadata?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["storedFile"]>
 
 export type StoredFileSelectScalar = {
   id?: boolean
-  hash?: boolean
-  size?: boolean
+  checksum?: boolean
+  sizeBytes?: boolean
+  originalFilename?: boolean
+  mimeType?: boolean
+  storageKey?: boolean
+  cdnUrl?: boolean
+  metadata?: boolean
+  uploadedByUserId?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type StoredFileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "hash" | "size" | "createdAt", ExtArgs["result"]["storedFile"]>
+export type StoredFileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "checksum" | "sizeBytes" | "originalFilename" | "mimeType" | "storageKey" | "cdnUrl" | "metadata" | "uploadedByUserId" | "createdAt" | "updatedAt", ExtArgs["result"]["storedFile"]>
 export type StoredFileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  uploads?: boolean | Prisma.StoredFile$uploadsArgs<ExtArgs>
-  _count?: boolean | Prisma.StoredFileCountOutputTypeDefaultArgs<ExtArgs>
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  uploadSession?: boolean | Prisma.StoredFile$uploadSessionArgs<ExtArgs>
 }
-export type StoredFileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type StoredFileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type StoredFileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type StoredFileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  uploadedByUser?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $StoredFilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StoredFile"
   objects: {
-    uploads: Prisma.$UploadedFilePayload<ExtArgs>[]
+    uploadedByUser: Prisma.$UserPayload<ExtArgs>
+    uploadSession: Prisma.$UploadSessionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    hash: string
-    size: number
+    checksum: string
+    sizeBytes: bigint
+    originalFilename: string
+    mimeType: string
+    storageKey: string
+    cdnUrl: string
+    metadata: unknown | null
+    uploadedByUserId: string
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["storedFile"]>
   composites: {}
 }
@@ -886,7 +1260,8 @@ readonly fields: StoredFileFieldRefs;
  */
 export interface Prisma__StoredFileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  uploads<T extends Prisma.StoredFile$uploadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StoredFile$uploadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UploadedFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  uploadedByUser<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  uploadSession<T extends Prisma.StoredFile$uploadSessionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StoredFile$uploadSessionArgs<ExtArgs>>): Prisma.Prisma__UploadSessionClient<runtime.Types.Result.GetResult<Prisma.$UploadSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -917,9 +1292,16 @@ export interface Prisma__StoredFileClient<T, Null = never, ExtArgs extends runti
  */
 export interface StoredFileFieldRefs {
   readonly id: Prisma.FieldRef<"StoredFile", 'String'>
-  readonly hash: Prisma.FieldRef<"StoredFile", 'String'>
-  readonly size: Prisma.FieldRef<"StoredFile", 'Int'>
+  readonly checksum: Prisma.FieldRef<"StoredFile", 'String'>
+  readonly sizeBytes: Prisma.FieldRef<"StoredFile", 'BigInt'>
+  readonly originalFilename: Prisma.FieldRef<"StoredFile", 'String'>
+  readonly mimeType: Prisma.FieldRef<"StoredFile", 'String'>
+  readonly storageKey: Prisma.FieldRef<"StoredFile", 'String'>
+  readonly cdnUrl: Prisma.FieldRef<"StoredFile", 'String'>
+  readonly metadata: Prisma.FieldRef<"StoredFile", 'Json'>
+  readonly uploadedByUserId: Prisma.FieldRef<"StoredFile", 'String'>
   readonly createdAt: Prisma.FieldRef<"StoredFile", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"StoredFile", 'DateTime'>
 }
     
 
@@ -1169,6 +1551,10 @@ export type StoredFileCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    */
   data: Prisma.StoredFileCreateManyInput | Prisma.StoredFileCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoredFileIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1239,6 +1625,10 @@ export type StoredFileUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * Limit how many StoredFiles to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StoredFileIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1308,27 +1698,22 @@ export type StoredFileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * StoredFile.uploads
+ * StoredFile.uploadSession
  */
-export type StoredFile$uploadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type StoredFile$uploadSessionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UploadedFile
+   * Select specific fields to fetch from the UploadSession
    */
-  select?: Prisma.UploadedFileSelect<ExtArgs> | null
+  select?: Prisma.UploadSessionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UploadedFile
+   * Omit specific fields from the UploadSession
    */
-  omit?: Prisma.UploadedFileOmit<ExtArgs> | null
+  omit?: Prisma.UploadSessionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UploadedFileInclude<ExtArgs> | null
-  where?: Prisma.UploadedFileWhereInput
-  orderBy?: Prisma.UploadedFileOrderByWithRelationInput | Prisma.UploadedFileOrderByWithRelationInput[]
-  cursor?: Prisma.UploadedFileWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.UploadedFileScalarFieldEnum | Prisma.UploadedFileScalarFieldEnum[]
+  include?: Prisma.UploadSessionInclude<ExtArgs> | null
+  where?: Prisma.UploadSessionWhereInput
 }
 
 /**

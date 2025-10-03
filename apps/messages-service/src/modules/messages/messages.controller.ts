@@ -1,25 +1,62 @@
+import { once } from '@gurban/kit/core/once';
 import { Controller } from '@nestjs/common';
-import {
-  CreateMessageRequest,
-  GetMessagesByChatIdRequest,
-  MessagesServiceController,
-  MessagesServiceControllerMethods,
-} from 'src/generated.grpc/src/grpc/messages';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { chatsTopics } from '@poslah/chats-service/modules/chats/chats.topics';
+import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { z } from 'zod/v4';
 
 import { MessagesService } from './messages.service';
 
 @Controller()
-@MessagesServiceControllerMethods()
-export class MessagesController implements MessagesServiceController {
-  constructor(private readonly messagesService: MessagesService) {}
+export class MessagesController {
+  constructor(
+    private readonly messagesService: MessagesService,
+    private readonly loggerBase: Logger
+  ) {}
 
-  async createMessage(data: CreateMessageRequest) {
-    const createdMessage = await this.messagesService.queueMessageForCreation(data);
-    return { message: createdMessage };
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, MessagesController.name);
+  }
+  /**
+   * Listens ONLY to the message CREATION topic.
+   * The pattern and payload type are sourced directly from the `chatsTopics` contract.
+   */
+  @EventPattern(chatsTopics.messageCreated.name)
+  async handleMessageCreate(
+    @Payload() data: z.infer<typeof chatsTopics.messageCreated.schema>,
+    @Ctx() context: RmqContext
+  ) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    try {
+      // We can be certain `data` is a CreateMessageEventDto, so we call `createMessage`.
+      await this.messagesService.createMessage(data);
+      channel.ack(originalMsg);
+    } catch (error) {
+      this.logger.error({ error }, `Failed to process message create event nn=${data.nn}`);
+      channel.nack(originalMsg, false, false);
+    }
   }
 
-  async getMessagesByChatId(data: GetMessagesByChatIdRequest) {
-    const foundMessages = await this.messagesService.findMessagesForChat(data);
-    return { messages: foundMessages };
+  /**
+   * Listens ONLY to the message PATCHING topic.
+   * The pattern and payload type are sourced directly from the `chatsTopics` contract.
+   */
+  @EventPattern(chatsTopics.messagePatched.name)
+  async handleMessagePatch(
+    @Payload() data: z.infer<typeof chatsTopics.messagePatched.schema>,
+    @Ctx() context: RmqContext
+  ) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    try {
+      // We can be certain `data` is an UpdateMessageEventDto, so we call `patchMessage`.
+      await this.messagesService.patchMessage(data);
+      channel.ack(originalMsg);
+    } catch (error) {
+      this.logger.error({ error }, `Failed to process message patch event nn=${data.nn}`);
+      channel.nack(originalMsg, false, false);
+    }
   }
 }

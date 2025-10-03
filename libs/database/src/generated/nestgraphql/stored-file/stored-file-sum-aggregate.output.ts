@@ -1,7 +1,7 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class StoredFileSumAggregate {
-  @Field(() => Int, { nullable: true })
-  size?: number;
+  @Field(() => String, { nullable: true })
+  sizeBytes?: bigint | number;
 }

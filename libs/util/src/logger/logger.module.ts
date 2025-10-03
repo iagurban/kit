@@ -1,18 +1,21 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { FastifyRequest } from 'fastify';
-import { InjectPinoLogger, LoggerModule as PinoLoggerModule, PinoLogger } from 'nestjs-pino';
+import { LoggerModule as PinoLoggerModule, PinoLogger } from 'nestjs-pino';
+import { BaseLogger as PinoBaseLogger } from 'pino';
 
-// private
-@Module({})
-class SharedLoggerModule {}
+import { ExtendedJsonObject } from '../json-type';
 
-export const LoggerModule: DynamicModule = {
-  global: true,
-  module: SharedLoggerModule,
+export type BaseLogger = PinoBaseLogger;
+
+export class Logger extends PinoLogger {}
+
+@Global()
+@Module({
   imports: [
     PinoLoggerModule.forRootAsync({
       inject: [ConfigService],
+      providers: [Logger],
       useFactory: (configService: ConfigService) => {
         const isProduction = configService.get<string>('NODE_ENV') === 'production';
         return {
@@ -44,8 +47,15 @@ export const LoggerModule: DynamicModule = {
       },
     }),
   ],
-  exports: [PinoLoggerModule],
-};
 
-export const InjectLogger = InjectPinoLogger;
-export class Logger extends PinoLogger {}
+  providers: [Logger],
+  // We must export `Logger` so other modules can import this module and inject `Logger`.
+  exports: [Logger, PinoLoggerModule],
+})
+export class LoggerModule {}
+
+export const createContextualLogger = (
+  logger: Logger,
+  name: string,
+  payload?: ExtendedJsonObject
+): BaseLogger => logger.logger.child({ ...payload, context: name });

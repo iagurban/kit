@@ -4,6 +4,28 @@
   "sourceRoot": "libs/database/src",
   "projectType": "application",
   "targets": {
+    "migrate-cql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "$(yarn bin tsx) cql/bin/migrate.ts up",
+        "cwd": "libs/database"
+      }
+    },
+    "migrate-cql-status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "$(yarn bin tsx) cql/bin/migrate.ts status",
+        "cwd": "libs/database"
+      }
+    },
+    "migrate-cql-create": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "$(yarn bin tsx) cql/bin/migrate.ts create {args.name}",
+        "cwd": "libs/database"
+      }
+    },
+
     "_clean": {
       "executor": "nx:run-commands",
       "options": {

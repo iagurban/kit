@@ -1,9 +1,6 @@
 {
-  "files": [],
-  "references": [
-    { "path": "apps/messages-service" },
-    { "path": "libs/kit" },
-    { "path": "libs/kit-ui" }
-  ]
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/"
+  }
 }
-
