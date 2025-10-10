@@ -16,4 +16,10 @@ export class ChatUncheckedUpdateManyInput {
 
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   avatar?: NullableStringFieldUpdateOperationsInput;
+
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  ownerId?: StringFieldUpdateOperationsInput;
+
+  @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+  defaultRoleId?: NullableStringFieldUpdateOperationsInput;
 }

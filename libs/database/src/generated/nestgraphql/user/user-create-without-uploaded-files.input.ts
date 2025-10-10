@@ -1,7 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatCreateNestedManyWithoutOwnerInput } from '../chat/chat-create-nested-many-without-owner.input';
 import { ChatEventCreateNestedManyWithoutAuthorInput } from '../chat-event/chat-event-create-nested-many-without-author.input';
+import { ChatMemberCreateNestedManyWithoutUserInput } from '../chat-member/chat-member-create-nested-many-without-user.input';
 import { RefreshTokenCreateNestedManyWithoutUserInput } from '../refresh-token/refresh-token-create-nested-many-without-user.input';
+import { UserChatPermissionsCreateNestedManyWithoutUserInput } from '../user-chat-permissions/user-chat-permissions-create-nested-many-without-user.input';
 
 @InputType()
 export class UserCreateWithoutUploadedFilesInput {
@@ -28,4 +31,13 @@ export class UserCreateWithoutUploadedFilesInput {
 
   @Field(() => ChatEventCreateNestedManyWithoutAuthorInput, { nullable: true })
   chatEvents?: ChatEventCreateNestedManyWithoutAuthorInput;
+
+  @Field(() => UserChatPermissionsCreateNestedManyWithoutUserInput, { nullable: true })
+  chatsPermissions?: UserChatPermissionsCreateNestedManyWithoutUserInput;
+
+  @Field(() => ChatMemberCreateNestedManyWithoutUserInput, { nullable: true })
+  chatsMmbership?: ChatMemberCreateNestedManyWithoutUserInput;
+
+  @Field(() => ChatCreateNestedManyWithoutOwnerInput, { nullable: true })
+  ownChats?: ChatCreateNestedManyWithoutOwnerInput;
 }

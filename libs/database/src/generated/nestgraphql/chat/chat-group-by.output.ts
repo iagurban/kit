@@ -18,6 +18,12 @@ export class ChatGroupBy {
   @Field(() => String, { nullable: true })
   avatar?: string;
 
+  @Field(() => String, { nullable: false })
+  ownerId!: string;
+
+  @Field(() => String, { nullable: true })
+  defaultRoleId?: string;
+
   @Field(() => ChatCountAggregate, { nullable: true })
   _count?: ChatCountAggregate;
 

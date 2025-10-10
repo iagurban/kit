@@ -10,6 +10,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
+import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
@@ -102,6 +103,7 @@ import { AuthService } from './auth/auth.service';
       useValue: GraphQLISODateTime,
     },
     AuthService,
+    UsersService,
   ],
 })
 export class AppModule {}

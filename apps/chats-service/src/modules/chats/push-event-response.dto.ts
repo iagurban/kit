@@ -13,5 +13,5 @@ export class PushEventResponseDto {
    * The server timestamp when the event was accepted.
    */
   @Field(() => Date, { description: 'Серверное время генерации события' })
-  serverTime!: Date;
+  createdAt!: Date;
 }

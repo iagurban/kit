@@ -21,15 +21,7 @@ export class ChatEvent {
   @Field(() => String, { nullable: false })
   type!: string;
 
-  /**
-   * @DtoName ChatEventPayload
-   * @DtoType { "message": MessagePayload; "info": ChatInfoInfoPayload }
-   */
-  @Field(() => GraphQLJSON, {
-    description:
-      '@DtoName ChatEventPayload\n@DtoType { "message": MessagePayload; "info": ChatInfoInfoPayload }',
-    nullable: false,
-  })
+  @Field(() => GraphQLJSON, { nullable: false })
   payload!: any;
 
   @Field(() => Date, { nullable: false })

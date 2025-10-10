@@ -13,7 +13,7 @@ void fastifyBootstrap(AppModule, {
       options: {
         url: config.getOrThrow<string>('GRPC_URL'),
         package: 'chats',
-        protoPath: join(__dirname, 'chats.proto'),
+        protoPath: join(__dirname, 'files.proto'),
         loader: { keepCase: true },
       },
     },

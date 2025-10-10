@@ -25,11 +25,6 @@ export type DMMF = typeof runtime.DMMF
 export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
 
 /**
- * Validator
- */
-export const validator = runtime.Public.validator
-
-/**
  * Prisma Errors
  */
 
@@ -92,12 +87,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 6.15.0
- * Query Engine version: 85179d7826409ee107a6ba334b5e305ae3fba9fb
+ * Prisma Client JS version: 6.17.0
+ * Query Engine version: c0aafc03b8ef6cdced8654b9a817999e02457d6a
  */
 export const prismaVersion: PrismaVersion = {
-  client: "6.15.0",
-  engine: "85179d7826409ee107a6ba334b5e305ae3fba9fb"
+  client: "6.17.0",
+  engine: "c0aafc03b8ef6cdced8654b9a817999e02457d6a"
 }
 
 /**
@@ -111,32 +106,31 @@ export type InputJsonObject = runtime.InputJsonObject
 export type InputJsonArray = runtime.InputJsonArray
 export type InputJsonValue = runtime.InputJsonValue
 
+
 export const NullTypes = {
   DbNull: runtime.objectEnumValues.classes.DbNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.DbNull),
   JsonNull: runtime.objectEnumValues.classes.JsonNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.JsonNull),
   AnyNull: runtime.objectEnumValues.classes.AnyNull as (new (secret: never) => typeof runtime.objectEnumValues.instances.AnyNull),
 }
-
 /**
  * Helper for filtering JSON entries that have `null` on the database (empty on the db)
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
 export const DbNull = runtime.objectEnumValues.instances.DbNull
-
 /**
  * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
 export const JsonNull = runtime.objectEnumValues.instances.JsonNull
-
 /**
  * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
  *
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
 export const AnyNull = runtime.objectEnumValues.instances.AnyNull
+
 
 type SelectAndInclude = {
   select: any
@@ -402,7 +396,10 @@ export const ModelName = {
   Chat: 'Chat',
   ChatEventsCounter: 'ChatEventsCounter',
   MessagesCounter: 'MessagesCounter',
-  ChatEvent: 'ChatEvent'
+  ChatEvent: 'ChatEvent',
+  ChatRole: 'ChatRole',
+  UserChatPermissions: 'UserChatPermissions',
+  ChatMember: 'ChatMember'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "refreshToken" | "storedFile" | "uploadSession" | "uploadChunk" | "chat" | "chatEventsCounter" | "messagesCounter" | "chatEvent"
+    modelProps: "user" | "refreshToken" | "storedFile" | "uploadSession" | "uploadChunk" | "chat" | "chatEventsCounter" | "messagesCounter" | "chatEvent" | "chatRole" | "userChatPermissions" | "chatMember"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1088,6 +1085,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ChatRole: {
+      payload: Prisma.$ChatRolePayload<ExtArgs>
+      fields: Prisma.ChatRoleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatRoleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatRoleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        findFirst: {
+          args: Prisma.ChatRoleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatRoleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        findMany: {
+          args: Prisma.ChatRoleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>[]
+        }
+        create: {
+          args: Prisma.ChatRoleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        createMany: {
+          args: Prisma.ChatRoleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChatRoleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>[]
+        }
+        delete: {
+          args: Prisma.ChatRoleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        update: {
+          args: Prisma.ChatRoleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatRoleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatRoleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChatRoleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>[]
+        }
+        upsert: {
+          args: Prisma.ChatRoleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatRolePayload>
+        }
+        aggregate: {
+          args: Prisma.ChatRoleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChatRole>
+        }
+        groupBy: {
+          args: Prisma.ChatRoleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatRoleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatRoleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatRoleCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserChatPermissions: {
+      payload: Prisma.$UserChatPermissionsPayload<ExtArgs>
+      fields: Prisma.UserChatPermissionsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserChatPermissionsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserChatPermissionsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        findFirst: {
+          args: Prisma.UserChatPermissionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserChatPermissionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        findMany: {
+          args: Prisma.UserChatPermissionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>[]
+        }
+        create: {
+          args: Prisma.UserChatPermissionsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        createMany: {
+          args: Prisma.UserChatPermissionsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserChatPermissionsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>[]
+        }
+        delete: {
+          args: Prisma.UserChatPermissionsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        update: {
+          args: Prisma.UserChatPermissionsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserChatPermissionsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserChatPermissionsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserChatPermissionsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserChatPermissionsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserChatPermissionsPayload>
+        }
+        aggregate: {
+          args: Prisma.UserChatPermissionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserChatPermissions>
+        }
+        groupBy: {
+          args: Prisma.UserChatPermissionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserChatPermissionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserChatPermissionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserChatPermissionsCountAggregateOutputType> | number
+        }
+      }
+    }
+    ChatMember: {
+      payload: Prisma.$ChatMemberPayload<ExtArgs>
+      fields: Prisma.ChatMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ChatMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ChatMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.ChatMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ChatMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        findMany: {
+          args: Prisma.ChatMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+        }
+        create: {
+          args: Prisma.ChatMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        createMany: {
+          args: Prisma.ChatMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ChatMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.ChatMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        update: {
+          args: Prisma.ChatMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.ChatMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ChatMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ChatMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.ChatMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.ChatMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateChatMember>
+        }
+        groupBy: {
+          args: Prisma.ChatMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ChatMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ChatMemberCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1196,7 +1415,9 @@ export const ChatScalarFieldEnum = {
   id: 'id',
   title: 'title',
   bio: 'bio',
-  avatar: 'avatar'
+  avatar: 'avatar',
+  ownerId: 'ownerId',
+  defaultRoleId: 'defaultRoleId'
 } as const
 
 export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
@@ -1229,6 +1450,36 @@ export const ChatEventScalarFieldEnum = {
 } as const
 
 export type ChatEventScalarFieldEnum = (typeof ChatEventScalarFieldEnum)[keyof typeof ChatEventScalarFieldEnum]
+
+
+export const ChatRoleScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  name: 'name',
+  tags: 'tags',
+  permissions: 'permissions'
+} as const
+
+export type ChatRoleScalarFieldEnum = (typeof ChatRoleScalarFieldEnum)[keyof typeof ChatRoleScalarFieldEnum]
+
+
+export const UserChatPermissionsScalarFieldEnum = {
+  userId: 'userId',
+  chatId: 'chatId',
+  roleId: 'roleId',
+  permissions: 'permissions'
+} as const
+
+export type UserChatPermissionsScalarFieldEnum = (typeof UserChatPermissionsScalarFieldEnum)[keyof typeof UserChatPermissionsScalarFieldEnum]
+
+
+export const ChatMemberScalarFieldEnum = {
+  userId: 'userId',
+  chatId: 'chatId',
+  joinedAt: 'joinedAt'
+} as const
+
+export type ChatMemberScalarFieldEnum = (typeof ChatMemberScalarFieldEnum)[keyof typeof ChatMemberScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1335,7 +1586,9 @@ export const ChatOrderByRelevanceFieldEnum = {
   id: 'id',
   title: 'title',
   bio: 'bio',
-  avatar: 'avatar'
+  avatar: 'avatar',
+  ownerId: 'ownerId',
+  defaultRoleId: 'defaultRoleId'
 } as const
 
 export type ChatOrderByRelevanceFieldEnum = (typeof ChatOrderByRelevanceFieldEnum)[keyof typeof ChatOrderByRelevanceFieldEnum]
@@ -1362,6 +1615,32 @@ export const ChatEventOrderByRelevanceFieldEnum = {
 } as const
 
 export type ChatEventOrderByRelevanceFieldEnum = (typeof ChatEventOrderByRelevanceFieldEnum)[keyof typeof ChatEventOrderByRelevanceFieldEnum]
+
+
+export const ChatRoleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  name: 'name'
+} as const
+
+export type ChatRoleOrderByRelevanceFieldEnum = (typeof ChatRoleOrderByRelevanceFieldEnum)[keyof typeof ChatRoleOrderByRelevanceFieldEnum]
+
+
+export const UserChatPermissionsOrderByRelevanceFieldEnum = {
+  userId: 'userId',
+  chatId: 'chatId',
+  roleId: 'roleId'
+} as const
+
+export type UserChatPermissionsOrderByRelevanceFieldEnum = (typeof UserChatPermissionsOrderByRelevanceFieldEnum)[keyof typeof UserChatPermissionsOrderByRelevanceFieldEnum]
+
+
+export const ChatMemberOrderByRelevanceFieldEnum = {
+  userId: 'userId',
+  chatId: 'chatId'
+} as const
+
+export type ChatMemberOrderByRelevanceFieldEnum = (typeof ChatMemberOrderByRelevanceFieldEnum)[keyof typeof ChatMemberOrderByRelevanceFieldEnum]
 
 
 
@@ -1455,6 +1734,20 @@ export type ListEnumUploadStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
+ * Reference to a field of type 'ChatRoleTag[]'
+ */
+export type ListEnumChatRoleTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatRoleTag[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ChatRoleTag'
+ */
+export type EnumChatRoleTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatRoleTag'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1534,6 +1827,10 @@ export interface PrismaClientOptions {
     isolationLevel?: TransactionIsolationLevel
   }
   /**
+   * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+   */
+  adapter?: runtime.SqlDriverAdapterFactory | null
+  /**
    * Global configuration for omitting model fields by default.
    * 
    * @example
@@ -1559,6 +1856,9 @@ export type GlobalOmitConfig = {
   chatEventsCounter?: Prisma.ChatEventsCounterOmit
   messagesCounter?: Prisma.MessagesCounterOmit
   chatEvent?: Prisma.ChatEventOmit
+  chatRole?: Prisma.ChatRoleOmit
+  userChatPermissions?: Prisma.UserChatPermissionsOmit
+  chatMember?: Prisma.ChatMemberOmit
 }
 
 /* Types for Logging */

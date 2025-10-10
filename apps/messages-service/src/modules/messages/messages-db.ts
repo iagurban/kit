@@ -23,6 +23,7 @@ export const messageSchema = z.object({
   forwarded: z.array(forwardInfoSchema).nullable(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  deletedAt: z.coerce.date().nullable(),
   editedAt: z.coerce.date().nullable(),
   editedNn: z.coerce.bigint().nullable(),
 });
@@ -49,6 +50,17 @@ export const mapAttachmentFromDb = (dbObject: AttachmentDb): AttachmentInfoDto =
   filename: dbObject.filename,
   size: dbObject.size,
   metadata: dbObject.metadata,
+});
+/**
+ * Maps the ForwardInfoDto from the event to the snake_case format for ScyllaDB.
+ */
+const mapForwardToDb = (forward: ForwardInfoDto) => ({
+  chat_id: forward.chatId,
+  nn: forward.nn,
+  text: forward.text,
+  author_id: forward.authorId,
+  created_at: forward.createdAt,
+  attachments: forward.attachments?.map(mapAttachmentToDb),
 });
 type ForwardDb = ReturnType<typeof mapForwardToDb>;
 export const mapForwardFromDb = (dbObject: ForwardDb): ForwardInfoDto => ({
@@ -147,6 +159,11 @@ const messagesDbInfo = (() => {
       insertValue: () => null,
       updateValue: (p, context) => context.latestEventTime,
     },
+    deleted_at: {
+      cc: `deletedAt`,
+      insertValue: () => null,
+      updateValue: p => p.deletedAt,
+    },
     updated_at: {
       cc: 'updatedAt',
       insertValue: () => new Date().toISOString(),
@@ -184,18 +201,6 @@ export class LwtError extends Error {
     this.name = 'LwtError';
   }
 }
-
-/**
- * Maps the ForwardInfoDto from the event to the snake_case format for ScyllaDB.
- */
-const mapForwardToDb = (forward: ForwardInfoDto) => ({
-  chat_id: forward.chatId,
-  nn: forward.nn,
-  text: forward.text,
-  author_id: forward.authorId,
-  created_at: forward.createdAt,
-  attachments: forward.attachments?.map(mapAttachmentToDb),
-});
 
 type SelectedMessage<S extends Partial<Record<keyof MessageDto, boolean>>> = Pick<
   MessageDto,
@@ -278,7 +283,7 @@ export class MessagesDb {
       if (value !== undefined) {
         const index = sortedIndex(columns, columnName);
         columns.splice(index, 0, columnName);
-        params.splice(index, 0, value);
+        params.splice(index, 0, value ?? null);
       }
     }
 

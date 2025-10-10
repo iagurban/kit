@@ -3,14 +3,14 @@ import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { ChatsServiceClient } from '@poslah/chats-service/generated.grpc/chats';
-import { chatsTopics } from '@poslah/chats-service/modules/chats/chats.topics';
 import type {
   CreateMessageEventDTO,
   MessageEventDto,
   UpdateMessageEventDTO,
 } from '@poslah/chats-service/modules/chats/raw-event-schema';
+import { messageCreatedEventTopic } from '@poslah/chats-service/modules/chats/topic/message-created-event.topic';
+import { messagePatchedEventTopic } from '@poslah/chats-service/modules/chats/topic/message-patched-event.topic';
 import { DbService } from '@poslah/database/db/db.service';
-import { KafkaService } from '@poslah/database/kafka/kafka.service';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufTimestampToDate } from '@poslah/util/protobuf-timestamp-to-date';
 import { retrying } from '@poslah/util/retrying';
@@ -24,7 +24,6 @@ export class MessagesService implements OnModuleInit {
 
   constructor(
     private readonly db: DbService,
-    private readonly kafkaClient: KafkaService,
     private readonly loggerBase: Logger,
     private readonly messagesDb: MessagesDb,
     @Inject('CHATS_SERVICE_CLIENT') private readonly grpcClient: ClientGrpc
@@ -64,8 +63,8 @@ export class MessagesService implements OnModuleInit {
       const createdMessage = await this.messagesDb.get(event.chatId, messageNn);
       if (createdMessage) {
         this.kafkaClient.emit(
-          chatsTopics.messageCreated.name,
-          chatsTopics.messageCreated.schema.parse(createdMessage)
+          messageCreatedEventTopic.name,
+          messageCreatedEventTopic.schema.parse(createdMessage)
         );
       }
     } catch (error) {
@@ -89,8 +88,8 @@ export class MessagesService implements OnModuleInit {
       const finalMessageState = await this.messagesDb.get(chatId, targetMessageNn);
       if (finalMessageState) {
         this.kafkaClient.emit(
-          chatsTopics.messagePatched.name,
-          chatsTopics.messagePatched.schema.parse(finalMessageState)
+          messagePatchedEventTopic.name,
+          messagePatchedEventTopic.schema.parse(finalMessageState)
         );
       }
     } catch (error) {

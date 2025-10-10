@@ -10,25 +10,24 @@ import { createContextualLogger, Logger } from '@poslah/util/logger/logger.modul
 import { RegistryConsumerService } from '../../registry-consumer.service';
 import { GraphqlAppModule } from '../graphql-app/graphql-app.module';
 
-const defaultGraphqlInternalPort = 34982;
-
-export const getInternalGraphqlPort = (config: ConfigService) =>
-  checked(
-    Number(config.get(`GATE_GRAPHQL_INTERNAL_PORT`) ?? defaultGraphqlInternalPort),
-    isInteger,
-    () => `GATE_GRAPHQL_INTERNAL_PORT must be integer`
-  );
-
 @Injectable()
 export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdown {
   private graphqlApp: { app: NestFastifyApplication; sdl: string } | null = null;
   private subscription: (() => void) | undefined;
 
+  readonly internalPort: number;
+
   constructor(
     private readonly registry: RegistryConsumerService,
     private readonly loggerBase: Logger,
-    private readonly config: ConfigService
-  ) {}
+    config: ConfigService
+  ) {
+    this.internalPort = checked(
+      Number(config.get(`GATE_GRAPHQL_INTERNAL_PORT`, 34982)),
+      isInteger,
+      () => `GATE_GRAPHQL_INTERNAL_PORT must be integer`
+    );
+  }
 
   @once
   get logger() {
@@ -41,7 +40,6 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
       this.registry.supergraphSdlResource.fetch(true);
       this.restartGraphqlApp();
     });
-    await this.registry.supergraphSdlResource.fetch();
     await this.restartGraphqlApp();
   }
 
@@ -84,7 +82,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         this.graphqlApp = null;
         await oldApp?.close();
 
-        await graphqlApp.app.listen(getInternalGraphqlPort(this.config), '127.0.0.1');
+        await graphqlApp.app.listen(this.internalPort, '127.0.0.1');
         this.graphqlApp = graphqlApp;
 
         this.logger.info('✅ New GraphQL App instance is active and listening on port 4001.');

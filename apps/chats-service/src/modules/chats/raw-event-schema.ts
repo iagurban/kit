@@ -1,8 +1,7 @@
+import { mapOwnEntries } from '@gurban/kit/utils/object-utils';
 import { jsonObjectSchema } from '@poslah/util/json-type';
 import { stringifiedBigint, stringifiedISODate } from '@poslah/util/zod';
 import { z } from 'zod/v4';
-
-
 
 export const attachmentInfoSchema = z.object({
   fileId: z.uuid(),
@@ -31,6 +30,7 @@ const messageMainPartSchema = z.object({
   replyToNn: stringifiedBigint.nullable(),
   attachments: z.array(attachmentInfoSchema).optional(),
   forwarded: z.array(forwardInfoSchema).optional(),
+  deletedAt: stringifiedISODate.optional(),
 });
 
 const messageEventPayloadSchema = <Nn extends z.ZodType>(nn: Nn) =>
@@ -85,7 +85,53 @@ export const infoEventSchema = baseEventSchema.extend({
     }),
 });
 
+export type InfoEventDto = z.infer<typeof infoEventSchema>;
+
+const permissionsCommonFields = {
+  sendMessage: z.boolean(),
+  deleteOwnMessages: z.boolean(),
+  deleteAllMessages: z.boolean(),
+  invite: z.boolean(),
+  kick: z.boolean(),
+  editInfo: z.boolean(),
+  joinByInvite: z.boolean(),
+  joinByButton: z.boolean(),
+} as const;
+
+export const updateChatPermissionsSchema = z.object(
+  mapOwnEntries(permissionsCommonFields, v => v.nullable())
+);
+
+export type UpdateChatPermissionsDto = z.infer<typeof updateChatPermissionsSchema>;
+
+export const chatPermissionsSchema = z.object(permissionsCommonFields).extend({
+  changeOwner: z.boolean(),
+});
+
+export type ChatPermissionsDto = z.infer<typeof chatPermissionsSchema>;
+
+const membershipEventPayloadSchema = z.object({
+  // The user whose membership is being changed.
+  userId: z.uuid(),
+  // The action that was performed.
+  action: z.enum(['added', 'removed', 'updated']),
+  // The new set of permissions for the user.
+  permissions: updateChatPermissionsSchema.partial().optional(),
+  // The new role for the user.
+  roleId: z.uuid().optional(),
+});
+
+export const membershipEventSchema = baseEventSchema.extend({
+  type: z.literal('membership'),
+  payload: membershipEventPayloadSchema,
+});
+export type MembershipEventDto = z.infer<typeof membershipEventSchema>;
+
 // === Final event schema ===
-export const rawEventSchema = z.discriminatedUnion('type', [someMessageEventSchema, infoEventSchema]);
+export const rawEventSchema = z.discriminatedUnion('type', [
+  someMessageEventSchema,
+  infoEventSchema,
+  membershipEventSchema,
+]);
 
 export type RawEventDto = z.infer<typeof rawEventSchema>;

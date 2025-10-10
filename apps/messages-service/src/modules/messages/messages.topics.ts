@@ -2,7 +2,5 @@ import { declareEventsTopic } from '@poslah/util/declare-events-topic';
 
 import { messageSchema } from './messages-db';
 
-export const messagesTopics = {
-  created: declareEventsTopic('projection.messages.created', messageSchema),
-  patched: declareEventsTopic('projection.messages.patched', messageSchema),
-} as const;
+export const projectionMessagesCreated = declareEventsTopic('projection.messages.created', messageSchema);
+export const projectionMessagesPatched = declareEventsTopic('projection.messages.patched', messageSchema);

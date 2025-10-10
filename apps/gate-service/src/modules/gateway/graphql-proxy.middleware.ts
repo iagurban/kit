@@ -1,20 +1,16 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { getInternalGraphqlPort, GraphqlGatewayManager } from './graphql-gateway.manager';
+import { GraphqlGatewayManager } from './graphql-gateway.manager';
 
 @Injectable()
 export class GraphQLProxyMiddleware implements NestMiddleware<FastifyRequest['raw'], FastifyReply['raw']> {
   private readonly proxy: ReturnType<typeof createProxyMiddleware>;
 
-  constructor(
-    private readonly config: ConfigService,
-    private readonly gatewayManager: GraphqlGatewayManager
-  ) {
+  constructor(private readonly gatewayManager: GraphqlGatewayManager) {
     this.proxy = createProxyMiddleware({
-      target: `http://localhost:${getInternalGraphqlPort(this.config)}`,
+      target: `http://localhost:${gatewayManager.internalPort}`,
       ws: true, // Enable WebSocket proxying for subscriptions
       changeOrigin: true,
     });

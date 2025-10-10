@@ -13,4 +13,10 @@ export class ChatMaxAggregate {
 
   @Field(() => String, { nullable: true })
   avatar?: string;
+
+  @Field(() => String, { nullable: true })
+  ownerId?: string;
+
+  @Field(() => String, { nullable: true })
+  defaultRoleId?: string;
 }

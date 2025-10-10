@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
-    "tsBuildInfoFile": ".tsbuildinfo",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
 
     "baseUrl": ".",
     "rootDir": "../..",
@@ -26,6 +26,7 @@
       "@poslah/database/*": ["../../libs/database/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
       "@poslah/auth-service/*": ["../../apps/auth-service/src/*"],
+      "@poslah/messages-service/*": ["../../apps/messages-service/src/*"]
     }
   },
   "include": ["src", "test"]

@@ -1,12 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatListRelationFilter } from '../chat/chat-list-relation-filter.input';
 import { ChatEventListRelationFilter } from '../chat-event/chat-event-list-relation-filter.input';
+import { ChatMemberListRelationFilter } from '../chat-member/chat-member-list-relation-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { UuidFilter } from '../prisma/uuid-filter.input';
 import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-list-relation-filter.input';
 import { StoredFileListRelationFilter } from '../stored-file/stored-file-list-relation-filter.input';
+import { UserChatPermissionsListRelationFilter } from '../user-chat-permissions/user-chat-permissions-list-relation-filter.input';
 
 @InputType()
 export class UserWhereInput {
@@ -45,4 +48,13 @@ export class UserWhereInput {
 
   @Field(() => ChatEventListRelationFilter, { nullable: true })
   chatEvents?: ChatEventListRelationFilter;
+
+  @Field(() => UserChatPermissionsListRelationFilter, { nullable: true })
+  chatsPermissions?: UserChatPermissionsListRelationFilter;
+
+  @Field(() => ChatMemberListRelationFilter, { nullable: true })
+  chatsMmbership?: ChatMemberListRelationFilter;
+
+  @Field(() => ChatListRelationFilter, { nullable: true })
+  ownChats?: ChatListRelationFilter;
 }

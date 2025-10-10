@@ -90,7 +90,7 @@
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
         "commands": [
-          "yarn cpx '{projectRoot}/src/**/*.proto' '{projectRoot}/dist/{projectRoot}/src' --update"
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua}' -x '**/node_modules/**' -x '**/dist/**' -v '{projectRoot}/dist'"
         ],
         "stopOnFail": true,
         "cwd": "{workspaceRoot}"
@@ -129,7 +129,7 @@
       "options": {
         "commands": [
           "mkdir -p ./src/generated.grpc",
-          "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true,forceLong=bigint --ts_proto_out=./src/generated.grpc ./src/grpc/{protoFileName}.proto"
+          "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true,forceLong=long --ts_proto_out=./src/generated.grpc ./src/grpc/{protoFileName}.proto"
         ],
         "cwd": "{workspaceRoot}/{projectRoot}"
       }

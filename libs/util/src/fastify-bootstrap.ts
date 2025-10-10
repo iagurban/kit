@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { RawServerDefault } from 'fastify';
-import { Logger as RootLogger } from 'nestjs-pino/Logger';
 
 import { AllExceptionsFilter } from './all-exceptions-filter';
 import { Logger } from './logger/logger.module';
@@ -17,11 +16,12 @@ type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntry
 
 export const fastifyBootstrap = async (
   nestModule: IEntryNestModule,
+  port: number | null | ((config: ConfigService) => number | null),
   options: {
     microservices?: (app: NestFastifyApplication, config: ConfigService) => readonly MicroserviceOptions[];
     bodyParser?: boolean;
-    noListen?: boolean;
     noHotReload?: boolean;
+    server?: string | ((config: ConfigService) => string);
   }
 ): Promise<NestFastifyApplication<RawServerDefault>> => {
   const app = await NestFactory.create<NestFastifyApplication>(nestModule, new FastifyAdapter(), {
@@ -29,10 +29,10 @@ export const fastifyBootstrap = async (
     bodyParser: options.bodyParser ?? true,
   });
 
-  app.useLogger(app.get(RootLogger));
+  // app.useLogger(app.get(Logger));
 
   const rootLogger = app.get(Logger);
-  const logger = rootLogger.logger.child({ context: 'Bootstrap' });
+  const logger = rootLogger.child({ context: 'Bootstrap' });
 
   try {
     const configService = app.get(ConfigService);
@@ -50,13 +50,20 @@ export const fastifyBootstrap = async (
       logger.info('All microservices started successfully.');
     }
 
-    if (options.noListen !== true) {
-      // --- Запуск основного HTTP-сервера ---
-      const port = configService.get<number>('PORT', 3000);
-      await app.listen(port, '0.0.0.0');
+    const portValue = typeof port === 'function' ? port(configService) : port;
 
-      logger.info(`🚀 Application is running in hybrid mode on port ${port}`);
-      logger.info(`📡 gRPC listening on ${configService.get('GRPC_URL')}`);
+    if (portValue != null) {
+      await app.listen(
+        portValue,
+        options.server
+          ? typeof options.server === 'function'
+            ? options.server(configService)
+            : options.server
+          : '0.0.0.0'
+      );
+
+      logger.info(`🚀 Application is running in hybrid mode on port ${portValue}`);
+      // logger.info(`📡 gRPC listening on ${configService.get('GRPC_URL')}`);
     }
 
     // --- HMR для разработки ---

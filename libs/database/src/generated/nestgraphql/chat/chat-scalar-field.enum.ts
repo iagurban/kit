@@ -5,6 +5,8 @@ export enum ChatScalarFieldEnum {
   title = 'title',
   bio = 'bio',
   avatar = 'avatar',
+  ownerId = 'ownerId',
+  defaultRoleId = 'defaultRoleId',
 }
 
 registerEnumType(ChatScalarFieldEnum, { name: 'ChatScalarFieldEnum', description: undefined });

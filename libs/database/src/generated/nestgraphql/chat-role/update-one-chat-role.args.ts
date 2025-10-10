@@ -1,0 +1,17 @@
+import { ArgsType, Field } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+
+import { Prisma } from '../../db-client';
+import { ChatRoleUpdateInput } from './chat-role-update.input';
+import { ChatRoleWhereUniqueInput } from './chat-role-where-unique.input';
+
+@ArgsType()
+export class UpdateOneChatRoleArgs {
+  @Field(() => ChatRoleUpdateInput, { nullable: false })
+  @Type(() => ChatRoleUpdateInput)
+  data!: ChatRoleUpdateInput;
+
+  @Field(() => ChatRoleWhereUniqueInput, { nullable: false })
+  @Type(() => ChatRoleWhereUniqueInput)
+  where!: Prisma.AtLeast<ChatRoleWhereUniqueInput, 'id' | 'chatId_name'>;
+}

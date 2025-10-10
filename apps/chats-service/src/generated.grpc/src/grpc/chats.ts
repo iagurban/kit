@@ -7,8 +7,9 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
-import { Observable } from "rxjs";
 import { Struct } from "../../google/protobuf/struct";
+import Long = require("long");
+import { Observable } from "rxjs";
 import { Timestamp } from "../../google/protobuf/timestamp";
 
 export const protobufPackage = "poslah.chats";
@@ -18,15 +19,15 @@ export interface GetLastMessageEventsRequest {
   /** The UUID of the chat to fetch events for. */
   chatId: string;
   /** The `nn` of the message for which we are getting events. */
-  messageNn: bigint;
+  messageNn: Long;
   /** The event `nn` after which to start fetching. */
-  afterNn: bigint;
+  afterNn: Long;
 }
 
 /** A single event, containing its number and payload. */
 export interface LastMessageEvent {
   /** The event's unique sequence number within the chat. */
-  nn: bigint;
+  nn: Long;
   /** The payload of the event (with message partial snapshot). */
   payload: { [key: string]: any } | undefined;
 }

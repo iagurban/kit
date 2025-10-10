@@ -13,4 +13,10 @@ export class ChatMinAggregateInput {
 
   @Field(() => Boolean, { nullable: true })
   avatar?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  ownerId?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  defaultRoleId?: true;
 }

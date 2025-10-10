@@ -15,4 +15,10 @@ export class ChatCountOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   avatar?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  ownerId?: `${SortOrder}`;
+
+  @Field(() => SortOrder, { nullable: true })
+  defaultRoleId?: `${SortOrder}`;
 }

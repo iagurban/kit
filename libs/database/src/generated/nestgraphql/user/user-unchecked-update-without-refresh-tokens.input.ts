@@ -1,10 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
 
+import { ChatUncheckedUpdateManyWithoutOwnerNestedInput } from '../chat/chat-unchecked-update-many-without-owner-nested.input';
 import { ChatEventUncheckedUpdateManyWithoutAuthorNestedInput } from '../chat-event/chat-event-unchecked-update-many-without-author-nested.input';
+import { ChatMemberUncheckedUpdateManyWithoutUserNestedInput } from '../chat-member/chat-member-unchecked-update-many-without-user-nested.input';
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
 import { StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput } from '../stored-file/stored-file-unchecked-update-many-without-uploaded-by-user-nested.input';
+import { UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput } from '../user-chat-permissions/user-chat-permissions-unchecked-update-many-without-user-nested.input';
 
 @InputType()
 export class UserUncheckedUpdateWithoutRefreshTokensInput {
@@ -31,4 +34,13 @@ export class UserUncheckedUpdateWithoutRefreshTokensInput {
 
   @Field(() => ChatEventUncheckedUpdateManyWithoutAuthorNestedInput, { nullable: true })
   chatEvents?: ChatEventUncheckedUpdateManyWithoutAuthorNestedInput;
+
+  @Field(() => UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
+  chatsPermissions?: UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput;
+
+  @Field(() => ChatMemberUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
+  chatsMmbership?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput;
+
+  @Field(() => ChatUncheckedUpdateManyWithoutOwnerNestedInput, { nullable: true })
+  ownChats?: ChatUncheckedUpdateManyWithoutOwnerNestedInput;
 }

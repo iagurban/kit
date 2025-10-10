@@ -15,3 +15,14 @@ export const UploadStatus = {
 } as const
 
 export type UploadStatus = (typeof UploadStatus)[keyof typeof UploadStatus]
+
+
+export const ChatRoleTag = {
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR',
+  MEMBER: 'MEMBER',
+  VIEWER: 'VIEWER',
+  BANNED: 'BANNED'
+} as const
+
+export type ChatRoleTag = (typeof ChatRoleTag)[keyof typeof ChatRoleTag]

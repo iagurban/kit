@@ -5,6 +5,8 @@ export enum ChatOrderByRelevanceFieldEnum {
   title = 'title',
   bio = 'bio',
   avatar = 'avatar',
+  ownerId = 'ownerId',
+  defaultRoleId = 'defaultRoleId',
 }
 
 registerEnumType(ChatOrderByRelevanceFieldEnum, {

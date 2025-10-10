@@ -4,7 +4,7 @@
   "packageManager": "yarn@4.9.4",
   "private": true,
   "dependencies": {
-    "@eslint/js": "^9.34.0",
+    "@eslint/js": "^9.37.0",
     "@grpc/grpc-js": "^1.13.4",
     "@grpc/proto-loader": "^0.8.0",
     "@nestjs/common": "^11.1.6",
@@ -12,12 +12,12 @@
     "@nestjs/core": "^11.1.6",
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-fastify": "^11.1.6",
-    "@nx/nest": "21.4.1",
-    "@typescript-eslint/eslint-plugin": "^8.42.0",
-    "@typescript-eslint/parser": "^8.42.0",
+    "@nx/nest": "21.6.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.9",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "eslint-config-next": "^15.5.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
@@ -44,12 +44,12 @@
     "@types/amqplib": "^0",
     "@types/cpx": "^1",
     "@types/lodash": "^4.17.20",
-    "@types/node": "^24.5.2",
+    "@types/node": "^24.7.1",
     "grpc-tools": "^1.13.0",
     "jest": "^30.2.0",
     "nodemon": "^3.1.10",
-    "nx": "21.5.3",
+    "nx": "21.6.3",
     "ts-proto": "^2.7.7",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }

@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { StringNullableWithAggregatesFilter } from '../prisma/string-nullable-with-aggregates-filter.input';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
+import { UuidNullableWithAggregatesFilter } from '../prisma/uuid-nullable-with-aggregates-filter.input';
 import { UuidWithAggregatesFilter } from '../prisma/uuid-with-aggregates-filter.input';
 
 @InputType()
@@ -26,4 +27,10 @@ export class ChatScalarWhereWithAggregatesInput {
 
   @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   avatar?: StringNullableWithAggregatesFilter;
+
+  @Field(() => UuidWithAggregatesFilter, { nullable: true })
+  ownerId?: UuidWithAggregatesFilter;
+
+  @Field(() => UuidNullableWithAggregatesFilter, { nullable: true })
+  defaultRoleId?: UuidNullableWithAggregatesFilter;
 }

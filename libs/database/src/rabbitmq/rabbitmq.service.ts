@@ -27,7 +27,7 @@ export class RabbitMqService extends ClientRMQ implements OnApplicationBootstrap
       await this.connect();
       this.logger2.info('✅ Successfully connected to RabbitMQ.');
     } catch (error) {
-      this.logger2.error('❌ Failed to connect to RabbitMQ.', error);
+      this.logger2.error({ error }, '❌ Failed to connect to RabbitMQ.');
       // Depending on your strategy, you might want to exit the process
       // process.exit(1);
     }

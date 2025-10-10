@@ -9,7 +9,7 @@
  */
 
 import type * as PJTG from '../pjtg';
-import * as runtime from "@prisma/client/runtime/library"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -752,10 +752,6 @@ export type $ChatEventPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     chatId: string
     authorId: string
     type: string
-    /**
-     * @DtoName ChatEventPayload
-     * @DtoType { "message": MessagePayload; "info": ChatInfoInfoPayload }
-     */
     payload: unknown
     createdAt: Date
   }, ExtArgs["result"]["chatEvent"]>

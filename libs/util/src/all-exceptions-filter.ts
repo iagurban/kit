@@ -8,7 +8,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger: Pick<Logger, `error` | `warn`>;
 
   constructor(parentLogger: Logger) {
-    this.logger = parentLogger.logger.child({ context: AllExceptionsFilter.name });
+    this.logger = parentLogger.child({ context: AllExceptionsFilter.name });
   }
 
   catch(exception: unknown, host: ArgumentsHost) {

@@ -13,4 +13,10 @@ export class ChatCreateManyInput {
 
   @Field(() => String, { nullable: true })
   avatar?: string;
+
+  @Field(() => String, { nullable: false })
+  ownerId!: string;
+
+  @Field(() => String, { nullable: true })
+  defaultRoleId?: string;
 }

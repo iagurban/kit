@@ -1,0 +1,16 @@
+import { Field, InputType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+
+import { ChatUpdateWithoutMembersInput } from './chat-update-without-members.input';
+import { ChatWhereInput } from './chat-where.input';
+
+@InputType()
+export class ChatUpdateToOneWithWhereWithoutMembersInput {
+  @Field(() => ChatWhereInput, { nullable: true })
+  @Type(() => ChatWhereInput)
+  where?: ChatWhereInput;
+
+  @Field(() => ChatUpdateWithoutMembersInput, { nullable: false })
+  @Type(() => ChatUpdateWithoutMembersInput)
+  data!: ChatUpdateWithoutMembersInput;
+}

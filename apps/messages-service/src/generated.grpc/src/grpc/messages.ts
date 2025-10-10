@@ -6,86 +6,50 @@
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
+import Long = require("long");
 import { Observable } from "rxjs";
 import { Timestamp } from "../../google/protobuf/timestamp";
 
-export const protobufPackage = "messages";
+export const protobufPackage = "poslah.messages";
 
 /** Указываем, что используем 3-ю версию синтаксиса */
 
-/** Основная сущность сообщения */
-export interface Message {
-  id: string;
-  text: string;
+/** Запрос для GetMessageAuthInfo */
+export interface GetMessageAuthInfoRequest {
   chatId: string;
+  nn: Long;
+}
+
+/** Ответ от GetMessageAuthInfo, содержащий только необходимые для авторизации поля */
+export interface GetMessageAuthInfoResponse {
   authorId: string;
   createdAt: Timestamp | undefined;
+  deletedAt: Timestamp | undefined;
 }
 
-/** Запрос на создание сообщения */
-export interface CreateMessageRequest {
-  text: string;
-  chatId: string;
-  authorId: string;
-}
-
-/** Ответ после создания (возвращаем созданный объект) */
-export interface CreateMessageResponse {
-  message: Message | undefined;
-}
-
-/** Запрос на получение сообщений */
-export interface GetMessagesByChatIdRequest {
-  chatId: string;
-  /** Опциональные параметры для пагинации */
-  limit?: number | undefined;
-  offset?: number | undefined;
-}
-
-/** Ответ со списком сообщений */
-export interface GetMessagesByChatIdResponse {
-  messages: Message[];
-}
-
-export const MESSAGES_PACKAGE_NAME = "messages";
+export const POSLAH_MESSAGES_PACKAGE_NAME = "poslah.messages";
 
 /** Сервис, который будет реализовывать наш messages-service */
 
 export interface MessagesServiceClient {
-  /**
-   * Метод для создания сообщения (используется GraphQL-мутацией)
-   * Внутри он будет публиковать событие в Kafka
-   */
+  /** Метод для получения минимальной информации о сообщении для проверки прав доступа */
 
-  createMessage(request: CreateMessageRequest): Observable<CreateMessageResponse>;
-
-  /** Метод для получения сообщений чата (используется GraphQL-квери) */
-
-  getMessagesByChatId(request: GetMessagesByChatIdRequest): Observable<GetMessagesByChatIdResponse>;
+  getMessageAuthInfo(request: GetMessageAuthInfoRequest): Observable<GetMessageAuthInfoResponse>;
 }
 
 /** Сервис, который будет реализовывать наш messages-service */
 
 export interface MessagesServiceController {
-  /**
-   * Метод для создания сообщения (используется GraphQL-мутацией)
-   * Внутри он будет публиковать событие в Kafka
-   */
+  /** Метод для получения минимальной информации о сообщении для проверки прав доступа */
 
-  createMessage(
-    request: CreateMessageRequest,
-  ): Promise<CreateMessageResponse> | Observable<CreateMessageResponse> | CreateMessageResponse;
-
-  /** Метод для получения сообщений чата (используется GraphQL-квери) */
-
-  getMessagesByChatId(
-    request: GetMessagesByChatIdRequest,
-  ): Promise<GetMessagesByChatIdResponse> | Observable<GetMessagesByChatIdResponse> | GetMessagesByChatIdResponse;
+  getMessageAuthInfo(
+    request: GetMessageAuthInfoRequest,
+  ): Promise<GetMessageAuthInfoResponse> | Observable<GetMessageAuthInfoResponse> | GetMessageAuthInfoResponse;
 }
 
 export function MessagesServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["createMessage", "getMessagesByChatId"];
+    const grpcMethods: string[] = ["getMessageAuthInfo"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("MessagesService", method)(constructor.prototype[method], method, descriptor);

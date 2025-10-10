@@ -6,6 +6,14 @@ export enum UploadStatus {
   FAILED = 'FAILED',
 }
 
+export enum ChatRoleTag {
+  ADMIN = 'ADMIN',
+  MODERATOR = 'MODERATOR',
+  MEMBER = 'MEMBER',
+  VIEWER = 'VIEWER',
+  BANNED = 'BANNED',
+}
+
 export type User = {
   id: string;
   createdAt: Date;
@@ -16,6 +24,9 @@ export type User = {
   uploadedFiles?: StoredFile[];
   refreshTokens?: RefreshToken[];
   chatEvents?: ChatEvent[];
+  chatsPermissions?: UserChatPermissions[];
+  chatsMmbership?: ChatMember[];
+  ownChats?: Chat[];
 };
 
 export type RefreshToken = {
@@ -70,9 +81,16 @@ export type Chat = {
   title: string;
   bio: string | null;
   avatar: string | null;
+  ownerId: string;
+  owner?: User;
   events?: ChatEvent[];
   eventsCounter?: ChatEventsCounter | null;
   messagesCounter?: MessagesCounter | null;
+  defaultRoleId: string | null;
+  defaultRole?: ChatRole | null;
+  userPermissions?: UserChatPermissions[];
+  roles?: ChatRole[];
+  members?: ChatMember[];
 };
 
 export type ChatEventsCounter = {
@@ -95,12 +113,37 @@ export type ChatEvent = {
   authorId: string;
   author?: User;
   type: string;
-  /**
-   * @DtoName ChatEventPayload
-   * @DtoType { "message": MessagePayload; "info": ChatInfoInfoPayload }
-   */
   payload: JsonValue;
   createdAt: Date;
+};
+
+export type ChatRole = {
+  id: string;
+  chatId: string;
+  chat?: Chat;
+  name: string;
+  tags: ChatRoleTag[];
+  isDefaultForChats?: Chat[];
+  permissions: JsonValue;
+  userPermissions?: UserChatPermissions[];
+};
+
+export type UserChatPermissions = {
+  userId: string;
+  user?: User;
+  chatId: string;
+  chat?: Chat;
+  roleId: string | null;
+  role?: ChatRole | null;
+  permissions: JsonValue | null;
+};
+
+export type ChatMember = {
+  userId: string;
+  user?: User;
+  chatId: string;
+  chat?: Chat;
+  joinedAt: Date;
 };
 
 type JsonValue = string | number | boolean | { [key in string]?: JsonValue } | Array<JsonValue> | null;

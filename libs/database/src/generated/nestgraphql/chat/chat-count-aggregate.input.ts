@@ -15,5 +15,11 @@ export class ChatCountAggregateInput {
   avatar?: true;
 
   @Field(() => Boolean, { nullable: true })
+  ownerId?: true;
+
+  @Field(() => Boolean, { nullable: true })
+  defaultRoleId?: true;
+
+  @Field(() => Boolean, { nullable: true })
   _all?: true;
 }

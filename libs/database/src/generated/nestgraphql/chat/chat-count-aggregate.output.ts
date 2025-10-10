@@ -15,5 +15,11 @@ export class ChatCountAggregate {
   avatar!: number;
 
   @Field(() => Int, { nullable: false })
+  ownerId!: number;
+
+  @Field(() => Int, { nullable: false })
+  defaultRoleId!: number;
+
+  @Field(() => Int, { nullable: false })
   _all!: number;
 }

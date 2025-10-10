@@ -1,9 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 import { ChatEventUncheckedUpdateManyWithoutChatNestedInput } from '../chat-event/chat-event-unchecked-update-many-without-chat-nested.input';
+import { ChatMemberUncheckedUpdateManyWithoutChatNestedInput } from '../chat-member/chat-member-unchecked-update-many-without-chat-nested.input';
+import { ChatRoleUncheckedUpdateManyWithoutChatNestedInput } from '../chat-role/chat-role-unchecked-update-many-without-chat-nested.input';
 import { MessagesCounterUncheckedUpdateOneWithoutChatNestedInput } from '../messages-counter/messages-counter-unchecked-update-one-without-chat-nested.input';
 import { NullableStringFieldUpdateOperationsInput } from '../prisma/nullable-string-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
+import { UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput } from '../user-chat-permissions/user-chat-permissions-unchecked-update-many-without-chat-nested.input';
 
 @InputType()
 export class ChatUncheckedUpdateWithoutEventsCounterInput {
@@ -19,9 +22,24 @@ export class ChatUncheckedUpdateWithoutEventsCounterInput {
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   avatar?: NullableStringFieldUpdateOperationsInput;
 
+  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
+  ownerId?: StringFieldUpdateOperationsInput;
+
+  @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
+  defaultRoleId?: NullableStringFieldUpdateOperationsInput;
+
   @Field(() => ChatEventUncheckedUpdateManyWithoutChatNestedInput, { nullable: true })
   events?: ChatEventUncheckedUpdateManyWithoutChatNestedInput;
 
   @Field(() => MessagesCounterUncheckedUpdateOneWithoutChatNestedInput, { nullable: true })
   messagesCounter?: MessagesCounterUncheckedUpdateOneWithoutChatNestedInput;
+
+  @Field(() => UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput, { nullable: true })
+  userPermissions?: UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput;
+
+  @Field(() => ChatRoleUncheckedUpdateManyWithoutChatNestedInput, { nullable: true })
+  roles?: ChatRoleUncheckedUpdateManyWithoutChatNestedInput;
+
+  @Field(() => ChatMemberUncheckedUpdateManyWithoutChatNestedInput, { nullable: true })
+  members?: ChatMemberUncheckedUpdateManyWithoutChatNestedInput;
 }

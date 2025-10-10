@@ -9,7 +9,7 @@
  */
 
 import type * as PJTG from '../pjtg';
-import * as runtime from "@prisma/client/runtime/library"
+import type * as runtime from "@prisma/client/runtime/library"
 import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
@@ -30,6 +30,8 @@ export type ChatMinAggregateOutputType = {
   title: string | null
   bio: string | null
   avatar: string | null
+  ownerId: string | null
+  defaultRoleId: string | null
 }
 
 export type ChatMaxAggregateOutputType = {
@@ -37,6 +39,8 @@ export type ChatMaxAggregateOutputType = {
   title: string | null
   bio: string | null
   avatar: string | null
+  ownerId: string | null
+  defaultRoleId: string | null
 }
 
 export type ChatCountAggregateOutputType = {
@@ -44,6 +48,8 @@ export type ChatCountAggregateOutputType = {
   title: number
   bio: number
   avatar: number
+  ownerId: number
+  defaultRoleId: number
   _all: number
 }
 
@@ -53,6 +59,8 @@ export type ChatMinAggregateInputType = {
   title?: true
   bio?: true
   avatar?: true
+  ownerId?: true
+  defaultRoleId?: true
 }
 
 export type ChatMaxAggregateInputType = {
@@ -60,6 +68,8 @@ export type ChatMaxAggregateInputType = {
   title?: true
   bio?: true
   avatar?: true
+  ownerId?: true
+  defaultRoleId?: true
 }
 
 export type ChatCountAggregateInputType = {
@@ -67,6 +77,8 @@ export type ChatCountAggregateInputType = {
   title?: true
   bio?: true
   avatar?: true
+  ownerId?: true
+  defaultRoleId?: true
   _all?: true
 }
 
@@ -147,6 +159,8 @@ export type ChatGroupByOutputType = {
   title: string
   bio: string | null
   avatar: string | null
+  ownerId: string
+  defaultRoleId: string | null
   _count: ChatCountAggregateOutputType | null
   _min: ChatMinAggregateOutputType | null
   _max: ChatMaxAggregateOutputType | null
@@ -175,9 +189,16 @@ export type ChatWhereInput = {
   title?: Prisma.StringFilter<"Chat"> | string
   bio?: Prisma.StringNullableFilter<"Chat"> | string | null
   avatar?: Prisma.StringNullableFilter<"Chat"> | string | null
+  ownerId?: Prisma.UuidFilter<"Chat"> | string
+  defaultRoleId?: Prisma.UuidNullableFilter<"Chat"> | string | null
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   events?: Prisma.ChatEventListRelationFilter
   eventsCounter?: Prisma.XOR<Prisma.ChatEventsCounterNullableScalarRelationFilter, Prisma.ChatEventsCounterWhereInput> | null
   messagesCounter?: Prisma.XOR<Prisma.MessagesCounterNullableScalarRelationFilter, Prisma.MessagesCounterWhereInput> | null
+  defaultRole?: Prisma.XOR<Prisma.ChatRoleNullableScalarRelationFilter, Prisma.ChatRoleWhereInput> | null
+  userPermissions?: Prisma.UserChatPermissionsListRelationFilter
+  roles?: Prisma.ChatRoleListRelationFilter
+  members?: Prisma.ChatMemberListRelationFilter
 }
 
 export type ChatOrderByWithRelationInput = {
@@ -185,9 +206,16 @@ export type ChatOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  defaultRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  owner?: Prisma.UserOrderByWithRelationInput
   events?: Prisma.ChatEventOrderByRelationAggregateInput
   eventsCounter?: Prisma.ChatEventsCounterOrderByWithRelationInput
   messagesCounter?: Prisma.MessagesCounterOrderByWithRelationInput
+  defaultRole?: Prisma.ChatRoleOrderByWithRelationInput
+  userPermissions?: Prisma.UserChatPermissionsOrderByRelationAggregateInput
+  roles?: Prisma.ChatRoleOrderByRelationAggregateInput
+  members?: Prisma.ChatMemberOrderByRelationAggregateInput
   _relevance?: Prisma.ChatOrderByRelevanceInput
 }
 
@@ -199,9 +227,16 @@ export type ChatWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Chat"> | string
   bio?: Prisma.StringNullableFilter<"Chat"> | string | null
   avatar?: Prisma.StringNullableFilter<"Chat"> | string | null
+  ownerId?: Prisma.UuidFilter<"Chat"> | string
+  defaultRoleId?: Prisma.UuidNullableFilter<"Chat"> | string | null
+  owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   events?: Prisma.ChatEventListRelationFilter
   eventsCounter?: Prisma.XOR<Prisma.ChatEventsCounterNullableScalarRelationFilter, Prisma.ChatEventsCounterWhereInput> | null
   messagesCounter?: Prisma.XOR<Prisma.MessagesCounterNullableScalarRelationFilter, Prisma.MessagesCounterWhereInput> | null
+  defaultRole?: Prisma.XOR<Prisma.ChatRoleNullableScalarRelationFilter, Prisma.ChatRoleWhereInput> | null
+  userPermissions?: Prisma.UserChatPermissionsListRelationFilter
+  roles?: Prisma.ChatRoleListRelationFilter
+  members?: Prisma.ChatMemberListRelationFilter
 }, "id">
 
 export type ChatOrderByWithAggregationInput = {
@@ -209,6 +244,8 @@ export type ChatOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   avatar?: Prisma.SortOrderInput | Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  defaultRoleId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ChatCountOrderByAggregateInput
   _max?: Prisma.ChatMaxOrderByAggregateInput
   _min?: Prisma.ChatMinOrderByAggregateInput
@@ -222,6 +259,8 @@ export type ChatScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Chat"> | string
   bio?: Prisma.StringNullableWithAggregatesFilter<"Chat"> | string | null
   avatar?: Prisma.StringNullableWithAggregatesFilter<"Chat"> | string | null
+  ownerId?: Prisma.UuidWithAggregatesFilter<"Chat"> | string
+  defaultRoleId?: Prisma.UuidNullableWithAggregatesFilter<"Chat"> | string | null
 }
 
 export type ChatCreateInput = {
@@ -229,9 +268,14 @@ export type ChatCreateInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
   events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
   eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
 }
 
 export type ChatUncheckedCreateInput = {
@@ -239,9 +283,14 @@ export type ChatUncheckedCreateInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
   events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
   eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
 }
 
 export type ChatUpdateInput = {
@@ -249,9 +298,14 @@ export type ChatUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
   events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
   eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
 }
 
 export type ChatUncheckedUpdateInput = {
@@ -259,9 +313,14 @@ export type ChatUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
   eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
 }
 
 export type ChatCreateManyInput = {
@@ -269,6 +328,8 @@ export type ChatCreateManyInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
 }
 
 export type ChatUpdateManyMutationInput = {
@@ -283,6 +344,18 @@ export type ChatUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ChatListRelationFilter = {
+  every?: Prisma.ChatWhereInput
+  some?: Prisma.ChatWhereInput
+  none?: Prisma.ChatWhereInput
+}
+
+export type ChatOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type ChatOrderByRelevanceInput = {
@@ -296,6 +369,8 @@ export type ChatCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  defaultRoleId?: Prisma.SortOrder
 }
 
 export type ChatMaxOrderByAggregateInput = {
@@ -303,6 +378,8 @@ export type ChatMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  defaultRoleId?: Prisma.SortOrder
 }
 
 export type ChatMinOrderByAggregateInput = {
@@ -310,11 +387,55 @@ export type ChatMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   avatar?: Prisma.SortOrder
+  ownerId?: Prisma.SortOrder
+  defaultRoleId?: Prisma.SortOrder
 }
 
 export type ChatScalarRelationFilter = {
   is?: Prisma.ChatWhereInput
   isNot?: Prisma.ChatWhereInput
+}
+
+export type ChatCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput> | Prisma.ChatCreateWithoutOwnerInput[] | Prisma.ChatUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutOwnerInput | Prisma.ChatCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.ChatCreateManyOwnerInputEnvelope
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+}
+
+export type ChatUncheckedCreateNestedManyWithoutOwnerInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput> | Prisma.ChatCreateWithoutOwnerInput[] | Prisma.ChatUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutOwnerInput | Prisma.ChatCreateOrConnectWithoutOwnerInput[]
+  createMany?: Prisma.ChatCreateManyOwnerInputEnvelope
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+}
+
+export type ChatUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput> | Prisma.ChatCreateWithoutOwnerInput[] | Prisma.ChatUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutOwnerInput | Prisma.ChatCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.ChatUpsertWithWhereUniqueWithoutOwnerInput | Prisma.ChatUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.ChatCreateManyOwnerInputEnvelope
+  set?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  disconnect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  delete?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  update?: Prisma.ChatUpdateWithWhereUniqueWithoutOwnerInput | Prisma.ChatUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.ChatUpdateManyWithWhereWithoutOwnerInput | Prisma.ChatUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
+}
+
+export type ChatUncheckedUpdateManyWithoutOwnerNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput> | Prisma.ChatCreateWithoutOwnerInput[] | Prisma.ChatUncheckedCreateWithoutOwnerInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutOwnerInput | Prisma.ChatCreateOrConnectWithoutOwnerInput[]
+  upsert?: Prisma.ChatUpsertWithWhereUniqueWithoutOwnerInput | Prisma.ChatUpsertWithWhereUniqueWithoutOwnerInput[]
+  createMany?: Prisma.ChatCreateManyOwnerInputEnvelope
+  set?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  disconnect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  delete?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  update?: Prisma.ChatUpdateWithWhereUniqueWithoutOwnerInput | Prisma.ChatUpdateWithWhereUniqueWithoutOwnerInput[]
+  updateMany?: Prisma.ChatUpdateManyWithWhereWithoutOwnerInput | Prisma.ChatUpdateManyWithWhereWithoutOwnerInput[]
+  deleteMany?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
 }
 
 export type ChatCreateNestedOneWithoutEventsCounterInput = {
@@ -359,13 +480,168 @@ export type ChatUpdateOneRequiredWithoutEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ChatUpdateToOneWithWhereWithoutEventsInput, Prisma.ChatUpdateWithoutEventsInput>, Prisma.ChatUncheckedUpdateWithoutEventsInput>
 }
 
-export type ChatCreateWithoutEventsCounterInput = {
+export type ChatCreateNestedOneWithoutRolesInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutRolesInput, Prisma.ChatUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutRolesInput
+  connect?: Prisma.ChatWhereUniqueInput
+}
+
+export type ChatCreateNestedManyWithoutDefaultRoleInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput> | Prisma.ChatCreateWithoutDefaultRoleInput[] | Prisma.ChatUncheckedCreateWithoutDefaultRoleInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutDefaultRoleInput | Prisma.ChatCreateOrConnectWithoutDefaultRoleInput[]
+  createMany?: Prisma.ChatCreateManyDefaultRoleInputEnvelope
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+}
+
+export type ChatUncheckedCreateNestedManyWithoutDefaultRoleInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput> | Prisma.ChatCreateWithoutDefaultRoleInput[] | Prisma.ChatUncheckedCreateWithoutDefaultRoleInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutDefaultRoleInput | Prisma.ChatCreateOrConnectWithoutDefaultRoleInput[]
+  createMany?: Prisma.ChatCreateManyDefaultRoleInputEnvelope
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+}
+
+export type ChatUpdateOneRequiredWithoutRolesNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutRolesInput, Prisma.ChatUncheckedCreateWithoutRolesInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutRolesInput
+  upsert?: Prisma.ChatUpsertWithoutRolesInput
+  connect?: Prisma.ChatWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChatUpdateToOneWithWhereWithoutRolesInput, Prisma.ChatUpdateWithoutRolesInput>, Prisma.ChatUncheckedUpdateWithoutRolesInput>
+}
+
+export type ChatUpdateManyWithoutDefaultRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput> | Prisma.ChatCreateWithoutDefaultRoleInput[] | Prisma.ChatUncheckedCreateWithoutDefaultRoleInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutDefaultRoleInput | Prisma.ChatCreateOrConnectWithoutDefaultRoleInput[]
+  upsert?: Prisma.ChatUpsertWithWhereUniqueWithoutDefaultRoleInput | Prisma.ChatUpsertWithWhereUniqueWithoutDefaultRoleInput[]
+  createMany?: Prisma.ChatCreateManyDefaultRoleInputEnvelope
+  set?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  disconnect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  delete?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  update?: Prisma.ChatUpdateWithWhereUniqueWithoutDefaultRoleInput | Prisma.ChatUpdateWithWhereUniqueWithoutDefaultRoleInput[]
+  updateMany?: Prisma.ChatUpdateManyWithWhereWithoutDefaultRoleInput | Prisma.ChatUpdateManyWithWhereWithoutDefaultRoleInput[]
+  deleteMany?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
+}
+
+export type ChatUncheckedUpdateManyWithoutDefaultRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput> | Prisma.ChatCreateWithoutDefaultRoleInput[] | Prisma.ChatUncheckedCreateWithoutDefaultRoleInput[]
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutDefaultRoleInput | Prisma.ChatCreateOrConnectWithoutDefaultRoleInput[]
+  upsert?: Prisma.ChatUpsertWithWhereUniqueWithoutDefaultRoleInput | Prisma.ChatUpsertWithWhereUniqueWithoutDefaultRoleInput[]
+  createMany?: Prisma.ChatCreateManyDefaultRoleInputEnvelope
+  set?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  disconnect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  delete?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  connect?: Prisma.ChatWhereUniqueInput | Prisma.ChatWhereUniqueInput[]
+  update?: Prisma.ChatUpdateWithWhereUniqueWithoutDefaultRoleInput | Prisma.ChatUpdateWithWhereUniqueWithoutDefaultRoleInput[]
+  updateMany?: Prisma.ChatUpdateManyWithWhereWithoutDefaultRoleInput | Prisma.ChatUpdateManyWithWhereWithoutDefaultRoleInput[]
+  deleteMany?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
+}
+
+export type ChatCreateNestedOneWithoutUserPermissionsInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutUserPermissionsInput, Prisma.ChatUncheckedCreateWithoutUserPermissionsInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutUserPermissionsInput
+  connect?: Prisma.ChatWhereUniqueInput
+}
+
+export type ChatUpdateOneRequiredWithoutUserPermissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutUserPermissionsInput, Prisma.ChatUncheckedCreateWithoutUserPermissionsInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutUserPermissionsInput
+  upsert?: Prisma.ChatUpsertWithoutUserPermissionsInput
+  connect?: Prisma.ChatWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChatUpdateToOneWithWhereWithoutUserPermissionsInput, Prisma.ChatUpdateWithoutUserPermissionsInput>, Prisma.ChatUncheckedUpdateWithoutUserPermissionsInput>
+}
+
+export type ChatCreateNestedOneWithoutMembersInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutMembersInput, Prisma.ChatUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutMembersInput
+  connect?: Prisma.ChatWhereUniqueInput
+}
+
+export type ChatUpdateOneRequiredWithoutMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.ChatCreateWithoutMembersInput, Prisma.ChatUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.ChatCreateOrConnectWithoutMembersInput
+  upsert?: Prisma.ChatUpsertWithoutMembersInput
+  connect?: Prisma.ChatWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ChatUpdateToOneWithWhereWithoutMembersInput, Prisma.ChatUpdateWithoutMembersInput>, Prisma.ChatUncheckedUpdateWithoutMembersInput>
+}
+
+export type ChatCreateWithoutOwnerInput = {
   id?: string
   title: string
   bio?: string | null
   avatar?: string | null
   events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
+}
+
+export type ChatUncheckedCreateWithoutOwnerInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  defaultRoleId?: string | null
+  events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
+}
+
+export type ChatCreateOrConnectWithoutOwnerInput = {
+  where: Prisma.ChatWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput>
+}
+
+export type ChatCreateManyOwnerInputEnvelope = {
+  data: Prisma.ChatCreateManyOwnerInput | Prisma.ChatCreateManyOwnerInput[]
+  skipDuplicates?: boolean
+}
+
+export type ChatUpsertWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.ChatWhereUniqueInput
+  update: Prisma.XOR<Prisma.ChatUpdateWithoutOwnerInput, Prisma.ChatUncheckedUpdateWithoutOwnerInput>
+  create: Prisma.XOR<Prisma.ChatCreateWithoutOwnerInput, Prisma.ChatUncheckedCreateWithoutOwnerInput>
+}
+
+export type ChatUpdateWithWhereUniqueWithoutOwnerInput = {
+  where: Prisma.ChatWhereUniqueInput
+  data: Prisma.XOR<Prisma.ChatUpdateWithoutOwnerInput, Prisma.ChatUncheckedUpdateWithoutOwnerInput>
+}
+
+export type ChatUpdateManyWithWhereWithoutOwnerInput = {
+  where: Prisma.ChatScalarWhereInput
+  data: Prisma.XOR<Prisma.ChatUpdateManyMutationInput, Prisma.ChatUncheckedUpdateManyWithoutOwnerInput>
+}
+
+export type ChatScalarWhereInput = {
+  AND?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
+  OR?: Prisma.ChatScalarWhereInput[]
+  NOT?: Prisma.ChatScalarWhereInput | Prisma.ChatScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Chat"> | string
+  title?: Prisma.StringFilter<"Chat"> | string
+  bio?: Prisma.StringNullableFilter<"Chat"> | string | null
+  avatar?: Prisma.StringNullableFilter<"Chat"> | string | null
+  ownerId?: Prisma.UuidFilter<"Chat"> | string
+  defaultRoleId?: Prisma.UuidNullableFilter<"Chat"> | string | null
+}
+
+export type ChatCreateWithoutEventsCounterInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
+  events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
 }
 
 export type ChatUncheckedCreateWithoutEventsCounterInput = {
@@ -373,8 +649,13 @@ export type ChatUncheckedCreateWithoutEventsCounterInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
   events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
 }
 
 export type ChatCreateOrConnectWithoutEventsCounterInput = {
@@ -398,8 +679,13 @@ export type ChatUpdateWithoutEventsCounterInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
   events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
 }
 
 export type ChatUncheckedUpdateWithoutEventsCounterInput = {
@@ -407,8 +693,13 @@ export type ChatUncheckedUpdateWithoutEventsCounterInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
 }
 
 export type ChatCreateWithoutMessagesCounterInput = {
@@ -416,8 +707,13 @@ export type ChatCreateWithoutMessagesCounterInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
   events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
   eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
 }
 
 export type ChatUncheckedCreateWithoutMessagesCounterInput = {
@@ -425,8 +721,13 @@ export type ChatUncheckedCreateWithoutMessagesCounterInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
   events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
   eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
 }
 
 export type ChatCreateOrConnectWithoutMessagesCounterInput = {
@@ -450,8 +751,13 @@ export type ChatUpdateWithoutMessagesCounterInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
   events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
   eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
 }
 
 export type ChatUncheckedUpdateWithoutMessagesCounterInput = {
@@ -459,8 +765,13 @@ export type ChatUncheckedUpdateWithoutMessagesCounterInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
   eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
 }
 
 export type ChatCreateWithoutEventsInput = {
@@ -468,8 +779,13 @@ export type ChatCreateWithoutEventsInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
   eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
 }
 
 export type ChatUncheckedCreateWithoutEventsInput = {
@@ -477,8 +793,13 @@ export type ChatUncheckedCreateWithoutEventsInput = {
   title: string
   bio?: string | null
   avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
   eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
   messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
 }
 
 export type ChatCreateOrConnectWithoutEventsInput = {
@@ -502,8 +823,13 @@ export type ChatUpdateWithoutEventsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
   eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
 }
 
 export type ChatUncheckedUpdateWithoutEventsInput = {
@@ -511,8 +837,371 @@ export type ChatUncheckedUpdateWithoutEventsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
   messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatCreateWithoutRolesInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
+  events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
+}
+
+export type ChatUncheckedCreateWithoutRolesInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
+  events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
+}
+
+export type ChatCreateOrConnectWithoutRolesInput = {
+  where: Prisma.ChatWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatCreateWithoutRolesInput, Prisma.ChatUncheckedCreateWithoutRolesInput>
+}
+
+export type ChatCreateWithoutDefaultRoleInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
+  events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
+}
+
+export type ChatUncheckedCreateWithoutDefaultRoleInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  ownerId: string
+  events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
+}
+
+export type ChatCreateOrConnectWithoutDefaultRoleInput = {
+  where: Prisma.ChatWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput>
+}
+
+export type ChatCreateManyDefaultRoleInputEnvelope = {
+  data: Prisma.ChatCreateManyDefaultRoleInput | Prisma.ChatCreateManyDefaultRoleInput[]
+  skipDuplicates?: boolean
+}
+
+export type ChatUpsertWithoutRolesInput = {
+  update: Prisma.XOR<Prisma.ChatUpdateWithoutRolesInput, Prisma.ChatUncheckedUpdateWithoutRolesInput>
+  create: Prisma.XOR<Prisma.ChatCreateWithoutRolesInput, Prisma.ChatUncheckedCreateWithoutRolesInput>
+  where?: Prisma.ChatWhereInput
+}
+
+export type ChatUpdateToOneWithWhereWithoutRolesInput = {
+  where?: Prisma.ChatWhereInput
+  data: Prisma.XOR<Prisma.ChatUpdateWithoutRolesInput, Prisma.ChatUncheckedUpdateWithoutRolesInput>
+}
+
+export type ChatUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
+  events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateWithoutRolesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUpsertWithWhereUniqueWithoutDefaultRoleInput = {
+  where: Prisma.ChatWhereUniqueInput
+  update: Prisma.XOR<Prisma.ChatUpdateWithoutDefaultRoleInput, Prisma.ChatUncheckedUpdateWithoutDefaultRoleInput>
+  create: Prisma.XOR<Prisma.ChatCreateWithoutDefaultRoleInput, Prisma.ChatUncheckedCreateWithoutDefaultRoleInput>
+}
+
+export type ChatUpdateWithWhereUniqueWithoutDefaultRoleInput = {
+  where: Prisma.ChatWhereUniqueInput
+  data: Prisma.XOR<Prisma.ChatUpdateWithoutDefaultRoleInput, Prisma.ChatUncheckedUpdateWithoutDefaultRoleInput>
+}
+
+export type ChatUpdateManyWithWhereWithoutDefaultRoleInput = {
+  where: Prisma.ChatScalarWhereInput
+  data: Prisma.XOR<Prisma.ChatUpdateManyMutationInput, Prisma.ChatUncheckedUpdateManyWithoutDefaultRoleInput>
+}
+
+export type ChatCreateWithoutUserPermissionsInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
+  events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberCreateNestedManyWithoutChatInput
+}
+
+export type ChatUncheckedCreateWithoutUserPermissionsInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
+  events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+  members?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutChatInput
+}
+
+export type ChatCreateOrConnectWithoutUserPermissionsInput = {
+  where: Prisma.ChatWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatCreateWithoutUserPermissionsInput, Prisma.ChatUncheckedCreateWithoutUserPermissionsInput>
+}
+
+export type ChatUpsertWithoutUserPermissionsInput = {
+  update: Prisma.XOR<Prisma.ChatUpdateWithoutUserPermissionsInput, Prisma.ChatUncheckedUpdateWithoutUserPermissionsInput>
+  create: Prisma.XOR<Prisma.ChatCreateWithoutUserPermissionsInput, Prisma.ChatUncheckedCreateWithoutUserPermissionsInput>
+  where?: Prisma.ChatWhereInput
+}
+
+export type ChatUpdateToOneWithWhereWithoutUserPermissionsInput = {
+  where?: Prisma.ChatWhereInput
+  data: Prisma.XOR<Prisma.ChatUpdateWithoutUserPermissionsInput, Prisma.ChatUncheckedUpdateWithoutUserPermissionsInput>
+}
+
+export type ChatUpdateWithoutUserPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
+  events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateWithoutUserPermissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatCreateWithoutMembersInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  owner: Prisma.UserCreateNestedOneWithoutOwnChatsInput
+  events?: Prisma.ChatEventCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterCreateNestedOneWithoutChatInput
+  defaultRole?: Prisma.ChatRoleCreateNestedOneWithoutIsDefaultForChatsInput
+  userPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleCreateNestedManyWithoutChatInput
+}
+
+export type ChatUncheckedCreateWithoutMembersInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  ownerId: string
+  defaultRoleId?: string | null
+  events?: Prisma.ChatEventUncheckedCreateNestedManyWithoutChatInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedCreateNestedOneWithoutChatInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedCreateNestedOneWithoutChatInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutChatInput
+  roles?: Prisma.ChatRoleUncheckedCreateNestedManyWithoutChatInput
+}
+
+export type ChatCreateOrConnectWithoutMembersInput = {
+  where: Prisma.ChatWhereUniqueInput
+  create: Prisma.XOR<Prisma.ChatCreateWithoutMembersInput, Prisma.ChatUncheckedCreateWithoutMembersInput>
+}
+
+export type ChatUpsertWithoutMembersInput = {
+  update: Prisma.XOR<Prisma.ChatUpdateWithoutMembersInput, Prisma.ChatUncheckedUpdateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.ChatCreateWithoutMembersInput, Prisma.ChatUncheckedCreateWithoutMembersInput>
+  where?: Prisma.ChatWhereInput
+}
+
+export type ChatUpdateToOneWithWhereWithoutMembersInput = {
+  where?: Prisma.ChatWhereInput
+  data: Prisma.XOR<Prisma.ChatUpdateWithoutMembersInput, Prisma.ChatUncheckedUpdateWithoutMembersInput>
+}
+
+export type ChatUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
+  events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatCreateManyOwnerInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  defaultRoleId?: string | null
+}
+
+export type ChatUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  defaultRole?: Prisma.ChatRoleUpdateOneWithoutIsDefaultForChatsNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateManyWithoutOwnerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  defaultRoleId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type ChatCreateManyDefaultRoleInput = {
+  id?: string
+  title: string
+  bio?: string | null
+  avatar?: string | null
+  ownerId: string
+}
+
+export type ChatUpdateWithoutDefaultRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  owner?: Prisma.UserUpdateOneRequiredWithoutOwnChatsNestedInput
+  events?: Prisma.ChatEventUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateWithoutDefaultRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
+  events?: Prisma.ChatEventUncheckedUpdateManyWithoutChatNestedInput
+  eventsCounter?: Prisma.ChatEventsCounterUncheckedUpdateOneWithoutChatNestedInput
+  messagesCounter?: Prisma.MessagesCounterUncheckedUpdateOneWithoutChatNestedInput
+  userPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutChatNestedInput
+  roles?: Prisma.ChatRoleUncheckedUpdateManyWithoutChatNestedInput
+  members?: Prisma.ChatMemberUncheckedUpdateManyWithoutChatNestedInput
+}
+
+export type ChatUncheckedUpdateManyWithoutDefaultRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ownerId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -522,10 +1211,16 @@ export type ChatUncheckedUpdateWithoutEventsInput = {
 
 export type ChatCountOutputType = {
   events: number
+  userPermissions: number
+  roles: number
+  members: number
 }
 
 export type ChatCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   events?: boolean | ChatCountOutputTypeCountEventsArgs
+  userPermissions?: boolean | ChatCountOutputTypeCountUserPermissionsArgs
+  roles?: boolean | ChatCountOutputTypeCountRolesArgs
+  members?: boolean | ChatCountOutputTypeCountMembersArgs
 }
 
 /**
@@ -545,15 +1240,43 @@ export type ChatCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.ChatEventWhereInput
 }
 
+/**
+ * ChatCountOutputType without action
+ */
+export type ChatCountOutputTypeCountUserPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserChatPermissionsWhereInput
+}
+
+/**
+ * ChatCountOutputType without action
+ */
+export type ChatCountOutputTypeCountRolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatRoleWhereInput
+}
+
+/**
+ * ChatCountOutputType without action
+ */
+export type ChatCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ChatMemberWhereInput
+}
+
 
 export type ChatSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   bio?: boolean
   avatar?: boolean
+  ownerId?: boolean
+  defaultRoleId?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   events?: boolean | Prisma.Chat$eventsArgs<ExtArgs>
   eventsCounter?: boolean | Prisma.Chat$eventsCounterArgs<ExtArgs>
   messagesCounter?: boolean | Prisma.Chat$messagesCounterArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
+  userPermissions?: boolean | Prisma.Chat$userPermissionsArgs<ExtArgs>
+  roles?: boolean | Prisma.Chat$rolesArgs<ExtArgs>
+  members?: boolean | Prisma.Chat$membersArgs<ExtArgs>
   _count?: boolean | Prisma.ChatCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["chat"]>
 
@@ -562,6 +1285,10 @@ export type ChatSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   bio?: boolean
   avatar?: boolean
+  ownerId?: boolean
+  defaultRoleId?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
 }, ExtArgs["result"]["chat"]>
 
 export type ChatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -569,6 +1296,10 @@ export type ChatSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   title?: boolean
   bio?: boolean
   avatar?: boolean
+  ownerId?: boolean
+  defaultRoleId?: boolean
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
 }, ExtArgs["result"]["chat"]>
 
 export type ChatSelectScalar = {
@@ -576,30 +1307,50 @@ export type ChatSelectScalar = {
   title?: boolean
   bio?: boolean
   avatar?: boolean
+  ownerId?: boolean
+  defaultRoleId?: boolean
 }
 
-export type ChatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "bio" | "avatar", ExtArgs["result"]["chat"]>
+export type ChatOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "bio" | "avatar" | "ownerId" | "defaultRoleId", ExtArgs["result"]["chat"]>
 export type ChatInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   events?: boolean | Prisma.Chat$eventsArgs<ExtArgs>
   eventsCounter?: boolean | Prisma.Chat$eventsCounterArgs<ExtArgs>
   messagesCounter?: boolean | Prisma.Chat$messagesCounterArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
+  userPermissions?: boolean | Prisma.Chat$userPermissionsArgs<ExtArgs>
+  roles?: boolean | Prisma.Chat$rolesArgs<ExtArgs>
+  members?: boolean | Prisma.Chat$membersArgs<ExtArgs>
   _count?: boolean | Prisma.ChatCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ChatIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ChatIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ChatIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
+}
+export type ChatIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  defaultRole?: boolean | Prisma.Chat$defaultRoleArgs<ExtArgs>
+}
 
 export type $ChatPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Chat"
   objects: {
+    owner: Prisma.$UserPayload<ExtArgs>
     events: Prisma.$ChatEventPayload<ExtArgs>[]
     eventsCounter: Prisma.$ChatEventsCounterPayload<ExtArgs> | null
     messagesCounter: Prisma.$MessagesCounterPayload<ExtArgs> | null
+    defaultRole: Prisma.$ChatRolePayload<ExtArgs> | null
+    userPermissions: Prisma.$UserChatPermissionsPayload<ExtArgs>[]
+    roles: Prisma.$ChatRolePayload<ExtArgs>[]
+    members: Prisma.$ChatMemberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     bio: string | null
     avatar: string | null
+    ownerId: string
+    defaultRoleId: string | null
   }, ExtArgs["result"]["chat"]>
   composites: {}
 }
@@ -994,9 +1745,14 @@ readonly fields: ChatFieldRefs;
  */
 export interface Prisma__ChatClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   events<T extends Prisma.Chat$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eventsCounter<T extends Prisma.Chat$eventsCounterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$eventsCounterArgs<ExtArgs>>): Prisma.Prisma__ChatEventsCounterClient<runtime.Types.Result.GetResult<Prisma.$ChatEventsCounterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   messagesCounter<T extends Prisma.Chat$messagesCounterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$messagesCounterArgs<ExtArgs>>): Prisma.Prisma__MessagesCounterClient<runtime.Types.Result.GetResult<Prisma.$MessagesCounterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  defaultRole<T extends Prisma.Chat$defaultRoleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$defaultRoleArgs<ExtArgs>>): Prisma.Prisma__ChatRoleClient<runtime.Types.Result.GetResult<Prisma.$ChatRolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  userPermissions<T extends Prisma.Chat$userPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$userPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserChatPermissionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  roles<T extends Prisma.Chat$rolesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$rolesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  members<T extends Prisma.Chat$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Chat$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1030,6 +1786,8 @@ export interface ChatFieldRefs {
   readonly title: Prisma.FieldRef<"Chat", 'String'>
   readonly bio: Prisma.FieldRef<"Chat", 'String'>
   readonly avatar: Prisma.FieldRef<"Chat", 'String'>
+  readonly ownerId: Prisma.FieldRef<"Chat", 'String'>
+  readonly defaultRoleId: Prisma.FieldRef<"Chat", 'String'>
 }
     
 
@@ -1279,6 +2037,10 @@ export type ChatCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.ChatCreateManyInput | Prisma.ChatCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1349,6 +2111,10 @@ export type ChatUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Chats to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1477,6 +2243,97 @@ export type Chat$messagesCounterArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.MessagesCounterInclude<ExtArgs> | null
   where?: Prisma.MessagesCounterWhereInput
+}
+
+/**
+ * Chat.defaultRole
+ */
+export type Chat$defaultRoleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatRole
+   */
+  select?: Prisma.ChatRoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatRole
+   */
+  omit?: Prisma.ChatRoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatRoleInclude<ExtArgs> | null
+  where?: Prisma.ChatRoleWhereInput
+}
+
+/**
+ * Chat.userPermissions
+ */
+export type Chat$userPermissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserChatPermissions
+   */
+  select?: Prisma.UserChatPermissionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserChatPermissions
+   */
+  omit?: Prisma.UserChatPermissionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserChatPermissionsInclude<ExtArgs> | null
+  where?: Prisma.UserChatPermissionsWhereInput
+  orderBy?: Prisma.UserChatPermissionsOrderByWithRelationInput | Prisma.UserChatPermissionsOrderByWithRelationInput[]
+  cursor?: Prisma.UserChatPermissionsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserChatPermissionsScalarFieldEnum | Prisma.UserChatPermissionsScalarFieldEnum[]
+}
+
+/**
+ * Chat.roles
+ */
+export type Chat$rolesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatRole
+   */
+  select?: Prisma.ChatRoleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatRole
+   */
+  omit?: Prisma.ChatRoleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatRoleInclude<ExtArgs> | null
+  where?: Prisma.ChatRoleWhereInput
+  orderBy?: Prisma.ChatRoleOrderByWithRelationInput | Prisma.ChatRoleOrderByWithRelationInput[]
+  cursor?: Prisma.ChatRoleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatRoleScalarFieldEnum | Prisma.ChatRoleScalarFieldEnum[]
+}
+
+/**
+ * Chat.members
+ */
+export type Chat$membersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ChatMember
+   */
+  select?: Prisma.ChatMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ChatMember
+   */
+  omit?: Prisma.ChatMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ChatMemberInclude<ExtArgs> | null
+  where?: Prisma.ChatMemberWhereInput
+  orderBy?: Prisma.ChatMemberOrderByWithRelationInput | Prisma.ChatMemberOrderByWithRelationInput[]
+  cursor?: Prisma.ChatMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ChatMemberScalarFieldEnum | Prisma.ChatMemberScalarFieldEnum[]
 }
 
 /**
