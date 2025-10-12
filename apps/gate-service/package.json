@@ -10,9 +10,11 @@
     "@apollo/server": "^5.0.0",
     "@as-integrations/fastify": "^3.0.0",
     "@eslint/js": "^9.37.0",
+    "@fastify/http-proxy": "^11.3.0",
     "@grpc/grpc-js": "^1.13.4",
     "@grpc/proto-loader": "^0.8.0",
     "@nestjs/apollo": "^13.2.1",
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
@@ -34,6 +36,7 @@
     "eslint-plugin-unicorn": "^61.0.2",
     "eslint-plugin-unused-imports": "^4.2.0",
     "graphql": "^16.11.0",
+    "graphql-ws": "^6.0.6",
     "http-proxy-middleware": "^3.0.5",
     "jsonc-parser": "^3.3.1",
     "kafkajs": "^2.2.4",
@@ -46,6 +49,7 @@
     "prettier": "^3.6.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
+    "subscriptions-transport-ws": "^0.11.0",
     "typescript-eslint": "^8.44.1"
   },
   "devDependencies": {

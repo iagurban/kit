@@ -16,8 +16,22 @@ export class GraphQLProxyMiddleware implements NestMiddleware<FastifyRequest['ra
     });
   }
 
-  async use(req: FastifyRequest['raw'], res: FastifyReply['raw'], next: (error?: unknown) => void) {
+  async use(
+    req: FastifyRequest['raw'] & { originalUrl: string },
+    res: FastifyReply['raw'],
+    next: (error?: unknown) => void
+  ) {
+    req.url = req.originalUrl;
+
     await this.gatewayManager.waitForAvailability();
-    await this.proxy(req, res, next);
+
+    await new Promise<void>((resolve, reject) => {
+      this.proxy(req, res, (err: unknown) => (err ? reject(err) : resolve()));
+      res.on('close', resolve);
+    });
+
+    if (!res.writableEnded) {
+      next();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { DefaultArgs } from 'prisma/prisma-client/runtime/client';
 
 import { Prisma, PrismaClient } from '../generated/db-client/client';
 
@@ -34,16 +35,22 @@ import { Prisma, PrismaClient } from '../generated/db-client/client';
 
 export type TransactionOptions = Parameters<PrismaClient['$transaction']>[1];
 
+export const dbServiceConfigToken: unique symbol = Symbol('dbServiceConfigToken');
+
+export type DbServiceConfig = Prisma.PrismaClientOptions;
+
 @Injectable()
 export class DbService {
-  constructor() {}
+  constructor(@Inject(dbServiceConfigToken) options: DbServiceConfig) {
+    this.client = new PrismaClient(options);
+  }
 
   private readonly currentTransactionStore = new AsyncLocalStorage<{
     client: Prisma.TransactionClient;
     options: TransactionOptions;
   }>();
 
-  readonly client = new PrismaClient();
+  readonly client: PrismaClient<never, Prisma.GlobalOmitConfig | undefined, DefaultArgs>;
 
   inAnyTransaction<T>(fn: () => Promise<T>): Promise<T>;
   inAnyTransaction<T>(options: TransactionOptions, fn: () => Promise<T>): Promise<T>;

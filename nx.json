@@ -1,5 +1,5 @@
 {
-  "defaultProject": "gateway",
+  "defaultProject": "poslah",
   "targetDefaults": {
     "build": {
       "cache": true,
@@ -90,7 +90,8 @@
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
         "commands": [
-          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua}' -x '**/node_modules/**' -x '**/dist/**' -v '{projectRoot}/dist'"
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua,crt,key}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'",
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/*.{crt,key}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'"
         ],
         "stopOnFail": true,
         "cwd": "{workspaceRoot}"
@@ -121,17 +122,39 @@
         ],
         "cwd": "{workspaceRoot}"
       },
-      "dependsOn": ["kill-nx-daemon"]
+      "dependsOn": []
     },
 
     "generate-proto-code": {
       "executor": "@poslah/nx-poslah:run",
       "options": {
         "commands": [
-          "mkdir -p ./src/generated.grpc",
-          "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true,forceLong=long --ts_proto_out=./src/generated.grpc ./src/grpc/{protoFileName}.proto"
+          "mkdir -p ./src/generated/grpc",
+          "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true,forceLong=long,addGrpcMetadata=true,addNestjsRestParameter=true --ts_proto_out=./src/generated/grpc ./src/grpc/{protoFileName}.proto"
         ],
         "cwd": "{workspaceRoot}/{projectRoot}"
+      }
+    },
+
+    "issue-service-cert": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "hostname": "localhost",
+        "commands": [
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/ca.{key,crt}' '{projectRoot}'",
+
+          "cd {projectRoot}/certs && openssl genrsa -out server.key 2048",
+          "echo 'For 'Common Name', use 'localhost' since we are running this locally. This is important for hostname verification.'",
+          "cd {projectRoot}/certs && openssl req -new -key server.key -out server.csr -subj \"/CN={hostname}\"",
+          "cd {projectRoot}/certs && openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -sha256",
+
+
+          "cd {projectRoot}/certs && openssl genrsa -out client.key 2048",
+          "echo 'The 'Common Name' here identifies the client, e.g., 'my-client-app''",
+          "cd {projectRoot}/certs && openssl req -new -key client.key -out client.csr -subj \"/CN={projectName}\"",
+          "cd {projectRoot}/certs && openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 365 -sha256"
+        ],
+        "cwd": "{workspaceRoot}"
       }
     }
   },

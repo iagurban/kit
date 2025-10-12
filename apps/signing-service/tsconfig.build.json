@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "../signing-service/src"
+  ],
+  "exclude": [
+    "../signing-service/node_modules", "dist", "test", "**/*.spec.ts", "**/*.test.ts"]
+}

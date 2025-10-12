@@ -1,6 +1,9 @@
+import { once } from '@gurban/kit/core/once';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable, OnModuleInit, Type } from '@nestjs/common';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
+import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { IWithModuleRef } from '@poslah/util/with-module-ref.interface';
 
 import { RedisStreamConsumer } from './redis-sream.consumer';
@@ -14,15 +17,24 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
   constructor(
     private readonly discoveryService: DiscoveryService,
     private readonly metadataScanner: MetadataScanner,
-    private readonly reflector: Reflector
+    private readonly reflector: Reflector,
+    private readonly loggerBase: Logger
   ) {}
+
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, RedisStreamDiscoveryService.name);
+  }
 
   async onModuleInit() {
     await this.findAndRegisterHandlers();
   }
 
   async findAndRegisterHandlers() {
-    const providers: InstanceWrapper[] = this.discoveryService.getProviders();
+    const providers: InstanceWrapper[] = [
+      ...this.discoveryService.getProviders(),
+      ...this.discoveryService.getControllers(),
+    ];
 
     for (const wrapper of providers) {
       const { instance } = wrapper;
@@ -32,10 +44,6 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
         continue;
       }
 
-      // The flawed and incorrect moduleRef assignment has been removed.
-      // We now rely on the service to correctly implement IWithModuleRef and have ModuleRef injected.
-
-      // Use the modern, non-deprecated method for finding methods.
       const methodNames = this.metadataScanner.getAllMethodNames(prototype);
       await Promise.all(methodNames.map(methodName => this.registerHandler(instance, methodName)));
     }
@@ -52,25 +60,28 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
     const { streamName, schema } = metadata as RedisStreamHandlerNestMetadata;
     const providerToken = `RedisStreamConsumer-${streamName}`;
 
-    // Ensure the instance has the moduleRef to resolve the consumer
-    if (!(instance as IWithModuleRef).moduleRef) {
-      throw new Error(
-        `The service "${(instance as { constructor: { name: string } }).constructor.name}" uses @RedisStreamHandler but does not have a 'moduleRef' property or does not implement IWithModuleRef correctly.`
-      );
-    }
+    const instanceName = (instance as { constructor: { name: string } }).constructor.name;
 
-    const moduleRef = (instance as IWithModuleRef).moduleRef;
+    const moduleRef = notNull(
+      (instance as IWithModuleRef).moduleRef,
+      () =>
+        new Error(
+          `The service "${instanceName}" uses @RedisStreamHandler but does not have a 'moduleRef' property or does not implement IWithModuleRef correctly.`
+        )
+    );
 
     try {
-      const consumer = moduleRef.get<RedisStreamConsumer>(providerToken, {
-        strict: false,
-      });
-      consumer.setHandler(methodRef.bind(instance), schema);
+      moduleRef
+        .get<RedisStreamConsumer>(providerToken, {
+          strict: false,
+        })
+        .setHandler(methodRef.bind(instance), schema, `${instanceName}/${methodName}`);
     } catch (error) {
-      console.error(
-        `Failed to find a provider for token "${providerToken}". Make sure a consumer for stream "${streamName}" is provided in the module.`,
-        error
+      this.logger.error(
+        { error },
+        `Failed to find a provider for token "${providerToken}". Make sure a stream "${streamName}" is declared in the RedisStreamConsumerModule.forRoot().`
       );
+      throw error;
     }
   }
 }

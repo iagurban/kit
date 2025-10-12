@@ -1,11 +1,11 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '@poslah/util/decorators/current-user';
 import { GqlJwtAuthGuard } from '@poslah/util/guards/gql-jwt-auth-guard';
 
+import { PushChatEventArgs } from '../../entities/push-chat-event.args';
+import { PushEventResponseDto } from '../../entities/push-event-response.dto';
 import { ChatsService } from './chats.service';
-import { PushChatEventArgs } from './push-chat-event.args';
-import { PushEventResponseDto } from './push-event-response.dto';
 
 @Resolver()
 export class ChatsResolver {
@@ -22,5 +22,10 @@ export class ChatsResolver {
     @Args() args: PushChatEventArgs
   ): Promise<PushEventResponseDto> {
     return this.chatsService.pushEventOptimistic(user.id, args);
+  }
+
+  @Query(() => Number)
+  dummyQuery() {
+    return 123;
   }
 }

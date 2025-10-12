@@ -16,6 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
 
     "baseUrl": ".",
     "rootDir": "../..",
@@ -23,7 +24,8 @@
     "paths": {
       "@gurban/kit/*": ["../../libs/kit/src/*"],
       "@poslah/database/*": ["../../libs/database/src/*"],
-      "@poslah/util/*": ["../../libs/util/src/*"]
+      "@poslah/util/*": ["../../libs/util/src/*"],
+      "@poslah/auth-service/*": ["../../apps/auth-service/src/*"]
     }
   },
   "include": ["src", "test"]

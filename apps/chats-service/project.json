@@ -29,7 +29,9 @@
       "options": {
         "protoFileName": "chats"
       }
-    }
+    },
+
+    "issue-service-cert": {}
   },
   "tags": []
 }

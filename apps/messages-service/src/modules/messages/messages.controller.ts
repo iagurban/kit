@@ -1,16 +1,19 @@
 import { once } from '@gurban/kit/core/once';
 import { Controller } from '@nestjs/common';
-import { messageCreatedEventTopic } from '@poslah/chats-service/modules/chats/topic/message-created-event.topic';
-import { messagePatchedEventTopic } from '@poslah/chats-service/modules/chats/topic/message-patched-event.topic';
+import { ModuleRef } from '@nestjs/core';
+import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-created-event.topic';
+import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';
 import { RedisStreamHandler } from '@poslah/database/redis/redis-stream-handler.decorator';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { IWithModuleRef } from '@poslah/util/with-module-ref.interface';
 import { z } from 'zod/v4';
 
 import { MessagesService } from './messages.service';
 
 @Controller()
-export class MessagesController {
+export class MessagesController implements IWithModuleRef {
   constructor(
+    readonly moduleRef: ModuleRef,
     private readonly messagesService: MessagesService,
     private readonly loggerBase: Logger
   ) {}

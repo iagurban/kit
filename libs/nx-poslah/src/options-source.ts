@@ -1,5 +1,5 @@
 import { checked, isString } from '@gurban/kit/core/checks';
-import { JsonObject, JsonValue } from '@poslah/util/json-type';
+import { JsonObject, JsonValue } from '@gurban/kit/core/json-type';
 import { get } from 'lodash';
 
 const throwOnUndefined = (path: string): string => {

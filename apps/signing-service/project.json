@@ -1,0 +1,44 @@
+{
+  "name": "signing-service",
+  "root": "apps/signing-service",
+  "sourceRoot": "apps/signing-service/src",
+  "projectType": "application",
+  "targets": {
+    "run-and-watch-backend": {},
+    "build-and-watch-backend": {},
+    "serve-backend": {},
+    "kill-nx-daemon": {},
+    "build-service-ts": {},
+    "copy-assets": {},
+
+    "build": {
+      "executor": "nx:noop",
+      "outputs": [],
+      "dependsOn": ["build-service-ts", "copy-assets"]
+    },
+
+    "serve": {
+      "executor": "nx:noop",
+      "dependsOn": ["serve-backend"]
+    },
+
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "messages"
+      }
+    },
+
+    "issue-ca-cert": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "commands": [
+          "openssl genrsa -out ca.key 2048",
+          "openssl req -new -x509 -key ca.key -sha256 -days 365 -out ca.crt"
+        ],
+        "cwd": "{workspaceRoot}/certs"
+      }
+    },
+    "issue-service-cert": {}
+  },
+  "tags": []
+}

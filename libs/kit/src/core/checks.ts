@@ -104,11 +104,16 @@ export const validator0 =
     return o;
   };
 
-export function checked<T, R extends T>(v: T, check: (v: T) => v is R, message: (v: T) => string): R;
-export function checked<T>(v: T, check: (v: T) => unknown, message: (v: T) => string): T;
-export function checked<T, R extends T>(v: T, check: (v: T) => unknown, message: (v: T) => string): R {
+export function checked<T, R extends T>(v: T, check: (v: T) => v is R, message: (v: T) => string | Error): R;
+export function checked<T>(v: T, check: (v: T) => unknown, message: (v: T) => string | Error): T;
+export function checked<T, R extends T>(
+  v: T,
+  check: (v: T) => unknown,
+  message: (v: T) => string | Error
+): R {
   if (!check(v)) {
-    throw new Error(message(v));
+    const e = message(v);
+    throw typeof e === `string` ? new Error(e) : e;
   }
   return v as R;
 }

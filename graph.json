@@ -77,8 +77,8 @@
               "executor": "@poslah/nx-poslah:run",
               "options": {
                 "commands": [
-                  "mkdir -p ./src/generated.grpc",
-                  "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true --ts_proto_out=./src/generated.grpc ./src/grpc/messages.proto"
+                  "mkdir -p ./src/generated/grpc",
+                  "$(yarn bin grpc_tools_node_protoc) --plugin=$(yarn bin protoc-gen-ts_proto) --ts_proto_opt=nestJs=true --ts_proto_out=./src/generated/grpc ./src/grpc/messages.proto"
                 ],
                 "cwd": "apps/messages-service"
               },

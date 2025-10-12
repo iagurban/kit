@@ -6,10 +6,10 @@ import { createContextualLogger, Logger } from '@poslah/util/logger/logger.modul
 import { IWithModuleRef } from '@poslah/util/with-module-ref.interface';
 import { z } from 'zod';
 
+import { membershipChangedEventTopic } from '../../topics/membership-changed-event.topic';
+import { rawCreateEventTopic } from '../../topics/raw-create-event.topic';
 import { ChatPermissionsService } from './chat-permissions.service';
 import { ChatsService } from './chats.service';
-import { membershipChangedEventTopic } from './topic/membership-changed-event.topic';
-import { rawCreateEventTopic } from './topic/raw-create-event.topic';
 
 @Controller()
 export class ChatsStreamsController implements IWithModuleRef {

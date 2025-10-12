@@ -7,7 +7,7 @@ import {
   ChatsServiceControllerMethods,
   GetLastMessageEventsRequest,
   GetLastMessageEventsResponse,
-} from '../../generated.grpc/src/grpc/chats';
+} from '../../generated/grpc/src/grpc/chats';
 import { ChatsService } from './chats.service';
 
 @Controller()

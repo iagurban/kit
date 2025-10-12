@@ -1,3 +1,4 @@
+import type { JsonObject } from '@gurban/kit/core/json-type';
 import { ProgrammingError } from '@gurban/kit/core/manual-sorting';
 import { once } from '@gurban/kit/core/once';
 import { notNull, throwing } from '@gurban/kit/utils/flow-utils';
@@ -7,32 +8,31 @@ import { isPrismaClientError } from '@poslah/database/db/util';
 import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
 import { RedisService } from '@poslah/database/redis/redis.service';
 import type { Topic } from '@poslah/util/declare-events-topic';
-import type { JsonObject } from '@poslah/util/json-type';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
 import { protobufTimestampFromDate } from '@poslah/util/protobuf-timestamp-to-date';
 import stringify from 'fast-json-stable-stringify';
 import { z } from 'zod/v4';
 
-import {
-  GetLastMessageEventsRequest,
-  GetLastMessageEventsResponse,
-} from '../../generated.grpc/src/grpc/chats';
-import { EventsCheckerService } from './events-checker.service';
-import type { PushChatEventArgs } from './push-chat-event.args';
-import type { PushEventResponseDto } from './push-event-response.dto';
+import type { PushChatEventArgs } from '../../entities/push-chat-event.args';
+import type { PushEventResponseDto } from '../../entities/push-event-response.dto';
 import type {
   InfoEventDto,
   MembershipEventDto,
   MessageEventDto,
   RawEventDto,
   UpdateChatPermissionsDto,
-} from './raw-event-schema';
-import { infoPatchedEventTopic } from './topic/info-patched-event.topic';
-import { membershipChangedEventTopic } from './topic/membership-changed-event.topic';
-import { messageCreatedEventTopic } from './topic/message-created-event.topic';
-import { messagePatchedEventTopic } from './topic/message-patched-event.topic';
-import { rawCreateEventTopic } from './topic/raw-create-event.topic';
+} from '../../entities/raw-event-schema';
+import {
+  GetLastMessageEventsRequest,
+  GetLastMessageEventsResponse,
+} from '../../generated/grpc/src/grpc/chats';
+import { infoPatchedEventTopic } from '../../topics/info-patched-event.topic';
+import { membershipChangedEventTopic } from '../../topics/membership-changed-event.topic';
+import { messageCreatedEventTopic } from '../../topics/message-created-event.topic';
+import { messagePatchedEventTopic } from '../../topics/message-patched-event.topic';
+import { rawCreateEventTopic } from '../../topics/raw-create-event.topic';
+import { EventsCheckerService } from './events-checker.service';
 
 export type ChatSelectPayload<S extends Prisma.ChatSelect> = Prisma.ChatGetPayload<
   S extends undefined ? undefined : { select: S }

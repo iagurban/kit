@@ -1,39 +1,22 @@
 import { once } from '@gurban/kit/core/once';
-import {
-  BadRequestException,
-  ForbiddenException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
-import {
-  MESSAGES_SERVICE_NAME,
-  MessagesServiceClient,
-} from '@poslah/messages-service/generated.grpc/src/grpc/messages';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { MessagesGRPCClient } from '@poslah/messages-service/grpc/messages.grpc-client';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { protobufLongFromBigint } from '@poslah/util/protobuf-long-to-bigint';
-import { firstValueFrom } from 'rxjs';
 
+import type { RawEventDto } from '../../entities/raw-event-schema';
 import { ChatPermissionsService } from './chat-permissions.service';
-import type { RawEventDto } from './raw-event-schema';
 
 @Injectable()
 export class EventsCheckerService {
   constructor(
     private readonly loggerBase: Logger,
     private readonly permissions: ChatPermissionsService,
-    @Inject('MESSAGES_SERVICE_CLIENT') private readonly grpcClient: ClientGrpc
+    private readonly messagesGrpc: MessagesGRPCClient
   ) {}
 
   @once
   get logger() {
     return createContextualLogger(this.loggerBase, EventsCheckerService.name);
-  }
-
-  @once
-  get messagesGrpc(): MessagesServiceClient {
-    return this.grpcClient.getService<MessagesServiceClient>(MESSAGES_SERVICE_NAME);
   }
 
   /**
@@ -69,12 +52,10 @@ export class EventsCheckerService {
           // We must fetch the message's metadata from the `messages-service` via gRPC.
           this.logger.info(`Fetching message ${messagePayload.nn} via gRPC for authorization check...`);
 
-          const messageAuthInfo = await firstValueFrom(
-            this.messagesGrpc.getMessageAuthInfo({
-              chatId: event.chatId,
-              nn: protobufLongFromBigint(messagePayload.nn),
-            })
-          );
+          const messageAuthInfo = await this.messagesGrpc.getMessageAuthInfo({
+            chatId: event.chatId,
+            nn: messagePayload.nn,
+          });
 
           if (!messageAuthInfo) {
             throw new NotFoundException(`Message with nn=${messagePayload.nn} not found for authorization.`);

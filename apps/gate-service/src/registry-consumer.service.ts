@@ -219,6 +219,13 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     return allRoutes;
   }
 
+  private isEmptySchema(sdl: string) {
+    return sdl
+      .split('\n')
+      .map(line => line.trim())
+      .every(line => !line || line.startsWith('#'));
+  }
+
   private async internalFetchAndComposeSupergraph(): Promise<string | null> {
     const subgraphEntries = await this.redis.hgetall('gateway:graphql_subgraphs');
 
@@ -229,9 +236,17 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     const subgraphs = new Subgraphs();
     for (const entry of Object.values(subgraphEntries)) {
       try {
-        const { name, sdl, url } = JSON.parse(entry); // url might be needed for the constructor
-        if (name && sdl) {
-          subgraphs.add(buildSubgraph(name, url || `http://${name}`, parse(sdl)));
+        const { name, sdl } = JSON.parse(entry); // url might be needed for the constructor
+        if (name && !this.isEmptySchema(sdl)) {
+          const upper = name.toUpperCase();
+          // noinspection HttpUrlsUsage
+          subgraphs.add(
+            buildSubgraph(
+              name,
+              `http://${this.configService.getOrThrow<string>(`${upper}_SERVICE_HOST`)}:${this.configService.getOrThrow<string>(`${upper}_SERVICE_PORT`)}/graphql`,
+              parse(sdl)
+            )
+          );
         }
       } catch (error) {
         this.logger.error({ error }, 'Failed to parse or add subgraph entry from Redis');

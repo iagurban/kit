@@ -1,11 +1,13 @@
+import { ExtendedJsonValue } from '@gurban/kit/core/json-type';
+import { once } from '@gurban/kit/core/once';
 import { sleep } from '@gurban/kit/utils/async-utils';
 import { notNull } from '@gurban/kit/utils/flow-utils';
-import { AnyFunction } from '@gurban/kit/utils/types';
-import { OnModuleDestroy, OnModuleInit, Provider } from '@nestjs/common';
+import { AnyAnyFunction } from '@gurban/kit/utils/types';
+import { FactoryProvider, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
-import { ClientName } from '@poslah/util/client-name';
-import { ExtendedJsonValue } from '@poslah/util/json-type';
+import { ClientName } from '@poslah/util/client-name/client-name';
+import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { Redis } from 'ioredis';
 import { treeifyError, ZodType } from 'zod/v4';
 
@@ -39,7 +41,7 @@ export interface RedisStreamConsumerProviderOptions {
    * Factory function that returns the complete configuration for the consumer,
    * including the RedisFabric instance.
    */
-  useFactory: AnyFunction<Promise<RedisStreamConsumerConfigBase> | RedisStreamConsumerConfigBase>;
+  useFactory: AnyAnyFunction<Promise<RedisStreamConsumerConfigBase> | RedisStreamConsumerConfigBase>;
 }
 
 // Type definition for the complex result of the XREADGROUP command
@@ -65,8 +67,8 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
   private reclaimRedis?: Redis; // Dedicated client for the reclaim loop
   private isRunning = false;
   private isReclaiming = false;
-  private processMessageFn: ProcessMessageFunction | null = null;
-  private zodSchema: ZodType | null = null;
+  private processFunction: { fn: ProcessMessageFunction; schema: ZodType; name: string } | null = null;
+
   private readonly redisFabric: RedisFabric;
   private readonly consumerName: string;
   private readonly consumersGroup: string;
@@ -76,7 +78,10 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
   private readonly dlqStreamName?: string;
   private readonly reclaimOnceCount: number;
 
-  constructor(config: RedisStreamConsumerConfig) {
+  constructor(
+    config: RedisStreamConsumerConfig,
+    private readonly loggerBase: Logger
+  ) {
     this.redisFabric = config.redisFabric;
     this.consumerName = config.consumerName;
     this.consumersGroup = config.consumersGroup;
@@ -90,7 +95,12 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
     this.reclaimOnceCount = config.reclaimOnceCount ?? 2;
     // Set configurable values with sensible defaults
     this.staleMessageTimeoutMs = config.staleMessageTimeoutMs ?? 60000;
-    this.reclaimSleepMs = config.reclaimSleepMs ?? 10000; // Sleep for 10s if no stale messages found
+    this.reclaimSleepMs = config.reclaimSleepMs ?? 10000; // Sleep for 10 sec if no stale messages found
+  }
+
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, RedisStreamConsumer.name);
   }
 
   async onModuleInit() {
@@ -109,14 +119,13 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  public setHandler(handler: ProcessMessageFunction, schema: ZodType): void {
+  public setHandler(handler: ProcessMessageFunction, schema: ZodType, name: string): void {
     if (typeof handler !== 'function') {
       throw new Error('Handler must be a function.');
     }
-    this.processMessageFn = handler;
-    this.zodSchema = schema;
-    if (this.isRunning && this.redis) {
-      this.startConsumptionLoop();
+    this.processFunction = { fn: handler, schema, name };
+    if (!this.isRunning && this.redis) {
+      void this.startConsumptionLoop();
     }
   }
 
@@ -128,14 +137,13 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
       throw new Error('Redis clients have not been initialized.');
     }
 
-    this.isRunning = true;
-    this.isReclaiming = true;
-
     await this.createGroupIfNotExists();
 
     // Start both loops in parallel
     void this.startConsumptionLoop();
-    void this.startReclaimLoop();
+
+    this.isRunning = true;
+    this.isReclaiming = true;
   }
 
   public async stop(): Promise<void> {
@@ -168,7 +176,9 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
   private async deadLetter(messageId: string, error: string, fields?: string[]): Promise<void> {
     // Check if a DLQ is configured for this consumer.
     if (!this.dlqStreamName) {
-      console.warn(`[${this.consumerName}] DLQ is not configured. Discarding failed message ${messageId}.`);
+      this.logger.warn(
+        `[${this.consumerName}] DLQ is not configured. Discarding failed message ${messageId}.`
+      );
       return;
     }
 
@@ -195,11 +205,13 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
   }
 
   private async startConsumptionLoop(): Promise<void> {
-    if (!this.processMessageFn || !this.zodSchema) {
+    if (this.isRunning || !this.processFunction) {
       return;
     }
 
-    console.log(`[${this.consumerName}] Starting consumption loop...`);
+    void this.startReclaimLoop();
+
+    this.logger.info(`[${this.consumerName}] Starting consumption loop for ${this.processFunction.name}...`);
     while (this.isRunning) {
       let messageId: string | null = null;
       try {
@@ -225,11 +237,11 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           messageId = msgId;
           const dataObject = this.convertArrayToObject(rawMessage);
 
-          const validationResult = this.zodSchema.safeParse(dataObject);
+          const validationResult = this.processFunction.schema.safeParse(dataObject);
           if (!validationResult.success) {
-            console.error(
-              `[${this.consumerName}] Zod validation failed for message ${messageId}:`,
-              treeifyError(validationResult.error)
+            this.logger.error(
+              { error: treeifyError(validationResult.error) },
+              `[${this.consumerName}] Zod validation failed for message ${messageId}:`
             );
             await this.acknowledgeStream(streamName, messageId);
             continue;
@@ -239,9 +251,9 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           await this.acknowledgeStream(streamName, messageId);
         }
       } catch (error) {
-        console.error(
-          `[${this.consumerName}] Processing failed for message ${messageId} after all retries. Leaving for reclaim worker.`,
-          error
+        this.logger.error(
+          { error },
+          `[${this.consumerName}] Processing failed for message ${messageId} after all retries. Leaving for reclaim worker.`
         );
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
@@ -264,7 +276,11 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
    * A separate, parallel loop that runs periodically to find and process stale messages.
    */
   private async startReclaimLoop(): Promise<void> {
-    console.log(`[${this.consumerName}] Starting reclaim loop...`);
+    if (this.isRunning || !this.processFunction) {
+      return;
+    }
+
+    this.logger.info(`[${this.consumerName}] Starting reclaim loop for ${this.processFunction.name}...`);
     const maxRetries = 3; // Example max retries for reclaimed messages
 
     while (this.isReclaiming) {
@@ -283,7 +299,7 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           } // Check flag before processing each message
 
           if (pendingInfo.deliveryCount > maxRetries) {
-            console.error(
+            this.logger.error(
               `[${this.consumerName}] Message ${pendingInfo.messageId} exceeded max retries. Moving to DLQ.`
             );
             const claimResult = await this.performClaim(pendingInfo.messageId, 0);
@@ -295,14 +311,14 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
             continue;
           }
 
-          console.warn(
+          this.logger.warn(
             `[${this.consumerName}] Reclaiming stale message ${pendingInfo.messageId} (delivered ${pendingInfo.deliveryCount} times)...`
           );
           const claimResult = await this.performClaim(pendingInfo.messageId, this.staleMessageTimeoutMs);
           if (claimResult && claimResult.length > 0) {
             const [claimedId, fields] = claimResult[0];
             const dataObject = this.convertArrayToObject(fields);
-            const validationResult = notNull(this.zodSchema).safeParse(dataObject);
+            const validationResult = notNull(this.processFunction).schema.safeParse(dataObject);
 
             // On reclaim, we are stricter. If validation or processing fails, it goes to DLQ.
             if (!validationResult.success) {
@@ -314,7 +330,7 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           }
         }
       } catch (error) {
-        console.error(`[${this.consumerName}] Error in reclaim loop:`, error);
+        this.logger.error({ error }, `[${this.consumerName}] Error in reclaim loop:`);
         await sleep(5000);
       }
     }
@@ -329,13 +345,13 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
     while (!ctx.stopped) {
       try {
         attempt++;
-        await notNull(this.processMessageFn)(validatedData, messageId, ctx);
+        await notNull(this.processFunction).fn(validatedData, messageId, ctx);
         clearTimeout(to);
         return; // Success
       } catch (retryError) {
-        console.warn(
-          `[${this.consumerName}] Attempt ${attempt} failed for message ${messageId}. Retrying...`,
-          retryError
+        this.logger.warn(
+          { error: retryError },
+          `[${this.consumerName}] Attempt ${attempt} failed for message ${messageId}. Retrying...`
         );
         await sleep(1000 + Math.random() * 2000);
       }
@@ -360,15 +376,18 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
    * @param options The factory options for creating the consumer instance.
    * @returns A NestJS Provider.
    */
-  public static provide(streamName: string, options: RedisStreamConsumerProviderOptions): Provider {
+  public static provide(
+    streamName: string,
+    options: RedisStreamConsumerProviderOptions
+  ): FactoryProvider<RedisStreamConsumer> {
     const token = `RedisStreamConsumer-${streamName}`;
 
     return {
       provide: token,
       // The inject-array is now taken directly from the options.
-      inject: options.inject || [],
+      inject: [Logger, ...(options.inject || [])],
       // The factory now receives all dependencies and is expected to return the full config.
-      useFactory: (async (...args) => {
+      useFactory: (async (loggerBase: Logger, ...args) => {
         // The user's factory is now responsible for returning the complete config.
         const consumerConfig = await options.useFactory(...args);
 
@@ -379,8 +398,8 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
         }
 
         const fullConfig = { ...consumerConfig, streamName } satisfies RedisStreamConsumerConfig;
-        return new RedisStreamConsumer(fullConfig);
-      }) as AnyFunction<Promise<RedisStreamConsumer>>,
+        return new RedisStreamConsumer(fullConfig, loggerBase);
+      }) as AnyAnyFunction<Promise<RedisStreamConsumer> | RedisStreamConsumer>,
     };
   }
 
@@ -388,7 +407,7 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
     streamName: string,
     consumersGroup: string,
     redisFabricConfig: string = `default`
-  ): Provider {
+  ): FactoryProvider<RedisStreamConsumer> {
     return RedisStreamConsumer.provide(streamName, {
       inject: [ClientName, RedisModule.getRedisFabricToken(redisFabricConfig)],
       useFactory: ({ clientName: consumerName }: ClientName, redisFabric: RedisFabric) => ({

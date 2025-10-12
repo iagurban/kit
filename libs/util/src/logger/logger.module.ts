@@ -2,10 +2,10 @@ import { EventEmitter } from 'node:events';
 
 import { AnyFunction } from '@gurban/kit/utils/types';
 import { Global, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import pino, { BaseLogger as PinoBaseLogger } from 'pino';
 
-import { ExtendedJsonObject } from '../json-type';
+import { ExtendedJsonObject } from '@gurban/kit/core/json-type';
 
 export class Logger implements pino.Logger<never, boolean> {
   level!: pino.LevelWithSilentOrString;
@@ -98,6 +98,7 @@ export type BaseLogger = PinoBaseLogger;
 
 @Global()
 @Module({
+  imports: [ConfigModule],
   providers: [
     {
       // We are creating a provider for our custom `Logger` class

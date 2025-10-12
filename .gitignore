@@ -58,3 +58,7 @@ build/
 .eslintcache
 compose.override.yaml
 minio-data
+*.csr
+*.crt
+*.key
+*.srl

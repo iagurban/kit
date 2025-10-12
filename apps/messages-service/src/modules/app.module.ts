@@ -1,36 +1,28 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { chatsGRPCConfig } from '@poslah/chats-service/grpc/chats.grpc-config';
+import { GraphqlSubgraphModule } from '@poslah/util/graphql-subgraph/graphql-subgraph.module';
+import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module';
+import { GlobalDbModule } from '@poslah/util/ready-modules/global-db-module';
+import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
+import { registerGRPCClientsModule } from '@poslah/util/register-grpc-module';
 import { rootImports } from '@poslah/util/root-imports';
 import { join } from 'path';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [
     ...rootImports,
-    ClientsModule.registerAsync([
-      {
-        name: 'CHATS_SERVICE_CLIENT', // The injection token
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.GRPC,
-          options: {
-            package: 'poslah.chats',
-            protoPath: join(process.cwd(), '../../apps/chats-service/src/grpc/chats.proto'),
-            url: configService.getOrThrow<string>('CHATS_SERVICE_GRPC_URL'),
-            loader: {
-              longs: BigInt,
-              defaults: true,
-              oneofs: true,
-            },
-          },
-        }),
-        inject: [ConfigService],
-      },
-    ]),
+    GlobalDbModule,
+    RedisStaticModule,
+    AuthStaticModule,
+    registerGRPCClientsModule([chatsGRPCConfig], join(__dirname, '../../certs')),
+
+    GraphqlSubgraphModule.forRoot(`messages`, join(__dirname, 'schema.graphql'), RedisStaticModule),
+
+    MessagesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

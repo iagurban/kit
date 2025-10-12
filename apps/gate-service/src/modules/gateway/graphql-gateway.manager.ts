@@ -46,7 +46,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
   private async create(sdl: string): Promise<Exclude<typeof this.graphqlApp, Nullish>> {
     const dynamicModule = GraphqlAppModule.forRoot(sdl);
     return {
-      app: await fastifyBootstrap(dynamicModule, { noListen: true, noHotReload: true }),
+      app: await fastifyBootstrap(dynamicModule, null, { noHotReload: true }),
       sdl,
     } as const;
   }
@@ -82,10 +82,10 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         this.graphqlApp = null;
         await oldApp?.close();
 
-        await graphqlApp.app.listen(this.internalPort, '127.0.0.1');
+        await graphqlApp.app.listen(this.internalPort, 'localhost');
         this.graphqlApp = graphqlApp;
 
-        this.logger.info('✅ New GraphQL App instance is active and listening on port 4001.');
+        this.logger.info(`✅ New GraphQL App instance is active and listening on port ${this.internalPort}.`);
 
         return graphqlApp.app;
       })

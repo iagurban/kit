@@ -1,4 +1,5 @@
 import { isDefined, isTruthy } from '@gurban/kit/core/checks';
+import { ExtendedJsonValue } from '@gurban/kit/core/json-type';
 import { Injectable } from '@nestjs/common';
 import {
   AttachmentInfoDto,
@@ -6,9 +7,8 @@ import {
   ForwardInfoDto,
   forwardInfoSchema,
   MessageEventDto,
-} from '@poslah/chats-service/modules/chats/raw-event-schema';
+} from '@poslah/chats-service/entities/raw-event-schema';
 import { ScyllaService } from '@poslah/database/scylla/scylla.service';
-import { ExtendedJsonValue } from '@poslah/util/json-type';
 import { sortedIndex } from 'lodash';
 import { z } from 'zod/v4';
 

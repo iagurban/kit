@@ -2,6 +2,7 @@ import { AnyFunction } from '@gurban/kit/utils/types';
 import { Abstract, DynamicModule, ForwardReference, Inject, Module, Provider } from '@nestjs/common';
 import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
+import { NestImportable } from '@poslah/util/nest-types';
 
 import { RedisFabric, RedisFabricOptions } from './redis-client.factory';
 import { RedisScriptManager } from './redis-script-manager';
@@ -12,7 +13,7 @@ export type RedisOptions = {
 } & (
   | { useConfig: string }
   | {
-      imports?: unknown[];
+      imports?: NestImportable[];
       useFactory: AnyFunction<Promise<RedisFabricOptions> | RedisFabricOptions>;
       inject?: (InjectionToken | OptionalFactoryDependency)[];
     }
@@ -26,7 +27,7 @@ export class RedisModule {
   // Helper to generate the token for the transient factory (Fabric)
   static readonly getRedisFabricToken = (name: string = `default`) => `REDIS_FABRIC_${name}`;
 
-  public static forRoot(config: RedisConfig): DynamicModule {
+  public static forRoot(config: RedisConfig, global?: boolean): DynamicModule {
     const providers: Provider[] = [RedisScriptManager];
     const exports: (
       | DynamicModule
@@ -37,6 +38,7 @@ export class RedisModule {
       | Abstract<unknown>
       | AnyFunction
     )[] = [RedisScriptManager];
+    const imports: NestImportable[] = [];
 
     // --- Create a Fabric Provider for each named configuration ---
     for (const name in config) {
@@ -49,6 +51,7 @@ export class RedisModule {
 
       if ('useFactory' in options) {
         providers.push(RedisFabric.provide(fabricToken, options));
+        imports.push(...(options.imports || []));
       } else if ('useConfig' in options) {
         // Handle aliasing
         providers.push({
@@ -88,7 +91,8 @@ export class RedisModule {
       module: RedisModule,
       providers,
       exports,
-      global: true, // Make providers available globally
+      imports,
+      global,
     };
   }
 }

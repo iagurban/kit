@@ -17,15 +17,15 @@
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
 
-    "baseUrl": ".",
+    "baseUrl": "../messages-service",
     "rootDir": "../..",
-    "outDir": "dist",
+    "outDir": "../messages-service/dist",
     "paths": {
       "@gurban/kit/*": ["../../libs/kit/src/*"],
       "@poslah/database/*": ["../../libs/database/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
-      "@poslah/chats-service/*": ["../../apps/chats-service/src/*"]
+      "@poslah/chats-service/*": ["../../apps/chats-service/src/*"],
     }
   },
-  "include": ["src", "test"]
+  "include": ["../messages-service/src", "test"]
 }

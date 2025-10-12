@@ -1,41 +1,28 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { DbModule } from '@poslah/database/db/db.module';
-import { RedisModule } from '@poslah/database/redis/redis.module';
-import { RedisService, RedisSubscriptionService } from '@poslah/database/redis/redis.service';
-import { ClientName } from '@poslah/util/client-name';
+import { messagesGRPCConfig } from '@poslah/messages-service/grpc/messages.grpc-config';
 import { GraphqlSubgraphModule } from '@poslah/util/graphql-subgraph/graphql-subgraph.module';
+import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module';
+import { GlobalDbModule } from '@poslah/util/ready-modules/global-db-module';
+import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
+import { registerGRPCClientsModule } from '@poslah/util/register-grpc-module';
 import { rootImports } from '@poslah/util/root-imports';
 import { join } from 'path';
 
 import { ChatsModule } from './chats/chats.module';
 
-const schemaPath = join(__dirname, 'schema.graphql');
-
-console.log(`schema path: ${schemaPath}`);
-
 @Module({
   imports: [
     ...rootImports,
-    DbModule,
-    GraphqlSubgraphModule.forRoot(`chats`, schemaPath),
-    RedisModule.forRoot({
-      default: {
-        inject: [ConfigService],
-        useFactory: (config: ConfigService) => ({
-          host: config.getOrThrow<string>('REDIS_HOST', '0.0.0.0'),
-          port: config.getOrThrow<number>('REDIS_PORT'),
-        }),
-        instance: RedisService,
-      },
-      subscription: {
-        useConfig: `default`,
-        instance: RedisSubscriptionService,
-      },
-    }),
+    GlobalDbModule,
+    RedisStaticModule,
+    AuthStaticModule,
+    registerGRPCClientsModule([messagesGRPCConfig], join(__dirname, '../../certs')),
+
+    GraphqlSubgraphModule.forRoot(`chats`, join(__dirname, 'schema.graphql'), RedisStaticModule),
+
     ChatsModule,
   ],
   controllers: [],
-  providers: [ClientName],
+  providers: [],
 })
 export class AppModule {}

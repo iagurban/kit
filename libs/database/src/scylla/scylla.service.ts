@@ -1,6 +1,6 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@poslah/util/logger/logger.module';
+import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { Client } from 'cassandra-driver';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class ScyllaService extends Client {
     provide: ScyllaService,
     inject: [ConfigService, Logger],
     useFactory: async (configService: ConfigService, parentLogger: Logger) => {
-      const logger = parentLogger.logger.child({ context: 'ScyllaServiceInit' });
+      const logger = createContextualLogger(parentLogger, 'ScyllaServiceInit');
 
       const client = new ScyllaService(configService);
 
