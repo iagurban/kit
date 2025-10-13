@@ -26,6 +26,6 @@ export class ChatsResolver {
 
   @Query(() => Number)
   dummyQuery() {
-    return 123458;
+    return 123453;
   }
 }

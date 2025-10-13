@@ -99,11 +99,12 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
 
       const upstreamStream = upstreamSession.request(headers);
 
+      // ** THE DEFINITIVE FIX IS HERE **
       upstreamStream.on('response', responseHeaders => {
-        downstreamStream.respond(responseHeaders);
+        // Signal to the client stream that trailers are coming.
+        downstreamStream.respond(responseHeaders, { waitForTrailers: true });
       });
 
-      // ** THE DEFINITIVE FIX IS HERE **
       let trailers: http2.OutgoingHttpHeaders | undefined;
 
       // 1. Store the trailers when they arrive from the upstream.
