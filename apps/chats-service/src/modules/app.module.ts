@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { messagesGRPCConfig } from '@poslah/messages-service/grpc/messages.grpc-config';
+import { signingGRPCConfig } from '@poslah/signing-service/grpc/signing.grpc-config';
 import { GraphqlSubgraphModule } from '@poslah/util/graphql-subgraph/graphql-subgraph.module';
 import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module';
 import { GlobalDbModule } from '@poslah/util/ready-modules/global-db-module';
@@ -16,7 +17,7 @@ import { ChatsModule } from './chats/chats.module';
     GlobalDbModule,
     RedisStaticModule,
     AuthStaticModule,
-    registerGRPCClientsModule([messagesGRPCConfig], join(__dirname, '../../certs')),
+    registerGRPCClientsModule([signingGRPCConfig, messagesGRPCConfig], join(__dirname, '../../certs')),
 
     GraphqlSubgraphModule.forRoot(`chats`, join(__dirname, 'schema.graphql'), RedisStaticModule),
 

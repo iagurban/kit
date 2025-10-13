@@ -7,6 +7,7 @@ import { ScyllaModule } from '@poslah/database/scylla/scylla.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
 import { MessagesController } from './messages.controller';
+import { MessagesResolver } from './messages.resolver';
 import { MessagesService } from './messages.service';
 import { MessagesDb } from './messages-db';
 import { MessagesGrpcController } from './messages-grpc.controller';
@@ -26,6 +27,6 @@ const consumersGroup = 'messages-service';
     ),
   ],
   controllers: [MessagesController, MessagesGrpcController],
-  providers: [MessagesDb, ChatsGRPCClient, MessagesService],
+  providers: [MessagesDb, ChatsGRPCClient, MessagesService, MessagesResolver],
 })
 export class MessagesModule {}

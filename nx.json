@@ -90,8 +90,8 @@
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
         "commands": [
-          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua,crt,key}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'",
-          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/*.{crt,key}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'"
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua,crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'",
+          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/*.{crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'"
         ],
         "stopOnFail": true,
         "cwd": "{workspaceRoot}"

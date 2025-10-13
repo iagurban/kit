@@ -62,3 +62,4 @@ minio-data
 *.crt
 *.key
 *.srl
+*.pem

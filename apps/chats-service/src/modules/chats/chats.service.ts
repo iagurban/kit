@@ -2,11 +2,13 @@ import type { JsonObject } from '@gurban/kit/core/json-type';
 import { ProgrammingError } from '@gurban/kit/core/manual-sorting';
 import { once } from '@gurban/kit/core/once';
 import { notNull, throwing } from '@gurban/kit/utils/flow-utils';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { DbService } from '@poslah/database/db/db.service';
 import { isPrismaClientError } from '@poslah/database/db/util';
 import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
 import { RedisService } from '@poslah/database/redis/redis.service';
+import { TokenCheckerService } from '@poslah/signing-service/modules/signing-module/token-checker.service';
+import { TokenFetcherService } from '@poslah/signing-service/modules/signing-module/token-fetcher.service';
 import type { Topic } from '@poslah/util/declare-events-topic';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
@@ -53,13 +55,27 @@ interface CandidateEventInput {
 }
 
 @Injectable()
-export class ChatsService {
+export class ChatsService implements OnModuleInit {
   constructor(
     private readonly db: DbService,
     private readonly redis: RedisService,
     private readonly loggerBase: Logger,
-    private readonly eventChecker: EventsCheckerService
+    private readonly eventChecker: EventsCheckerService,
+    private readonly tokenFetcher: TokenFetcherService,
+    private readonly tokenChecker: TokenCheckerService
   ) {}
+
+  async onModuleInit() {
+    try {
+      this.logger.info('Fetching test token...');
+      const token = await this.tokenFetcher.getToken();
+      this.logger.info({ token }, 'Successfully fetched test token on module init.');
+      const data = await this.tokenChecker.validateAndUnpackToken(token);
+      this.logger.info({ data }, 'Successfully checked test token on module init.');
+    } catch (error) {
+      this.logger.error({ error }, 'Failed to fetch test token on module init.');
+    }
+  }
 
   @once
   get logger() {

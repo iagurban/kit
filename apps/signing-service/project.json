@@ -24,7 +24,7 @@
 
     "generate-proto-code": {
       "options": {
-        "protoFileName": "messages"
+        "protoFileName": "signing"
       }
     },
 
@@ -38,7 +38,17 @@
         "cwd": "{workspaceRoot}/certs"
       }
     },
-    "issue-service-cert": {}
+    "issue-service-cert": {},
+    "issue-jwt-cert": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "commands": [
+          "openssl genrsa -out jwt-private.pem 2048",
+          "openssl rsa -in jwt-private.pem -pubout -out jwt-public.pem"
+        ],
+        "cwd": "{workspaceRoot}/{projectRoot}/certs"
+      }
+    }
   },
   "tags": []
 }

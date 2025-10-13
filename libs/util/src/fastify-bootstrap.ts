@@ -5,7 +5,6 @@ import { MicroserviceOptions } from '@nestjs/microservices';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { RawServerDefault } from 'fastify';
 
-import { AllExceptionsFilter } from './all-exceptions-filter';
 import { Logger } from './logger/logger.module';
 
 declare const module: {
@@ -22,12 +21,16 @@ export const fastifyBootstrap = async (
     bodyParser?: boolean;
     noHotReload?: boolean;
     server?: string | ((config: ConfigService) => string);
+    onAppCreated?: (app: NestFastifyApplication) => void;
+    onAppConfigured?: (app: NestFastifyApplication) => void;
+    onAppListening?: (app: NestFastifyApplication) => void;
   }
 ): Promise<NestFastifyApplication<RawServerDefault>> => {
   const app = await NestFactory.create<NestFastifyApplication>(nestModule, new FastifyAdapter(), {
     bufferLogs: true,
     bodyParser: options.bodyParser ?? true,
   });
+  options.onAppCreated?.(app);
 
   // app.useLogger(app.get(Logger));
 
@@ -37,7 +40,8 @@ export const fastifyBootstrap = async (
   try {
     const configService = app.get(ConfigService);
 
-    app.useGlobalFilters(new AllExceptionsFilter(rootLogger));
+    /// TODO
+    // app.useGlobalFilters(new AllExceptionsFilter(rootLogger));
 
     // --- Настройка микросервисов ---
     const microservices = options.microservices?.(app, configService);
@@ -49,6 +53,8 @@ export const fastifyBootstrap = async (
       await app.startAllMicroservices();
       logger.info('All microservices started successfully.');
     }
+
+    options.onAppConfigured?.(app);
 
     const portValue = typeof port === 'function' ? port(configService) : port;
 
@@ -64,6 +70,7 @@ export const fastifyBootstrap = async (
 
       logger.info(`🚀 Application is running in hybrid mode on port ${portValue}`);
       // logger.info(`📡 gRPC listening on ${configService.get('GRPC_URL')}`);
+      options.onAppListening?.(app);
     }
 
     // --- HMR для разработки ---

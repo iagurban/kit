@@ -12,9 +12,11 @@ export type GRPCConfig = {
   package: string;
   path: string;
   dir: string;
+  channelOptions?: Record<string, unknown>;
 };
 
 export const grpcLoaderOptions = {
+  keepCase: false, // Explicitly convert snake_case to camelCase
   longs: Long,
   defaults: true,
   oneofs: true,
@@ -45,8 +47,8 @@ const loadClientCreds = (certsPath: string) =>
 const isClientSymbol: unique symbol = Symbol(`GRPC_IS_CLIENT`);
 
 export const createGRPCMicroservice = (
-  { url, package: _package, path, dir }: GRPCConfig,
-  certsDir: string,
+  { url, package: _package, path, dir, channelOptions }: GRPCConfig,
+  certsDir: string | null,
   isClient?: typeof isClientSymbol
 ) =>
   ({
@@ -56,7 +58,9 @@ export const createGRPCMicroservice = (
       protoPath: join(dir, path),
       url,
       loader: grpcLoaderOptions,
-      credentials: isClient ? loadClientCreds(certsDir) : loadServerCreds(certsDir),
+      credentials:
+        certsDir != null ? (isClient ? loadClientCreds(certsDir) : loadServerCreds(certsDir)) : undefined,
+      channelOptions,
     },
   }) as const;
 

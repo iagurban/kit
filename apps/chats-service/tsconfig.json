@@ -26,7 +26,8 @@
       "@poslah/database/*": ["../../libs/database/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
       "@poslah/auth-service/*": ["../../apps/auth-service/src/*"],
-      "@poslah/messages-service/*": ["../../apps/messages-service/src/*"]
+      "@poslah/messages-service/*": ["../../apps/messages-service/src/*"],
+      "@poslah/signing-service/*": ["../../apps/signing-service/src/*"]
     }
   },
   "include": ["src", "test"]

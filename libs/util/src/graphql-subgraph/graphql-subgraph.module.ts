@@ -3,8 +3,10 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { FastifyRequest } from 'fastify';
+import { GraphQLError } from 'graphql';
 
 import { NestImportable } from '../nest-types';
+import { BigIntScalar } from './bigint.scalar';
 import { SubgraphPublisher, subgraphPublisherOptionsToken } from './subgraph-publisher';
 
 @Module({})
@@ -36,6 +38,24 @@ export class GraphqlSubgraphModule {
               return { req };
             },
 
+            formatError: (formattedError, error) => {
+              const originalError = ((error as GraphQLError)?.originalError || error) as
+                | { constructor?: { name: string }; stack?: string }
+                | undefined;
+
+              return {
+                ...formattedError,
+                extensions: {
+                  errorClass: originalError?.constructor?.name,
+                  debugStacktrace:
+                    configService.get('NODE_ENV') !== 'production'
+                      ? originalError?.stack?.split('\n').map(s => s.trim())
+                      : undefined,
+                  ...formattedError.extensions,
+                },
+              };
+            },
+
             playground: configService.get('NODE_ENV') !== 'production',
           }),
         }),
@@ -43,7 +63,9 @@ export class GraphqlSubgraphModule {
       providers: [
         { provide: subgraphPublisherOptionsToken, useValue: { serviceName, schemaPath } },
         SubgraphPublisher,
+        BigIntScalar,
       ],
+      exports: [BigIntScalar],
     };
   }
 }

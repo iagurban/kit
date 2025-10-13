@@ -1,11 +1,29 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/libs/util",
+    "target": "ES2024",
+    "lib": ["ESNext", "ESNext.AsyncIterable"],
+    "module": "CommonJS",
+    "strict": true,
+    "declaration": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+
+    "baseUrl": "../util",
+    "rootDir": "../..",
+    "outDir": "../util/dist",
     "paths": {
-      "@gurban/kit/*": ["libs/kit/src/*"],
-      "@poslah/database/*": ["libs/database/src/*"]
+      "@gurban/kit/*": ["../../libs/kit/src/*"],
+      "@poslah/database/*": ["../../libs/database/src/*"]
     }
   },
-  "include": ["src", "test"]
+  "include": ["../util/src", "test"]
 }
