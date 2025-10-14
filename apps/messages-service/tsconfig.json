@@ -25,6 +25,7 @@
       "@poslah/database/*": ["../../libs/database/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
       "@poslah/chats-service/*": ["../../apps/chats-service/src/*"],
+      "@poslah/signing-service/*": ["../../apps/signing-service/src/*"]
     }
   },
   "include": ["../messages-service/src", "test"]

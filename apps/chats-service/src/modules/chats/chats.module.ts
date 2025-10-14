@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { RedisStreamConsumerModule } from '@poslah/database/redis/redis-stream-consumer.module';
 import { MessagesGRPCClient } from '@poslah/messages-service/grpc/messages.grpc-client';
-import { TokenCheckerModule } from '@poslah/signing-service/modules/signing-module/token-checker.module';
-import { TokenFetcherModule } from '@poslah/signing-service/modules/signing-module/token-fetcher.module';
+import { TokenCheckerModule } from '@poslah/signing-service/modules/token/token-checker.module';
+import { TokenFetcherModule } from '@poslah/signing-service/modules/token/token-fetcher.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
 import { membershipChangedEventTopic } from '../../topics/membership-changed-event.topic';

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { rootImports } from '@poslah/util/root-imports';
 
-import { SigningModule } from './issuer/signing.module';
+import { SigningModule } from './signing/signing.module';
 
 @Module({
   imports: [

@@ -46,7 +46,9 @@ export class SigningService implements OnModuleInit {
    * @returns The signed JWT string and its expiration.
    */
   public signToken(serviceName: string): { accessToken: string; expiresIn: number } {
-    const expiresIn = 3600; // 1 hour
+    const expiresIn = parseInt(
+      this.configService.getOrThrow<string>(`INTERNAL_JWT_EXPIRATION_SECONDS`, '3600' /* 1 hour */)
+    );
     const payload: InternalJWTPayload = {
       sub: serviceName,
       aud: 'internal-api', // Audience for service-to-service calls

@@ -50,6 +50,17 @@ export class TokenFetcherService {
     return this.lastToken.accessToken;
   }
 
+  /**
+   * Creates a gRPC Metadata object with the Authorization header set.
+   * @returns A Metadata object containing the bearer token.
+   */
+  public async signedMetadata(): Promise<Metadata> {
+    const token = await this.getToken();
+    const metadata = new Metadata();
+    metadata.set('authorization', `Bearer ${token}`);
+    return metadata;
+  }
+
   private lastToken: { accessToken: string; expiresAt: Date } | undefined;
 
   /**
