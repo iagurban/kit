@@ -1,3 +1,6 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -20,16 +23,44 @@ export const fastifyBootstrap = async (
     microservices?: (app: NestFastifyApplication, config: ConfigService) => readonly MicroserviceOptions[];
     bodyParser?: boolean;
     noHotReload?: boolean;
+    http2?: { certsDir: string };
     server?: string | ((config: ConfigService) => string);
     onAppCreated?: (app: NestFastifyApplication) => void;
     onAppConfigured?: (app: NestFastifyApplication) => void;
     onAppListening?: (app: NestFastifyApplication) => void;
   }
 ): Promise<NestFastifyApplication<RawServerDefault>> => {
-  const app = await NestFactory.create<NestFastifyApplication>(nestModule, new FastifyAdapter(), {
-    bufferLogs: true,
-    bodyParser: options.bodyParser ?? true,
-  });
+  const app = await NestFactory.create<NestFastifyApplication>(
+    nestModule,
+    options.http2
+      ? new FastifyAdapter({
+          http2: true,
+          https: {
+            key: readFileSync(join(options.http2.certsDir, 'server.key')),
+            cert: readFileSync(join(options.http2.certsDir, 'server.crt')),
+            ca: readFileSync(join(options.http2.certsDir, 'ca.crt')),
+            requestCert: true,
+            rejectUnauthorized: false,
+          },
+        })
+      : new FastifyAdapter(),
+    {
+      bufferLogs: true,
+      bodyParser: options.bodyParser ?? true,
+    }
+  );
+
+  // When running in HTTP/2 mode, we must manually teach Fastify how to handle gRPC requests.
+  if (options.http2) {
+    app
+      .getHttpAdapter()
+      .getInstance()
+      .addContentTypeParser('application/grpc', (request, payload, done) => {
+        // Pass the raw body to the gRPC microservice.
+        done(null, payload);
+      });
+  }
+
   options.onAppCreated?.(app);
 
   // app.useLogger(app.get(Logger));
@@ -59,16 +90,14 @@ export const fastifyBootstrap = async (
     const portValue = typeof port === 'function' ? port(configService) : port;
 
     if (portValue != null) {
-      await app.listen(
-        portValue,
-        options.server
-          ? typeof options.server === 'function'
-            ? options.server(configService)
-            : options.server
-          : '0.0.0.0'
-      );
+      const server = options.server
+        ? typeof options.server === 'function'
+          ? options.server(configService)
+          : options.server
+        : '0.0.0.0';
+      await app.listen(portValue, server);
 
-      logger.info(`🚀 Application is running in hybrid mode on port ${portValue}`);
+      logger.info(`🚀 Application is running in hybrid mode on ${server}:${portValue}`);
       // logger.info(`📡 gRPC listening on ${configService.get('GRPC_URL')}`);
       options.onAppListening?.(app);
     }

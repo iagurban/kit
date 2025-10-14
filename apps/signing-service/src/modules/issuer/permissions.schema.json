@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Permissions Configuration",
+  "type": "object",
+  "properties": {
+    "clients": {
+      "type": "array",
+      "description": "A list of all valid client service names.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Defines permissions for each service and method.",
+      "patternProperties": {
+        "^[a-zA-Z0-9_-]+Service$": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9_]+$": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "const": "*"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["clients", "permissions"]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "./permissions.schema.json",
+  "clients": [
+    "chats-service",
+    "messages-service"
+  ],
+  "permissions": {
+    "ChatsService": {
+      "GetLastMessageEvents": [
+        "messages-service"
+      ]
+    },
+    "MessagesService": {
+      "GetMessageAuthInfo": "*"
+    }
+  }
+}

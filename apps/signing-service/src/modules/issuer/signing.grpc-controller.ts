@@ -1,5 +1,5 @@
 import { type Metadata, status as GrpcStatus } from '@grpc/grpc-js';
-import { isSomeObject } from '@gurban/kit/core/checks';
+import { checked, isSomeObject, isString } from '@gurban/kit/core/checks';
 import { once } from '@gurban/kit/core/once';
 import { Controller, Inject } from '@nestjs/common';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
@@ -11,6 +11,13 @@ import {
   SigningServiceControllerMethods,
 } from '../../generated/grpc/src/grpc/signing';
 import { SigningService } from './signing.service';
+
+const cnPrefix = `CN=`;
+
+const prepareServiceName = (value: unknown) => {
+  const serviceName = checked(value, isString, () => `Invalid service name: ${value}`);
+  return serviceName.startsWith(cnPrefix) ? serviceName.slice(cnPrefix.length) : serviceName;
+};
 
 @Controller()
 @SigningServiceControllerMethods()
@@ -50,7 +57,7 @@ export class SigningGrpcController implements SigningServiceController {
         throw { code: GrpcStatus.UNAUTHENTICATED, message: 'Client identity not forwarded by proxy.' };
       }
 
-      const serviceName = serviceNameValues[0] as string;
+      const serviceName = prepareServiceName(serviceNameValues[0]);
       this.logger.info(`Issuing token for service: ${serviceName}`);
       const { accessToken, expiresIn } = this.signingService.signToken(serviceName);
       this.logger.info(`Successfully issued token for service: ${serviceName}`);

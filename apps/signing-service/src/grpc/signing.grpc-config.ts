@@ -6,13 +6,20 @@ import { declareGRPCConfig } from '@poslah/util/declare-grpc-config';
  * Config for the gRPC **Server** that runs inside the signing-service.
  * This is used in `main.ts` to create the microservice.
  */
-export const privateSigningGRPCConfig = declareGRPCConfig('SIGNING_SERVICE_CLIENT', config => ({
-  path: 'grpc/signing.proto',
-  package: 'poslah.signing',
-  // Use the dedicated gRPC URL for the server to listen on.
-  url: config.getOrThrow<string>('SIGNING_SERVICE_GRPC_URL'),
-  dir: path.join(__dirname, '..'),
-}));
+export const privateSigningGRPCConfig = declareGRPCConfig('SIGNING_SERVICE_CLIENT', config => {
+  const grpcUrl = config.getOrThrow<string>('SIGNING_SERVICE_GRPC_URL');
+  const port = grpcUrl.split(':')[1];
+
+  return {
+    path: 'grpc/signing.proto',
+    package: 'poslah.signing',
+    // ** THE FIX IS HERE **
+    // Force the gRPC server to listen on all network interfaces (0.0.0.0).
+    // This makes it reachable from inside the Docker container.
+    url: `0.0.0.0:${port}`,
+    dir: path.join(__dirname, '..'),
+  };
+});
 
 /**
  * Config for gRPC **Clients** in other services that need to connect to the signing-service.

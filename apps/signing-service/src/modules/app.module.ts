@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { rootImports } from '@poslah/util/root-imports';
 
 import { SigningModule } from './issuer/signing.module';
-import { MtlsProxyModule } from './mtls-proxy.module';
 
 @Module({
   imports: [
@@ -15,7 +14,7 @@ import { MtlsProxyModule } from './mtls-proxy.module';
     // GraphqlSubgraphModule.forRoot(`signing`, join(__dirname, 'schema.graphql'), RedisStaticModule),
 
     SigningModule,
-    MtlsProxyModule,
+    // MtlsProxyModule,
   ],
   controllers: [],
   providers: [],

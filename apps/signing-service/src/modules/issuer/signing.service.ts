@@ -1,5 +1,3 @@
-import { ExMap } from '@gurban/kit/collections/ex-map';
-import { checked } from '@gurban/kit/core/checks';
 import { notNull } from '@gurban/kit/utils/flow-utils'; // Using 'node-jose' for robust JWK/JWKS handling
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -8,38 +6,21 @@ import * as jwt from 'jsonwebtoken';
 import * as jose from 'node-jose';
 import { join } from 'path';
 
-const { '*': services, ...permissions } = {
-  '*': [`chats-service`, `messages-service`],
-  'ChatsService/GetLastMessageEvents': [`messages-service`],
-  'MessagesService/GetMessageAuthInfo': `*`,
-} satisfies Record<string, readonly string[] | `*`>;
+import permissionsJson from './permissions.json';
+import { parsePermissions } from './permissions.zod';
+
+export type InternalJWTPayload = {
+  sub: string;
+  aud: string;
+  permissions: Record<string /* service */, readonly string[] /* methods (sorted!) */>;
+};
 
 @Injectable()
 export class SigningService implements OnModuleInit {
   private key?: jose.JWK.Key;
   private jwks?: jose.JWK.KeyStore;
 
-  readonly permissions = (() => {
-    const all = new Set(services);
-    const allArray = [...all];
-
-    return ExMap.groupedBy(
-      Object.entries(permissions).flatMap(([key, services]) =>
-        (services === `*` ? allArray : services).map(
-          s =>
-            [
-              checked(
-                s,
-                s => all.has(s),
-                () => `Unknown service: ${s}`
-              ),
-              key,
-            ] as const
-        )
-      ),
-      ([service]) => service
-    ).mapEntries(pairs => pairs.map(([, key]) => key));
-  })();
+  readonly permissions: Map<string, InternalJWTPayload[`permissions`]> = parsePermissions(permissionsJson);
 
   constructor(private readonly configService: ConfigService) {}
 
@@ -66,10 +47,13 @@ export class SigningService implements OnModuleInit {
    */
   public signToken(serviceName: string): { accessToken: string; expiresIn: number } {
     const expiresIn = 3600; // 1 hour
-    const payload = {
+    const payload: InternalJWTPayload = {
       sub: serviceName,
       aud: 'internal-api', // Audience for service-to-service calls
-      permissions: this.permissions.get(serviceName) ?? [],
+      permissions: notNull(
+        this.permissions.get(serviceName),
+        () => `Unknown service: "${serviceName}", can't authorize`
+      ),
     };
 
     const key = notNull(this.key);
@@ -89,7 +73,7 @@ export class SigningService implements OnModuleInit {
    * Other services will fetch this to verify the JWTs.
    */
   public getJwks() {
-    // The `true` flag exports only the public keys.
-    return notNull(this.jwks).toJSON(true);
+    // Passing `false` or no argument exports only the public keys.
+    return notNull(this.jwks).toJSON();
   }
 }

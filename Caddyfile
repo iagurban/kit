@@ -1,0 +1,57 @@
+# Caddyfile
+# This file configures the Caddy proxy server.
+
+{
+  # Enable full debug logging to see routing decisions.
+  debug
+
+  # Tell Caddy to trust our custom root CA.
+  pki {
+    ca local
+  }
+}
+
+# Main proxy configuration for signing-service
+https://localhost:4444 {
+  # Add detailed access logging to debug routing.
+  log {
+    output stdout
+    level DEBUG
+  }
+
+  # Configure TLS for the proxy server itself.
+  tls /apps/signing-service/certs/server.crt /apps/signing-service/certs/server.key {
+    # Configure mTLS for incoming connections.
+    client_auth {
+      # Trust clients that have a certificate signed by our root CA.
+      trusted_ca_cert_file /certs/ca.crt
+      # mTLS is optional. This allows public requests (like for JWKS) to connect.
+      mode verify_if_given
+    }
+  }
+
+  # Use a route block to ensure correct order of operations.
+  route {
+    # Route 1: Handle gRPC traffic.
+    @grpc {
+      path /poslah.signing.SigningService/*
+    }
+    reverse_proxy @grpc h2c://{$HOST_IP}:44446 {
+      header_up X-Forwarded-Client-Cert-Cn {http.request.tls.client.subject}
+    }
+
+    # Route 2: Handle the public JWKS endpoint.
+    @jwks {
+      path /.well-known/jwks.json
+    }
+    reverse_proxy @jwks https://{$HOST_IP}:44445 {
+      transport http {
+        versions 2
+        tls_insecure_skip_verify
+      }
+    }
+
+    # Fallback for any other requests.
+    respond "Not Found" 404
+  }
+}

@@ -126,3 +126,20 @@ services:
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
     ports:
       - "8080:8080"
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "4444:4444"
+    environment:
+      - HOST_IP=192.168.1.105
+    volumes:
+      # Mount the Caddyfile we created for configuration.
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      # Mount the root CA so Caddy can verify client certs.
+      - ./certs/ca.crt:/certs/ca.crt
+      # Mount the signing-service's server cert for Caddy to use.
+      - ./apps/signing-service/certs/server.crt:/apps/signing-service/certs/server.crt
+      - ./apps/signing-service/certs/server.key:/apps/signing-service/certs/server.key

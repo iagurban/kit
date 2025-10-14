@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 
+import { join } from 'node:path';
+
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 import { createGRPCMicroservice } from '@poslah/util/register-grpc-module';
 
@@ -9,6 +11,7 @@ import { AppModule } from './modules/app.module';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('SIGNING_SERVICE_INTERNAL_PORT'), {
   server: config => config.getOrThrow<string>('SIGNING_SERVICE_INTERNAL_HOST', '0.0.0.0'),
+  http2: { certsDir: join(__dirname, '../certs') },
   microservices: (_app, configService) => [
     createGRPCMicroservice(
       privateSigningGRPCConfig.config(configService),

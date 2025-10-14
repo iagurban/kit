@@ -1,12 +1,16 @@
 import { once } from '@gurban/kit/core/once';
+import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable, Module, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import * as fs from 'fs';
+import * as http from 'http';
 import * as http2 from 'http2';
 import { Socket } from 'net';
 import { join } from 'path';
 import { TLSSocket } from 'tls';
+
+const JWKS_PATH = '/.well-known/jwks.json';
 
 @Injectable()
 export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
@@ -36,8 +40,8 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
   }
 
   private startProxy() {
-    // The upstream target MUST be the internal gRPC server, not the main HTTP app.
-    const upstreamTarget = this.configService.getOrThrow<string>('SIGNING_SERVICE_GRPC_URL');
+    const grpcUpstreamTarget = this.configService.getOrThrow<string>('SIGNING_SERVICE_GRPC_URL');
+    const httpUpstreamTarget = this.configService.getOrThrow<string>('SIGNING_SERVICE_HTTP_URL');
 
     const publicHost = this.configService.getOrThrow<string>('SIGNING_SERVICE_HOST');
     const publicPort = this.configService.getOrThrow<string>('SIGNING_SERVICE_PORT');
@@ -50,9 +54,8 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
       key: fs.readFileSync(join(certsFolder, 'server.key')),
       cert: fs.readFileSync(join(certsFolder, 'server.crt')),
       ca: [fs.readFileSync(join(certsFolder, 'ca.crt'))],
-      requestCert: true, // CRITICAL: Enforce mTLS
-      rejectUnauthorized: true, // CRITICAL: Enforce mTLS
-      ALPNProtocols: ['h2', 'http/1.1'], // Allow both HTTP/2 (for gRPC) and HTTP/1.1
+      requestCert: true, // Ask for a client cert, but don't require it.
+      rejectUnauthorized: false, // ** THE KEY FIX **: Allow clients without certs to connect.
     };
 
     // 2. Create the server.
@@ -62,80 +65,36 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
       this.logger.error({ err }, 'Proxy Server Error');
     });
 
-    // 3. Define the main request handler using the 'stream' event for HTTP/2.
+    // 3a. Handle HTTP/2 requests (gRPC).
     this.server.on('stream', (downstreamStream, headers) => {
-      const session = downstreamStream.session;
-      if (!session || session.destroyed) {
-        this.logger.error('Proxy: Request has no session, cannot process.');
-        if (!downstreamStream.closed) {
-          downstreamStream.close(http2.constants.NGHTTP2_INTERNAL_ERROR);
-        }
-        return;
-      }
-
-      const socket = session.socket as TLSSocket;
-      const cert = socket.getPeerCertificate(true);
-
-      if (!cert?.subject?.CN) {
-        this.logger.error('Proxy: DENIED (HTTP/2). Client certificate with CN is required.');
+      // Manually enforce mTLS for gRPC streams.
+      const socket = notNull(downstreamStream.session).socket as TLSSocket;
+      if (!socket.authorized) {
+        this.logger.error(
+          { error: socket.authorizationError },
+          'Proxy: DENIED (gRPC). Invalid or missing client certificate.'
+        );
         downstreamStream.close(http2.constants.NGHTTP2_REFUSED_STREAM);
         return;
       }
 
-      const serviceName = cert.subject.CN;
-      this.logger.info(`Proxy: Verified stream from [${serviceName}] via mTLS.`);
-
-      // Inject the trusted header for the downstream service.
-      headers['x-forwarded-client-cert-cn'] = serviceName;
-
-      // Manually create a new HTTP/2 connection to the upstream gRPC service.
-      const upstreamUrl = `http://${upstreamTarget}`;
-      const upstreamSession = http2.connect(upstreamUrl);
-
-      upstreamSession.on('error', err => {
-        this.logger.error({ err, target: upstreamTarget }, 'Upstream connection error');
-        downstreamStream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
-      });
-
-      const upstreamStream = upstreamSession.request(headers);
-
-      // ** THE DEFINITIVE FIX IS HERE **
-      upstreamStream.on('response', responseHeaders => {
-        // Signal to the client stream that trailers are coming.
-        downstreamStream.respond(responseHeaders, { waitForTrailers: true });
-      });
-
-      let trailers: http2.OutgoingHttpHeaders | undefined;
-
-      // 1. Store the trailers when they arrive from the upstream.
-      upstreamStream.on('trailers', (receivedTrailers, flags) => {
-        this.logger.debug({ trailers: receivedTrailers, flags }, 'Received upstream trailers. Storing.');
-        trailers = receivedTrailers;
-      });
-
-      // 2. Listen for when the downstream is ready for trailers.
-      downstreamStream.on('wantTrailers', () => {
-        this.logger.debug('Downstream wants trailers. Sending stored trailers.');
-        if (trailers) {
-          downstreamStream.sendTrailers(trailers);
-        } else {
-          this.logger.warn('Downstream wants trailers, but none were stored from upstream.');
-          downstreamStream.end();
-        }
-      });
-
-      // Pipe the data between the client and the upstream service.
-      downstreamStream.pipe(upstreamStream);
-      upstreamStream.pipe(downstreamStream);
-
-      downstreamStream.on('close', () => {
-        if (!upstreamSession.closed) {
-          upstreamSession.close();
-        }
-      });
+      this.proxyGrpcRequest(downstreamStream, headers, grpcUpstreamTarget);
     });
 
-    // Add a listener for raw connection attempts to see if anything hits the server.
+    // 3b. Handle HTTP/1.1 requests (JWKS).
+    // this.server.on('request', (req: http.IncomingMessage, res: http.ServerResponse) => {
+    //   if (req.url === JWKS_PATH) {
+    //     this.logger.info(`Proxy: Received public HTTP/1.1 request for ${req.url}, routing to HTTP upstream.`);
+    //     this.proxyHttp1Request(req, res, httpUpstreamTarget);
+    //   } else {
+    //     // This could be a mis-routed gRPC call or other unknown request.
+    //     // We must reject it, as it is not the public JWKS endpoint.
+    //     this.logger.warn({ url: req.url }, 'Proxy: Received unexpected HTTP/1.1 request. Rejecting.');
+    //     res.writeHead(404, 'Not Found');
+    //     res.end();
+    //   }
+    // });
+
     this.server.on('connection', (socket: Socket) => {
       this.logger.info(
         { remoteAddress: socket.remoteAddress, remotePort: socket.remotePort },
@@ -149,10 +108,96 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
       this.logger.info(`✅ mTLS Proxy is running and listening on ${publicUrl}`);
     });
   }
+
+  /**
+   * Proxies a public incoming HTTP/1.1 request. Does not check for client cert.
+   */
+  private proxyHttp1Request(req: http.IncomingMessage, res: http.ServerResponse, target: string) {
+    const [hostname, port] = target.split(':');
+    const options: http.RequestOptions = {
+      hostname,
+      port: parseInt(port, 10),
+      path: req.url,
+      method: req.method,
+      headers: req.headers,
+    };
+
+    const upstreamReq = http.request(options, upstreamRes => {
+      res.writeHead(upstreamRes.statusCode ?? 500, upstreamRes.headers);
+      upstreamRes.pipe(res);
+    });
+
+    upstreamReq.on('error', e => {
+      this.logger.error({ err: e }, 'HTTP/1.1 proxy request error.');
+      if (!res.headersSent) {
+        res.writeHead(502, 'Bad Gateway');
+      }
+      res.end();
+    });
+
+    req.pipe(upstreamReq);
+  }
+
+  /**
+   * Proxies a request to an HTTP/2 gRPC upstream.
+   */
+  private proxyGrpcRequest(
+    downstreamStream: http2.ServerHttp2Stream,
+    headers: http2.IncomingHttpHeaders,
+    target: string
+  ) {
+    const session = downstreamStream.session;
+    const socket = notNull(session).socket as TLSSocket;
+    const cert = socket.getPeerCertificate(true);
+    const serviceName = cert?.subject?.CN ?? 'unknown';
+
+    this.logger.info(`Proxy: Verified stream from [${serviceName}] via mTLS.`);
+
+    // Inject the trusted header for the downstream service.
+    headers['x-forwarded-client-cert-cn'] = serviceName;
+
+    const upstreamSession = http2.connect(`http://${target}`);
+
+    upstreamSession.on('error', err => {
+      this.logger.error({ err, target }, 'Upstream connection error');
+      downstreamStream.close(http2.constants.NGHTTP2_CONNECT_ERROR);
+    });
+
+    const upstreamStream = upstreamSession.request(headers);
+
+    upstreamStream.on('response', responseHeaders => {
+      downstreamStream.respond(responseHeaders, { waitForTrailers: true });
+    });
+
+    let trailers: http2.OutgoingHttpHeaders | undefined;
+
+    upstreamStream.on('trailers', (receivedTrailers, flags) => {
+      this.logger.debug({ trailers: receivedTrailers, flags }, 'Received upstream trailers. Storing.');
+      trailers = receivedTrailers;
+    });
+
+    downstreamStream.on('wantTrailers', () => {
+      this.logger.debug('Downstream wants trailers. Sending stored trailers.');
+      if (trailers) {
+        downstreamStream.sendTrailers(trailers);
+      } else {
+        this.logger.warn('Downstream wants trailers, but none were stored from upstream.');
+        downstreamStream.end();
+      }
+    });
+
+    downstreamStream.pipe(upstreamStream);
+    upstreamStream.pipe(downstreamStream);
+
+    downstreamStream.on('close', () => {
+      if (!upstreamSession.closed) {
+        upstreamSession.close();
+      }
+    });
+  }
 }
 
 @Module({
-  // This module can now be imported into your main AppModule for the signing-service.
   providers: [MtlsProxyService],
 })
 export class MtlsProxyModule {}

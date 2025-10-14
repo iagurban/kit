@@ -67,6 +67,10 @@ export class ChatsService implements OnModuleInit {
 
   async onModuleInit() {
     try {
+      await this.tokenChecker.validateAndUnpackToken(
+        `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImVGSHVmUEw4eEVDaHpDNjAzb2s5cTFRQ3hkUDZxMVlKSE1vSjZpd0pyM00ifQ.eyJzdWIiOiJjaGF0cy1zZXJ2aWNlIiwiYXVkIjoiaW50ZXJuYWwtYXBpIiwicGVybWlzc2lvbnMiOlsiTWVzc2FnZXNTZXJ2aWNlL0dldE1lc3NhZ2VBdXRoSW5mbyJdLCJpYXQiOjE3NjAzNzgxNzIsImV4cCI6MTc2MDM4MTc3MiwiaXNzIjoic2lnbmluZy1zZXJ2aWNlIn0.Y4nM-FvSkkoKewLLXLG50oMVslKaIpaZ4bYRedYtkot1k-mu1aHNoKmrwIbp-mLSgQGOqZctnGiGTxLEUhZ7lA923iw9Tt_PmVmK1Fx5EHep6xgjQl43j6H5iEBlELnD1I9ei9bbeT7PLrsy3pjtnNSQMdP4WQSOmXDuo6Zp_HcNOJhP2FyDd5UrCA4XSvVIctC8RuJI6o6r94IXH-y6FjQhxAh9tXSNJOKDRlpGffwQhhzAHpqQ5X-c20OcQLCD3tICtl70x0Jqbp8ZDLeaRU1ms9CqcsDx3ZHV-qzjJFr853oIA62SnV3t3YDTROaLg-GRD0fsh68tGmSMlRShow`
+      );
+
       this.logger.info('Fetching test token...');
       const token = await this.tokenFetcher.getToken();
       this.logger.info({ token }, 'Successfully fetched test token on module init.');
