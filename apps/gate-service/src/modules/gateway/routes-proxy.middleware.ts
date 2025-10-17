@@ -8,7 +8,7 @@ import { createMatchTree, MatchTreeFn, pathSplitFn } from '@poslah/util/match-tr
 import { NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware, Options, RequestHandler } from 'http-proxy-middleware';
 
-import { ProxyRoute, RegistryConsumerService } from '../../registry-consumer.service';
+import { ProxyRoute, RegistryConsumerService } from '../registry-consumer.service';
 
 @Injectable()
 export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {

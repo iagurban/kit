@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+//    "baseUrl": ".",
+    "rootDir": "../..",
+//    "outDir": "dist",
+    "paths": {
+      "@gurban/kit/*": ["../../libs/kit/src/*"],
+      "@poslah/util/*": ["../../libs/util/src/*"],
+      "@poslah/chats-service/*": ["../../apps/chats-service/src/*"],
+      "@poslah/messages-service/*": ["../../apps/messages-service/src/*"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

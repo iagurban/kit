@@ -9,7 +9,7 @@ import { membershipChangedEventTopic } from '../../topics/membership-changed-eve
 import { rawCreateEventTopic } from '../../topics/raw-create-event.topic';
 import { ChatPermissionsService } from './chat-permissions.service';
 import { ChatsStreamsController } from './chat-streams.controller';
-import { ChatsController } from './chats.controller';
+import { ChatsGRPCController } from './chats.controller';
 import { ChatsResolver } from './chats.resolver';
 import { ChatsService } from './chats.service';
 import { EventsCheckerService } from './events-checker.service';
@@ -29,7 +29,7 @@ const consumersGroup = 'chats-service';
     TokenFetcherModule,
     TokenCheckerModule,
   ],
-  controllers: [ChatsController, ChatsStreamsController],
+  controllers: [ChatsGRPCController, ChatsStreamsController],
   providers: [MessagesGRPCClient, ChatPermissionsService, EventsCheckerService, ChatsService, ChatsResolver],
 })
 export class ChatsModule {}

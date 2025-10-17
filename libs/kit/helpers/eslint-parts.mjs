@@ -3,6 +3,8 @@ import tsParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-config-prettier/flat';
 import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-plugin-prettier';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
@@ -48,6 +50,29 @@ export const serverConfig = {
   },
 
   plugins: commonPlugins,
+};
+
+export const clientConfig = {
+  languageOptions: {
+    ...commonLanguageOptions,
+    sourceType: 'module',
+    globals: {
+      ...globals.browser,
+      ...globals.es2021,
+    },
+  },
+
+  plugins: { ...commonPlugins, react, 'react-hooks': reactHooks },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  rules: {
+    'react/react-in-jsx-scope': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+  },
 };
 
 export const commonRules = {

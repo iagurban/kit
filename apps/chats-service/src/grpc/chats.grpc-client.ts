@@ -2,6 +2,7 @@ import { once } from '@gurban/kit/core/once';
 import { Nullish } from '@gurban/kit/utils/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { TokenFetcherService } from '@poslah/signing-service/modules/token/token-fetcher.service';
 import { GRPCClientBase } from '@poslah/util/grpc-client-base';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
@@ -16,7 +17,8 @@ import { chatsGRPCConfig } from './chats.grpc-config';
 export class ChatsGRPCClient extends GRPCClientBase<ChatsServiceClient> {
   constructor(
     private readonly loggerBase: Logger,
-    @Inject(chatsGRPCConfig.clientName) grpcClient: ClientGrpc
+    @Inject(chatsGRPCConfig.clientName) grpcClient: ClientGrpc,
+    private readonly tokenFetcher: TokenFetcherService
   ) {
     super(grpcClient, CHATS_SERVICE_NAME);
   }
@@ -28,11 +30,14 @@ export class ChatsGRPCClient extends GRPCClientBase<ChatsServiceClient> {
 
   async getLastMessageEvents(chatId: string, currentEventNn: bigint, targetMessageNn: bigint) {
     const { events, oldestCreatedAt } = await firstValueFrom(
-      this.client.getLastMessageEvents({
-        chatId: chatId,
-        messageNn: protobufLongFromBigint(targetMessageNn),
-        afterNn: protobufLongFromBigint(currentEventNn),
-      })
+      this.client.getLastMessageEvents(
+        {
+          chatId: chatId,
+          messageNn: protobufLongFromBigint(targetMessageNn),
+          afterNn: protobufLongFromBigint(currentEventNn),
+        },
+        await this.tokenFetcher.signedMetadata()
+      )
     );
     return {
       events: events.map(
@@ -44,5 +49,12 @@ export class ChatsGRPCClient extends GRPCClientBase<ChatsServiceClient> {
       ),
       oldestCreatedAt: oldestCreatedAt ? protobufTimestampToDate(oldestCreatedAt) : undefined,
     };
+  }
+
+  async getUserChatIds(userId: string) {
+    const { chatIds } = await firstValueFrom(
+      this.client.getUserChatIds({ userId }, await this.tokenFetcher.signedMetadata())
+    );
+    return new Set(chatIds);
   }
 }

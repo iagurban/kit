@@ -2,7 +2,7 @@ import type { JsonObject } from '@gurban/kit/core/json-type';
 import { ProgrammingError } from '@gurban/kit/core/manual-sorting';
 import { once } from '@gurban/kit/core/once';
 import { notNull, throwing } from '@gurban/kit/utils/flow-utils';
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DbService } from '@poslah/database/db/db.service';
 import { isPrismaClientError } from '@poslah/database/db/util';
 import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
@@ -55,7 +55,7 @@ interface CandidateEventInput {
 }
 
 @Injectable()
-export class ChatsService implements OnModuleInit {
+export class ChatsService /*implements OnModuleInit*/ {
   constructor(
     private readonly db: DbService,
     private readonly redis: RedisService,
@@ -65,21 +65,21 @@ export class ChatsService implements OnModuleInit {
     private readonly tokenChecker: TokenCheckerService
   ) {}
 
-  async onModuleInit() {
-    try {
-      await this.tokenChecker.validateAndUnpackToken(
-        `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImVGSHVmUEw4eEVDaHpDNjAzb2s5cTFRQ3hkUDZxMVlKSE1vSjZpd0pyM00ifQ.eyJzdWIiOiJjaGF0cy1zZXJ2aWNlIiwiYXVkIjoiaW50ZXJuYWwtYXBpIiwicGVybWlzc2lvbnMiOlsiTWVzc2FnZXNTZXJ2aWNlL0dldE1lc3NhZ2VBdXRoSW5mbyJdLCJpYXQiOjE3NjAzNzgxNzIsImV4cCI6MTc2MDM4MTc3MiwiaXNzIjoic2lnbmluZy1zZXJ2aWNlIn0.Y4nM-FvSkkoKewLLXLG50oMVslKaIpaZ4bYRedYtkot1k-mu1aHNoKmrwIbp-mLSgQGOqZctnGiGTxLEUhZ7lA923iw9Tt_PmVmK1Fx5EHep6xgjQl43j6H5iEBlELnD1I9ei9bbeT7PLrsy3pjtnNSQMdP4WQSOmXDuo6Zp_HcNOJhP2FyDd5UrCA4XSvVIctC8RuJI6o6r94IXH-y6FjQhxAh9tXSNJOKDRlpGffwQhhzAHpqQ5X-c20OcQLCD3tICtl70x0Jqbp8ZDLeaRU1ms9CqcsDx3ZHV-qzjJFr853oIA62SnV3t3YDTROaLg-GRD0fsh68tGmSMlRShow`
-      );
-
-      this.logger.info('Fetching test token...');
-      const token = await this.tokenFetcher.getToken();
-      this.logger.info({ token }, 'Successfully fetched test token on module init.');
-      const data = await this.tokenChecker.validateAndUnpackToken(token);
-      this.logger.info({ data }, 'Successfully checked test token on module init.');
-    } catch (error) {
-      this.logger.error({ error }, 'Failed to fetch test token on module init.');
-    }
-  }
+  // async onModuleInit() {
+  //   try {
+  //     await this.tokenChecker.tryValidateAndUnpackToken(
+  //       `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImVGSHVmUEw4eEVDaHpDNjAzb2s5cTFRQ3hkUDZxMVlKSE1vSjZpd0pyM00ifQ.eyJzdWIiOiJjaGF0cy1zZXJ2aWNlIiwiYXVkIjoiaW50ZXJuYWwtYXBpIiwicGVybWlzc2lvbnMiOlsiTWVzc2FnZXNTZXJ2aWNlL0dldE1lc3NhZ2VBdXRoSW5mbyJdLCJpYXQiOjE3NjAzNzgxNzIsImV4cCI6MTc2MDM4MTc3MiwiaXNzIjoic2lnbmluZy1zZXJ2aWNlIn0.Y4nM-FvSkkoKewLLXLG50oMVslKaIpaZ4bYRedYtkot1k-mu1aHNoKmrwIbp-mLSgQGOqZctnGiGTxLEUhZ7lA923iw9Tt_PmVmK1Fx5EHep6xgjQl43j6H5iEBlELnD1I9ei9bbeT7PLrsy3pjtnNSQMdP4WQSOmXDuo6Zp_HcNOJhP2FyDd5UrCA4XSvVIctC8RuJI6o6r94IXH-y6FjQhxAh9tXSNJOKDRlpGffwQhhzAHpqQ5X-c20OcQLCD3tICtl70x0Jqbp8ZDLeaRU1ms9CqcsDx3ZHV-qzjJFr853oIA62SnV3t3YDTROaLg-GRD0fsh68tGmSMlRShow`
+  //     );
+  //
+  //     this.logger.info('Fetching test token...');
+  //     const token = await this.tokenFetcher.getToken();
+  //     this.logger.info({ token }, 'Successfully fetched test token on module init.');
+  //     const data = await this.tokenChecker.tryValidateAndUnpackToken(token);
+  //     this.logger.info({ data }, 'Successfully checked test token on module init.');
+  //   } catch (error) {
+  //     this.logger.error({ error }, 'Failed to fetch test token on module init.');
+  //   }
+  // }
 
   @once
   get logger() {
@@ -226,6 +226,15 @@ export class ChatsService implements OnModuleInit {
       data: { ...data, eventsCounter: {}, messagesCounter: {} },
       select,
     })) as ChatSelectPayload<S>;
+  }
+
+  async getUserChatIds(userId: string): Promise<string[]> {
+    const memberships = await this.db.transaction.chatMember.findMany({
+      where: { userId },
+      select: { chatId: true },
+    });
+
+    return memberships.map(m => m.chatId);
   }
 
   async getLastMessageEvents({

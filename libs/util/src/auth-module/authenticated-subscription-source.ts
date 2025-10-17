@@ -45,14 +45,14 @@ export function authenticatedSubscriptionSource<This, Return, Args extends reado
   };
 }
 
-type WithAuthService = { authService: { accessTokenToPayload: (token: string) => unknown } };
-type ConversionReturn<R extends WithAuthService> = ReturnType<R[`authService`][`accessTokenToPayload`]>;
+type WithAuthService = { authService: { validateToken: (token: string) => unknown } };
+type ConversionReturn<R extends WithAuthService> = ReturnType<R[`authService`][`validateToken`]>;
 
 /**
  * A standard specialization for resolvers that expose an `authService`
- * with an `accessTokenToPayload(token)` method.
+ * with an `validateToken(token)` method.
  *
- * @template This    – your resolver class; must have `authService.accessTokenToPayload`
+ * @template This    – your resolver class; must have `authService.validateToken`
  * @template Return  – the type of each yielded value
  * @template Args    – a tuple type of extra arguments after the token
  *
@@ -62,7 +62,7 @@ type ConversionReturn<R extends WithAuthService> = ReturnType<R[`authService`][`
  *
  * @returns
  *   A method `(this: This, accessToken: string, ...args: Args) => AsyncIterator<Return>`
- *   which validates via `authService.accessTokenToPayload` and then delegates
+ *   which validates via `authService.validateToken` and then delegates
  *   to your iterableGetter.
  */
 export function standardAuthenticatedSubscriptionSource<
@@ -77,7 +77,7 @@ export function standardAuthenticatedSubscriptionSource<
   ) => AsyncIterable<Return>
 ): (this: This, accessToken: string, ...args: Args) => AsyncIterator<Return> {
   return authenticatedSubscriptionSource<This, Return, Args, ConversionReturn<This>>(
-    (o, token) => o.authService.accessTokenToPayload(token) as ConversionReturn<This>,
+    (o, token) => o.authService.validateToken(token) as ConversionReturn<This>,
     iterableGetter
   );
 }

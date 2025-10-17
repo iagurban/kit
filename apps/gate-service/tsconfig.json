@@ -24,8 +24,7 @@
     "paths": {
       "@gurban/kit/*": ["../../libs/kit/src/*"],
       "@poslah/database/*": ["../../libs/database/src/*"],
-      "@poslah/util/*": ["../../libs/util/src/*"],
-      "@poslah/auth-service/*": ["../../apps/auth-service/src/*"]
+      "@poslah/util/*": ["../../libs/util/src/*"]
     }
   },
   "include": ["src", "test"]

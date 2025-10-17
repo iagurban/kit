@@ -8,6 +8,9 @@ import "google/protobuf/timestamp.proto";
 service ChatsService {
   // A method to get all message-related events for a specific chat after a certain point.
   rpc GetLastMessageEvents(GetLastMessageEventsRequest) returns (GetLastMessageEventsResponse);
+
+  // A method to get all chat IDs for a specific user.
+  rpc GetUserChatIds(GetUserChatIdsRequest) returns (GetUserChatIdsResponse);
 }
 
 // The request message for the GetLastMessageEvents method.
@@ -40,3 +43,12 @@ message GetLastMessageEventsResponse {
   repeated LastMessageEvent events = 2;
 }
 
+// The request message for the GetUserChatIds method.
+message GetUserChatIdsRequest {
+  string user_id = 1;
+}
+
+// The response message for the GetUserChatIds method.
+message GetUserChatIdsResponse {
+  repeated string chat_ids = 1;
+}

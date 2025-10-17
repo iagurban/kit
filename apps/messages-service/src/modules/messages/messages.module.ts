@@ -4,6 +4,8 @@ import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-c
 import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';
 import { RedisStreamConsumerModule } from '@poslah/database/redis/redis-stream-consumer.module';
 import { ScyllaModule } from '@poslah/database/scylla/scylla.module';
+import { TokenCheckerModule } from '@poslah/signing-service/modules/token/token-checker.module';
+import { TokenFetcherModule } from '@poslah/signing-service/modules/token/token-fetcher.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
 import { MessagesController } from './messages.controller';
@@ -25,6 +27,8 @@ const consumersGroup = 'messages-service';
       },
       RedisStaticModule
     ),
+    TokenFetcherModule,
+    TokenCheckerModule,
   ],
   controllers: [MessagesController, MessagesGrpcController],
   providers: [MessagesDb, ChatsGRPCClient, MessagesService, MessagesResolver],

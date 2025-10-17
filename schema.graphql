@@ -1,0 +1,98 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+"""64-bit signed integer"""
+scalar BigInt
+  @join__type(graph: CHATS)
+  @join__type(graph: MESSAGES)
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+  @join__type(graph: CHATS)
+
+scalar join__FieldSet
+
+enum join__Graph {
+  CHATS @join__graph(name: "chats", url: "http://localhost:11115/graphql")
+  MESSAGES @join__graph(name: "messages", url: "http://localhost:22225/graphql")
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+  @join__type(graph: CHATS)
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type MessageDTO
+  @join__type(graph: MESSAGES)
+{
+  nn: BigInt!
+}
+
+type Mutation
+  @join__type(graph: CHATS)
+{
+  pushChatEvent(chatId: ID!, payload: JSON!, type: String!): PushEventResponseDto!
+}
+
+type PushEventResponseDto
+  @join__type(graph: CHATS)
+{
+  """Серверное время генерации события"""
+  createdAt: DateTime!
+
+  """Присвоенный порядковый номер события в чате"""
+  nn: String!
+}
+
+type Query
+  @join__type(graph: CHATS)
+  @join__type(graph: MESSAGES)
+{
+  dummyQuery: Float! @join__field(graph: CHATS)
+  getMessages(
+    """Fetch messages with a sequence number greater than this value."""
+    greaterThanNn: Int
+
+    """Fetch messages with a sequence number less than this value."""
+    lessThanNn: Int
+
+    """The maximum number of messages to return."""
+    limit: Int
+  ): MessageDTO! @join__field(graph: MESSAGES)
+}

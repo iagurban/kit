@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import fastifyCookie, { FastifyCookieOptions } from '@fastify/cookie';
+import { FastifyCorsOptions } from '@fastify/cors';
 import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -16,6 +18,15 @@ declare const module: {
 
 type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntryNestModule>;
 
+const createHttps = (dir: string) =>
+  ({
+    key: readFileSync(join(dir, 'server.key')),
+    cert: readFileSync(join(dir, 'server.crt')),
+    ca: readFileSync(join(dir, 'ca.crt')),
+    requestCert: true,
+    rejectUnauthorized: false,
+  }) as const;
+
 export const fastifyBootstrap = async (
   nestModule: IEntryNestModule,
   port: number | null | ((config: ConfigService) => number | null),
@@ -24,26 +35,22 @@ export const fastifyBootstrap = async (
     bodyParser?: boolean;
     noHotReload?: boolean;
     http2?: { certsDir: string };
+    https?: { certsDir: string };
     server?: string | ((config: ConfigService) => string);
     onAppCreated?: (app: NestFastifyApplication) => void;
     onAppConfigured?: (app: NestFastifyApplication) => void;
     onAppListening?: (app: NestFastifyApplication) => void;
+    cors?: FastifyCorsOptions;
+    noCookies?: boolean;
   }
 ): Promise<NestFastifyApplication<RawServerDefault>> => {
   const app = await NestFactory.create<NestFastifyApplication>(
     nestModule,
     options.http2
-      ? new FastifyAdapter({
-          http2: true,
-          https: {
-            key: readFileSync(join(options.http2.certsDir, 'server.key')),
-            cert: readFileSync(join(options.http2.certsDir, 'server.crt')),
-            ca: readFileSync(join(options.http2.certsDir, 'ca.crt')),
-            requestCert: true,
-            rejectUnauthorized: false,
-          },
-        })
-      : new FastifyAdapter(),
+      ? new FastifyAdapter({ http2: true, https: createHttps(options.http2.certsDir) })
+      : options.https
+        ? new FastifyAdapter({ https: createHttps(options.https.certsDir) })
+        : new FastifyAdapter(),
     {
       bufferLogs: true,
       bodyParser: options.bodyParser ?? true,
@@ -61,7 +68,15 @@ export const fastifyBootstrap = async (
       });
   }
 
+  if (options.noCookies !== true) {
+    await app.register(fastifyCookie, { secret: `asdkjbsohfoiweoh` } as FastifyCookieOptions);
+  }
+
   options.onAppCreated?.(app);
+
+  if (options.cors) {
+    app.enableCors(options.cors);
+  }
 
   // app.useLogger(app.get(Logger));
 
@@ -110,6 +125,7 @@ export const fastifyBootstrap = async (
 
     return app;
   } catch (error) {
+    logger.error({ error }, '>>> FATAL ERROR during fastifyBootstrap setup:'); // Explicit console.error
     logger.fatal({ err: error }, '❌ Application failed to start during setup');
     await app.close();
     process.exit(1);

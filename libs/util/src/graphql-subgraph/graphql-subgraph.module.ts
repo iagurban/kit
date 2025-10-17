@@ -32,9 +32,13 @@ export class GraphqlSubgraphModule {
             /** Creates a context object for each request. This is how your resolvers
              *  get access to request headers and the authenticated user.
              */
-            context: ({ req }: { req: FastifyRequest }) => {
-              // For a standard HTTP request, the `req` object is passed here.
-              // Your @GqlAuthGuard will use this to extract the user from the JWT.
+            context: (req: FastifyRequest) => {
+              if (configService.get('NODE_ENV') !== 'production') {
+                const devUserHeader = req.headers['x-dev-user'];
+                if (devUserHeader) {
+                  req.headers.authorization = `x-dev-user-${devUserHeader}`;
+                }
+              }
               return { req };
             },
 

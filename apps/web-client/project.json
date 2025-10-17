@@ -1,0 +1,63 @@
+{
+  "name": "web-client",
+  "root": "apps/web-client",
+  "sourceRoot": "apps/web-client/src",
+  "projectType": "application",
+  "targets": {
+    "dev": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "commands": [
+          "yarn vite"
+        ],
+        "stopOnFail": true,
+        "cwd": "{workspaceRoot}/{projectRoot}"
+      }
+    },
+    "build": {
+      "executor": "@poslah/nx-poslah:run",
+      "outputs": ["{workspaceRoot}/{projectRoot}/dist"],
+      "options": {
+        "commands": [
+          "yarn tsc",
+          "yarn vite build"
+        ],
+        "stopOnFail": true,
+        "cwd": "{workspaceRoot}/{projectRoot}"
+      }
+    },
+    "preview": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "commands": [
+          "yarn vite preview"
+        ],
+        "stopOnFail": true,
+        "cwd": "{workspaceRoot}/{projectRoot}"
+      }
+    },
+
+    "generate": {
+      "executor": "@poslah/nx-poslah:run",
+      "options": {
+        "commands": [
+          "yarn graphql-codegen --config codegen.ts"
+        ],
+        "stopOnFail": true,
+        "cwd": "{workspaceRoot}/{projectRoot}"
+      }
+    },
+    "generate-and-watch": {
+      "executor": "@poslah/nx-poslah:nodemon",
+      "options": {
+        "watch": [
+          "./{projectRoot}/src/graphql"
+        ],
+        "ext": "graphql",
+        "exec": "yarn nx run web-client:generate",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  },
+  "tags": []
+}

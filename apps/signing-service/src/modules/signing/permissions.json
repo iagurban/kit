@@ -8,7 +8,8 @@
     "ChatsService": {
       "GetLastMessageEvents": [
         "messages-service"
-      ]
+      ],
+      "GetUserChatIds": "*"
     },
     "MessagesService": {
       "GetMessageAuthInfo": "*"

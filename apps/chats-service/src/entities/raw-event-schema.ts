@@ -20,7 +20,7 @@ export const forwardInfoSchema = z.object({
   text: z.string().optional().nullable(),
   authorId: z.uuid(),
   createdAt: stringifiedISODate,
-  attachments: z.array(attachmentInfoSchema).optional(),
+  attachments: z.array(attachmentInfoSchema).optional().nullable(),
 });
 
 export type ForwardInfoDto = z.infer<typeof forwardInfoSchema>;
@@ -28,9 +28,9 @@ export type ForwardInfoDto = z.infer<typeof forwardInfoSchema>;
 const messageMainPartSchema = z.object({
   text: z.string().min(1).optional().nullable(),
   replyToNn: stringifiedBigint.nullable(),
-  attachments: z.array(attachmentInfoSchema).optional(),
-  forwarded: z.array(forwardInfoSchema).optional(),
-  deletedAt: stringifiedISODate.optional(),
+  attachments: z.array(attachmentInfoSchema).optional().nullable(),
+  forwarded: z.array(forwardInfoSchema).optional().nullable(),
+  deletedAt: stringifiedISODate.optional().nullable(),
 });
 
 const messageEventPayloadSchema = <Nn extends z.ZodType>(nn: Nn) =>

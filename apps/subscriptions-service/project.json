@@ -1,0 +1,34 @@
+{
+  "name": "subscriptions-service",
+  "root": "apps/subscriptions-service",
+  "sourceRoot": "apps/messages-service/src",
+  "projectType": "application",
+  "targets": {
+    "run-and-watch-backend": {},
+    "build-and-watch-backend": {},
+    "serve-backend": {},
+    "kill-nx-daemon": {},
+    "build-service-ts": {},
+    "copy-assets": {},
+
+    "build": {
+      "executor": "nx:noop",
+      "outputs": [],
+      "dependsOn": ["build-service-ts", "copy-assets"]
+    },
+
+    "serve": {
+      "executor": "nx:noop",
+      "dependsOn": ["serve-backend"]
+    },
+
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "subscriptions"
+      }
+    },
+
+    "issue-service-cert": {}
+  },
+  "tags": []
+}

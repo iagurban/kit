@@ -82,7 +82,7 @@
         ],
         "cwd": "{workspaceRoot}"
       },
-      "dependsOn": []
+      "dependsOn": ["copy-assets"]
     },
 
     "copy-assets": {

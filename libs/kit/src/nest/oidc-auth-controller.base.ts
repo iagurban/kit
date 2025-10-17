@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { FastifyReply, FastifyRequest } from 'fastify';
 
 export interface OidcTokens {
   accessToken: string;
-  refreshToken: string;
   expiresIn: number;
-  refreshExpiresIn: number;
+  refreshToken?: string;
+  refreshExpiresIn?: number;
 }
 
 /**
@@ -28,28 +28,29 @@ export abstract class OidcAuthControllerBase {
    * Constructs the full logout URL to which the user should be redirected
    * to end their session on the identity provider.
    *
-   * @param req The incoming Express request, useful for accessing cookies or headers
+   * @param req The incoming Fastify request, useful for accessing cookies or headers
    * that might contain an `id_token_hint`.
    * @returns The complete URL for the IdP's end-session endpoint.
    */
-  protected abstract getLogoutUrl(req: Request): string;
+  protected abstract getLogoutUrl(req: FastifyRequest): string;
 
   /**
    * Endpoint to initiate the login flow.
    * It calls the abstract `getAuthorizationUrl` method and redirects the user.
    */
-  public login(res: Response): void {
+  public login(res: FastifyReply): FastifyReply {
     const url = this.getAuthorizationUrl();
-    res.redirect(302, url);
+    console.log(url);
+    return res.redirect(url);
   }
 
   /**
    * Endpoint to initiate the logout flow.
    * It calls the abstract `getLogoutUrl` method and redirects the user.
    */
-  public logout(req: Request, res: Response): void {
+  public logout(req: FastifyRequest, res: FastifyReply): FastifyReply {
     const url = this.getLogoutUrl(req);
-    res.redirect(302, url);
+    return res.redirect(url);
   }
 
   /**
@@ -59,28 +60,4 @@ export abstract class OidcAuthControllerBase {
    * @returns A promise that resolves to the OIDC tokens.
    */
   public abstract exchangeCodeForTokens(code: string): Promise<OidcTokens>;
-
-  /**
-   * Establishes a session by setting tokens in secure cookies and redirecting.
-   * @param res The Express Response object.
-   * @param tokens The tokens to set in cookies.
-   * @param redirectUrl The URL to redirect the user to after a successful login.
-   */
-  public handleSuccessfulLogin(res: Response, tokens: OidcTokens, redirectUrl: string): void {
-    res.cookie('access_token', tokens.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: tokens.expiresIn * 1000,
-      sameSite: 'lax',
-      path: '/',
-    });
-    res.cookie('refresh_token', tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: tokens.refreshExpiresIn * 1000,
-      sameSite: 'lax',
-      path: '/',
-    });
-    res.redirect(302, redirectUrl);
-  }
 }

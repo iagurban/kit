@@ -7,8 +7,8 @@ import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 
-import { RegistryConsumerService } from '../../registry-consumer.service';
 import { GraphqlAppModule } from '../graphql-app/graphql-app.module';
+import { RegistryConsumerService } from '../registry-consumer.service';
 
 @Injectable()
 export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdown {
@@ -20,7 +20,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
   constructor(
     private readonly registry: RegistryConsumerService,
     private readonly loggerBase: Logger,
-    config: ConfigService
+    private readonly config: ConfigService
   ) {
     this.internalPort = checked(
       Number(config.get(`GATE_GRAPHQL_INTERNAL_PORT`, 34982)),
@@ -46,7 +46,21 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
   private async create(sdl: string): Promise<Exclude<typeof this.graphqlApp, Nullish>> {
     const dynamicModule = GraphqlAppModule.forRoot(sdl);
     return {
-      app: await fastifyBootstrap(dynamicModule, null, { noHotReload: true }),
+      app: await fastifyBootstrap(dynamicModule, null, {
+        noHotReload: true,
+        cors: {
+          origin: (origin, cb) => {
+            console.log(origin);
+            cb(
+              null,
+              !origin || origin === `https://localhost:${this.config.getOrThrow(`WEB_CLIENT_PORT`, '3000')}`
+            );
+          },
+          credentials: true,
+          methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+          allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+        },
+      }),
       sdl,
     } as const;
   }

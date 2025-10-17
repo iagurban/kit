@@ -1,128 +1,18 @@
 import { compose } from '@apollo/composition';
 import { buildSubgraph, Subgraphs } from '@apollo/federation-internals';
-import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
 import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RedisService, RedisSubscriptionService } from '@poslah/database/redis/redis.service';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { RedisSubscriber } from '@poslah/util/redis-subscriber';
 import { parse } from 'graphql';
-import { Redis } from 'ioredis';
+
+import { CachedResource } from './cached-resource';
 
 export interface ProxyRoute {
   path: string;
   target: string;
-}
-
-type Subscription = (message: string) => void;
-
-class RedisSubscriber {
-  constructor(private readonly redis: Redis) {}
-
-  readonly subscriptions = new ExMap<string, Set<Subscription>>();
-
-  private isAnybodySubscribed() {
-    for (const set of this.subscriptions.values()) {
-      if (set.size > 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private readonly onMessage = (channel: string, message: string) => {
-    this.subscriptions.get(channel)?.forEach(c => c(message));
-  };
-
-  async subscribe(channel: string, callback: () => unknown) {
-    const wasAnybodySubscribed = this.isAnybodySubscribed();
-    const subscriptionsBefore = this.subscriptions.size;
-    this.subscriptions.update(channel, o => (o || new Set()).add(callback));
-    if (!wasAnybodySubscribed) {
-      this.redis.on(`message`, this.onMessage);
-    }
-    if (this.subscriptions.size > subscriptionsBefore) {
-      await this.redis.subscribe(channel);
-    }
-
-    return async () => {
-      const set = this.subscriptions.get(channel);
-      let needUnsubscribe = false;
-      if (set) {
-        set.delete(callback);
-        if (set.size === 0) {
-          this.subscriptions.delete(channel);
-          needUnsubscribe = true;
-        }
-      }
-      if (!this.isAnybodySubscribed()) {
-        this.redis.off(`message`, this.onMessage);
-      }
-      if (needUnsubscribe) {
-        await this.redis.unsubscribe(channel);
-      }
-    };
-  }
-}
-
-export class CachedResource<T> {
-  private dataPromise: Promise<T> | null = null;
-  private unsub: (() => Promise<void>) | null = null;
-  private readonly subscribers = new Set<() => void>();
-
-  constructor(
-    private readonly resourceName: string,
-    private readonly fetchFn: () => Promise<T>,
-    private readonly subscriber: RedisSubscriber,
-    private readonly channel: string,
-    private readonly logger: Logger
-  ) {}
-
-  /**
-   * Initializes the resource by fetching the initial data and subscribing to updates.
-   * This should be called from the parent service's `onModuleInit`.
-   */
-  public async initialize(): Promise<void> {
-    this.logger.info(`Initializing and warming cache for resource: [${this.resourceName}]`);
-    await this.fetch(); // Trigger the initial fetch
-
-    this.unsub = await this.subscriber.subscribe(this.channel, () => {
-      this.fetch(true);
-      for (const subscriber of this.subscribers) {
-        subscriber();
-      }
-    });
-  }
-
-  subscribe(onUpdate: () => void) {
-    this.subscribers.add(onUpdate);
-    return () => {
-      this.subscribers.delete(onUpdate);
-    };
-  }
-
-  /**
-   * Gets the promise for the resource.
-   * Creates the fetch promise on the first call and returns the cached promise thereafter.
-   */
-  public fetch(force = false): Promise<T> {
-    if (force || !this.dataPromise) {
-      this.logger.info(`Cache miss for [${this.resourceName}]. Initiating fetch.`);
-      this.dataPromise = this.fetchFn();
-    }
-    return this.dataPromise;
-  }
-
-  /**
-   * Cleans up the subscription.
-   * This should be called from the parent service's `onApplicationShutdown`.
-   */
-  public async destroy(): Promise<void> {
-    if (this.unsub) {
-      await this.unsub();
-      this.logger.info(`Subscription cleaned up for resource: [${this.resourceName}]`);
-    }
-  }
 }
 
 export interface ProxyRoute {

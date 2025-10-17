@@ -2,13 +2,14 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.7
 //   protoc               v3.19.1
-// source: src/grpc/signing.proto
+// source: src/grpc/chats.proto
 
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import { wrappers } from "protobufjs";
 import { Struct } from "../../google/protobuf/struct";
 import Long = require("long");
+import type { Metadata } from "@grpc/grpc-js";
 import { Observable } from "rxjs";
 import { Timestamp } from "../../google/protobuf/timestamp";
 
@@ -42,6 +43,16 @@ export interface GetLastMessageEventsResponse {
   events: LastMessageEvent[];
 }
 
+/** The request message for the GetUserChatIds method. */
+export interface GetUserChatIdsRequest {
+  userId: string;
+}
+
+/** The response message for the GetUserChatIds method. */
+export interface GetUserChatIdsResponse {
+  chatIds: string[];
+}
+
 export const POSLAH_CHATS_PACKAGE_NAME = "poslah.chats";
 
 wrappers[".google.protobuf.Struct"] = { fromObject: Struct.wrap, toObject: Struct.unwrap } as any;
@@ -49,7 +60,15 @@ wrappers[".google.protobuf.Struct"] = { fromObject: Struct.wrap, toObject: Struc
 export interface ChatsServiceClient {
   /** A method to get all message-related events for a specific chat after a certain point. */
 
-  getLastMessageEvents(request: GetLastMessageEventsRequest): Observable<GetLastMessageEventsResponse>;
+  getLastMessageEvents(
+    request: GetLastMessageEventsRequest,
+    metadata: Metadata,
+    ...rest: any
+  ): Observable<GetLastMessageEventsResponse>;
+
+  /** A method to get all chat IDs for a specific user. */
+
+  getUserChatIds(request: GetUserChatIdsRequest, metadata: Metadata, ...rest: any): Observable<GetUserChatIdsResponse>;
 }
 
 export interface ChatsServiceController {
@@ -57,12 +76,22 @@ export interface ChatsServiceController {
 
   getLastMessageEvents(
     request: GetLastMessageEventsRequest,
+    metadata: Metadata,
+    ...rest: any
   ): Promise<GetLastMessageEventsResponse> | Observable<GetLastMessageEventsResponse> | GetLastMessageEventsResponse;
+
+  /** A method to get all chat IDs for a specific user. */
+
+  getUserChatIds(
+    request: GetUserChatIdsRequest,
+    metadata: Metadata,
+    ...rest: any
+  ): Promise<GetUserChatIdsResponse> | Observable<GetUserChatIdsResponse> | GetUserChatIdsResponse;
 }
 
 export function ChatsServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getLastMessageEvents"];
+    const grpcMethods: string[] = ["getLastMessageEvents", "getUserChatIds"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ChatsService", method)(constructor.prototype[method], method, descriptor);

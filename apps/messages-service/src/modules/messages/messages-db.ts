@@ -9,23 +9,24 @@ import {
   MessageEventDto,
 } from '@poslah/chats-service/entities/raw-event-schema';
 import { ScyllaService } from '@poslah/database/scylla/scylla.service';
+import { stringifiedBigint, stringifiedISODate } from '@poslah/util/zod';
 import { sortedIndex } from 'lodash';
 import { z } from 'zod/v4';
 
 export const messageSchema = z.object({
   chatId: z.uuid(),
-  nn: z.coerce.bigint(),
-  eventNn: z.coerce.bigint().nullable(),
+  nn: stringifiedBigint,
+  eventNn: stringifiedBigint,
   authorId: z.uuid(),
   text: z.string().nullable(),
-  replyToNn: z.coerce.bigint().nullable(),
+  replyToNn: stringifiedBigint.nullable(),
   attachments: z.array(attachmentInfoSchema).nullable(),
   forwarded: z.array(forwardInfoSchema).nullable(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  deletedAt: z.coerce.date().nullable(),
-  editedAt: z.coerce.date().nullable(),
-  editedNn: z.coerce.bigint().nullable(),
+  createdAt: stringifiedISODate,
+  updatedAt: stringifiedISODate,
+  deletedAt: stringifiedISODate.nullable(),
+  editedAt: stringifiedISODate.nullable(),
+  editedNn: stringifiedBigint.nullable(),
 });
 
 export type MessageDto = z.infer<typeof messageSchema>;
