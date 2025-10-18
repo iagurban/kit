@@ -12,7 +12,6 @@ import { RoutesProxyMiddleware } from './routes-proxy.middleware';
 })
 export class GatewayModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(GraphQLProxyMiddleware).forRoutes('/graphql');
     consumer.apply(RoutesProxyMiddleware).forRoutes('/api');
   }
 }

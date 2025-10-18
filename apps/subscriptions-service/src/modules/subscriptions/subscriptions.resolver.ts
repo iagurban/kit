@@ -81,7 +81,7 @@ class Message implements PubsubMessageDto {
   nn!: bigint;
 
   @Field(() => BigInt, { nullable: true })
-  eventNn!: bigint | null;
+  eventNn!: bigint;
 
   @Field(() => ID)
   authorId!: string;

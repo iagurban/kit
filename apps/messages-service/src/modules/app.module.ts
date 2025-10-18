@@ -9,6 +9,7 @@ import { registerGRPCClientsModule } from '@poslah/util/register-grpc-module';
 import { rootImports } from '@poslah/util/root-imports';
 import { join } from 'path';
 
+import buildInfo from '../build-info.json';
 import { MessagesModule } from './messages/messages.module';
 
 @Module({
@@ -19,7 +20,12 @@ import { MessagesModule } from './messages/messages.module';
     AuthStaticModule,
     registerGRPCClientsModule([signingGRPCConfig, chatsGRPCConfig], join(__dirname, '../../certs')),
 
-    GraphqlSubgraphModule.forRoot(`messages`, join(__dirname, 'schema.graphql'), RedisStaticModule),
+    GraphqlSubgraphModule.forRootAsync(
+      `messages`,
+      join(__dirname, 'schema.graphql'),
+      buildInfo.buildTime,
+      RedisStaticModule
+    ),
 
     MessagesModule,
   ],

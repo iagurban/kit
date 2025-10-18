@@ -11,6 +11,7 @@ export const subgraphPublisherOptionsToken: unique symbol = Symbol(`SUBGRAPH_PUB
 export type SubgraphPublisherOptions = {
   serviceName: string;
   schemaPath: string;
+  version: number;
 };
 
 @Injectable()
@@ -36,6 +37,7 @@ export class SubgraphPublisher implements OnModuleInit {
       logger: this.loggerBase,
       serviceName: this.options.serviceName, // The name of this subgraph
       schemaPath: this.options.schemaPath, // Path to its schema file
+      version: this.options.version,
     });
   }
 }

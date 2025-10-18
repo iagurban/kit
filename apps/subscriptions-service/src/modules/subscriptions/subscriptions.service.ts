@@ -1,5 +1,4 @@
 import { ExMap } from '@gurban/kit/collections/ex-map';
-import { checked, isString } from '@gurban/kit/core/checks';
 import { once } from '@gurban/kit/core/once';
 import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
@@ -7,8 +6,10 @@ import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { RedisSubscriptionService } from '@poslah/database/redis/redis.service';
 import { messageSchema } from '@poslah/messages-service/modules/messages/messages-db';
 import { declareEventsTopic } from '@poslah/util/declare-events-topic';
-import { BaseLogger, createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { z } from 'zod/v4';
+
+import { RedisPubsubSubscription } from './redis-pubsub-subscription';
 
 const createStream = async <T>(
   stream: AsyncIterator<T>,
@@ -163,64 +164,25 @@ export type PubsubMessageDto = z.infer<typeof messageUpsertPayload>;
 
 const messagesUpsertPubsub = declareEventsTopic('messages-upsert', messageUpsertPayload);
 
-class RedisSubscription {
-  constructor(
-    private readonly logger: BaseLogger,
-    private readonly redisSubscriptionService: RedisSubscriptionService,
-    private readonly channel: string,
-    private readonly callback: (error: Error | null | undefined, message: unknown) => void
-  ) {}
-
-  private unsub: (() => Promise<void>) | null = null;
-
-  async activate() {
-    if (this.unsub) {
-      return;
-    }
-
-    this.logger.info(`Activating ${this.channel} subscription`);
-
-    await this.redisSubscriptionService.subscribe(this.channel, this.callback);
-    this.unsub = async () => {
-      this.redisSubscriptionService.unsubscribe(this.channel, this.callback);
-    };
-  }
-
-  async deactivate() {
-    if (!this.unsub) {
-      return;
-    }
-
-    this.logger.info(`Deactivating ${this.channel} subscription`);
-    await this.unsub();
-    this.unsub = null;
-  }
-}
-
 @Injectable()
 export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
-  private readonly messagesSubscription: RedisSubscription;
-  private readonly membershipSubscription: RedisSubscription;
+  private readonly messagesSubscription: RedisPubsubSubscription;
+  private readonly membershipSubscription: RedisPubsubSubscription;
 
   constructor(
     private readonly chatsGRPCClient: ChatsGRPCClient,
     private readonly loggerBase: Logger,
     private readonly redisSubscriptionService: RedisSubscriptionService
   ) {
-    this.messagesSubscription = new RedisSubscription(
-      this.logger,
+    this.messagesSubscription = new RedisPubsubSubscription(
+      this.loggerBase,
       this.redisSubscriptionService,
       messagesUpsertPubsub.name,
-      (error, message) => {
-        if (error) {
-          this.logger.error({ error, message }, 'Failed to process messages-upsert message');
-          return;
-        }
-        try {
-          const messageData = messagesUpsertPubsub.schema.parse(
-            JSON.parse(checked(message, isString, () => `redis message is not a string`))
-          );
+      {
+        onMessage: message => {
+          const messageData = messagesUpsertPubsub.schema.parse(JSON.parse(message));
 
+          console.log(messageData);
           const userIds = this.usersByChat.get(messageData.chatId);
           if (userIds) {
             this.logger.info(`Pushing message to ${userIds.size} users in chat ${messageData.chatId}`);
@@ -228,29 +190,25 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
               this.subscribedToMessagesUsers.get(userId)?.push(messageData);
             }
           }
-        } catch (error) {
+        },
+        onError: (error, message) => {
           this.logger.error({ error, message }, 'Failed to process messages-upsert message');
-        }
+        },
       }
     );
 
-    this.membershipSubscription = new RedisSubscription(
-      this.logger,
+    this.membershipSubscription = new RedisPubsubSubscription(
+      this.loggerBase,
       this.redisSubscriptionService,
       userMembershipPubsub.name,
-      (error, message) => {
-        if (error) {
-          this.logger.error({ error, message }, 'Failed to process user-memberships message');
-          return;
-        }
-        try {
-          const { userId } = userMembershipPubsub.schema.parse(
-            JSON.parse(checked(message, isString, () => `redis message is not a string`))
-          );
+      {
+        onMessage: message => {
+          const { userId } = userMembershipPubsub.schema.parse(JSON.parse(message));
           void this.joinsTrackers.get(userId)?.update();
-        } catch (error) {
+        },
+        onError: (error, message) => {
           this.logger.error({ error, message }, 'Failed to process user-memberships message');
-        }
+        },
       }
     );
   }

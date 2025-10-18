@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client/core';
 import * as Apollo from '@apollo/client/react';
 
 import * as Types from './generated';

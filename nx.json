@@ -49,6 +49,9 @@
     "build-and-watch-backend": {
       "executor": "@poslah/nx-poslah:nodemon",
       "options": {
+        "ignore": [
+          "./{projectRoot}/src/build-info.json"
+        ],
         "watch": [
           "./{projectRoot}/src",
           "./libs/util/src",
@@ -77,6 +80,7 @@
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
         "commands": [
+          "yarn tsx libs/kit/src/bin/build-info-gen.ts -s ntp -x '{\"$schema\":\"../../../build-info.schema.json\"}' {projectRoot}/src/build-info.json",
           "yarn tsc -p {projectRoot}/tsconfig.build.json",
           "yarn tsc-alias -p {projectRoot}/tsconfig.build.json"
         ],
@@ -91,6 +95,7 @@
       "options": {
         "commands": [
           "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua,crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'",
+          "cd {projectRoot} && yarn rimraf -g 'dist/**/{tsconfig,tsconfig.build,package}.json'",
           "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/*.{crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'"
         ],
         "stopOnFail": true,

@@ -1,0 +1,5 @@
+subscription AllMessagesSubscription {
+  message: messagesSubscription {
+    nn
+  }
+}

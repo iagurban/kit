@@ -46,11 +46,18 @@ export const disposers = (
 ) => {
   const disposers: (() => void)[] = [];
   for (const i of initializers) {
-    if (typeof i === `function`) {
-      disposers.push(i());
-    } else {
-      i.init();
-      disposers.push(() => i.destroy());
+    try {
+      if (typeof i === `function`) {
+        disposers.push(i());
+      } else {
+        i.init();
+        disposers.push(() => i.destroy());
+      }
+    } catch (error) {
+      for (const d of disposers) {
+        d();
+      }
+      throw error;
     }
   }
   onInit?.();

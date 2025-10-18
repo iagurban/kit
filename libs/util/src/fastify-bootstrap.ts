@@ -37,7 +37,7 @@ export const fastifyBootstrap = async (
     http2?: { certsDir: string };
     https?: { certsDir: string };
     server?: string | ((config: ConfigService) => string);
-    onAppCreated?: (app: NestFastifyApplication) => void;
+    onAppCreated?: (app: NestFastifyApplication) => void | Promise<void>;
     onAppConfigured?: (app: NestFastifyApplication) => void;
     onAppListening?: (app: NestFastifyApplication) => void;
     cors?: FastifyCorsOptions;
@@ -72,7 +72,7 @@ export const fastifyBootstrap = async (
     await app.register(fastifyCookie, { secret: `asdkjbsohfoiweoh` } as FastifyCookieOptions);
   }
 
-  options.onAppCreated?.(app);
+  await options.onAppCreated?.(app);
 
   if (options.cors) {
     app.enableCors(options.cors);

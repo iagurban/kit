@@ -1,11 +1,10 @@
 import { EventEmitter } from 'node:events';
 
+import { ExtendedJsonObject } from '@gurban/kit/core/json-type';
 import { AnyFunction } from '@gurban/kit/utils/types';
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import pino, { BaseLogger as PinoBaseLogger } from 'pino';
-
-import { ExtendedJsonObject } from '@gurban/kit/core/json-type';
 
 export class Logger implements pino.Logger<never, boolean> {
   level!: pino.LevelWithSilentOrString;
@@ -122,6 +121,9 @@ export type BaseLogger = PinoBaseLogger;
                   levelFirst: true,
                   translateTime: 'SYS:HH:MM:ss.l',
                 },
+              },
+              serializers: {
+                error: pino.stdSerializers.err,
               },
             };
 

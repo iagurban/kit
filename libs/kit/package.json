@@ -25,14 +25,14 @@
     "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ../kit-wiki/Home.md)"
   },
   "dependencies": {
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@loancrate/prisma-schema-parser": "^3.0.0",
     "@mrleebo/prisma-ast": "^0.12.1",
     "@swc/helpers": "^0.5.17",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
-    "eslint": "^9.37.0",
-    "eslint-config-next": "^15.5.5",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "^15.5.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",

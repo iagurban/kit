@@ -42,6 +42,11 @@ class SubscriptionClientManager implements OnApplicationShutdown {
       connectionParams: {
         authToken,
       },
+      on: {
+        opened: socket => {
+          console.log(socket);
+        },
+      },
     });
     this.clients.add(client);
     return client;
@@ -109,6 +114,7 @@ export class GraphqlAppModule {
                 body?: { operationName?: string };
                 query?: { operationName?: string };
               }) => {
+                console.log(`context`);
                 try {
                   if (configService.get('NODE_ENV') !== 'production') {
                     const devUserHeader = req.headers?.['x-dev-user'];
@@ -123,6 +129,7 @@ export class GraphqlAppModule {
                     // An exception is thrown on failure, blocking the request.
                     await authService.validateToken(authorization);
 
+                    console.log(`authenticated`);
                     // 2. Return the original header to be forwarded to the downstream service.
                     return { authorization };
                   }
@@ -130,7 +137,7 @@ export class GraphqlAppModule {
                   // 3. If no token is present, check if the operation is on the public whitelist.
                   // Handles both POST (body) and GET (query) requests.
                   const operationName = req.body?.operationName ?? req.query?.operationName;
-                  console.log('Operation name', operationName);
+                  console.log('Operation name', req.body);
 
                   if (!operationName || !publicGraphqlOperationsSet.has(operationName)) {
                     // 4. If it's not a known public operation, reject the request.
@@ -149,6 +156,7 @@ export class GraphqlAppModule {
               subscriptions: {
                 'graphql-ws': {
                   onConnect: (context: Context) => {
+                    console.log(`onConnect`);
                     const { connectionParams, extra } = context;
                     if (!connectionParams || !isSomeObject(extra)) {
                       throw new BadRequestException('Connection parameters are missing or invalid.');
@@ -164,6 +172,7 @@ export class GraphqlAppModule {
                     context: Context,
                     message: SubscribeMessage
                   ): AsyncIterableIterator<FormattedExecutionResult<Record<string, unknown>, unknown>> => {
+                    console.log(`onSubscribe`);
                     const client = subscriptionClientManager.createClient(
                       checked(
                         checked(context.extra, isSomeObject, () => `extra is noa an object`).authToken,

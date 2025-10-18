@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2024",
+    "target": "ES2020",
     "lib": [
       "ESNext",
       "ESNext.AsyncIterable"
@@ -25,9 +25,11 @@
       "libs"
     ],
     "paths": {
-      "nx-poslah": [
-        "libs/nx-poslah/src/index.ts"
-      ]
+      "nx-poslah": ["libs/nx-poslah/src/index.ts"],
+      "@gurban/kit/*": ["libs/kit/src/*"],
+      "@poslah/util/*": ["libs/util/src/*"],
+      "@poslah/chats-service/*": ["apps/chats-service/src/*"],
+      "@poslah/messages-service/*": ["apps/messages-service/src/*"]
     }
   },
   "include": [

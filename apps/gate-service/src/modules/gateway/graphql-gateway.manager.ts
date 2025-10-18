@@ -50,7 +50,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         noHotReload: true,
         cors: {
           origin: (origin, cb) => {
-            console.log(origin);
+            console.log('graphql-gateway cors check origin:', origin);
             cb(
               null,
               !origin || origin === `https://localhost:${this.config.getOrThrow(`WEB_CLIENT_PORT`, '3000')}`

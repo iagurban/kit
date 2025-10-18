@@ -7,7 +7,7 @@
     "@apollo/federation": "^0.38.1",
     "@apollo/server": "^5.0.0",
     "@apollo/subgraph": "^2.11.3",
-    "@eslint/js": "^9.37.0",
+    "@eslint/js": "^9.38.0",
     "@grpc/grpc-js": "^1.14.0",
     "@grpc/proto-loader": "^0.8.0",
     "@nestjs/apollo": "^13.2.1",
@@ -21,8 +21,8 @@
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
     "class-validator": "^0.14.2",
-    "eslint": "^9.37.0",
-    "eslint-config-next": "^15.5.5",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "^15.5.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
@@ -59,6 +59,7 @@
     "jest": "^30.2.0",
     "nodemon": "^3.1.10",
     "nx": "21.6.3",
+    "rimraf": "^6.0.1",
     "ts-proto": "^2.7.7"
   }
 }

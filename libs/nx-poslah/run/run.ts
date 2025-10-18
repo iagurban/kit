@@ -1,6 +1,6 @@
 import { isTruthy } from '@gurban/kit/core/checks';
 import { ExecutorContext } from '@nx/devkit';
-import { catchingAsync } from '@poslah/util/src/util';
+import { catchingAsync } from '@poslah/util/util';
 import { spawn, SpawnOptions } from 'child_process';
 
 import { mkDirP } from '../src/mkdir';

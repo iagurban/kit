@@ -20,9 +20,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-//    "baseUrl": ".",
+    "experimentalDecorators": true,
+
+//        "baseUrl": ".",
     "rootDir": "../..",
-//    "outDir": "dist",
+//    "rootDir": ".",
+    //    "outDir": "dist",
     "paths": {
       "@gurban/kit/*": ["../../libs/kit/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
