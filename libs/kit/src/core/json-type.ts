@@ -25,6 +25,13 @@ export type ExtendedJsonArray = ExtendedJsonValue[];
 export type ExtendedJsonObject = { [key: string]: ExtendedJsonValue };
 export type ExtendedJsonValue = ExtendedJsonScalar | ExtendedJsonArray | ExtendedJsonObject;
 
+export type ReadonlyExtendedJsonArray = readonly ReadonlyExtendedJsonValue[];
+export type ReadonlyExtendedJsonObject = Readonly<{ [key: string]: ReadonlyExtendedJsonValue }>;
+export type ReadonlyExtendedJsonValue =
+  | ExtendedJsonScalar
+  | ReadonlyExtendedJsonArray
+  | ReadonlyExtendedJsonObject;
+
 export type ReadonlyJsonArray = readonly ReadonlyJsonValue[];
 export type ReadonlyJsonObject = { readonly [key: string]: ReadonlyJsonValue };
 export type ReadonlyJsonValue = JsonScalar | ReadonlyJsonArray | ReadonlyJsonObject;

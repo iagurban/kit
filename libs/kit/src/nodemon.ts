@@ -1,11 +1,20 @@
 import { EventEmitter } from 'node:events';
+import { constants } from 'node:os';
 
 import { ChildProcess, spawn, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import { glob } from 'glob';
 import path from 'path';
 
+import { isTruthy } from './core/checks';
+import { ReadonlyExtendedJsonObject } from './core/json-type';
 import { sleep } from './utils/async-utils';
+
+type LogFunction = (
+  channel: `error` | `warn` | `log`,
+  message: string,
+  payload?: ReadonlyExtendedJsonObject
+) => void;
 
 export class MtimeTracker extends EventEmitter<{
   changed: [readonly string[]];
@@ -14,7 +23,10 @@ export class MtimeTracker extends EventEmitter<{
 }> {
   private mtimes = new Map<string, Date | null>();
 
-  constructor(private readonly checkInterval = 500) {
+  constructor(
+    private readonly checkInterval: number,
+    private readonly log: LogFunction
+  ) {
     super();
   }
 
@@ -30,8 +42,10 @@ export class MtimeTracker extends EventEmitter<{
       paths.map(async p => {
         try {
           return [p, (await fs.promises.stat(p)).mtime] as const;
-        } catch (e) {
-          console.error(`Cannot stat path ${p}`, e);
+        } catch (error) {
+          this.log(`error`, `Cannot stat path ${p}`, {
+            error: error instanceof Error ? error.message : String(error),
+          });
           return [p, null] as const;
         }
       })
@@ -118,28 +132,31 @@ export class NodemonFileWatcher {
     private onChanges: (changed: readonly string[]) => void,
     private readonly watchPatterns: string[],
     private readonly ignorePatterns: string[],
+    private readonly allowedExtensions: Set<string> | null,
     filesCheckInterval: number,
     dirsCheckInterval: number,
     private readonly verbose: boolean,
     private readonly logChangedFiles: boolean,
-    private readonly logTrackedFiles: boolean
+    private readonly logTrackedFiles: boolean,
+    private readonly cwd: string | null,
+    private readonly log: LogFunction
   ) {
-    this.foldersTracker = new MtimeTracker(dirsCheckInterval);
-    this.filesTracker = new MtimeTracker(filesCheckInterval);
+    this.foldersTracker = new MtimeTracker(dirsCheckInterval, log);
+    this.filesTracker = new MtimeTracker(filesCheckInterval, log);
   }
 
   private onFoldersChanged = () => {
     if (this.verbose) {
-      console.log('Folders changes detected, re-globbing...');
+      this.log(`log`, 'Folders changes detected, re-globbing...');
     }
     void this.performScan();
   };
 
   private onFilesChanged = (paths: readonly string[]) => {
     if (this.verbose) {
-      console.log('Files changes detected, restarting...');
+      this.log(`log`, 'Files changes detected, restarting...');
       if (this.logChangedFiles) {
-        console.log('  Changed files:', paths);
+        this.log(`log`, '  Changed files:', { paths });
       }
     }
     this.onChanges(paths);
@@ -153,11 +170,18 @@ export class NodemonFileWatcher {
   private async performScan() {
     const oldData = this.data;
 
-    const files = await glob(this.watchPatterns, {
+    let files = await glob(this.watchPatterns, {
       ignore: this.ignorePatterns,
       nodir: true,
       absolute: true,
+      cwd: this.cwd ?? undefined,
     });
+
+    const { allowedExtensions } = this;
+    if (allowedExtensions) {
+      files = files.filter(f => allowedExtensions.has(path.extname(f)));
+    }
+
     const watchedFiles = new Set(files);
     const watchedDirs = new Set(files.map(f => path.dirname(f)));
 
@@ -188,12 +212,12 @@ export class NodemonFileWatcher {
     this.data = { watchedDirs, watchedFiles };
 
     if (this.logTrackedFiles) {
-      console.log('Tracked directories:', Array.from(this.data.watchedDirs));
-      console.log('Tracked files:', Array.from(this.data.watchedFiles));
+      this.log(`log`, 'Tracked directories:', { dirs: Array.from(this.data.watchedDirs) });
+      this.log(`log`, 'Tracked files:', { files: Array.from(this.data.watchedFiles) });
     }
   }
 
-  public start(): void {
+  public async start() {
     if (this.filesTracker.started) {
       return;
     }
@@ -203,6 +227,8 @@ export class NodemonFileWatcher {
 
     this.foldersTracker.start();
     this.filesTracker.start();
+
+    await this.performScan();
   }
 
   public async stop() {
@@ -236,7 +262,8 @@ class ManagedProcess extends EventEmitter<{
   constructor(
     exec: { command: string; args?: string[] },
     killSignal: NodeJS.Signals | number,
-    spawnOptions: SpawnOptions
+    spawnOptions: SpawnOptions,
+    private readonly log: LogFunction
   ) {
     super();
 
@@ -246,27 +273,56 @@ class ManagedProcess extends EventEmitter<{
     this.spawnOptions = spawnOptions;
   }
 
+  private killProcessGroup(proc: ChildProcess, signal: NodeJS.Signals | number) {
+    if (!proc.pid) {
+      this.log(
+        `warn`,
+        `Attempted to kill a process with no PID. The process may have already exited or failed to spawn.`
+      );
+      return;
+    }
+
+    try {
+      if (process.platform === 'win32') {
+        spawn('taskkill', ['/pid', proc.pid.toString(), '/f', '/t']);
+      } else {
+        process.kill(-proc.pid, signal);
+      }
+    } catch (error) {
+      this.log(`warn`, `Failed to kill process group ${proc.pid}. It may have already exited.`, {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
   public start(): void {
+    if (this.running) {
+      return;
+    }
+
     const process = spawn(this.command, this.args, {
       stdio: 'inherit',
       shell: true,
       ...this.spawnOptions,
+      detached: true,
     });
     this.running = {
       process,
       finished: new Promise<number | null>((resolve, reject) => {
         process.once('close', code => {
-          console.log(`Child process exited with code ${code}`);
+          this.log(`log`, `Child process exited with code ${code}`);
           resolve(code);
         });
 
-        process.once('error', err => {
-          console.error('Failed to start child process.', err);
-          reject(err);
+        process.once('error', error => {
+          this.log(`error`, 'Failed to start child process.', {
+            error: error instanceof Error ? error.message : String(error),
+          });
+          reject(error);
         });
       })
-        .catch(e => {
-          this.emit(`error`, e);
+        .catch(error => {
+          this.emit(`error`, error);
           return null;
         })
         .finally(() => {
@@ -286,17 +342,36 @@ class ManagedProcess extends EventEmitter<{
     if (running.killing) {
       return running.killing;
     }
-    running.process.kill(this.killSignal);
-    return (running.killing = (async () => {
-      const code = await running.finished;
-      this.emit(`killed`, code);
-    })());
+
+    this.killProcessGroup(running.process, this.killSignal);
+
+    return (running.killing = Promise.race([
+      // Option A: The process exits cleanly
+      (async () => {
+        const code = await running.finished;
+        this.emit(`killed`, code);
+      })(),
+
+      // Option B: The process hangs, so we force-kill it after a delay
+      (async () => {
+        await sleep(5000); // 5-second timeout
+
+        // If we reach this point, it means running.finished hasn't resolved yet
+        if (this.running === running) {
+          // Check if it hasn't been replaced
+          this.log(`warn`, 'Process did not shut down gracefully. Forcing kill with SIGKILL.');
+          this.killProcessGroup(running.process, 'SIGKILL'); // The unstoppable signal
+          await running.finished;
+        }
+      })(),
+    ]));
   }
 }
 
 export interface INodemonOptions {
   watch: string[];
   ignore?: string[];
+  extensions?: string[] | null;
   delay?: number; // in ms
   exec: string | { command: string; args?: string[] };
   filesCheckInterval?: number; // in ms
@@ -306,6 +381,8 @@ export interface INodemonOptions {
   verbose?: boolean;
   logChangedFiles?: boolean;
   logTrackedFiles?: boolean;
+  cwd?: string | null;
+  log?: LogFunction;
 }
 
 export class Nodemon extends EventEmitter<{
@@ -323,7 +400,7 @@ export class Nodemon extends EventEmitter<{
   private readonly options: Required<INodemonOptions>;
   private restartTimeout: NodeJS.Timeout | null = null;
   private isRunning = false;
-  private process: ManagedProcess;
+  private readonly process: ManagedProcess;
 
   constructor(options: INodemonOptions) {
     super();
@@ -344,10 +421,25 @@ export class Nodemon extends EventEmitter<{
       verbose: options.verbose ?? false,
       logChangedFiles: options.logChangedFiles ?? false,
       logTrackedFiles: options.logTrackedFiles ?? false,
+      extensions: options.extensions ?? null,
+      cwd: options.cwd ?? null,
+      log:
+        options.log ??
+        ((mode, message, payload) => {
+          if (payload) {
+            console[mode](message, payload);
+          } else {
+            console[mode](message);
+          }
+        }),
     };
 
     if (this.options.verbose) {
-      console.log('Nodemon configured with:', this.options);
+      const { log: _log, spawnOptions, ...o } = this.options;
+      this.options.log(`log`, 'Nodemon configured with:', {
+        ...o,
+        spawnOptions: JSON.stringify(spawnOptions),
+      });
     }
 
     this.watcher = new NodemonFileWatcher(
@@ -356,11 +448,14 @@ export class Nodemon extends EventEmitter<{
       },
       this.options.watch,
       this.options.ignore,
+      this.options.extensions && new Set(this.options.extensions.filter(isTruthy).map(e => `.${e}`)),
       this.options.filesCheckInterval,
       this.options.dirsCheckInterval,
       this.options.verbose,
       this.options.logChangedFiles,
-      this.options.logTrackedFiles
+      this.options.logTrackedFiles,
+      this.options.cwd,
+      this.options.log
     );
 
     const [exec, spawnOptions] =
@@ -368,7 +463,7 @@ export class Nodemon extends EventEmitter<{
         ? ([{ command: this.options.exec }, { ...this.options.spawnOptions, shell: true }] as const)
         : ([this.options.exec, this.options.spawnOptions] as const);
 
-    this.process = new ManagedProcess(exec, this.options.killSignal, spawnOptions);
+    this.process = new ManagedProcess(exec, this.options.killSignal, spawnOptions, this.options.log);
 
     this.setForwarding(`on`);
   }
@@ -412,9 +507,9 @@ export class Nodemon extends EventEmitter<{
     if (this.isRunning) {
       return;
     }
-    console.log('Starting nodemon...');
-    this.watcher.start();
-    this.process.start();
+    this.options.log(`log`, 'Starting nodemon...');
+    await this.watcher.start();
+    // this.process.start();
 
     this.isRunning = true;
   }
@@ -423,7 +518,7 @@ export class Nodemon extends EventEmitter<{
     if (!this.isRunning) {
       return;
     }
-    console.log('Stopping nodemon...');
+    this.options.log(`log`, 'Stopping nodemon...');
     if (this.restartTimeout) {
       clearTimeout(this.restartTimeout);
       this.restartTimeout = null;
@@ -445,7 +540,7 @@ export class Nodemon extends EventEmitter<{
   }
 
   private async restart(): Promise<void> {
-    console.log('Restarting process...');
+    this.options.log(`log`, 'Restarting process...');
     await this.process.kill();
     if (this.destroyed) {
       return;
@@ -462,4 +557,19 @@ export class Nodemon extends EventEmitter<{
 
     this.setForwarding(`off`);
   }
+}
+
+// Create a Set of valid signal names for efficient O(1) lookups.
+// This is created only once when the module is loaded.
+const validSignalNames = new Set<string>(Object.keys(constants.signals));
+
+/**
+ * Type guard to check if a value is a valid NodeJS.Signals string.
+ * @param value The value to check.
+ * @returns True if the value is a valid signal name, false otherwise.
+ */
+export function isNodeJSSignal(value: unknown): value is NodeJS.Signals | number {
+  return typeof value === 'string'
+    ? validSignalNames.has(value)
+    : typeof value === 'number' && value >= 1 && value <= 64;
 }

@@ -1,28 +1,11 @@
 #!/usr/bin/env node
 
-import { constants } from 'node:os';
-
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { checked, isSomeOf, isUndefined } from '../core/checks';
-import { INodemonOptions, Nodemon } from '../nodemon';
+import { INodemonOptions, isNodeJSSignal, Nodemon } from '../nodemon';
 import { notNull } from '../utils/flow-utils';
-
-// Create a Set of valid signal names for efficient O(1) lookups.
-// This is created only once when the module is loaded.
-const validSignalNames = new Set<string>(Object.keys(constants.signals));
-
-/**
- * Type guard to check if a value is a valid NodeJS.Signals string.
- * @param value The value to check.
- * @returns True if the value is a valid signal name, false otherwise.
- */
-export function isNodeJSSignal(value: unknown): value is NodeJS.Signals | number {
-  return typeof value === 'string'
-    ? validSignalNames.has(value)
-    : typeof value === 'number' && value >= 1 && value <= 64;
-}
 
 async function main() {
   const argv = await yargs(hideBin(process.argv))

@@ -38,10 +38,6 @@
       "type": "string",
       "description": "Comma-separated list of file extensions to watch (e.g., 'js,pug,hbs')."
     },
-    "config": {
-      "type": "string",
-      "description": "Path to an alternate nodemon.json config file."
-    },
     "verbose": {
       "type": "boolean",
       "description": "Show detail on what is causing restarts.",
@@ -55,8 +51,37 @@
       "type": "string",
       "description": "The package runner to use for executing the command (e.g., 'yarn', 'npx', 'pnpm').",
       "default": "yarn"
+    },
+    "delay": {
+      "type": "number",
+      "description": "Delay in ms before restarting the process after a file change."
+    },
+    "signal": {
+      "type": "string",
+      "description": "The signal to send to the process when killing it (e.g., 'SIGTERM')."
+    },
+    "logChangedFiles": {
+      "type": "boolean",
+      "description": "Log the files that changed, triggering a restart."
+    },
+    "logTrackedFiles": {
+      "type": "boolean",
+      "description": "Log all the files and directories being watched."
+    },
+    "filesCheckInterval": {
+      "type": "number",
+      "description": "How often to check for file changes in milliseconds."
+    },
+    "dirsCheckInterval": {
+      "type": "number",
+      "description": "How often to check for directory changes in milliseconds."
+    },
+    "spawnOptions": {
+      "type": "object",
+      "description": "Spawn options for the child process, as a JSON object."
     }
   },
+  "required": ["watch"],
   "anyOf": [
     { "required": ["script"] },
     { "required": ["exec"] }

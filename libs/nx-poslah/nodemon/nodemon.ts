@@ -1,77 +1,128 @@
-import { isTruthy } from '@gurban/kit/core/checks';
+import { checked, isInteger, isTruthy } from '@gurban/kit/core/checks';
+import { ExtendedJsonObject } from '@gurban/kit/core/json-type';
+import { INodemonOptions, isNodeJSSignal, Nodemon } from '@gurban/kit/nodemon';
 import { ExecutorContext } from '@nx/devkit';
-import { spawn, SpawnOptions } from 'child_process';
 
 import { mkDirP } from '../src/mkdir';
 import { optionsSource } from '../src/options-source';
 import { NodemonExecutorSchema } from './schema';
 
 export default async function runExecutor(
-  options: NodemonExecutorSchema,
+  options: NodemonExecutorSchema & Record<string, unknown>,
   context: ExecutorContext
 ): Promise<{ success: boolean }> {
-  console.log(`[Poslah Nodemon] Executing for project "${context.projectName}"...`);
+  console.log(`[Nodemon] Executing for project "${context.projectName}"...`);
 
-  const { get, getOrThrow } = optionsSource({ ...options });
-  const cwd = get(`cwd`, () => '') || context.cwd;
-  console.log('AAA', cwd);
-  console.log(`[Poslah Nodemon] Ensuring CWD directory exists: ${cwd}`);
+  const { get, getOrThrow } = optionsSource(options as ExtendedJsonObject);
+
+  const cwd = (options.cwd && getOrThrow('cwd')) || context.cwd;
+  console.log(`[Nodemon] Ensuring CWD directory exists: ${cwd}`);
   let absoluteCwd: string;
   try {
     absoluteCwd = await mkDirP(context.root, cwd);
   } catch (e) {
-    console.error(`[Poslah Nodemon] Failed to create CWD directory: ${cwd}`, e);
+    console.error(`[Nodemon] Failed to create CWD directory: ${cwd}`, e);
     return { success: false };
   }
 
-  const nodemonArgs: string[] = [];
+  const commandArgs = options.exec
+    ? [getOrThrow('exec')]
+    : [
+        getOrThrow('script'),
+        ...(options.scriptArgs?.map((v, i) => getOrThrow(`scriptArgs.${i}`)) ?? []),
+      ].filter(isTruthy);
 
-  options.config && nodemonArgs.push(`--config ${getOrThrow(`config`)}`);
-  options.ext && nodemonArgs.push(`-e ${getOrThrow(`ext`).split(',').filter(isTruthy).join(',')}`);
-  options.verbose && nodemonArgs.push('-V');
-  options.watch &&
-    options.watch.length > 0 &&
-    options.watch.forEach((v, idx) => nodemonArgs.push(`-w "${getOrThrow(`watch.${idx}`)}"`));
-  options.ignore &&
-    options.ignore.length > 0 &&
-    options.ignore.forEach((v, idx) => nodemonArgs.push(`-i "${getOrThrow(`ignore.${idx}`)}"`));
+  const execConfig: INodemonOptions['exec'] = {
+    command: getOrThrow('runner'),
+    args: commandArgs,
+  };
 
-  options.exec && nodemonArgs.push(`-x "${getOrThrow(`exec`)}"`);
+  const optional = <T>(path: string, check: (path: string) => T) => {
+    const rawValue = options[path];
+    if (rawValue === undefined) {
+      return undefined;
+    }
+    return check(path);
+  };
 
-  // MODIFIED: Use the runner from options instead of 'npx'
-  const command = get(`runner`, () => 'yarn');
-  const commandArgs = ['nodemon', ...nodemonArgs];
+  const getNumber = (path: string) => {
+    const rawValue = options[path];
+    if (typeof rawValue === `number`) {
+      return rawValue;
+    }
+    if (typeof rawValue === `string`) {
+      return checked(Number(getOrThrow(path)), isInteger, () => `Invalid number for ${path}`);
+    }
+    throw new Error(`Invalid value for ${path}`);
+  };
 
-  !options.exec && options.script && commandArgs.push(getOrThrow(`script`));
+  const getSignal = (path: string) => {
+    const rawValue = options[path];
+    return checked(
+      typeof rawValue === `string` ? getOrThrow(path) : rawValue,
+      isNodeJSSignal,
+      () => `Invalid signal value for ${path}`
+    );
+  };
 
-  options.scriptArgs &&
-    options.scriptArgs.length > 0 &&
-    options.scriptArgs.forEach((v, idx) => commandArgs.push(getOrThrow(`scriptArgs.${idx}`)));
+  const getBoolean = (path: string) => {
+    const rawValue = options[path];
+    if (typeof rawValue === `boolean`) {
+      return rawValue;
+    }
+    if (typeof rawValue === `string`) {
+      const value = getOrThrow(path);
+      if (value === `true`) {
+        return true;
+      }
+      if (value === `false`) {
+        return false;
+      }
+    }
+    throw new Error(`Invalid value for ${path}`);
+  };
 
-  console.log(`[Poslah Nodemon] Running command: ${command} ${commandArgs.join(' ')}`);
-  console.log(`[Poslah Nodemon] in directory: ${absoluteCwd}`);
-
-  return new Promise((resolve, reject) => {
-    const spawnOptions: SpawnOptions = {
-      stdio: 'inherit',
-      shell: true,
+  const nodemonOptions: INodemonOptions = {
+    exec: execConfig,
+    watch: options.watch.map((v, i) => getOrThrow(`watch.${i}`)),
+    ignore: options.ignore?.map((v, i) => getOrThrow(`ignore.${i}`)) ?? [],
+    extensions: options.ext ? getOrThrow('ext').split(',').filter(isTruthy) : null,
+    delay: optional('delay', getNumber),
+    verbose: optional('verbose', getBoolean),
+    killSignal: optional('signal', getSignal),
+    logChangedFiles: optional('logChangedFiles', getBoolean),
+    logTrackedFiles: optional('logTrackedFiles', getBoolean),
+    filesCheckInterval: optional('filesCheckInterval', getNumber),
+    dirsCheckInterval: optional('dirsCheckInterval', getNumber),
+    cwd: absoluteCwd,
+    spawnOptions: {
+      ...options.spawnOptions,
       cwd: absoluteCwd,
+    },
+    log: (channel, message, payload) =>
+      payload ? console[channel](`[Nodemon] ${message}`, payload) : console[channel](`[Nodemon] ${message}`),
+  };
+
+  const nodemon = new Nodemon(nodemonOptions);
+
+  return new Promise(resolve => {
+    let shuttingDown = false;
+    const shutdown = async () => {
+      if (shuttingDown) {
+        return;
+      }
+      shuttingDown = true;
+      console.log('\n[Nodemon] Shutting down gracefully...');
+      await nodemon.destroy();
+      resolve({ success: true });
     };
 
-    const child = spawn(command, commandArgs, spawnOptions);
+    process.on('SIGINT', shutdown);
+    process.on('SIGTERM', shutdown);
 
-    child.on('close', code => {
-      if (code === 0) {
-        resolve({ success: true });
-      } else {
-        console.error(`[Poslah Nodemon] Exited with code ${code}`);
-        resolve({ success: false });
-      }
-    });
-
-    child.on('error', err => {
-      console.error('[Poslah Nodemon] Failed to start subprocess.', err);
-      reject(err);
+    nodemon.start().catch(err => {
+      console.error('[Nodemon] Failed to start.', err);
+      resolve({ success: false });
     });
   });
 }

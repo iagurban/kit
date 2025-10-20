@@ -5,9 +5,6 @@
       "cache": true,
       "outputs": [
         "{options.outputPath}"
-      ],
-      "dependsOn": [
-        "^build"
       ]
     },
     "serve": {
@@ -53,23 +50,28 @@
           "./{projectRoot}/src/build-info.json"
         ],
         "watch": [
-          "./{projectRoot}/src",
-          "./libs/util/src",
-          "./libs/kit/src",
-          "./libs/database/src"
+          "./{projectRoot}/src/**/*",
+          "./libs/util/src/**/*",
+          "./libs/kit/src/**/*",
+          "./libs/database/src/**/*"
         ],
+        "delay": 1000,
         "ext": "ts,json,proto,{addExt}",
         "addExt": "",
-        "exec": "nx build {projectName}",
-        "cwd": "{workspaceRoot}"
+        "exec": "nx run {projectName}:build",
+        "cwd": "{workspaceRoot}",
+        "outputPath": "{workspaceRoot}/{projectRoot}/dist"
       }
     },
 
     "run-and-watch-backend": {
       "executor": "@poslah/nx-poslah:nodemon",
       "options": {
-        "watch": ["./dist"],
-        "exec": "yarn node ./dist/{projectRoot}/{executablePath}",
+        "watch": ["./dist/**/*"],
+        "ext": "js",
+        "delay": 1000,
+        "script": "node",
+        "scriptArgs": ["./dist/{projectRoot}/{executablePath}"],
         "cwd": "{workspaceRoot}/{projectRoot}",
         "executablePath": "src/main.js"
       }

@@ -1,19 +1,19 @@
 import { checked, isString } from '@gurban/kit/core/checks';
-import { JsonObject, JsonValue } from '@gurban/kit/core/json-type';
+import {ExtendedJsonObject, ExtendedJsonValue, JsonObject, JsonValue} from '@gurban/kit/core/json-type';
 import { get } from 'lodash';
 
 const throwOnUndefined = (path: string): string => {
   throw new ExecutionError(`${path} value is undefined`, {});
 };
 
-const processValue = (template: string, getByPath: (path: string) => JsonValue) =>
+const processValue = (template: string, getByPath: (path: string) => ExtendedJsonValue) =>
   template.replace(/\{([\w.]+)}/g, (m, path) => String(getByPath(path)));
 
-export const optionsSource = <E extends JsonObject>(input: E) => {
-  const cache: Record<string, JsonValue> = {};
+export const optionsSource = <E extends ExtendedJsonObject>(input: E) => {
+  const cache: Record<string, ExtendedJsonValue> = {};
   const building = new Set<string>();
 
-  const retrieveValue = (path: string): JsonValue => {
+  const retrieveValue = (path: string): ExtendedJsonValue => {
     const old = cache[path];
     if (old) {
       return old;
