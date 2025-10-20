@@ -11,6 +11,7 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { sleep } from '@gurban/kit/utils/async-utils';
 import { notNull } from '@gurban/kit/utils/flow-utils';
+import { retrying } from '@poslah/util/retrying';
 import { createClient } from 'graphql-ws';
 
 const host = notNull(import.meta.env.VITE_GATE_SERVICE_HOST);
@@ -70,13 +71,54 @@ const accessTokenStore = (() => {
   };
 })();
 
+class HttpError extends Error {
+  constructor(public readonly response: Response) {
+    super(`HTTP error! status: ${response.status}`);
+  }
+}
+const authorizedFetch = (path: string, init?: RequestInit): Promise<Response> =>
+  retrying(
+    async (error, attempt) => {
+      if (error instanceof HttpError && error.response.status === 401 && attempt < 5) {
+        accessTokenStore.invalidate();
+        return 1000 * 2 ** (attempt - 1);
+      }
+      return false;
+    },
+    async () => {
+      if (path[0] !== '/') {
+        throw new Error(`path must start with "/"`);
+      }
+      const response = await fetch(`https://${host}:${port}${path}`, {
+        ...init,
+        credentials: init?.credentials ?? 'include',
+        headers: {
+          ...init?.headers,
+          authorization: `Bearer ${await accessTokenStore.get()}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new HttpError(response);
+      }
+
+      return response;
+    }
+  );
+
 const httpLink = new HttpLink({
   uri: `https://${host}:${port}/graphql`,
 });
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: `wss://${host}:${port}/graphql`,
+    url: async () => {
+      const ticket = await (await authorizedFetch(`/tickets/issue`, { method: 'POST' })).text();
+      return `wss://${host}:${port}/graphql?ticket=${ticket}`;
+    },
+    connectionParams: async () => ({
+      headers: { authorization: `Bearer ${await accessTokenStore.get()}` },
+    }),
   })
 );
 

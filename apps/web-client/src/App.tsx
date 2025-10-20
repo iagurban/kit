@@ -7,16 +7,17 @@ import { PropsWithChildren, useEffect, useState } from 'react';
 
 import { apolloClient } from './apollo';
 import { ProvideRootStorage, useStorage } from './contexts.ts';
+import { useGetCurrentUserQuery } from './graphql/queries.generated.tsx';
 import { RootStorage } from './storage';
 
 const RootView = observer(function RootView() {
-  // const { data } = useGetCurrentUserQuery();
+  const { data } = useGetCurrentUserQuery();
 
   const storage = useStorage();
 
   return (
     <>
-      {/*<Typography>Main content {data?.dummyQuery}</Typography>*/}
+      <Typography>Main content {data?.dummyQuery}</Typography>
       <Box>
         {storage.chat.messagesLog.map(message => (
           <Typography>{message.message.nn}</Typography>

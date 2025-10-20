@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 
-import { UserCreateNestedOneWithoutRefreshTokensInput } from '../user/user-create-nested-one-without-refresh-tokens.input';
+import { UserCreateNestedOneWithoutRefreshTokenInput } from '../user/user-create-nested-one-without-refresh-token.input';
 
 @InputType()
 export class RefreshTokenCreateInput {
@@ -16,6 +16,6 @@ export class RefreshTokenCreateInput {
   @Field(() => String, { nullable: false })
   hash!: string;
 
-  @Field(() => UserCreateNestedOneWithoutRefreshTokensInput, { nullable: false })
-  user!: UserCreateNestedOneWithoutRefreshTokensInput;
+  @Field(() => UserCreateNestedOneWithoutRefreshTokenInput, { nullable: false })
+  user!: UserCreateNestedOneWithoutRefreshTokenInput;
 }

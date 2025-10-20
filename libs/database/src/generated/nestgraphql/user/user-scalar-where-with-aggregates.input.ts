@@ -30,7 +30,4 @@ export class UserScalarWhereWithAggregatesInput {
 
   @Field(() => StringNullableWithAggregatesFilter, { nullable: true })
   abbrev?: StringNullableWithAggregatesFilter;
-
-  @Field(() => StringWithAggregatesFilter, { nullable: true })
-  passwordHash?: StringWithAggregatesFilter;
 }

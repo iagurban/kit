@@ -20,7 +20,4 @@ export class UserUpdateManyMutationInput {
 
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   abbrev?: NullableStringFieldUpdateOperationsInput;
-
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  passwordHash?: StringFieldUpdateOperationsInput;
 }

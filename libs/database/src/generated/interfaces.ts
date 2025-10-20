@@ -20,13 +20,12 @@ export type User = {
   email: string;
   name: string;
   abbrev: string | null;
-  passwordHash: string;
   uploadedFiles?: StoredFile[];
-  refreshTokens?: RefreshToken[];
   chatEvents?: ChatEvent[];
   chatsPermissions?: UserChatPermissions[];
   chatsMmbership?: ChatMember[];
   ownChats?: Chat[];
+  RefreshToken?: RefreshToken[];
 };
 
 export type RefreshToken = {

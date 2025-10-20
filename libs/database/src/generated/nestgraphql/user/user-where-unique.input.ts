@@ -4,7 +4,6 @@ import { ChatListRelationFilter } from '../chat/chat-list-relation-filter.input'
 import { ChatEventListRelationFilter } from '../chat-event/chat-event-list-relation-filter.input';
 import { ChatMemberListRelationFilter } from '../chat-member/chat-member-list-relation-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
-import { StringFilter } from '../prisma/string-filter.input';
 import { StringNullableFilter } from '../prisma/string-nullable-filter.input';
 import { RefreshTokenListRelationFilter } from '../refresh-token/refresh-token-list-relation-filter.input';
 import { StoredFileListRelationFilter } from '../stored-file/stored-file-list-relation-filter.input';
@@ -37,14 +36,8 @@ export class UserWhereUniqueInput {
   @Field(() => StringNullableFilter, { nullable: true })
   abbrev?: StringNullableFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  passwordHash?: StringFilter;
-
   @Field(() => StoredFileListRelationFilter, { nullable: true })
   uploadedFiles?: StoredFileListRelationFilter;
-
-  @Field(() => RefreshTokenListRelationFilter, { nullable: true })
-  refreshTokens?: RefreshTokenListRelationFilter;
 
   @Field(() => ChatEventListRelationFilter, { nullable: true })
   chatEvents?: ChatEventListRelationFilter;
@@ -57,4 +50,7 @@ export class UserWhereUniqueInput {
 
   @Field(() => ChatListRelationFilter, { nullable: true })
   ownChats?: ChatListRelationFilter;
+
+  @Field(() => RefreshTokenListRelationFilter, { nullable: true })
+  RefreshToken?: RefreshTokenListRelationFilter;
 }

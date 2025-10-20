@@ -1,10 +1,10 @@
 import { isDefined, isROArray, isTruthy } from '@gurban/kit/core/checks';
 import { notNull } from '@gurban/kit/utils/flow-utils';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Args, Field, GqlExecutionContext, Int, ObjectType, Query, Resolver } from '@nestjs/graphql';
+import { Args, Field, GqlExecutionContext, Int, Query, Resolver } from '@nestjs/graphql';
 
+import { Message } from './message.entity';
 import { MessagesService } from './messages.service';
-import { MessageDto as IMessageDTO } from './messages-db';
 
 type Loc = { start: number; end: number };
 type Name = { kind: `Name`; value: string; loc: Loc };
@@ -115,19 +115,11 @@ export const ScyllaSelection = createParamDecorator(
     scyllaSelectionFromGqlExecutionCtx(GqlExecutionContext.create(context), opts)
 );
 
-@ObjectType()
-/// TODO
-// @ts-expect-error 3971
-class MessageDTO implements IMessageDTO {
-  @Field(() => BigInt)
-  nn!: bigint;
-}
-
 @Resolver()
 export class MessagesResolver {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Query(type => MessageDTO)
+  @Query(type => Message)
   getMessages(
     @Args('limit', {
       type: () => Int,

@@ -23,12 +23,6 @@ export class UserCreateWithoutUploadedFilesInput {
   @Field(() => String, { nullable: true })
   abbrev?: string;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
-
-  @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, { nullable: true })
-  refreshTokens?: RefreshTokenCreateNestedManyWithoutUserInput;
-
   @Field(() => ChatEventCreateNestedManyWithoutAuthorInput, { nullable: true })
   chatEvents?: ChatEventCreateNestedManyWithoutAuthorInput;
 
@@ -40,4 +34,7 @@ export class UserCreateWithoutUploadedFilesInput {
 
   @Field(() => ChatCreateNestedManyWithoutOwnerInput, { nullable: true })
   ownChats?: ChatCreateNestedManyWithoutOwnerInput;
+
+  @Field(() => RefreshTokenCreateNestedManyWithoutUserInput, { nullable: true })
+  RefreshToken?: RefreshTokenCreateNestedManyWithoutUserInput;
 }

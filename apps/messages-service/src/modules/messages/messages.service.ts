@@ -7,9 +7,14 @@ import type {
   UpdateMessageEventDTO,
 } from '@poslah/chats-service/entities/raw-event-schema';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
+import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-created-event.topic';
+import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';
 import { DbService } from '@poslah/database/db/db.service';
+import { RedisService } from '@poslah/database/redis/redis.service';
+import type { Topic } from '@poslah/util/declare-events-topic';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { retrying } from '@poslah/util/retrying';
+import { z } from 'zod';
 
 import { LwtError, MessagesDb } from './messages-db';
 
@@ -19,12 +24,36 @@ export class MessagesService {
     private readonly db: DbService,
     private readonly loggerBase: Logger,
     private readonly messagesDb: MessagesDb,
-    private readonly chatsGRPCClient: ChatsGRPCClient
+    private readonly chatsGRPCClient: ChatsGRPCClient,
+    private readonly redis: RedisService
   ) {}
 
   @once
   get logger() {
     return createContextualLogger(this.loggerBase, MessagesService.name);
+  }
+
+  /**
+   * A generic, type-safe method to publish an event to a Redis Stream.
+   * It validates the event against the topic's schema before publishing.
+   */
+  private async publish<S extends z.ZodType, T extends Topic<S, string>>(
+    topic: T,
+    event: unknown
+  ): Promise<void> {
+    try {
+      // The schema is already parsed, but this is a final guarantee.
+      const validatedEvent = topic.schema.parse(event);
+      const eventPayload = JSON.stringify(validatedEvent);
+
+      await this.redis.xadd(topic.name, '*', 'data', eventPayload);
+
+      this.logger.info(`Successfully published event to stream [${topic.name}]`);
+    } catch (error) {
+      this.logger.error({ error }, `Failed to publish event to stream [${topic.name}]`);
+      // Re-throw the error so the caller can handle it (e.g., in a consumer, this would prevent an ack).
+      throw error;
+    }
   }
 
   /**
@@ -51,11 +80,7 @@ export class MessagesService {
 
       const createdMessage = await this.messagesDb.get(event.chatId, messageNn);
       if (createdMessage) {
-        /// TODO
-        // this.kafkaClient.emit(
-        //   messageCreatedEventTopic.name,
-        //   messageCreatedEventTopic.schema.parse(createdMessage)
-        // );
+        await this.publish(messageCreatedEventTopic, createdMessage);
       }
     } catch (error) {
       this.logger.error(
@@ -77,11 +102,7 @@ export class MessagesService {
 
       const finalMessageState = await this.messagesDb.get(chatId, targetMessageNn);
       if (finalMessageState) {
-        /// TODO
-        // this.kafkaClient.emit(
-        //   messagePatchedEventTopic.name,
-        //   messagePatchedEventTopic.schema.parse(finalMessageState)
-        // );
+        await this.publish(messagePatchedEventTopic, finalMessageState);
       }
     } catch (error) {
       this.logger.error(
@@ -156,7 +177,7 @@ export class MessagesService {
    */
   private buildFinalPatch(
     currentEvent: MessageEventDto,
-    newerEvents: Pick<MessageEventDto, `nn` | `payload`>[]
+    newerEvents: Pick<MessageEventDto, 'nn' | 'payload'>[]
   ) {
     const allRelevantEvents = [currentEvent, ...newerEvents].sort((a, b) =>
       a.nn < b.nn ? -1 : a.nn > b.nn ? 1 : 0

@@ -8,6 +8,8 @@ import { rootImports } from '@poslah/util/root-imports';
 import { GatewayModule } from '../gateway/gateway.module';
 import { AppController } from './app.controller';
 import { KeycloakAuthController } from './keycloak-auth.controller';
+import { WsTicketsController } from './ws-tickets/ws-tickets.controller';
+import { WsTicketsService } from './ws-tickets/ws-tickets.service';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { KeycloakAuthController } from './keycloak-auth.controller';
 
     GatewayModule,
   ],
-  controllers: [AppController, KeycloakAuthController],
+  providers: [WsTicketsService],
+  controllers: [AppController, KeycloakAuthController, WsTicketsController],
 })
 export class AppModule {}

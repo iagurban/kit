@@ -23,9 +23,6 @@ export class UserOrderByWithAggregationInput {
   @Field(() => SortOrderInput, { nullable: true })
   abbrev?: SortOrderInput;
 
-  @Field(() => SortOrder, { nullable: true })
-  passwordHash?: `${SortOrder}`;
-
   @Field(() => UserCountOrderByAggregateInput, { nullable: true })
   _count?: UserCountOrderByAggregateInput;
 

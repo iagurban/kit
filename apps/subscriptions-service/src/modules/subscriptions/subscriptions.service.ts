@@ -1,6 +1,5 @@
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
-import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { RedisSubscriptionService } from '@poslah/database/redis/redis.service';
@@ -11,16 +10,16 @@ import { z } from 'zod/v4';
 
 import { RedisPubsubSubscription } from './redis-pubsub-subscription';
 
-const createStream = async <T>(
-  stream: AsyncIterator<T>,
-  unsub: () => Promise<void>
-): Promise<AsyncIterator<T>> => ({
+const createStream = <T>(stream: AsyncIterator<T>, unsub: () => Promise<void>): AsyncIterableIterator<T> => ({
   next: stream.next.bind(stream),
   return: async (value?: unknown) => {
     await unsub();
     return stream.return ? stream.return(value) : { value: undefined, done: true };
   },
   throw: stream.throw?.bind(stream),
+  [Symbol.asyncIterator]() {
+    return this;
+  },
 });
 
 type StreamHandler<T> = { stream: AsyncIterator<T>; push: (value: T) => void; end: () => void };
@@ -127,12 +126,7 @@ class JoinsTracker {
   }
 
   async initialize() {
-    await this.update();
-  }
-
-  async destroy() {
-    this.joins.clear();
-    this.rebuildChatsToUsersMapping();
+    this.joins = await this.chatsGRPCClient.getUserChatIds(this.userId);
   }
 }
 
@@ -146,7 +140,7 @@ const userMembershipPubsub = declareEventsTopic('user-memberships', userMembersh
 
 const attachmentPreview = z.object({
   type: z.string(),
-  thumbnail: z.string().url().optional(),
+  thumbnail: z.url().optional(),
 });
 
 const replyToPreview = z.object({
@@ -163,6 +157,10 @@ const messageUpsertPayload = messageSchema.extend({
 export type PubsubMessageDto = z.infer<typeof messageUpsertPayload>;
 
 const messagesUpsertPubsub = declareEventsTopic('messages-upsert', messageUpsertPayload);
+
+export type MessagesSubscriptionPayload = {
+  messagesSubscription: PubsubMessageDto;
+};
 
 @Injectable()
 export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
@@ -182,12 +180,11 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
         onMessage: message => {
           const messageData = messagesUpsertPubsub.schema.parse(JSON.parse(message));
 
-          console.log(messageData);
           const userIds = this.usersByChat.get(messageData.chatId);
           if (userIds) {
             this.logger.info(`Pushing message to ${userIds.size} users in chat ${messageData.chatId}`);
             for (const userId of userIds) {
-              this.subscribedToMessagesUsers.get(userId)?.push(messageData);
+              this.usersSubscribedToMessages.get(userId)?.push({ messagesSubscription: messageData });
             }
           }
         },
@@ -224,12 +221,12 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
 
   private joinsTrackers = new ExMap<string, JoinsTracker>();
 
-  private subscribedToMessagesUsers = new ExMap<string, SubscribedUser<PubsubMessageDto>>();
-  /// future example
-  // private subscribedToEVentsUsers = new ExMap<string, SubscribedUser<EventDTO>>();
+  private usersSubscribedToMessages = new ExMap<string, SubscribedUser<MessagesSubscriptionPayload>>();
+  /// future example:
+  // private usersSubscribedToEvents = new ExMap<string, SubscribedUser<EventDTO>>();
 
   private isUserNeedsJoinsTracking(userId: string) {
-    return this.subscribedToMessagesUsers.has(userId); // || this.subscribedToEVentsUsers.has(userId);
+    return this.usersSubscribedToMessages.has(userId); // || this.subscribedToEVentsUsers.has(userId);
   }
 
   private usersByChat = new ExMap<string /* chatId */, Set<string /* userId */>>();
@@ -258,6 +255,8 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
     await tracker.initialize();
     this.joinsTrackers.set(userId, tracker);
 
+    this.rebuildChatsToUsersMapping();
+
     if (wasEmpty) {
       await this.membershipSubscription.activate();
     }
@@ -268,8 +267,13 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    await notNull(this.joinsTrackers.get(userId)).destroy();
-    this.joinsTrackers.delete(userId);
+    const existing = this.joinsTrackers.get(userId);
+    if (existing) {
+      this.joinsTrackers.delete(userId);
+      this.rebuildChatsToUsersMapping();
+    } else {
+      this.logger.error(`Existing join tracker is not found for ${userId}`);
+    }
 
     if (this.joinsTrackers.size === 0) {
       await this.membershipSubscription.deactivate();
@@ -279,13 +283,13 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
   async subscribeToMessages(
     userId: string,
     type: 'messagesSubscription'
-  ): Promise<AsyncIterator<PubsubMessageDto>> {
+  ): Promise<AsyncIterable<MessagesSubscriptionPayload>> {
     this.logger.info(`User ${userId} subscribed to ${type}`);
 
-    let user = this.subscribedToMessagesUsers.get(userId);
+    let user = this.usersSubscribedToMessages.get(userId);
     if (!user) {
-      user = new SubscribedUser(userId);
-      this.subscribedToMessagesUsers.set(userId, user);
+      user = new SubscribedUser<MessagesSubscriptionPayload>(userId);
+      this.usersSubscribedToMessages.set(userId, user);
       this.logger.info(`Created new SubscribedUser for ${userId}`);
 
       await this.createJoinsTrackerIfNotExist(userId);
@@ -295,11 +299,11 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
 
     const unsub = async () => {
       this.logger.info(`User ${userId} unsubscribed from ${type}`);
-      const userToUnsub = this.subscribedToMessagesUsers.get(userId);
+      const userToUnsub = this.usersSubscribedToMessages.get(userId);
       if (userToUnsub) {
         userToUnsub.removeStream(handler);
         if (!userToUnsub.hasStreams()) {
-          this.subscribedToMessagesUsers.delete(userId);
+          this.usersSubscribedToMessages.delete(userId);
           this.logger.info(`Removed SubscribedUser for ${userId} as they have no more streams`);
 
           await this.removeJoinTrackerIfNotNeeded(userId);

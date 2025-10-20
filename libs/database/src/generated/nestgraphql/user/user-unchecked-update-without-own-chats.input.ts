@@ -26,14 +26,8 @@ export class UserUncheckedUpdateWithoutOwnChatsInput {
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   abbrev?: NullableStringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  passwordHash?: StringFieldUpdateOperationsInput;
-
   @Field(() => StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput, { nullable: true })
   uploadedFiles?: StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput;
-
-  @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
-  refreshTokens?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
 
   @Field(() => ChatEventUncheckedUpdateManyWithoutAuthorNestedInput, { nullable: true })
   chatEvents?: ChatEventUncheckedUpdateManyWithoutAuthorNestedInput;
@@ -43,4 +37,7 @@ export class UserUncheckedUpdateWithoutOwnChatsInput {
 
   @Field(() => ChatMemberUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
   chatsMmbership?: ChatMemberUncheckedUpdateManyWithoutUserNestedInput;
+
+  @Field(() => RefreshTokenUncheckedUpdateManyWithoutUserNestedInput, { nullable: true })
+  RefreshToken?: RefreshTokenUncheckedUpdateManyWithoutUserNestedInput;
 }

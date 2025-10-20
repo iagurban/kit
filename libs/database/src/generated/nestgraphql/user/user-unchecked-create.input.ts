@@ -24,14 +24,8 @@ export class UserUncheckedCreateInput {
   @Field(() => String, { nullable: true })
   abbrev?: string;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
-
   @Field(() => StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput, { nullable: true })
   uploadedFiles?: StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput;
-
-  @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
-  refreshTokens?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
 
   @Field(() => ChatEventUncheckedCreateNestedManyWithoutAuthorInput, { nullable: true })
   chatEvents?: ChatEventUncheckedCreateNestedManyWithoutAuthorInput;
@@ -44,4 +38,7 @@ export class UserUncheckedCreateInput {
 
   @Field(() => ChatUncheckedCreateNestedManyWithoutOwnerInput, { nullable: true })
   ownChats?: ChatUncheckedCreateNestedManyWithoutOwnerInput;
+
+  @Field(() => RefreshTokenUncheckedCreateNestedManyWithoutUserInput, { nullable: true })
+  RefreshToken?: RefreshTokenUncheckedCreateNestedManyWithoutUserInput;
 }

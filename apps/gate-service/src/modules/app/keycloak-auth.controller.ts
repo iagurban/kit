@@ -1,9 +1,11 @@
 import { once } from '@gurban/kit/core/once';
-import { OidcAuthControllerBase, OidcTokens } from '@gurban/kit/nest/oidc-auth-controller.base';
+import { OidcAuthControllerBase } from '@gurban/kit/nest/oidc-auth-controller.base';
 import { sleep } from '@gurban/kit/utils/async-utils';
 import { HttpService } from '@nestjs/axios';
 import { Controller, Get, Query, Redirect, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DbService } from '@poslah/database/db/db.service';
+import { KeycloakPayload } from '@poslah/util/auth-module/auth.types';
 import { BaseLogger, createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { retrying } from '@poslah/util/retrying';
 import { isAxiosError } from 'axios';
@@ -16,6 +18,7 @@ const tokenResponseSchema = z.object({
   expires_in: z.uint32(),
   refresh_token: z.string().optional(),
   refresh_expires_in: z.uint32().optional(),
+  id_token: z.string().optional(),
 });
 
 class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
@@ -51,17 +54,18 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
     );
   }
 
-  getLogoutUrl(): string {
-    const postLogoutRedirectUri = this.configService.getOrThrow<string>('APP_HOME_URL');
+  getLogoutUrl(idTokenHint?: string): string {
+    const postLogoutRedirectUri = this.configService.getOrThrow<string>('APP_FRONTEND_URL');
 
-    return this.createAuthorizationUrl(
-      `logout`,
-      new URLSearchParams({
-        // For Keycloak, you often don't need client_id or id_token_hint for a simple redirect logout,
-        // but you MUST configure the valid redirect URI in the Keycloak client settings.
-        post_logout_redirect_uri: postLogoutRedirectUri,
-      })
-    );
+    const params = new URLSearchParams({
+      post_logout_redirect_uri: postLogoutRedirectUri,
+    });
+
+    if (idTokenHint) {
+      params.append('id_token_hint', idTokenHint);
+    }
+
+    return this.createAuthorizationUrl(`logout`, params);
   }
 
   private async callTokenEndpoint(params: URLSearchParams, timeLimitMs: number) {
@@ -107,6 +111,7 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
           expiresIn: data.expires_in,
           refreshToken: data.refresh_token,
           refreshExpiresIn: data.refresh_expires_in,
+          idToken: data.id_token,
         };
       }
     );
@@ -127,7 +132,7 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
     );
   }
 
-  public async exchangeCodeForTokens(code: string): Promise<OidcTokens> {
+  public async exchangeCodeForTokens(code: string) {
     const clientId = this.configService.getOrThrow<string>('KEYCLOAK_CLIENT_ID');
     const clientSecret = this.configService.getOrThrow<string>('KEYCLOAK_CLIENT_SECRET');
     const redirectUri = this.configService.getOrThrow<string>('KEYCLOAK_REDIRECT_URI');
@@ -152,7 +157,8 @@ export class KeycloakAuthController {
   constructor(
     private readonly configService: ConfigService,
     httpService: HttpService,
-    private readonly loggerBase: Logger
+    private readonly loggerBase: Logger,
+    private readonly db: DbService
   ) {
     this.oidcController = new KeycloakAuthControllerImpl(configService, httpService, this.logger);
   }
@@ -173,9 +179,10 @@ export class KeycloakAuthController {
 
   @Get('logout')
   @Redirect()
-  logout() {
+  logout(@Req() req: FastifyRequest) {
+    const idToken = req.cookies['id_token'];
     return {
-      url: this.oidcController.getLogoutUrl(),
+      url: this.oidcController.getLogoutUrl(idToken),
       statusCode: 302,
     };
   }
@@ -191,6 +198,16 @@ export class KeycloakAuthController {
     });
   }
 
+  private setIdToken(res: FastifyReply, idToken: string, expiresIn: number) {
+    res.setCookie('id_token', idToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: expiresIn * 1000,
+      sameSite: 'lax',
+      path: '/',
+    });
+  }
+
   @Get('callback')
   async callback(@Query('code') code: string, @Res() res: FastifyReply): Promise<FastifyReply> {
     if (!code) {
@@ -200,17 +217,25 @@ export class KeycloakAuthController {
     try {
       const tokens = await this.oidcController.exchangeCodeForTokens(code);
 
+      const [, payloadB64] = tokens.accessToken.split('.');
+      const data = JSON.parse(Buffer.from(payloadB64, 'base64').toString()) as KeycloakPayload;
+      this.logger.info({ data }, 'User identity extracted from token, now upserting user in local database');
+      await this.db.transaction.user.upsert({
+        where: { id: data.sub },
+        create: { id: data.sub, email: data.email, name: data.preferred_username },
+        update: { email: data.email, name: data.preferred_username },
+      });
+
       const frontendUrl = this.configService.getOrThrow<string>('APP_FRONTEND_URL');
       if (!tokens.refreshToken || !tokens.refreshExpiresIn) {
-        this.logger.error(
-          { tokens },
-
-          'Can not establish session: refresh token or expiration is missing.'
-        );
+        this.logger.error({ tokens }, 'Can not establish session: refresh token or expiration is missing.');
         return res.status(500).send('Can not establish session.');
       }
 
       this.setRefreshToken(res, tokens.refreshToken, tokens.refreshExpiresIn);
+      if (tokens.idToken) {
+        this.setIdToken(res, tokens.idToken, tokens.expiresIn);
+      }
       return res.redirect(frontendUrl, 302);
     } catch (error) {
       /// TODO include real error messages only in the dev-mode
@@ -256,6 +281,10 @@ export class KeycloakAuthController {
 
       if (tokens.refreshToken && tokens.refreshExpiresIn) {
         this.setRefreshToken(res, tokens.refreshToken, tokens.refreshExpiresIn);
+      }
+
+      if (tokens.idToken) {
+        this.setIdToken(res, tokens.idToken, tokens.expiresIn);
       }
 
       return {

@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 
 import { DateTimeFieldUpdateOperationsInput } from '../prisma/date-time-field-update-operations.input';
 import { StringFieldUpdateOperationsInput } from '../prisma/string-field-update-operations.input';
-import { UserUpdateOneRequiredWithoutRefreshTokensNestedInput } from '../user/user-update-one-required-without-refresh-tokens-nested.input';
+import { UserUpdateOneRequiredWithoutRefreshTokenNestedInput } from '../user/user-update-one-required-without-refresh-token-nested.input';
 
 @InputType()
 export class RefreshTokenUpdateInput {
@@ -18,6 +18,6 @@ export class RefreshTokenUpdateInput {
   @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
   hash?: StringFieldUpdateOperationsInput;
 
-  @Field(() => UserUpdateOneRequiredWithoutRefreshTokensNestedInput, { nullable: true })
-  user?: UserUpdateOneRequiredWithoutRefreshTokensNestedInput;
+  @Field(() => UserUpdateOneRequiredWithoutRefreshTokenNestedInput, { nullable: true })
+  user?: UserUpdateOneRequiredWithoutRefreshTokenNestedInput;
 }

@@ -235,7 +235,7 @@ export type RefreshTokenCreateInput = {
   createdAt?: Date | string
   expiresAt: Date | string
   hash: string
-  user: Prisma.UserCreateNestedOneWithoutRefreshTokensInput
+  user: Prisma.UserCreateNestedOneWithoutRefreshTokenInput
 }
 
 export type RefreshTokenUncheckedCreateInput = {
@@ -251,7 +251,7 @@ export type RefreshTokenUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   hash?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneRequiredWithoutRefreshTokensNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutRefreshTokenNestedInput
 }
 
 export type RefreshTokenUncheckedUpdateInput = {

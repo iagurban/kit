@@ -6,10 +6,9 @@ import { notNull } from '../../utils/flow-utils';
 export const getCurrentUserFromExeContext = <CurrentUser>(
   context: ExecutionContext
 ): CurrentUser | undefined =>
-  (context.getType<`graphql` /* force */>() === 'graphql'
-    ? GqlExecutionContext.create(context).getContext().req
-    : context.switchToHttp().getRequest()
-  ).user ?? undefined;
+  context.getType<`graphql` /* force */>() === 'graphql'
+    ? GqlExecutionContext.create(context).getContext().req?.user
+    : (context.switchToHttp().getRequest().user ?? undefined);
 
 export const TryCurrentUserBase = createParamDecorator(<CurrentUser>(_: unknown, context: ExecutionContext) =>
   getCurrentUserFromExeContext<CurrentUser>(context)

@@ -82,17 +82,18 @@ model User {
   name   String  @unique
   abbrev String?
 
-  passwordHash String @map("externalId")
+  // passwordHash String @map("externalId")
 
   uploadedFiles StoredFile[]
 
-  refreshTokens RefreshToken[]
+  // refreshTokens RefreshToken[]
 
   chatEvents ChatEvent[]
 
   chatsPermissions UserChatPermissions[]
   chatsMmbership   ChatMember[]
   ownChats         Chat[]
+  RefreshToken     RefreshToken[]
 }
 
 model RefreshToken {

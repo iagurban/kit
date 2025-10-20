@@ -16,7 +16,4 @@ export class UserMinAggregate {
 
   @Field(() => String, { nullable: true })
   abbrev?: string;
-
-  @Field(() => String, { nullable: true })
-  passwordHash?: string;
 }

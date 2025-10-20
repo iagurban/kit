@@ -16,7 +16,4 @@ export class UserCreateManyInput {
 
   @Field(() => String, { nullable: true })
   abbrev?: string;
-
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
 }

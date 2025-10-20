@@ -18,8 +18,5 @@ export class UserCountAggregateInput {
   abbrev?: true;
 
   @Field(() => Boolean, { nullable: true })
-  passwordHash?: true;
-
-  @Field(() => Boolean, { nullable: true })
   _all?: true;
 }

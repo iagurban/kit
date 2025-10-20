@@ -6,9 +6,6 @@ export class UserCount {
   uploadedFiles?: number;
 
   @Field(() => Int, { nullable: false })
-  refreshTokens?: number;
-
-  @Field(() => Int, { nullable: false })
   chatEvents?: number;
 
   @Field(() => Int, { nullable: false })
@@ -19,4 +16,7 @@ export class UserCount {
 
   @Field(() => Int, { nullable: false })
   ownChats?: number;
+
+  @Field(() => Int, { nullable: false })
+  RefreshToken?: number;
 }

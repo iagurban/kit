@@ -5,7 +5,6 @@ export enum UserOrderByRelevanceFieldEnum {
   email = 'email',
   name = 'name',
   abbrev = 'abbrev',
-  passwordHash = 'passwordHash',
 }
 
 registerEnumType(UserOrderByRelevanceFieldEnum, {

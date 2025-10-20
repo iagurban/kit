@@ -20,7 +20,4 @@ export class UserUncheckedUpdateManyInput {
 
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   abbrev?: NullableStringFieldUpdateOperationsInput;
-
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  passwordHash?: StringFieldUpdateOperationsInput;
 }

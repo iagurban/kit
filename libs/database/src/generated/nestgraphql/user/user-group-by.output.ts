@@ -21,9 +21,6 @@ export class UserGroupBy {
   @Field(() => String, { nullable: true })
   abbrev?: string;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
-
   @Field(() => UserCountAggregate, { nullable: true })
   _count?: UserCountAggregate;
 

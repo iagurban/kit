@@ -31,7 +31,7 @@ export class RedisPubsubSubscription {
     };
 
     this.callback = (error, message) => {
-      console.log(`message: ${message}, error: ${error}`);
+      // console.log(`message: ${message}, error: ${error}`);
       if (error) {
         return onError(error, message);
       }

@@ -1,5 +1,3 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
-
 export interface OidcTokens {
   accessToken: string;
   expiresIn: number;
@@ -32,26 +30,26 @@ export abstract class OidcAuthControllerBase {
    * that might contain an `id_token_hint`.
    * @returns The complete URL for the IdP's end-session endpoint.
    */
-  protected abstract getLogoutUrl(req: FastifyRequest): string;
+  protected abstract getLogoutUrl(): string;
 
   /**
    * Endpoint to initiate the login flow.
    * It calls the abstract `getAuthorizationUrl` method and redirects the user.
    */
-  public login(res: FastifyReply): FastifyReply {
-    const url = this.getAuthorizationUrl();
-    console.log(url);
-    return res.redirect(url);
-  }
+  // public login(res: FastifyReply): FastifyReply {
+  //   const url = this.getAuthorizationUrl();
+  //   console.log(url);
+  //   return res.redirect(url);
+  // }
 
   /**
    * Endpoint to initiate the logout flow.
    * It calls the abstract `getLogoutUrl` method and redirects the user.
    */
-  public logout(req: FastifyRequest, res: FastifyReply): FastifyReply {
-    const url = this.getLogoutUrl(req);
-    return res.redirect(url);
-  }
+  // public logout(req: FastifyRequest, res: FastifyReply): FastifyReply {
+  //   const url = this.getLogoutUrl(req);
+  //   return res.redirect(url);
+  // }
 
   /**
    * Exchanges an authorization code for OIDC tokens.

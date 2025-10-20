@@ -1,11 +1,10 @@
 import { writeFileSync } from 'node:fs';
+import { IncomingHttpHeaders } from 'node:http';
 
 import { RemoteGraphQLDataSource } from '@apollo/gateway';
 import { GraphQLDataSourceProcessOptions } from '@apollo/gateway/src/datasources/types';
-import { checked, isSomeObject, isString } from '@gurban/kit/core/checks';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import {
-  BadRequestException,
   DynamicModule,
   Injectable,
   Module,
@@ -18,9 +17,7 @@ import { GraphQLException } from '@nestjs/graphql/dist/exceptions/index';
 import { AuthService } from '@poslah/util/auth-module/auth.service';
 import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module';
 import { rootImports } from '@poslah/util/root-imports';
-import { EventEmitter } from 'events';
-import { Client, Context, createClient, FormattedExecutionResult, SubscribeMessage } from 'graphql-ws';
-import { IncomingHttpHeaders } from 'http';
+import { Client, createClient } from 'graphql-ws';
 import { join } from 'path';
 import * as WebSocket from 'ws';
 
@@ -37,7 +34,7 @@ class SubscriptionClientManager implements OnApplicationShutdown {
 
   createClient(authToken: string): Client {
     const client = createClient({
-      url: this.configService.getOrThrow<string>('SUBSCRIPTIONS_SERVICE_WS_URL'),
+      url: `${this.configService.getOrThrow<string>('SUBSCRIPTIONS_SERVICE_WS_URL')}/graphql`,
       webSocketImpl: WebSocket,
       connectionParams: {
         authToken,
@@ -152,86 +149,6 @@ export class GraphqlAppModule {
                     originalError: e instanceof Error ? e : new Error(String(e)),
                   });
                 }
-              },
-              subscriptions: {
-                'graphql-ws': {
-                  onConnect: (context: Context) => {
-                    console.log(`onConnect`);
-                    const { connectionParams, extra } = context;
-                    if (!connectionParams || !isSomeObject(extra)) {
-                      throw new BadRequestException('Connection parameters are missing or invalid.');
-                    }
-                    extra.authToken = checked(
-                      connectionParams.authToken,
-                      isString,
-                      () => new BadRequestException('Auth token required.')
-                    );
-                    return true;
-                  },
-                  onSubscribe: (
-                    context: Context,
-                    message: SubscribeMessage
-                  ): AsyncIterableIterator<FormattedExecutionResult<Record<string, unknown>, unknown>> => {
-                    console.log(`onSubscribe`);
-                    const client = subscriptionClientManager.createClient(
-                      checked(
-                        checked(context.extra, isSomeObject, () => `extra is noa an object`).authToken,
-                        isString,
-                        () => `authToken is not a string`
-                      )
-                    );
-
-                    const emitter = new EventEmitter();
-                    const changed = 'changed';
-
-                    const state = {
-                      queue: [] as FormattedExecutionResult<Record<string, unknown>, unknown>[],
-                      error: null as unknown,
-                      done: false,
-                    };
-
-                    const dispose = client.subscribe(message.payload, {
-                      next: data => {
-                        state.queue.push(data);
-                        emitter.emit(changed);
-                      },
-                      error: err => {
-                        state.error = err;
-                        emitter.emit(changed);
-                      },
-                      complete: () => {
-                        state.done = true;
-                        emitter.emit(changed);
-                      },
-                    });
-
-                    return {
-                      async next(): Promise<
-                        IteratorResult<FormattedExecutionResult<Record<string, unknown>, unknown>>
-                      > {
-                        if (state.error) {
-                          throw state.error;
-                        }
-                        if (state.done && state.queue.length === 0) {
-                          return { value: undefined, done: true };
-                        }
-                        if (state.queue.length > 0) {
-                          return { value: state.queue.shift()!, done: false };
-                        }
-                        await new Promise(resolve => emitter.once(changed, resolve));
-                        return this.next(); // Recurse to re-evaluate conditions
-                      },
-                      async return() {
-                        dispose();
-                        await subscriptionClientManager.removeClient(client);
-                        return { value: undefined, done: true };
-                      },
-                      [Symbol.asyncIterator]() {
-                        return this;
-                      },
-                    };
-                  },
-                },
               },
 
               playground:

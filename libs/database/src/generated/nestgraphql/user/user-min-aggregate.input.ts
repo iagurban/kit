@@ -16,7 +16,4 @@ export class UserMinAggregateInput {
 
   @Field(() => Boolean, { nullable: true })
   abbrev?: true;
-
-  @Field(() => Boolean, { nullable: true })
-  passwordHash?: true;
 }

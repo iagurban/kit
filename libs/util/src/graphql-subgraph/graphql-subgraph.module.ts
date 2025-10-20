@@ -1,4 +1,4 @@
-import { checked, isSomeObject, isString } from '@gurban/kit/core/checks';
+import { checked, isNullish, isSomeObject, isSomeOf } from '@gurban/kit/core/checks';
 import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -6,14 +6,22 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { FastifyRequest } from 'fastify';
 import { GraphQLError } from 'graphql';
 import { Context } from 'graphql-ws';
+import { z } from 'zod/v4';
 
+import { AuthService } from '../auth-module/auth.service';
 import { NestImportable } from '../nest-types';
+import { AuthStaticModule } from '../ready-modules/auth-static-module';
 import { BigIntScalar } from './bigint.scalar';
 import {
   SubgraphPublisher,
   SubgraphPublisherOptions,
   subgraphPublisherOptionsToken,
 } from './subgraph-publisher';
+
+const authHeadersSchema = z.object({
+  authorization: z.string().optional().nullable(),
+  'x-dev-user': z.string().optional().nullable(),
+});
 
 @Module({})
 export class GraphqlSubgraphModule {
@@ -31,9 +39,21 @@ export class GraphqlSubgraphModule {
         GraphQLModule.forRootAsync<ApolloFederationDriverConfig>({
           driver: ApolloFederationDriver,
 
-          inject: [ConfigService],
-          useFactory: (configService: ConfigService) =>
-            ({
+          imports: [AuthStaticModule],
+          inject: [ConfigService, AuthService],
+          useFactory: (
+            configService: ConfigService,
+            authService: AuthService
+          ): ApolloFederationDriverConfig => {
+            const authorize = async (headers: z.infer<typeof authHeadersSchema>) => {
+              const devUserHeader = configService.get('NODE_ENV') !== 'production' && headers['x-dev-user'];
+              const authorizationHeader = devUserHeader
+                ? `x-dev-user-${devUserHeader}`
+                : headers['authorization'];
+              return authorizationHeader ? authService.validateToken(authorizationHeader) : null;
+            };
+
+            return {
               driver: ApolloFederationDriver,
               /** TypeScript decorators. This is essential for the schema registry. */
               autoSchemaFile: {
@@ -46,15 +66,26 @@ export class GraphqlSubgraphModule {
               /** Creates a context object for each request. This is how your resolvers
                *  get access to request headers and the authenticated user.
                */
-              context: (req: FastifyRequest) => {
-                // query/mutation
-                if (configService.get('NODE_ENV') !== 'production') {
-                  const devUserHeader = req.headers['x-dev-user'];
-                  if (devUserHeader) {
-                    req.headers.authorization = `x-dev-user-${devUserHeader}`;
-                  }
+              context: async (req: FastifyRequest | Context) => {
+                const isContext = (o: FastifyRequest | Context): o is Context => 'connectionParams' in o;
+
+                if (isContext(req)) {
+                  // subscription (websocket, goes from onConnect)
+                  const { extra } = req;
+
+                  return {
+                    req: {
+                      user: checked(
+                        checked(extra, isSomeObject, () => `extra is not an object`).user,
+                        isSomeOf(isSomeObject, isNullish),
+                        () => `user is not passed to extra at onConnect`
+                      ),
+                    },
+                  };
                 }
-                return { req };
+
+                // query/mutation (HTTP)
+                return { user: await authorize(authHeadersSchema.parse(req.headers)) };
               },
 
               formatError: (formattedError, error) => {
@@ -80,39 +111,23 @@ export class GraphqlSubgraphModule {
               subscriptions: options.subscriptions
                 ? {
                     'graphql-ws': {
-                      onConnect: (context: Context) => {
-                        const { connectionParams } = context;
+                      onConnect: async (context: Context) => {
+                        const { connectionParams, extra } = context;
 
-                        const incomingHeaders = checked(
-                          connectionParams?.headers,
-                          isSomeObject,
-                          () => `headers is not an object`
-                        );
+                        const incomingHeaders = connectionParams
+                          ? authHeadersSchema.parse(connectionParams.headers)
+                          : {};
 
-                        const devUserHeader =
-                          configService.get('NODE_ENV') !== 'production' &&
-                          checked(
-                            incomingHeaders['x-dev-user'],
-                            isString,
-                            () => `x-dev-user header is not a string`
-                          );
+                        checked(extra, isSomeObject, () => `extra is not an object`).user =
+                          await authorize(incomingHeaders);
 
-                        const headers = {
-                          authorization: devUserHeader
-                            ? `x-dev-user-${devUserHeader}`
-                            : checked(
-                                incomingHeaders[`authorization`],
-                                isString,
-                                () => `authorization header is not a string`
-                              ),
-                        } as const;
-
-                        return { req: { headers } };
+                        return true;
                       },
                     },
                   }
                 : undefined,
-            }) as ApolloFederationDriverConfig,
+            } as ApolloFederationDriverConfig;
+          },
         }),
       ],
       providers: [

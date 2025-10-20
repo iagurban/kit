@@ -3,12 +3,11 @@ import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-modul
 
 import { RegistryConsumerService } from '../registry-consumer.service';
 import { GraphqlGatewayManager } from './graphql-gateway.manager';
-import { GraphQLProxyMiddleware } from './graphql-proxy.middleware';
 import { RoutesProxyMiddleware } from './routes-proxy.middleware';
 
 @Module({
   imports: [RedisStaticModule],
-  providers: [RegistryConsumerService, GraphqlGatewayManager, RoutesProxyMiddleware, GraphQLProxyMiddleware],
+  providers: [RegistryConsumerService, GraphqlGatewayManager, RoutesProxyMiddleware],
 })
 export class GatewayModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

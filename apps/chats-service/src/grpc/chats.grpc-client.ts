@@ -55,6 +55,7 @@ export class ChatsGRPCClient extends GRPCClientBase<ChatsServiceClient> {
     const { chatIds } = await firstValueFrom(
       this.client.getUserChatIds({ userId }, await this.tokenFetcher.signedMetadata())
     );
+    console.log(`getUserChatIds`, userId, chatIds);
     return new Set(chatIds);
   }
 }

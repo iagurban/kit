@@ -2,7 +2,8 @@
   "$schema": "./permissions.schema.json",
   "clients": [
     "chats-service",
-    "messages-service"
+    "messages-service",
+    "subscriptions-service"
   ],
   "permissions": {
     "ChatsService": {

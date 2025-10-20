@@ -27,8 +27,9 @@ export class AuthService {
   public async validateToken(bearerToken: string): Promise<AppUser> {
     const token = bearerToken.replace(/^Bearer\s+/, '');
 
-    if (process.env.NODE_ENV !== 'production' && token.startsWith('x-dev-user-')) {
-      const [, id, email, username, roles] = token.split('-');
+    const xDevUserPrefix = 'x-dev-user-';
+    if (process.env.NODE_ENV !== 'production' && token.startsWith(xDevUserPrefix)) {
+      const [, id, email, username, roles] = token.slice(xDevUserPrefix.length).split('-');
       return this.convertPayloadToUser({
         sub: id,
         email,

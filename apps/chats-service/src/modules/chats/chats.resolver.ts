@@ -1,5 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { DbService } from '@poslah/database/db/db.service';
+import { AppUser } from '@poslah/util/auth-module/auth.types';
 import { CurrentUser } from '@poslah/util/decorators/current-user';
 import { GqlJwtAuthGuard } from '@poslah/util/guards/gql-jwt-auth-guard';
 
@@ -9,7 +11,10 @@ import { ChatsService } from './chats.service';
 
 @Resolver()
 export class ChatsResolver {
-  constructor(private readonly chatsService: ChatsService) {}
+  constructor(
+    private readonly chatsService: ChatsService,
+    private readonly db: DbService
+  ) {}
 
   /**
    * Handles incoming commands from clients to create a new event.
@@ -24,8 +29,22 @@ export class ChatsResolver {
     return this.chatsService.pushEventOptimistic(user.id, args);
   }
 
+  @UseGuards(GqlJwtAuthGuard)
   @Query(() => Number)
-  dummyQuery() {
-    return 123456898;
+  async dummyQuery(@CurrentUser() user: AppUser) {
+    console.log(user);
+    const chat =
+      (await this.db.transaction.chat.findFirst({ select: { id: true } })) ||
+      (await this.db.transaction.chat.create({
+        data: { messagesCounter: {}, eventsCounter: {}, title: 'Chat #1', ownerId: user.id },
+      }));
+
+    await this.db.transaction.chatMember.upsert({
+      where: { userId_chatId: { userId: user.id, chatId: chat.id } },
+      create: { chatId: chat.id, userId: user.id },
+      update: {},
+    });
+
+    return user.id.length;
   }
 }

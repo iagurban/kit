@@ -31,7 +31,6 @@ export type UserMinAggregateOutputType = {
   email: string | null
   name: string | null
   abbrev: string | null
-  passwordHash: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -40,7 +39,6 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   name: string | null
   abbrev: string | null
-  passwordHash: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -49,7 +47,6 @@ export type UserCountAggregateOutputType = {
   email: number
   name: number
   abbrev: number
-  passwordHash: number
   _all: number
 }
 
@@ -60,7 +57,6 @@ export type UserMinAggregateInputType = {
   email?: true
   name?: true
   abbrev?: true
-  passwordHash?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -69,7 +65,6 @@ export type UserMaxAggregateInputType = {
   email?: true
   name?: true
   abbrev?: true
-  passwordHash?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -78,7 +73,6 @@ export type UserCountAggregateInputType = {
   email?: true
   name?: true
   abbrev?: true
-  passwordHash?: true
   _all?: true
 }
 
@@ -160,7 +154,6 @@ export type UserGroupByOutputType = {
   email: string
   name: string
   abbrev: string | null
-  passwordHash: string
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -190,13 +183,12 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringFilter<"User"> | string
   abbrev?: Prisma.StringNullableFilter<"User"> | string | null
-  passwordHash?: Prisma.StringFilter<"User"> | string
   uploadedFiles?: Prisma.StoredFileListRelationFilter
-  refreshTokens?: Prisma.RefreshTokenListRelationFilter
   chatEvents?: Prisma.ChatEventListRelationFilter
   chatsPermissions?: Prisma.UserChatPermissionsListRelationFilter
   chatsMmbership?: Prisma.ChatMemberListRelationFilter
   ownChats?: Prisma.ChatListRelationFilter
+  RefreshToken?: Prisma.RefreshTokenListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -205,13 +197,12 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   abbrev?: Prisma.SortOrderInput | Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   uploadedFiles?: Prisma.StoredFileOrderByRelationAggregateInput
-  refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   chatEvents?: Prisma.ChatEventOrderByRelationAggregateInput
   chatsPermissions?: Prisma.UserChatPermissionsOrderByRelationAggregateInput
   chatsMmbership?: Prisma.ChatMemberOrderByRelationAggregateInput
   ownChats?: Prisma.ChatOrderByRelationAggregateInput
+  RefreshToken?: Prisma.RefreshTokenOrderByRelationAggregateInput
   _relevance?: Prisma.UserOrderByRelevanceInput
 }
 
@@ -224,13 +215,12 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   abbrev?: Prisma.StringNullableFilter<"User"> | string | null
-  passwordHash?: Prisma.StringFilter<"User"> | string
   uploadedFiles?: Prisma.StoredFileListRelationFilter
-  refreshTokens?: Prisma.RefreshTokenListRelationFilter
   chatEvents?: Prisma.ChatEventListRelationFilter
   chatsPermissions?: Prisma.UserChatPermissionsListRelationFilter
   chatsMmbership?: Prisma.ChatMemberListRelationFilter
   ownChats?: Prisma.ChatListRelationFilter
+  RefreshToken?: Prisma.RefreshTokenListRelationFilter
 }, "id" | "email" | "name">
 
 export type UserOrderByWithAggregationInput = {
@@ -239,7 +229,6 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   abbrev?: Prisma.SortOrderInput | Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -254,7 +243,6 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   abbrev?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
 }
 
 export type UserCreateInput = {
@@ -263,13 +251,12 @@ export type UserCreateInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -278,13 +265,12 @@ export type UserUncheckedCreateInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -293,13 +279,12 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -308,13 +293,12 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUncheckedUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -323,7 +307,6 @@ export type UserCreateManyInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -332,7 +315,6 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -341,7 +323,6 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type UserOrderByRelevanceInput = {
@@ -356,7 +337,6 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   abbrev?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -365,7 +345,6 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   abbrev?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -374,7 +353,6 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   abbrev?: Prisma.SortOrder
-  passwordHash?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -394,18 +372,18 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type UserCreateNestedOneWithoutRefreshTokensInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
+export type UserCreateNestedOneWithoutRefreshTokenInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokenInput, Prisma.UserUncheckedCreateWithoutRefreshTokenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokenInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutRefreshTokensNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokensInput
-  upsert?: Prisma.UserUpsertWithoutRefreshTokensInput
+export type UserUpdateOneRequiredWithoutRefreshTokenNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokenInput, Prisma.UserUncheckedCreateWithoutRefreshTokenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRefreshTokenInput
+  upsert?: Prisma.UserUpsertWithoutRefreshTokenInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.UserUpdateWithoutRefreshTokensInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokenInput, Prisma.UserUpdateWithoutRefreshTokenInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
 }
 
 export type UserCreateNestedOneWithoutUploadedFilesInput = {
@@ -478,13 +456,12 @@ export type UserUpdateOneRequiredWithoutChatsMmbershipNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatsMmbershipInput, Prisma.UserUpdateWithoutChatsMmbershipInput>, Prisma.UserUncheckedUpdateWithoutChatsMmbershipInput>
 }
 
-export type UserCreateWithoutRefreshTokensInput = {
+export type UserCreateWithoutRefreshTokenInput = {
   id?: string
   createdAt?: Date | string
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
@@ -492,13 +469,12 @@ export type UserCreateWithoutRefreshTokensInput = {
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
 }
 
-export type UserUncheckedCreateWithoutRefreshTokensInput = {
+export type UserUncheckedCreateWithoutRefreshTokenInput = {
   id?: string
   createdAt?: Date | string
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
@@ -506,29 +482,28 @@ export type UserUncheckedCreateWithoutRefreshTokensInput = {
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
 }
 
-export type UserCreateOrConnectWithoutRefreshTokensInput = {
+export type UserCreateOrConnectWithoutRefreshTokenInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokenInput, Prisma.UserUncheckedCreateWithoutRefreshTokenInput>
 }
 
-export type UserUpsertWithoutRefreshTokensInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokensInput, Prisma.UserUncheckedCreateWithoutRefreshTokensInput>
+export type UserUpsertWithoutRefreshTokenInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokenInput, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRefreshTokenInput, Prisma.UserUncheckedCreateWithoutRefreshTokenInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutRefreshTokensInput = {
+export type UserUpdateToOneWithWhereWithoutRefreshTokenInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokensInput, Prisma.UserUncheckedUpdateWithoutRefreshTokensInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRefreshTokenInput, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
 }
 
-export type UserUpdateWithoutRefreshTokensInput = {
+export type UserUpdateWithoutRefreshTokenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
@@ -536,13 +511,12 @@ export type UserUpdateWithoutRefreshTokensInput = {
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
 }
 
-export type UserUncheckedUpdateWithoutRefreshTokensInput = {
+export type UserUncheckedUpdateWithoutRefreshTokenInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
@@ -556,12 +530,11 @@ export type UserCreateWithoutUploadedFilesInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUploadedFilesInput = {
@@ -570,12 +543,11 @@ export type UserUncheckedCreateWithoutUploadedFilesInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUploadedFilesInput = {
@@ -600,12 +572,11 @@ export type UserUpdateWithoutUploadedFilesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedFilesInput = {
@@ -614,12 +585,11 @@ export type UserUncheckedUpdateWithoutUploadedFilesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUncheckedUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOwnChatsInput = {
@@ -628,12 +598,11 @@ export type UserCreateWithoutOwnChatsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOwnChatsInput = {
@@ -642,12 +611,11 @@ export type UserUncheckedCreateWithoutOwnChatsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOwnChatsInput = {
@@ -672,12 +640,11 @@ export type UserUpdateWithoutOwnChatsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOwnChatsInput = {
@@ -686,12 +653,11 @@ export type UserUncheckedUpdateWithoutOwnChatsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatEventsInput = {
@@ -700,12 +666,11 @@ export type UserCreateWithoutChatEventsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatEventsInput = {
@@ -714,12 +679,11 @@ export type UserUncheckedCreateWithoutChatEventsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
   chatsMmbership?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatEventsInput = {
@@ -744,12 +708,11 @@ export type UserUpdateWithoutChatEventsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatEventsInput = {
@@ -758,12 +721,11 @@ export type UserUncheckedUpdateWithoutChatEventsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
   chatsMmbership?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUncheckedUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatsPermissionsInput = {
@@ -772,12 +734,11 @@ export type UserCreateWithoutChatsPermissionsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsMmbership?: Prisma.ChatMemberCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatsPermissionsInput = {
@@ -786,12 +747,11 @@ export type UserUncheckedCreateWithoutChatsPermissionsInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsMmbership?: Prisma.ChatMemberUncheckedCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatsPermissionsInput = {
@@ -816,12 +776,11 @@ export type UserUpdateWithoutChatsPermissionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsMmbership?: Prisma.ChatMemberUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatsPermissionsInput = {
@@ -830,12 +789,11 @@ export type UserUncheckedUpdateWithoutChatsPermissionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsMmbership?: Prisma.ChatMemberUncheckedUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUncheckedUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutChatsMmbershipInput = {
@@ -844,12 +802,11 @@ export type UserCreateWithoutChatsMmbershipInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutChatsMmbershipInput = {
@@ -858,12 +815,11 @@ export type UserUncheckedCreateWithoutChatsMmbershipInput = {
   email: string
   name: string
   abbrev?: string | null
-  passwordHash: string
   uploadedFiles?: Prisma.StoredFileUncheckedCreateNestedManyWithoutUploadedByUserInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
   chatEvents?: Prisma.ChatEventUncheckedCreateNestedManyWithoutAuthorInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedCreateNestedManyWithoutUserInput
   ownChats?: Prisma.ChatUncheckedCreateNestedManyWithoutOwnerInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutChatsMmbershipInput = {
@@ -888,12 +844,11 @@ export type UserUpdateWithoutChatsMmbershipInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutChatsMmbershipInput = {
@@ -902,12 +857,11 @@ export type UserUncheckedUpdateWithoutChatsMmbershipInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   abbrev?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   uploadedFiles?: Prisma.StoredFileUncheckedUpdateManyWithoutUploadedByUserNestedInput
-  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
   chatEvents?: Prisma.ChatEventUncheckedUpdateManyWithoutAuthorNestedInput
   chatsPermissions?: Prisma.UserChatPermissionsUncheckedUpdateManyWithoutUserNestedInput
   ownChats?: Prisma.ChatUncheckedUpdateManyWithoutOwnerNestedInput
+  RefreshToken?: Prisma.RefreshTokenUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -917,20 +871,20 @@ export type UserUncheckedUpdateWithoutChatsMmbershipInput = {
 
 export type UserCountOutputType = {
   uploadedFiles: number
-  refreshTokens: number
   chatEvents: number
   chatsPermissions: number
   chatsMmbership: number
   ownChats: number
+  RefreshToken: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploadedFiles?: boolean | UserCountOutputTypeCountUploadedFilesArgs
-  refreshTokens?: boolean | UserCountOutputTypeCountRefreshTokensArgs
   chatEvents?: boolean | UserCountOutputTypeCountChatEventsArgs
   chatsPermissions?: boolean | UserCountOutputTypeCountChatsPermissionsArgs
   chatsMmbership?: boolean | UserCountOutputTypeCountChatsMmbershipArgs
   ownChats?: boolean | UserCountOutputTypeCountOwnChatsArgs
+  RefreshToken?: boolean | UserCountOutputTypeCountRefreshTokenArgs
 }
 
 /**
@@ -948,13 +902,6 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type UserCountOutputTypeCountUploadedFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.StoredFileWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.RefreshTokenWhereInput
 }
 
 /**
@@ -985,6 +932,13 @@ export type UserCountOutputTypeCountOwnChatsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.ChatWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountRefreshTokenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefreshTokenWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -992,13 +946,12 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   name?: boolean
   abbrev?: boolean
-  passwordHash?: boolean
   uploadedFiles?: boolean | Prisma.User$uploadedFilesArgs<ExtArgs>
-  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   chatEvents?: boolean | Prisma.User$chatEventsArgs<ExtArgs>
   chatsPermissions?: boolean | Prisma.User$chatsPermissionsArgs<ExtArgs>
   chatsMmbership?: boolean | Prisma.User$chatsMmbershipArgs<ExtArgs>
   ownChats?: boolean | Prisma.User$ownChatsArgs<ExtArgs>
+  RefreshToken?: boolean | Prisma.User$RefreshTokenArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1008,7 +961,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   name?: boolean
   abbrev?: boolean
-  passwordHash?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1017,7 +969,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   name?: boolean
   abbrev?: boolean
-  passwordHash?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1026,17 +977,16 @@ export type UserSelectScalar = {
   email?: boolean
   name?: boolean
   abbrev?: boolean
-  passwordHash?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "abbrev" | "passwordHash", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "email" | "name" | "abbrev", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploadedFiles?: boolean | Prisma.User$uploadedFilesArgs<ExtArgs>
-  refreshTokens?: boolean | Prisma.User$refreshTokensArgs<ExtArgs>
   chatEvents?: boolean | Prisma.User$chatEventsArgs<ExtArgs>
   chatsPermissions?: boolean | Prisma.User$chatsPermissionsArgs<ExtArgs>
   chatsMmbership?: boolean | Prisma.User$chatsMmbershipArgs<ExtArgs>
   ownChats?: boolean | Prisma.User$ownChatsArgs<ExtArgs>
+  RefreshToken?: boolean | Prisma.User$RefreshTokenArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1046,11 +996,11 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     uploadedFiles: Prisma.$StoredFilePayload<ExtArgs>[]
-    refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
     chatEvents: Prisma.$ChatEventPayload<ExtArgs>[]
     chatsPermissions: Prisma.$UserChatPermissionsPayload<ExtArgs>[]
     chatsMmbership: Prisma.$ChatMemberPayload<ExtArgs>[]
     ownChats: Prisma.$ChatPayload<ExtArgs>[]
+    RefreshToken: Prisma.$RefreshTokenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1058,7 +1008,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string
     name: string
     abbrev: string | null
-    passwordHash: string
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1454,11 +1403,11 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   uploadedFiles<T extends Prisma.User$uploadedFilesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedFilesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StoredFilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  refreshTokens<T extends Prisma.User$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatEvents<T extends Prisma.User$chatEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatsPermissions<T extends Prisma.User$chatsPermissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatsPermissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserChatPermissionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   chatsMmbership<T extends Prisma.User$chatsMmbershipArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatsMmbershipArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ownChats<T extends Prisma.User$ownChatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownChatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  RefreshToken<T extends Prisma.User$RefreshTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$RefreshTokenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1493,7 +1442,6 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly abbrev: Prisma.FieldRef<"User", 'String'>
-  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -1906,30 +1854,6 @@ export type User$uploadedFilesArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * User.refreshTokens
- */
-export type User$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the RefreshToken
-   */
-  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the RefreshToken
-   */
-  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
-  where?: Prisma.RefreshTokenWhereInput
-  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
-  cursor?: Prisma.RefreshTokenWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
-}
-
-/**
  * User.chatEvents
  */
 export type User$chatEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2023,6 +1947,30 @@ export type User$ownChatsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.ChatScalarFieldEnum | Prisma.ChatScalarFieldEnum[]
+}
+
+/**
+ * User.RefreshToken
+ */
+export type User$RefreshTokenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefreshToken
+   */
+  select?: Prisma.RefreshTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefreshToken
+   */
+  omit?: Prisma.RefreshTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefreshTokenInclude<ExtArgs> | null
+  where?: Prisma.RefreshTokenWhereInput
+  orderBy?: Prisma.RefreshTokenOrderByWithRelationInput | Prisma.RefreshTokenOrderByWithRelationInput[]
+  cursor?: Prisma.RefreshTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
 }
 
 /**

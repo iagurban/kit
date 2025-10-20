@@ -27,14 +27,8 @@ export class UserOrderByWithRelationInput {
   @Field(() => SortOrderInput, { nullable: true })
   abbrev?: SortOrderInput;
 
-  @Field(() => SortOrder, { nullable: true })
-  passwordHash?: `${SortOrder}`;
-
   @Field(() => StoredFileOrderByRelationAggregateInput, { nullable: true })
   uploadedFiles?: StoredFileOrderByRelationAggregateInput;
-
-  @Field(() => RefreshTokenOrderByRelationAggregateInput, { nullable: true })
-  refreshTokens?: RefreshTokenOrderByRelationAggregateInput;
 
   @Field(() => ChatEventOrderByRelationAggregateInput, { nullable: true })
   chatEvents?: ChatEventOrderByRelationAggregateInput;
@@ -47,6 +41,9 @@ export class UserOrderByWithRelationInput {
 
   @Field(() => ChatOrderByRelationAggregateInput, { nullable: true })
   ownChats?: ChatOrderByRelationAggregateInput;
+
+  @Field(() => RefreshTokenOrderByRelationAggregateInput, { nullable: true })
+  RefreshToken?: RefreshTokenOrderByRelationAggregateInput;
 
   @Field(() => UserOrderByRelevanceInput, { nullable: true })
   _relevance?: UserOrderByRelevanceInput;

@@ -27,14 +27,8 @@ export class UserUpdateInput {
   @Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   abbrev?: NullableStringFieldUpdateOperationsInput;
 
-  @Field(() => StringFieldUpdateOperationsInput, { nullable: true })
-  passwordHash?: StringFieldUpdateOperationsInput;
-
   @Field(() => StoredFileUpdateManyWithoutUploadedByUserNestedInput, { nullable: true })
   uploadedFiles?: StoredFileUpdateManyWithoutUploadedByUserNestedInput;
-
-  @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, { nullable: true })
-  refreshTokens?: RefreshTokenUpdateManyWithoutUserNestedInput;
 
   @Field(() => ChatEventUpdateManyWithoutAuthorNestedInput, { nullable: true })
   chatEvents?: ChatEventUpdateManyWithoutAuthorNestedInput;
@@ -47,4 +41,7 @@ export class UserUpdateInput {
 
   @Field(() => ChatUpdateManyWithoutOwnerNestedInput, { nullable: true })
   ownChats?: ChatUpdateManyWithoutOwnerNestedInput;
+
+  @Field(() => RefreshTokenUpdateManyWithoutUserNestedInput, { nullable: true })
+  RefreshToken?: RefreshTokenUpdateManyWithoutUserNestedInput;
 }

@@ -37,14 +37,8 @@ export class UserWhereInput {
   @Field(() => StringNullableFilter, { nullable: true })
   abbrev?: StringNullableFilter;
 
-  @Field(() => StringFilter, { nullable: true })
-  passwordHash?: StringFilter;
-
   @Field(() => StoredFileListRelationFilter, { nullable: true })
   uploadedFiles?: StoredFileListRelationFilter;
-
-  @Field(() => RefreshTokenListRelationFilter, { nullable: true })
-  refreshTokens?: RefreshTokenListRelationFilter;
 
   @Field(() => ChatEventListRelationFilter, { nullable: true })
   chatEvents?: ChatEventListRelationFilter;
@@ -57,4 +51,7 @@ export class UserWhereInput {
 
   @Field(() => ChatListRelationFilter, { nullable: true })
   ownChats?: ChatListRelationFilter;
+
+  @Field(() => RefreshTokenListRelationFilter, { nullable: true })
+  RefreshToken?: RefreshTokenListRelationFilter;
 }

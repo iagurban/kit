@@ -163,59 +163,6 @@ const performCopy = async (argv: CliArgs) => {
   log('---------------------');
 };
 
-// async function main() {
-//   const argv = (await yargs(hideBin(process.argv))
-//     .usage('Usage: $0 [options] <destination_directory>')
-//     .option('include', {
-//       alias: 'i',
-//       type: 'string',
-//       array: true,
-//       description: 'Glob pattern(s) to include files.',
-//       demandOption: true,
-//     })
-//     .nargs('include', 1)
-//     .option('exclude', {
-//       alias: ['x', 'X'],
-//       type: 'string',
-//       description: 'Glob pattern(s) to exclude from the included set.',
-//       default: [],
-//       array: true,
-//     })
-//     .nargs('exclude', 1)
-//     .option('cwd', {
-//       alias: 'D',
-//       type: 'string',
-//       description: 'The working directory to search for files in.',
-//       default: process.cwd(),
-//     })
-//     .option('verbose', {
-//       alias: 'v',
-//       type: 'boolean',
-//       description: 'Run with verbose logging.',
-//       default: false,
-//     })
-//     .nargs('verbose', 0)
-//     .option('parallel', {
-//       alias: 'p',
-//       type: 'number',
-//       description: 'Number of parallel file operations to run.',
-//       default: 1,
-//       coerce: (arg: number) => Math.max(1, arg),
-//     })
-//     .option('print-absolute-paths', {
-//       alias: 'A',
-//       type: 'boolean',
-//       description: 'Print absolute file paths in verbose output. Requires -v.',
-//       default: false,
-//     })
-//     .help()
-//     .alias('h', 'help')
-//     .positional(`destination`, { describe: 'The destination directory', type: 'string', demandOption: true })
-//     .strict().argv) satisfies CliArgs;
-//
-//   await performCopy(argv);
-// }
-
 async function main() {
   // The yargs setup now uses the robust .command() structure.
   await yargs(hideBin(process.argv))

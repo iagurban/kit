@@ -10,6 +10,7 @@ import {
   isoStringToDateTransform,
   Model,
   model,
+  modelAction,
   prop,
   SnapshotInOf,
   stringToBigIntTransform,
@@ -167,7 +168,9 @@ class SubscriptionStore<TData, TVariables extends OperationVariables> extends St
     this.subscription = observable.subscribe({
       // This is called every time the server sends data
       next: response => {
-        if (response.data) {
+        if (response.error) {
+          this.handlers.onError(response.error);
+        } else if (response.data) {
           this.handlers.onData(response.data);
         }
       },
@@ -178,7 +181,7 @@ class SubscriptionStore<TData, TVariables extends OperationVariables> extends St
       },
 
       complete: () => {
-        this.unsubscribe(); /// TODO am i need this? this seems safer than "this.subscription = undefined"
+        this.unsubscribe();
       },
     });
   }
@@ -205,6 +208,11 @@ export class ChatsStorage extends Model({
     return getGraphqlClient(this);
   }
 
+  @modelAction
+  pushMessageLog(data: AllMessagesSubscriptionSubscription) {
+    this.messagesLog.push(data);
+  }
+
   readonly messagesSubscription = new SubscriptionStore<
     AllMessagesSubscriptionSubscription,
     AllMessagesSubscriptionSubscriptionVariables
@@ -213,8 +221,8 @@ export class ChatsStorage extends Model({
     { query: AllMessagesSubscriptionDocument },
     {
       onData: data => {
-        this.messagesLog.push(data);
         console.log(data);
+        this.pushMessageLog(data);
       },
       onError: err => {
         console.error(err);
@@ -223,7 +231,6 @@ export class ChatsStorage extends Model({
   );
 
   protected onAttachedToRootStore(): (() => void) | void {
-    console.log(`onAttachedToRootStore`);
     return disposers([this.messagesSubscription]);
   }
 }

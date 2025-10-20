@@ -25,14 +25,8 @@ export class User {
   @Field(() => String, { nullable: true })
   abbrev!: string | null;
 
-  @Field(() => String, { nullable: false })
-  passwordHash!: string;
-
   @Field(() => [StoredFile], { nullable: true })
   uploadedFiles?: Array<StoredFile>;
-
-  @Field(() => [RefreshToken], { nullable: true })
-  refreshTokens?: Array<RefreshToken>;
 
   @Field(() => [ChatEvent], { nullable: true })
   chatEvents?: Array<ChatEvent>;
@@ -45,6 +39,9 @@ export class User {
 
   @Field(() => [Chat], { nullable: true })
   ownChats?: Array<Chat>;
+
+  @Field(() => [RefreshToken], { nullable: true })
+  RefreshToken?: Array<RefreshToken>;
 
   @Field(() => UserCount, { nullable: false })
   _count?: UserCount;

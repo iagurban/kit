@@ -1,11 +1,15 @@
 import 'reflect-metadata';
 
 import { join } from 'node:path';
+import { URL } from 'node:url';
 
 import httpProxy from '@fastify/http-proxy';
+import { notNull } from '@gurban/kit/utils/flow-utils';
+import { ConfigService } from '@nestjs/config';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 
 import { AppModule } from './modules/app/app.module';
+import { WsTicketsService } from './modules/app/ws-tickets/ws-tickets.service';
 import { GraphqlGatewayManager } from './modules/gateway/graphql-gateway.manager';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('GATE_SERVICE_PORT'), {
@@ -22,35 +26,28 @@ void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('GATE_SERVI
   https: { certsDir: join(__dirname, '../certs') },
   onAppCreated: async app => {
     const gatewayManager = app.get(GraphqlGatewayManager);
+    const configService = app.get(ConfigService);
     const fastifyInstance = app.getHttpAdapter().getInstance();
-
-    // await fastifyInstance.register(websocket);
+    const wsTicketsService = app.get(WsTicketsService);
 
     await fastifyInstance.register(httpProxy, {
       upstream: `http://localhost:${gatewayManager.internalPort}`,
-      wsUpstream: `ws://localhost:${gatewayManager.internalPort}`,
+      wsUpstream: configService.getOrThrow<string>('SUBSCRIPTIONS_SERVICE_WS_URL'),
       prefix: '/graphql',
       rewritePrefix: '/graphql',
       websocket: true,
-      // wsClientOptions: {
-      //   queryString: (search, reqUrl, request): string => {
-      //     console.log(`wsClientOptions`);
-      //     throw 123;
-      //   },
-      // },
-      // wsServerOptions: {
-      //   verifyClient: () => {
-      //     console.log(`verifyClient`);
-      //     return true;
-      //   },
-      //   handleProtocols: () => {
-      //     console.log(`handleProtocols`);
-      //     return false;
-      //   },
-      // },
       preHandler: async (req, reply) => {
-        console.log(`[gate-service] Attempting to proxy request for ${req.url} by ${req.protocol}`);
+        // console.log(`[gate-service] Attempting to proxy request for ${req.url} by ${req.protocol}`);
+        // For HTTP requests, we wait for the gateway. For WS, we proxy directly.
         await gatewayManager.waitForAvailability();
+      },
+      wsServerOptions: {
+        verifyClient: async (info, done) => {
+          /// first-authentication for websockets
+          const url = new URL(notNull(info.req.url), `ws://${info.req.headers.host}`);
+          const ticket = url.searchParams.get('ticket');
+          done(!!ticket && (await wsTicketsService.consume(ticket)));
+        },
       },
       replyOptions: {
         onError: (reply, error: unknown) => {

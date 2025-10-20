@@ -18,7 +18,4 @@ export class UserMaxOrderByAggregateInput {
 
   @Field(() => SortOrder, { nullable: true })
   abbrev?: `${SortOrder}`;
-
-  @Field(() => SortOrder, { nullable: true })
-  passwordHash?: `${SortOrder}`;
 }

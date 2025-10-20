@@ -1,34 +1,33 @@
 import { CustomScalar, Scalar } from '@nestjs/graphql';
-import { GraphQLError, ValueNode } from 'graphql';
-import { GraphQLBigInt } from 'graphql-scalars';
+import { GraphQLError, Kind, ValueNode } from 'graphql';
 
 @Scalar('BigInt', () => BigInt)
 export class BigIntScalar implements CustomScalar<string, bigint> {
   description = '64-bit signed integer';
 
-  private scalar = GraphQLBigInt;
+  private static processValue(value: unknown): bigint {
+    if (typeof value === 'bigint') {
+      return value;
+    }
+    try {
+      return BigInt(value as string | number);
+    } catch {
+      throw new GraphQLError(`Invalid value for BigInt: ${value}`);
+    }
+  }
 
   parseValue(value: unknown): bigint {
-    const parsed = this.scalar.parseValue(value);
-    // The CustomScalar interface requires a bigint, so we ensure the type.
-    return BigInt(parsed);
+    return BigIntScalar.processValue(value);
   }
 
   serialize(value: unknown): string {
-    const serialized = this.scalar.serialize(value);
-    // The CustomScalar interface requires a string, so we ensure the type.
-    return String(serialized);
+    return BigIntScalar.processValue(value).toString();
   }
 
   parseLiteral(ast: ValueNode): bigint {
-    const result = this.scalar.parseLiteral(ast, undefined);
-
-    if (result === null) {
-      throw new GraphQLError(
-        `BigInt cannot represent non-integer value: ${'value' in ast ? ast.value : '(invalid AST node)'}`
-      );
+    if (ast.kind === Kind.STRING || ast.kind === Kind.INT) {
+      return BigIntScalar.processValue(ast.value);
     }
-    // The CustomScalar interface requires a bigint, so we ensure the type.
-    return BigInt(result);
+    throw new GraphQLError(`Can not convert literal of kind ${ast.kind} to a BigInt.`);
   }
 }
