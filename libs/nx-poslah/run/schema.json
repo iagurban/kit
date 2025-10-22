@@ -40,6 +40,11 @@
     "cwd": {
       "type": "string",
       "description": "The working directory to run commands from. Will be created if it doesn't exist."
+    },
+    "printTiming": {
+      "type": "boolean",
+      "description": "If true, prints the execution time of each command.",
+      "default": false
     }
   },
   "required": ["commands"]

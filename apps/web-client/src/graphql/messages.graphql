@@ -3,3 +3,18 @@ subscription AllMessagesSubscription {
     nn
   }
 }
+
+query JoinedChats {
+  joinedChats {
+    id
+    title
+    bio
+    userPermissions {
+      permissions
+      role {
+        permissions
+        tags
+      }
+    }
+  }
+}

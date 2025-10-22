@@ -44,6 +44,7 @@ node_modules/
 
 # Build artifacts
 dist/
+dist-copy/
 build/
 
 # IDE files

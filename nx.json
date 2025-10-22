@@ -47,6 +47,7 @@
       "executor": "@poslah/nx-poslah:nodemon",
       "options": {
         "ignore": [
+          "./*/*/dist/**/*",
           "./{projectRoot}/src/build-info.json"
         ],
         "watch": [
@@ -56,7 +57,7 @@
           "./libs/database/src/**/*"
         ],
         "delay": 1000,
-        "ext": "ts,json,proto,{addExt}",
+        "ext": "ts,json,proto,{options.addExt}",
         "addExt": "",
         "exec": "nx run {projectName}:build",
         "cwd": "{workspaceRoot}",
@@ -67,25 +68,31 @@
     "run-and-watch-backend": {
       "executor": "@poslah/nx-poslah:nodemon",
       "options": {
-        "watch": ["./dist/**/*"],
+        "watch": ["./dist-copy/**/*"],
         "ext": "js",
         "delay": 1000,
         "script": "node",
-        "scriptArgs": ["./dist/{projectRoot}/{executablePath}"],
+        "scriptArgs": ["./dist-copy/{projectRoot}/{options.executablePath}"],
         "cwd": "{workspaceRoot}/{projectRoot}",
-        "executablePath": "src/main.js"
+        "executablePath": "src/main.js",
+        "verbose": false,
+        "logChangedFiles": false
       }
     },
 
     "build-service-ts": {
       "executor": "@poslah/nx-poslah:run",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
+        "outputPath": "{workspaceRoot}/{projectRoot}/dist",
         "commands": [
           "yarn tsx libs/kit/src/bin/build-info-gen.ts -s ntp -x '{\"$schema\":\"../../../build-info.schema.json\"}' {projectRoot}/src/build-info.json",
           "yarn tsc -p {projectRoot}/tsconfig.build.json",
-          "yarn tsc-alias -p {projectRoot}/tsconfig.build.json"
+          "yarn tsc-alias -p {projectRoot}/tsconfig.build.json",
+          "cd {projectRoot}/dist && yarn rimraf '**/*/package.json'",
+          "cd {projectRoot}/dist && yarn tsx '../../../libs/kit/src/bin/copy.ts' -i './**/*' '../dist-copy'"
         ],
+        "stopOnFail": true,
+        "printTiming": true,
         "cwd": "{workspaceRoot}"
       },
       "dependsOn": ["copy-assets"]
@@ -93,14 +100,13 @@
 
     "copy-assets": {
       "executor": "@poslah/nx-poslah:run",
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
+        "outputPath": "{workspaceRoot}/{projectRoot}/dist",
         "commands": [
-          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i '{apps,libs}/**/*.{proto,json,lua,crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'",
-          "cd {projectRoot} && yarn rimraf -g 'dist/**/{tsconfig,tsconfig.build,package}.json'",
-          "yarn ts-node 'libs/kit/src/bin/copy.ts' -i 'certs/*.{crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' '{projectRoot}/dist'"
+          "yarn tsx 'libs/kit/src/bin/copy.ts' -i './{apps,libs}/**/*.{proto,lua,crt,key,pem}' -i './certs/*.{crt,key,pem}' -x '**/node_modules/**' -x '**/dist/**' -x '**/tsconfig.*.json' '{projectRoot}/dist'"
         ],
         "stopOnFail": true,
+        "printTiming": true,
         "cwd": "{workspaceRoot}"
       }
     },

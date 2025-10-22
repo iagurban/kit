@@ -22,6 +22,7 @@ directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
 type AttachmentInfo
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   fileId: ID!
@@ -33,6 +34,7 @@ type AttachmentInfo
 }
 
 type AttachmentPreview
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   thumbnail: String
@@ -45,14 +47,108 @@ scalar BigInt
   @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 
+type Chat
+  @join__type(graph: CHATS)
+{
+  _count: ChatCount!
+  avatar: String
+  bio: String
+  defaultRole: ChatRole
+  defaultRoleId: String
+  events: [ChatEvent!]
+  eventsCounter: ChatEventsCounter
+  id: ID!
+  members: [ChatMember!]
+  messagesCounter: MessagesCounter
+  owner: User!
+  ownerId: String!
+  roles: [ChatRole!]
+  title: String!
+  userPermissions: [UserChatPermissions!]
+}
+
+type ChatCount
+  @join__type(graph: CHATS)
+{
+  events: Int!
+  members: Int!
+  roles: Int!
+  userPermissions: Int!
+}
+
+type ChatEvent
+  @join__type(graph: CHATS)
+{
+  author: User!
+  authorId: String!
+  chat: Chat!
+  chatId: String!
+  createdAt: DateTime!
+  id: ID!
+  nn: String!
+  payload: JSON!
+  type: String!
+}
+
+type ChatEventsCounter
+  @join__type(graph: CHATS)
+{
+  chat: Chat!
+  chatId: ID!
+  lastNn: String!
+}
+
+type ChatMember
+  @join__type(graph: CHATS)
+{
+  chat: Chat!
+  chatId: String!
+  joinedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type ChatRole
+  @join__type(graph: CHATS)
+{
+  _count: ChatRoleCount!
+  chat: Chat!
+  chatId: String!
+  id: ID!
+  isDefaultForChats: [Chat!]
+  name: String!
+  permissions: JSON!
+  tags: [ChatRoleTag!]
+  userPermissions: [UserChatPermissions!]
+}
+
+type ChatRoleCount
+  @join__type(graph: CHATS)
+{
+  isDefaultForChats: Int!
+  userPermissions: Int!
+}
+
+enum ChatRoleTag
+  @join__type(graph: CHATS)
+{
+  ADMIN @join__enumValue(graph: CHATS)
+  BANNED @join__enumValue(graph: CHATS)
+  MEMBER @join__enumValue(graph: CHATS)
+  MODERATOR @join__enumValue(graph: CHATS)
+  VIEWER @join__enumValue(graph: CHATS)
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
   @join__type(graph: CHATS)
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 
 type ForwardInfo
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   attachments: [AttachmentInfo!]
@@ -76,6 +172,7 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
   @join__type(graph: CHATS)
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 
 scalar link__Import
@@ -93,6 +190,7 @@ enum link__Purpose {
 }
 
 type Message
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   attachments: [AttachmentInfo!]
@@ -111,10 +209,12 @@ type Message
   updatedAt: DateTime!
 }
 
-type MessageDTO
-  @join__type(graph: MESSAGES)
+type MessagesCounter
+  @join__type(graph: CHATS)
 {
-  nn: BigInt!
+  chat: Chat!
+  chatId: ID!
+  lastNn: String!
 }
 
 type Mutation
@@ -139,6 +239,7 @@ type Query
   @join__type(graph: SUBSCRIPTIONS)
 {
   dummyQuery: Float! @join__field(graph: CHATS)
+  joinedChats: [Chat!]! @join__field(graph: CHATS)
   getMessages(
     """Fetch messages with a sequence number greater than this value."""
     greaterThanNn: Int
@@ -148,10 +249,22 @@ type Query
 
     """The maximum number of messages to return."""
     limit: Int
-  ): MessageDTO! @join__field(graph: MESSAGES)
+  ): Message! @join__field(graph: MESSAGES)
+}
+
+type RefreshToken
+  @join__type(graph: CHATS)
+{
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  hash: String!
+  id: ID!
+  user: User!
+  userId: String!
 }
 
 type ReplyToPreview
+  @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   attachments: [AttachmentPreview!]
@@ -160,8 +273,107 @@ type ReplyToPreview
   text: String
 }
 
+type StoredFile
+  @join__type(graph: CHATS)
+{
+  cdnUrl: String!
+  checksum: String!
+  createdAt: DateTime!
+  id: ID!
+  metadata: JSON
+  mimeType: String!
+  originalFilename: String!
+  sizeBytes: String!
+  storageKey: String!
+  updatedAt: DateTime!
+  uploadSession: UploadSession
+  uploadedByUser: User!
+  uploadedByUserId: String!
+}
+
 type Subscription
   @join__type(graph: SUBSCRIPTIONS)
 {
   messagesSubscription: Message!
+}
+
+type UploadChunk
+  @join__type(graph: CHATS)
+{
+  eTag: String
+  id: ID!
+  leasedAt: DateTime
+  partNumber: Int!
+  session: UploadSession!
+  sessionId: String!
+}
+
+type UploadSession
+  @join__type(graph: CHATS)
+{
+  _count: UploadSessionCount!
+  chunks: [UploadChunk!]
+  createdAt: DateTime!
+  failReason: String
+  file: StoredFile!
+  fileId: String!
+  id: ID!
+  status: UploadStatus!
+  storageUploadId: String!
+  totalChunks: Int!
+  totalFailureCount: Int!
+}
+
+type UploadSessionCount
+  @join__type(graph: CHATS)
+{
+  chunks: Int!
+}
+
+enum UploadStatus
+  @join__type(graph: CHATS)
+{
+  ACTIVE @join__enumValue(graph: CHATS)
+  FAILED @join__enumValue(graph: CHATS)
+  FINALIZING @join__enumValue(graph: CHATS)
+}
+
+type User
+  @join__type(graph: CHATS)
+{
+  RefreshToken: [RefreshToken!]
+  _count: UserCount!
+  abbrev: String
+  chatEvents: [ChatEvent!]
+  chatsMmbership: [ChatMember!]
+  chatsPermissions: [UserChatPermissions!]
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  ownChats: [Chat!]
+  uploadedFiles: [StoredFile!]
+}
+
+type UserChatPermissions
+  @join__type(graph: CHATS)
+{
+  chat: Chat!
+  chatId: String!
+  permissions: JSON
+  role: ChatRole
+  roleId: String
+  user: User!
+  userId: String!
+}
+
+type UserCount
+  @join__type(graph: CHATS)
+{
+  RefreshToken: Int!
+  chatEvents: Int!
+  chatsMmbership: Int!
+  chatsPermissions: Int!
+  ownChats: Int!
+  uploadedFiles: Int!
 }

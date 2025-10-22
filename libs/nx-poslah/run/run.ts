@@ -1,4 +1,5 @@
 import { isTruthy } from '@gurban/kit/core/checks';
+import { formatDuration } from '@gurban/kit/utils/string-util';
 import { ExecutorContext } from '@nx/devkit';
 import { catchingAsync } from '@poslah/util/util';
 import { spawn, SpawnOptions } from 'child_process';
@@ -14,10 +15,13 @@ import { RunExecutorSchema } from './schema';
 function executeCommand(
   cmd: string,
   args: string[] | undefined,
-  spawnOptions: SpawnOptions
+  spawnOptions: SpawnOptions,
+  printTiming: boolean
 ): Promise<number> {
   const commandString = [cmd, args?.join(' ')].filter(isTruthy).join(' ');
   console.log(`\n[Poslah Run] > ${commandString}`);
+
+  const startedAt = new Date();
 
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args ?? [], {
@@ -28,6 +32,10 @@ function executeCommand(
     });
 
     child.on('close', code => {
+      if (printTiming) {
+        const duration = new Date().getTime() - startedAt.getTime();
+        console.log(`[Poslah Run] Command finished in ${formatDuration(duration)}.`);
+      }
       resolve(code ?? 1);
     });
 
@@ -48,6 +56,7 @@ export default async function runExecutor(
     const getOption = optionsSource({ ...options });
 
     const cwd = getOption.get(`cwd`, () => context.cwd);
+    const printTiming = options.printTiming ?? false;
 
     console.log(`[Poslah Run] Ensuring CWD directory exists: ${cwd}`);
     const absoluteCwd = await catchingAsync(
@@ -67,11 +76,12 @@ export default async function runExecutor(
       try {
         const exitCode =
           typeof command === `string`
-            ? await executeCommand(getOption.getOrThrow(commandPath), undefined, spawnOptions)
+            ? await executeCommand(getOption.getOrThrow(commandPath), undefined, spawnOptions, printTiming)
             : await executeCommand(
                 getOption.getOrThrow(`${commandPath}.cmd`),
                 command.args?.map((_, argIdx) => getOption.getOrThrow(`${commandPath}.args.${argIdx}`)),
-                spawnOptions
+                spawnOptions,
+                printTiming
               );
         if (exitCode !== 0) {
           console.log(`[Poslah Run] Command failed with exit code ${exitCode}.`);

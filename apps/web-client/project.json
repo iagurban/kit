@@ -41,7 +41,9 @@
       "executor": "@poslah/nx-poslah:run",
       "options": {
         "commands": [
-          "yarn graphql-codegen --config codegen.ts"
+          "yarn graphql-codegen --config codegen.ts",
+          "yarn tsx ../../libs/kit/src/bin/fix-graphql-codegen.ts 'src/graphql/**/*.{ts,tsx}'",
+          "yarn eslint --fix 'src/graphql/**/*.{ts,tsx}'"
         ],
         "stopOnFail": true,
         "cwd": "{workspaceRoot}/{projectRoot}"

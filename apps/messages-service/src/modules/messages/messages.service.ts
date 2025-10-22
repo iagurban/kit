@@ -1,11 +1,9 @@
 import { once } from '@gurban/kit/core/once';
 import { notNull } from '@gurban/kit/utils/flow-utils';
 import { Injectable } from '@nestjs/common';
-import type {
-  CreateMessageEventDTO,
-  MessageEventDto,
-  UpdateMessageEventDTO,
-} from '@poslah/chats-service/entities/raw-event-schema';
+import { CreateMessageEventDTO } from '@poslah/chats-service/entities/create-message-event-schema';
+import { MessageEventDto } from '@poslah/chats-service/entities/some-message-event-schema';
+import { UpdateMessageEventDTO } from '@poslah/chats-service/entities/update-message-event-schema';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-created-event.topic';
 import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';

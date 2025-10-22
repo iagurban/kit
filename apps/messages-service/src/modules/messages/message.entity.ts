@@ -1,7 +1,8 @@
 import { JsonValue } from '@gurban/kit/core/json-type';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { PubsubMessageDto } from '@poslah/subscriptions-service/dist/apps/subscriptions-service/src/modules/subscriptions/subscriptions.service';
 import GraphQLJSON from 'graphql-type-json';
+
+import { PubsubMessageDto } from '../../topics/messages-upsert-pubsub.topic';
 
 @ObjectType()
 class AttachmentInfo {

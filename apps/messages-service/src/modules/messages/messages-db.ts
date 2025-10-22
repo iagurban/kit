@@ -6,8 +6,8 @@ import {
   attachmentInfoSchema,
   ForwardInfoDto,
   forwardInfoSchema,
-  MessageEventDto,
-} from '@poslah/chats-service/entities/raw-event-schema';
+} from '@poslah/chats-service/entities/raw-event-schema-parts';
+import { MessageEventDto } from '@poslah/chats-service/entities/some-message-event-schema';
 import { ScyllaService } from '@poslah/database/scylla/scylla.service';
 import { stringifiedBigint, stringifiedISODate } from '@poslah/util/zod';
 import { sortedIndex } from 'lodash';

@@ -16,6 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
 
     "baseUrl": "../messages-service",
     "rootDir": "../..",
@@ -25,8 +26,10 @@
       "@poslah/database/*": ["../../libs/database/src/*"],
       "@poslah/util/*": ["../../libs/util/src/*"],
       "@poslah/chats-service/*": ["../../apps/chats-service/src/*"],
-      "@poslah/signing-service/*": ["../../apps/signing-service/src/*"]
+      "@poslah/signing-service/*": ["../../apps/signing-service/src/*"],
+      "@poslah/subscriptions-service/*": ["../../apps/subscriptions-service/src/*"]
     }
   },
-  "include": ["../messages-service/src", "test"]
+  "include": ["../messages-service/src", "test"],
+  "exclude": ["dist"]
 }

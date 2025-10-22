@@ -16,4 +16,6 @@ export interface RunExecutorSchema {
   stopOnFail?: boolean;
   /** The working directory to run commands from. Will be created if it doesn't exist. */
   cwd?: string;
+  /** If true, prints the execution time of each command. */
+  printTiming?: boolean;
 }

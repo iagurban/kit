@@ -33,7 +33,11 @@ type FragmentSpread = {
 
 type RecurSelect = { select: { [key: string]: RecurSelect | boolean } } | boolean;
 
-const gqlSelectionTraverser = (fragments: Record<string, FragmentDefinition>, skip?: Set<string>) => {
+const gqlSelectionTraverser = (
+  fragments: Record<string, FragmentDefinition>,
+  skip?: Set<string>,
+  check?: (subPath: string, field: Field) => boolean
+) => {
   const flattenSpreads = (fields?: readonly (Field | FragmentSpread)[]): Field[] =>
     fields
       ? fields.flatMap(field =>
@@ -53,7 +57,7 @@ const gqlSelectionTraverser = (fragments: Record<string, FragmentDefinition>, sk
             flattenSpreads(fields)
               .map(f => {
                 const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
-                return skip?.has(subPath)
+                return (skip && skip.has(subPath)) || (check && !check(subPath, f))
                   ? undefined
                   : ([f.name.value, collectSelection(f.selectionSet?.selections, subPath)] as const);
               })
@@ -75,7 +79,11 @@ const gqlSelectionTraverser = (fragments: Record<string, FragmentDefinition>, sk
   return { collectSelection, findByPath };
 };
 
-type Args = { path?: readonly string[]; skip?: readonly string[] };
+type Args = {
+  path?: readonly string[];
+  skip?: readonly string[];
+  check?: (subPath: string, field: Field) => boolean;
+};
 
 export const getPrismaSelectionFromInfo = (
   {
@@ -87,11 +95,11 @@ export const getPrismaSelectionFromInfo = (
 ) => {
   // console.log(`opts`, opts);
 
-  const { path, skip } = isROArray(opts) ? { path: opts } : (opts ?? {});
+  const { path, skip, check } = isROArray(opts) ? { path: opts } : (opts ?? {});
 
   const skipSet = skip && new Set(skip);
 
-  const s = gqlSelectionTraverser(fragments, skipSet);
+  const s = gqlSelectionTraverser(fragments, skipSet, check);
   const root = path?.length ? s.findByPath(path, fieldNode) : fieldNode;
   if (!root) {
     throw new Error(`Path "${path?.join(`.`)}" not found in ${fieldName}`);

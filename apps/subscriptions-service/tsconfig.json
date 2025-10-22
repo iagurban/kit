@@ -30,5 +30,6 @@
       "@poslah/messages-service/*": ["../../apps/messages-service/src/*"]
     }
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  "exclude": ["dist"]
 }

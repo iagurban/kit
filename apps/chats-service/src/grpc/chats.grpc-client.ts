@@ -9,7 +9,7 @@ import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/proto
 import { protobufTimestampToDate } from '@poslah/util/protobuf-timestamp-to-date';
 import { firstValueFrom } from 'rxjs';
 
-import { MessageEventDto } from '../entities/raw-event-schema';
+import { MessageEventDto } from '../entities/some-message-event-schema';
 import { CHATS_SERVICE_NAME, ChatsServiceClient } from '../generated/grpc/src/grpc/chats';
 import { chatsGRPCConfig } from './chats.grpc-config';
 

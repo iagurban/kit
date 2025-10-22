@@ -2,11 +2,13 @@ import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
+import { userMembershipPubsub } from '@poslah/chats-service/topics/user-membership-pubsub.topic';
 import { RedisSubscriptionService } from '@poslah/database/redis/redis.service';
-import { messageSchema } from '@poslah/messages-service/modules/messages/messages-db';
-import { declareEventsTopic } from '@poslah/util/declare-events-topic';
+import {
+  messagesUpsertPubsub,
+  PubsubMessageDto,
+} from '@poslah/messages-service/topics/messages-upsert-pubsub.topic';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { z } from 'zod/v4';
 
 import { RedisPubsubSubscription } from './redis-pubsub-subscription';
 
@@ -129,34 +131,6 @@ class JoinsTracker {
     this.joins = await this.chatsGRPCClient.getUserChatIds(this.userId);
   }
 }
-
-const userMembershipPayload = z.object({
-  userId: z.uuid(),
-  chatId: z.uuid(),
-  action: z.enum(['join', 'leave']),
-});
-
-const userMembershipPubsub = declareEventsTopic('user-memberships', userMembershipPayload);
-
-const attachmentPreview = z.object({
-  type: z.string(),
-  thumbnail: z.url().optional(),
-});
-
-const replyToPreview = z.object({
-  nn: z.string(),
-  authorId: z.uuid(),
-  text: z.string().optional(),
-  attachments: z.array(attachmentPreview).optional(),
-});
-
-const messageUpsertPayload = messageSchema.extend({
-  replyToPreview: replyToPreview.optional(),
-});
-
-export type PubsubMessageDto = z.infer<typeof messageUpsertPayload>;
-
-const messagesUpsertPubsub = declareEventsTopic('messages-upsert', messageUpsertPayload);
 
 export type MessagesSubscriptionPayload = {
   messagesSubscription: PubsubMessageDto;

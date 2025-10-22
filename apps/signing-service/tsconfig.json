@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2024",
+    "target": "ES2022",
     "lib": ["ESNext", "ESNext.AsyncIterable"],
     "module": "CommonJS",
     "strict": true,
@@ -16,6 +16,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
 
     "baseUrl": "../signing-service",
     "rootDir": "../..",
@@ -26,5 +27,6 @@
       "@poslah/util/*": ["../../libs/util/src/*"]
     }
   },
-  "include": ["../signing-service/src", "test"]
+  "include": ["../signing-service/src", "test"],
+  "exclude": ["dist"]
 }

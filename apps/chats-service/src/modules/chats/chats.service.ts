@@ -16,15 +16,13 @@ import { protobufTimestampFromDate } from '@poslah/util/protobuf-timestamp-to-da
 import stringify from 'fast-json-stable-stringify';
 import { z } from 'zod/v4';
 
+import { UpdateChatPermissionsDto } from '../../entities/chat-permissions-schema';
+import { InfoEventDto } from '../../entities/info-event-schema';
+import { MembershipEventDto } from '../../entities/membership-event-schema';
 import type { PushChatEventArgs } from '../../entities/push-chat-event.args';
 import type { PushEventResponseDto } from '../../entities/push-event-response.dto';
-import type {
-  InfoEventDto,
-  MembershipEventDto,
-  MessageEventDto,
-  RawEventDto,
-  UpdateChatPermissionsDto,
-} from '../../entities/raw-event-schema';
+import type { RawEventDto } from '../../entities/raw-event-schema';
+import { MessageEventDto } from '../../entities/some-message-event-schema';
 import {
   GetLastMessageEventsRequest,
   GetLastMessageEventsResponse,
@@ -235,6 +233,17 @@ export class ChatsService /*implements OnModuleInit*/ {
     });
 
     return memberships.map(m => m.chatId);
+  }
+
+  async getJoinedChats<S extends Prisma.ChatSelect>(
+    userId: string,
+    selection?: S
+  ): Promise<ChatSelectPayload<S>[]> {
+    const memberships = await this.db.transaction.chatMember.findMany({
+      where: { userId },
+      select: { chat: { select: selection } },
+    });
+    return memberships.map(m => m.chat as ChatSelectPayload<S>);
   }
 
   async getLastMessageEvents({

@@ -7,7 +7,7 @@ const throwOnUndefined = (path: string): string => {
 };
 
 const processValue = (template: string, getByPath: (path: string) => ExtendedJsonValue) =>
-  template.replace(/\{([\w.]+)}/g, (m, path) => String(getByPath(path)));
+  template.replace(/\{options\.([\w.]+)}/g, (m, path) => String(getByPath(path)));
 
 export const optionsSource = <E extends ExtendedJsonObject>(input: E) => {
   const cache: Record<string, ExtendedJsonValue> = {};

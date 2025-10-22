@@ -27,5 +27,6 @@
       "@poslah/util/*": ["../../libs/util/src/*"]
     }
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  "exclude": ["dist"]
 }

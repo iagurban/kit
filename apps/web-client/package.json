@@ -12,6 +12,7 @@
     "@as-integrations/fastify": "^3.1.0",
     "@eslint/js": "^9.38.0",
     "@fastify/http-proxy": "^11.3.0",
+    "@foxify/events": "^2.1.0",
     "@grpc/grpc-js": "^1.14.0",
     "@grpc/proto-loader": "^0.8.0",
     "@mantine/core": "^8.3.5",
@@ -83,6 +84,7 @@
     "postcss-simple-vars": "^7.0.1",
     "rimraf": "^6.0.1",
     "ts-proto": "^2.7.7",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "vite": "^4.5.14",
     "vite-tsconfig-paths": "^5.1.4"

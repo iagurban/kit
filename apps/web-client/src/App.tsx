@@ -1,9 +1,9 @@
 import { ApolloProvider, useApolloClient } from '@apollo/client/react';
-import { AppShell, Box, Burger, Group, Skeleton, Typography } from '@mantine/core';
+import { AppShell, Box, Burger, Flex, Group, TextInput, Typography } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { registerRootStore, unregisterRootStore } from 'mobx-keystone';
 import { observer } from 'mobx-react-lite';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 
 import { apolloClient } from './apollo';
 import { ProvideRootStorage, useStorage } from './contexts.ts';
@@ -16,14 +16,21 @@ const RootView = observer(function RootView() {
   const storage = useStorage();
 
   return (
-    <>
-      <Typography>Main content {data?.dummyQuery}</Typography>
+    <Flex direction="column" gap="md" align="stretch" justify="stretch" h="100%" w="100%" p="md">
+      <Typography>
+        {storage.chat.selectedChatId?.current.title} {data?.dummyQuery}
+      </Typography>
+      <Flex flex="1 0 0">
+        <Box>
+          {storage.chat.messagesLog.map(message => (
+            <Typography>{message.message.nn}</Typography>
+          ))}
+        </Box>
+      </Flex>
       <Box>
-        {storage.chat.messagesLog.map(message => (
-          <Typography>{message.message.nn}</Typography>
-        ))}
+        <TextInput />
       </Box>
-    </>
+    </Flex>
   );
 });
 
@@ -40,6 +47,26 @@ const RootStoreProvider = observer<PropsWithChildren>(function RootStoreProvider
     };
   }, [client]);
   return storage ? <ProvideRootStorage value={storage}>{children}</ProvideRootStorage> : null;
+});
+
+const errorToString = (error: unknown) => (error instanceof Error ? error.message : String(error));
+
+const NavbarView = observer(function NavbarView() {
+  const storage = useStorage();
+  return (
+    <>
+      {storage.chat.loadingError && (
+        <Typography c="red">{errorToString(storage.chat.loadingError)}</Typography>
+      )}
+      {[...storage.chat.chats.entries()].map(([id, chat]) => (
+        <Fragment key={id}>
+          <Typography>
+            {id} {chat.title}
+          </Typography>
+        </Fragment>
+      ))}
+    </>
+  );
 });
 
 const App = observer(function App() {
@@ -61,12 +88,7 @@ const App = observer(function App() {
           </AppShell.Header>
 
           <AppShell.Navbar p="md">
-            Navbar
-            {Array(15)
-              .fill(0)
-              .map((_, index) => (
-                <Skeleton key={index} h={28} mt="sm" animate={false} />
-              ))}
+            <NavbarView />
           </AppShell.Navbar>
 
           <AppShell.Main>

@@ -82,6 +82,8 @@ export const makeMatchingTree = (samples: Iterable<string>) => {
 
 /**
  * Binary search to find a key in sorted array
+ *
+ * TODO replace usage with lodash's binarySearch
  */
 export const binaryStringSearch = (sorted: readonly string[], key: string): number => {
   let left = 0;
@@ -99,4 +101,10 @@ export const binaryStringSearch = (sorted: readonly string[], key: string): numb
     }
   }
   return -1;
+};
+
+export const formatDuration = (durationInMs: number): string => {
+  const seconds = Math.floor(durationInMs / 1000);
+  const milliseconds = durationInMs % 1000;
+  return `${seconds}.${String(milliseconds).padStart(3, '0')}s`;
 };

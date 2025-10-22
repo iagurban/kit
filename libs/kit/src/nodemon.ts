@@ -135,6 +135,7 @@ export class NodemonFileWatcher {
     private readonly allowedExtensions: Set<string> | null,
     filesCheckInterval: number,
     dirsCheckInterval: number,
+    private readonly reGlobbingInterval: number,
     private readonly verbose: boolean,
     private readonly logChangedFiles: boolean,
     private readonly logTrackedFiles: boolean,
@@ -167,60 +168,79 @@ export class NodemonFileWatcher {
     watchedFiles: new Set(),
   };
 
+  private scanning: Promise<void> = Promise.resolve();
+
   private async performScan() {
-    const oldData = this.data;
+    return (this.scanning = this.scanning.then(async () => {
+      const oldData = this.data;
 
-    let files = await glob(this.watchPatterns, {
-      ignore: this.ignorePatterns,
-      nodir: true,
-      absolute: true,
-      cwd: this.cwd ?? undefined,
-    });
+      let files = await glob(this.watchPatterns, {
+        ignore: this.ignorePatterns,
+        nodir: true,
+        absolute: true,
+        cwd: this.cwd ?? undefined,
+      });
 
-    const { allowedExtensions } = this;
-    if (allowedExtensions) {
-      files = files.filter(f => allowedExtensions.has(path.extname(f)));
-    }
-
-    const watchedFiles = new Set(files);
-    const watchedDirs = new Set(files.map(f => path.dirname(f)));
-
-    for (const d of watchedDirs) {
-      if (!oldData.watchedDirs.has(d)) {
-        this.foldersTracker.add(d);
+      const { allowedExtensions } = this;
+      if (allowedExtensions) {
+        files = files.filter(f => allowedExtensions.has(path.extname(f)));
       }
-    }
 
-    for (const f of watchedFiles) {
-      if (!oldData.watchedFiles.has(f)) {
-        this.filesTracker.add(f);
+      const watchedFiles = new Set(files);
+      const watchedDirs = new Set(files.map(f => path.dirname(f)));
+
+      for (const d of watchedDirs) {
+        if (!oldData.watchedDirs.has(d)) {
+          this.foldersTracker.add(d);
+        }
       }
-    }
 
-    for (const d of oldData.watchedDirs) {
-      if (!watchedDirs.has(d)) {
-        this.foldersTracker.remove(d);
+      for (const f of watchedFiles) {
+        if (!oldData.watchedFiles.has(f)) {
+          this.filesTracker.add(f);
+        }
       }
-    }
 
-    for (const f of oldData.watchedFiles) {
-      if (!watchedFiles.has(f)) {
-        this.filesTracker.remove(f);
+      for (const d of oldData.watchedDirs) {
+        if (!watchedDirs.has(d)) {
+          this.foldersTracker.remove(d);
+        }
       }
-    }
 
-    this.data = { watchedDirs, watchedFiles };
+      for (const f of oldData.watchedFiles) {
+        if (!watchedFiles.has(f)) {
+          this.filesTracker.remove(f);
+        }
+      }
 
-    if (this.logTrackedFiles) {
-      this.log(`log`, 'Tracked directories:', { dirs: Array.from(this.data.watchedDirs) });
-      this.log(`log`, 'Tracked files:', { files: Array.from(this.data.watchedFiles) });
-    }
+      this.data = { watchedDirs, watchedFiles };
+
+      if (this.logTrackedFiles) {
+        this.log(`log`, 'Tracked directories:', { dirs: Array.from(this.data.watchedDirs) });
+        this.log(`log`, 'Tracked files:', { files: Array.from(this.data.watchedFiles) });
+      }
+    }));
   }
 
+  private reGlobbingCycle?: { promise: Promise<void>; cancel: () => void };
+
   public async start() {
-    if (this.filesTracker.started) {
+    if (this.reGlobbingCycle) {
       return;
     }
+
+    const controller = { canceled: false };
+    this.reGlobbingCycle = {
+      promise: (async () => {
+        while (!controller.canceled) {
+          await this.performScan();
+          await sleep(this.reGlobbingInterval);
+        }
+      })(),
+      cancel: () => {
+        controller.canceled = true;
+      },
+    };
 
     this.foldersTracker.on(`changed`, this.onFoldersChanged);
     this.filesTracker.on(`changed`, this.onFilesChanged);
@@ -232,9 +252,12 @@ export class NodemonFileWatcher {
   }
 
   public async stop() {
-    if (!this.filesTracker.started) {
+    if (!this.reGlobbingCycle) {
       return;
     }
+
+    this.reGlobbingCycle.cancel();
+    this.reGlobbingCycle = undefined;
 
     this.foldersTracker.off(`changed`, this.onFoldersChanged);
     this.filesTracker.off(`changed`, this.onFilesChanged);
@@ -254,6 +277,7 @@ class ManagedProcess extends EventEmitter<{
     finished: Promise<number | null>;
     killing?: Promise<unknown>;
   } | null = null;
+
   private readonly command: string;
   private readonly args: string[];
   private readonly killSignal: NodeJS.Signals | number;
@@ -306,11 +330,17 @@ class ManagedProcess extends EventEmitter<{
       ...this.spawnOptions,
       detached: true,
     });
+    const startedAt = new Date();
     this.running = {
       process,
       finished: new Promise<number | null>((resolve, reject) => {
         process.once('close', code => {
-          this.log(`log`, `Child process exited with code ${code}`);
+          this.log(
+            `log`,
+            `Child process exited with code ${code} after ${formatDuration(
+              new Date().getTime() - startedAt.getTime()
+            )}`
+          );
           resolve(code);
         });
 
@@ -376,6 +406,7 @@ export interface INodemonOptions {
   exec: string | { command: string; args?: string[] };
   filesCheckInterval?: number; // in ms
   dirsCheckInterval?: number; // in ms
+  reGlobbingInterval?: number; // in ms
   killSignal?: NodeJS.Signals | number;
   spawnOptions?: SpawnOptions;
   verbose?: boolean;
@@ -416,6 +447,7 @@ export class Nodemon extends EventEmitter<{
       ...options,
       filesCheckInterval,
       dirsCheckInterval: options.dirsCheckInterval ?? filesCheckInterval * 4,
+      reGlobbingInterval: options.reGlobbingInterval ?? filesCheckInterval * 10,
       killSignal: options.killSignal ?? 'SIGTERM',
       spawnOptions: options.spawnOptions ?? {},
       verbose: options.verbose ?? false,
@@ -451,6 +483,7 @@ export class Nodemon extends EventEmitter<{
       this.options.extensions && new Set(this.options.extensions.filter(isTruthy).map(e => `.${e}`)),
       this.options.filesCheckInterval,
       this.options.dirsCheckInterval,
+      this.options.reGlobbingInterval,
       this.options.verbose,
       this.options.logChangedFiles,
       this.options.logTrackedFiles,
@@ -559,9 +592,15 @@ export class Nodemon extends EventEmitter<{
   }
 }
 
+export const formatDuration = (durationInMs: number): string => {
+  const seconds = Math.floor(durationInMs / 1000);
+  const milliseconds = durationInMs % 1000;
+  return `${seconds}.${String(milliseconds).padStart(3, '0')}s`;
+};
+
 // Create a Set of valid signal names for efficient O(1) lookups.
 // This is created only once when the module is loaded.
-const validSignalNames = new Set<string>(Object.keys(constants.signals));
+const validSignalNames = new Set(Object.keys(constants.signals));
 
 /**
  * Type guard to check if a value is a valid NodeJS.Signals string.

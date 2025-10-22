@@ -16,7 +16,7 @@ import {
   chatPermissionsSchema,
   UpdateChatPermissionsDto,
   updateChatPermissionsSchema,
-} from '../../entities/raw-event-schema';
+} from '../../entities/chat-permissions-schema';
 
 /**
  * Type definition to map an input array of keys (K) to an output tuple of boolean values.
