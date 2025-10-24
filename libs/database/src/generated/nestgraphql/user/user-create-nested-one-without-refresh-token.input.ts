@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UserCreateOrConnectWithoutRefreshTokenInput } from './user-create-or-connect-without-refresh-token.input';
 import { UserCreateWithoutRefreshTokenInput } from './user-create-without-refresh-token.input';
 import { UserWhereUniqueInput } from './user-where-unique.input';

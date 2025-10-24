@@ -2,6 +2,7 @@ import { checked, isInteger, isTruthy } from '@gurban/kit/core/checks';
 import { ExtendedJsonObject } from '@gurban/kit/core/json-type';
 import { INodemonOptions, isNodeJSSignal, Nodemon } from '@gurban/kit/nodemon';
 import { ExecutorContext } from '@nx/devkit';
+import { spawn } from 'child_process';
 
 import { mkDirP } from '../src/mkdir';
 import { optionsSource } from '../src/options-source';
@@ -36,6 +37,38 @@ export default async function runExecutor(
     command: getOrThrow('runner'),
     args: commandArgs,
   };
+
+  if (options.watch === true) {
+    throw new Error(
+      `[Nodemon] 'watch' option cannot be 'true'. It must be 'false' for a single run or an array of paths to watch.`
+    );
+  }
+
+  if (options.watch === false) {
+    console.log(`[Nodemon] 'watch' is false. Running command once and exiting.`);
+    return new Promise(resolve => {
+      const child = spawn(execConfig.command, execConfig.args || [], {
+        cwd: absoluteCwd,
+        stdio: 'inherit',
+        shell: true,
+      });
+
+      child.on('close', code => {
+        if (code !== 0) {
+          console.error(`[Nodemon] Command exited with code ${code}`);
+          resolve({ success: false });
+        } else {
+          console.log(`[Nodemon] Command completed successfully.`);
+          resolve({ success: true });
+        }
+      });
+
+      child.on('error', err => {
+        console.error(`[Nodemon] Failed to start command: ${err.message}`);
+        resolve({ success: false });
+      });
+    });
+  }
 
   const optional = <T>(path: string, check: (path: string) => T) => {
     const rawValue = options[path];

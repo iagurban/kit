@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UploadSessionOrderByWithRelationInput } from './upload-session-order-by-with-relation.input';
 import { UploadSessionScalarFieldEnum } from './upload-session-scalar-field.enum';
 import { UploadSessionWhereInput } from './upload-session-where.input';

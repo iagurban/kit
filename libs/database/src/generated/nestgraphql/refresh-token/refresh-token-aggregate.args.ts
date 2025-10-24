@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { RefreshTokenCountAggregateInput } from './refresh-token-count-aggregate.input';
 import { RefreshTokenMaxAggregateInput } from './refresh-token-max-aggregate.input';
 import { RefreshTokenMinAggregateInput } from './refresh-token-min-aggregate.input';

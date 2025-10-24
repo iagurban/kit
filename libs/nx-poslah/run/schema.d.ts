@@ -18,4 +18,6 @@ export interface RunExecutorSchema {
   cwd?: string;
   /** If true, prints the execution time of each command. */
   printTiming?: boolean;
+  /** If true, will print additional information. */
+  verbose?: boolean;
 }

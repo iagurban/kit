@@ -3,8 +3,8 @@ import { hashing } from '@gurban/kit/nest/auth-service-base';
 import { Injectable, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import { DbModule } from '../src/db/db.module';
-import { DbService } from '../src/db/db.service';
+import { DbModule } from '@poslah/util/db/db.module';
+import { DbService } from '@poslah/util/db/db.service';
 
 console.log(`[started]`);
 

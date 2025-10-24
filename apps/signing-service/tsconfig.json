@@ -1,32 +1,8 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ESNext", "ESNext.AsyncIterable"],
-    "module": "CommonJS",
-    "strict": true,
-    "declaration": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowSyntheticDefaultImports": true,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
-
-    "baseUrl": "../signing-service",
-    "rootDir": "../..",
-    "outDir": "../signing-service/dist",
-    "paths": {
-      "@gurban/kit/*": ["../../libs/kit/src/*"],
-      "@poslah/database/*": ["../../libs/database/src/*"],
-      "@poslah/util/*": ["../../libs/util/src/*"]
-    }
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
-  "include": ["../signing-service/src", "test"],
-  "exclude": ["dist"]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

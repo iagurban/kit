@@ -1,7 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { ChatEventCreateInput } from './chat-event-create.input';
 import { ChatEventUpdateInput } from './chat-event-update.input';
 import { ChatEventWhereUniqueInput } from './chat-event-where-unique.input';

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { ChatRoleCreateWithoutChatInput } from './chat-role-create-without-chat.input';
 import { ChatRoleUpdateWithoutChatInput } from './chat-role-update-without-chat.input';
 import { ChatRoleWhereUniqueInput } from './chat-role-where-unique.input';

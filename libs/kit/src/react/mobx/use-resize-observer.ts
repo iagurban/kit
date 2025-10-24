@@ -45,7 +45,7 @@ class GraphNodeViewStore {
 }
 
 export const useResizeObserver = (callback: (e: ResizeObserverEntry) => void) => {
-  const watchingRef = useRef<GraphNodeViewStore>();
+  const watchingRef = useRef<GraphNodeViewStore>(undefined);
   watchingRef.current ||= new GraphNodeViewStore();
   watchingRef.current.callback = callback;
 

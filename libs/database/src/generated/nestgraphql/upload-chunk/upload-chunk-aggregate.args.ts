@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UploadChunkAvgAggregateInput } from './upload-chunk-avg-aggregate.input';
 import { UploadChunkCountAggregateInput } from './upload-chunk-count-aggregate.input';
 import { UploadChunkMaxAggregateInput } from './upload-chunk-max-aggregate.input';

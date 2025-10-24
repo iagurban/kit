@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.json",
-  "include": [
-    "../messages-service/src"
-  ],
-  "exclude": [
-    "../messages-service/node_modules", "dist", "test", "**/*.spec.ts", "**/*.test.ts"]
+  "compilerOptions": {
+    "declaration": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.ts", "**/*.test.ts"]
 }

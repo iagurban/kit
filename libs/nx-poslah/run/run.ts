@@ -19,6 +19,7 @@ function executeCommand(
   printTiming: boolean
 ): Promise<number> {
   const commandString = [cmd, args?.join(' ')].filter(isTruthy).join(' ');
+
   console.log(`\n[Poslah Run] > ${commandString}`);
 
   const startedAt = new Date();
@@ -50,7 +51,10 @@ export default async function runExecutor(
   options: RunExecutorSchema,
   context: ExecutorContext
 ): Promise<{ success: boolean }> {
-  console.log(`[Poslah Run] Executing commands for project "${context.projectName}"...`);
+  const verbose = options.verbose ?? false;
+  if (verbose) {
+    console.log(`[Poslah Run] Executing commands for project "${context.projectName}"...`);
+  }
 
   try {
     const getOption = optionsSource({ ...options });
@@ -58,7 +62,9 @@ export default async function runExecutor(
     const cwd = getOption.get(`cwd`, () => context.cwd);
     const printTiming = options.printTiming ?? false;
 
-    console.log(`[Poslah Run] Ensuring CWD directory exists: ${cwd}`);
+    if (verbose) {
+      console.log(`[Poslah Run] Ensuring CWD directory exists: ${cwd}`);
+    }
     const absoluteCwd = await catchingAsync(
       () => mkDirP(context.root, cwd),
       (e): string => {

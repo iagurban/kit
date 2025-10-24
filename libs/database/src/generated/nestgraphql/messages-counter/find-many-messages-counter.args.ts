@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { MessagesCounterOrderByWithRelationInput } from './messages-counter-order-by-with-relation.input';
 import { MessagesCounterScalarFieldEnum } from './messages-counter-scalar-field.enum';
 import { MessagesCounterWhereInput } from './messages-counter-where.input';

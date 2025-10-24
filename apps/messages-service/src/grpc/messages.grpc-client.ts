@@ -1,7 +1,7 @@
 import { once } from '@gurban/kit/core/once';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { TokenFetcherService } from '@poslah/signing-service/modules/token/token-fetcher.service';
+import { TokenFetcherService } from '@poslah/signing-service/token-fetcher-module/token-fetcher.service';
 import { GRPCClientBase } from '@poslah/util/grpc-client-base';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufLongFromBigint } from '@poslah/util/protobuf-long-to-bigint';

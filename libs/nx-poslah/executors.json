@@ -14,6 +14,11 @@
       "implementation": "./run/run.ts",
       "schema": "./run/schema.json",
       "description": "run executor"
+    },
+    "run-all": {
+      "implementation": "./run-all/run-all.ts",
+      "schema": "./run-all/schema.json",
+      "description": "Run all projects with a given target"
     }
   }
 }

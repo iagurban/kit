@@ -4,10 +4,9 @@
   "sourceRoot": "libs/kit/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "nx:noop",
-      "dependsOn": []
-    }
+    "clean-dist": {},
+    "copy-assets": {},
+    "build-service": {}
   },
   "tags": []
 }

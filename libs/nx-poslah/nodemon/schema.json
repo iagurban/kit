@@ -21,11 +21,18 @@
       }
     },
     "watch": {
-      "type": "array",
-      "description": "Paths to watch for changes. Use once for each path.",
-      "items": {
-        "type": "string"
-      }
+      "description": "Globs to watch for changes, or a false value to disable watching, run the process once and exit.",
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "ignore": {
       "type": "array",

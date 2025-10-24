@@ -1,13 +1,13 @@
 import { ApolloClient, OperationVariables } from '@apollo/client';
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { disposers, FunctionDisposable, ObjectDisposable } from '@gurban/kit/core/disposers';
-import { JsonObject } from '@gurban/kit/core/json-type.ts';
+import type { JsonObject } from '@gurban/kit/core/json-type.ts';
 import { notNull } from '@gurban/kit/utils/flow-utils';
 import {
   attachmentInfoSchema,
   forwardInfoSchema,
-} from '@poslah/chats-service/entities/raw-event-schema-parts.ts';
-import { messageSchema } from '@poslah/messages-service/modules/messages/messages-db.ts';
+  messageSchema,
+} from '@poslah/util/schemas/message.schema.ts';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import {
   applySnapshot,
@@ -24,7 +24,7 @@ import {
   SnapshotInOf,
   stringToBigIntTransform,
 } from 'mobx-keystone';
-import { Subscription } from 'rxjs';
+import type { Subscription } from 'rxjs';
 import { z } from 'zod/v4';
 
 import {
@@ -83,7 +83,7 @@ export type ForwardInfoGuard = StaticAssert<
 >;
 
 @model(`poslah/MessageDraft`)
-class MessageDraftStore extends Model({
+export class MessageDraftStore extends Model({
   text: prop<string | null>().withSetter(),
   replyToNn: prop<string | null>().withTransform(stringToBigIntTransform()).withSetter(),
   attachments: prop<AttachmentInfoStore[] | null>().withSetter(),
@@ -429,6 +429,7 @@ class ChatStore extends Model({
 @model(`poslah/ChatsStorage`)
 export class ChatsStorage extends Model({
   chats: prop<Record<string, ChatStore>>(() => ({})).withTransform(objectToMapTransform()),
+  messagesDrafts: prop<Record<string, MessageDraftStore>>(() => ({})).withTransform(objectToMapTransform()),
   selectedChatId: prop<Ref<ChatStore> | null>(null),
   messagesLog: prop<AllMessagesSubscriptionSubscription[]>(() => []),
 }) {
@@ -501,7 +502,19 @@ export class ChatsStorage extends Model({
 
     if (!this.selectedChatId || !chatsById.has(this.selectedChatId.id)) {
       this.selectedChatId = chats.length ? ChatStore.ref(chats[0].id) : null;
+      console.log(this.selectedChatId);
     }
+  }
+
+  @modelAction
+  getOrCreateDraft(chatId: string) {
+    const draft = this.messagesDrafts.get(chatId);
+    if (draft) {
+      return draft;
+    }
+    const newDraft = new MessageDraftStore({ text: ``, replyToNn: null, attachments: null, forwarded: null });
+    this.messagesDrafts.set(chatId, newDraft);
+    return newDraft;
   }
 
   protected onAttachedToRootStore(): (() => void) | void {
@@ -511,7 +524,7 @@ export class ChatsStorage extends Model({
 
 @model(`poslah/RootStorage`)
 export class RootStorage extends Model({
-  chat: prop(() => new ChatsStorage({})),
+  chats: prop(() => new ChatsStorage({})),
 }) {
   private static tempArgs?: RootStorageArgs;
 

@@ -1,12 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/apps/files-service",
-    "paths": {
-      "@gurban/kit/*": ["libs/kit/src/*"],
-      "@poslah/database/*": ["libs/database/src/*"],
-      "@poslah/util/*": ["libs/util/src/*"]
-    }
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
   "include": ["src", "test"]
 }

@@ -1,7 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UploadSessionUpdateInput } from './upload-session-update.input';
 import { UploadSessionWhereUniqueInput } from './upload-session-where-unique.input';
 

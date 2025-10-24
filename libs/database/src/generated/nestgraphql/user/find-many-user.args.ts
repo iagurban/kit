@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UserOrderByWithRelationInput } from './user-order-by-with-relation.input';
 import { UserScalarFieldEnum } from './user-scalar-field.enum';
 import { UserWhereInput } from './user-where.input';

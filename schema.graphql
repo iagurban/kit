@@ -164,7 +164,7 @@ scalar join__FieldSet
 enum join__Graph {
   CHATS @join__graph(name: "chats", url: "http://localhost:11115/graphql")
   MESSAGES @join__graph(name: "messages", url: "http://localhost:22225/graphql")
-  SUBSCRIPTIONS @join__graph(name: "subscriptions", url: "http://localhost:13450/graphql")
+  SUBSCRIPTIONS @join__graph(name: "subscriptions", url: "http://localhost:3333/graphql")
 }
 
 """

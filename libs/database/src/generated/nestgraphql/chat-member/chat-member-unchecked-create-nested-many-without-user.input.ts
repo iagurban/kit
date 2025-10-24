@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { ChatMemberCreateManyUserInputEnvelope } from './chat-member-create-many-user-input-envelope.input';
 import { ChatMemberCreateOrConnectWithoutUserInput } from './chat-member-create-or-connect-without-user.input';
 import { ChatMemberCreateWithoutUserInput } from './chat-member-create-without-user.input';

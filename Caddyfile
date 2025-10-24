@@ -1,4 +1,4 @@
-# Caddyfile
+  # Caddyfile
 # This file configures the Caddy proxy server.
 
 {

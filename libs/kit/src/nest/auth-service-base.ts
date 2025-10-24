@@ -47,7 +47,7 @@ export abstract class AuthServiceBase<
     readonly jwtService: JwtService,
     readonly refreshCookieOptions: {
       cookieSecret: string;
-      accessExpiresIn: string | number;
+      accessExpiresIn: number;
       refreshExpiresDays: number;
     }
   ) {}

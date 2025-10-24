@@ -8,9 +8,9 @@ import { notNull } from '@gurban/kit/utils/flow-utils';
 import { ConfigService } from '@nestjs/config';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 
-import { AppModule } from './modules/app/app.module';
-import { WsTicketsService } from './modules/app/ws-tickets/ws-tickets.service';
-import { GraphqlGatewayManager } from './modules/gateway/graphql-gateway.manager';
+import { AppModule } from './app.module';
+import { GraphqlGatewayManager } from './gateway-module/graphql-gateway.manager';
+import { WsTicketsService } from './ws-tickets/ws-tickets.service';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('GATE_SERVICE_PORT'), {
   server: config => config.getOrThrow<string>('GATE_SERVICE_HOST', '0.0.0.0'),

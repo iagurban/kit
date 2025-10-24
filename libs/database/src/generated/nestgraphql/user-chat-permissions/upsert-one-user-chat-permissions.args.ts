@@ -1,7 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UserChatPermissionsCreateInput } from './user-chat-permissions-create.input';
 import { UserChatPermissionsUpdateInput } from './user-chat-permissions-update.input';
 import { UserChatPermissionsWhereUniqueInput } from './user-chat-permissions-where-unique.input';

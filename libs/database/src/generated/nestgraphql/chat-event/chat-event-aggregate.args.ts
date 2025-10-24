@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { ChatEventAvgAggregateInput } from './chat-event-avg-aggregate.input';
 import { ChatEventCountAggregateInput } from './chat-event-count-aggregate.input';
 import { ChatEventMaxAggregateInput } from './chat-event-max-aggregate.input';

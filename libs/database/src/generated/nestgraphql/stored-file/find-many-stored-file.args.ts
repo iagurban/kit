@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { StoredFileOrderByWithRelationInput } from './stored-file-order-by-with-relation.input';
 import { StoredFileScalarFieldEnum } from './stored-file-scalar-field.enum';
 import { StoredFileWhereInput } from './stored-file-where.input';

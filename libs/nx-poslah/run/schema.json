@@ -45,6 +45,11 @@
       "type": "boolean",
       "description": "If true, prints the execution time of each command.",
       "default": false
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "If true, will print additional information.",
+      "default": false
     }
   },
   "required": ["commands"]

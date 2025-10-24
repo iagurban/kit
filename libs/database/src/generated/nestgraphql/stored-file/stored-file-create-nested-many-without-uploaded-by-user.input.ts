@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { StoredFileCreateManyUploadedByUserInputEnvelope } from './stored-file-create-many-uploaded-by-user-input-envelope.input';
 import { StoredFileCreateOrConnectWithoutUploadedByUserInput } from './stored-file-create-or-connect-without-uploaded-by-user.input';
 import { StoredFileCreateWithoutUploadedByUserInput } from './stored-file-create-without-uploaded-by-user.input';

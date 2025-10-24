@@ -2,14 +2,14 @@ import { once } from '@gurban/kit/core/once';
 import { Nullish } from '@gurban/kit/utils/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { TokenFetcherService } from '@poslah/signing-service/modules/token/token-fetcher.service';
+import { TokenFetcherService } from '@poslah/signing-service/token-fetcher-module/token-fetcher.service';
 import { GRPCClientBase } from '@poslah/util/grpc-client-base';
 import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
 import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
 import { protobufTimestampToDate } from '@poslah/util/protobuf-timestamp-to-date';
+import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
 import { firstValueFrom } from 'rxjs';
 
-import { MessageEventDto } from '../entities/some-message-event-schema';
 import { CHATS_SERVICE_NAME, ChatsServiceClient } from '../generated/grpc/src/grpc/chats';
 import { chatsGRPCConfig } from './chats.grpc-config';
 
@@ -55,7 +55,6 @@ export class ChatsGRPCClient extends GRPCClientBase<ChatsServiceClient> {
     const { chatIds } = await firstValueFrom(
       this.client.getUserChatIds({ userId }, await this.tokenFetcher.signedMetadata())
     );
-    console.log(`getUserChatIds`, userId, chatIds);
     return new Set(chatIds);
   }
 }

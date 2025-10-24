@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { RefreshTokenOrderByWithRelationInput } from './refresh-token-order-by-with-relation.input';
 import { RefreshTokenScalarFieldEnum } from './refresh-token-scalar-field.enum';
 import { RefreshTokenWhereInput } from './refresh-token-where.input';

@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { StoredFileAvgAggregateInput } from './stored-file-avg-aggregate.input';
 import { StoredFileCountAggregateInput } from './stored-file-count-aggregate.input';
 import { StoredFileMaxAggregateInput } from './stored-file-max-aggregate.input';

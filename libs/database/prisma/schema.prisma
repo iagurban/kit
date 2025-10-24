@@ -23,7 +23,7 @@ generator nestgraphql {
   provider = "yarn prisma-nestjs-graphql"
   output   = "../src/generated/nestgraphql"
 
-  prismaClientImport = "../../db-client"
+  prismaClientImport = "../../db-client/client"
   purgeOutput        = true
 
   emitInputBinding = true // ← экспортирует типы ввода

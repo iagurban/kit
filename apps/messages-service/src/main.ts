@@ -4,8 +4,8 @@ import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 import { createGRPCMicroservice } from '@poslah/util/register-grpc-module';
 import { join } from 'path';
 
+import { AppModule } from './app.module';
 import { messagesGRPCConfig } from './grpc/messages.grpc-config';
-import { AppModule } from './modules/app.module';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('MESSAGES_SERVICE_PORT'), {
   server: config => config.getOrThrow<string>('MESSAGES_SERVICE_HOST', '0.0.0.0'),

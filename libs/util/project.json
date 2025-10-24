@@ -3,6 +3,10 @@
   "root": "libs/util",
   "sourceRoot": "libs/util/src",
   "projectType": "application",
-  "targets": {},
+  "targets": {
+    "clean-dist": {},
+    "copy-assets": {},
+    "build-service": {}
+  },
   "tags": []
 }

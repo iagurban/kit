@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { ChatEventsCounterOrderByWithRelationInput } from './chat-events-counter-order-by-with-relation.input';
 import { ChatEventsCounterScalarFieldEnum } from './chat-events-counter-scalar-field.enum';
 import { ChatEventsCounterWhereInput } from './chat-events-counter-where.input';

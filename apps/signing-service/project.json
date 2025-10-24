@@ -4,28 +4,27 @@
   "sourceRoot": "apps/signing-service/src",
   "projectType": "application",
   "targets": {
-    "run-and-watch-backend": {},
-    "build-and-watch-backend": {},
-    "serve-backend": {},
-    "kill-nx-daemon": {},
-    "build-service-ts": {},
+    "clean-dist": {},
     "copy-assets": {},
+    "build-service": {},
+    "run-service": {},
+    "serve-backend": {},
+    "issue-service-cert": {},
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "signing"
+      }
+    },
 
     "build": {
       "executor": "nx:noop",
       "outputs": [],
-      "dependsOn": ["build-service-ts", "copy-assets"]
+      "dependsOn": ["build-service"]
     },
 
     "serve": {
       "executor": "nx:noop",
       "dependsOn": ["serve-backend"]
-    },
-
-    "generate-proto-code": {
-      "options": {
-        "protoFileName": "signing"
-      }
     },
 
     "issue-ca-cert": {
@@ -38,7 +37,7 @@
         "cwd": "{workspaceRoot}/certs"
       }
     },
-    "issue-service-cert": {},
+
     "issue-jwt-cert": {
       "executor": "@poslah/nx-poslah:run",
       "options": {
@@ -48,7 +47,9 @@
         ],
         "cwd": "{workspaceRoot}/{projectRoot}/certs"
       }
-    }
+    },
+
+    "swc-build-ts-watch": {}
   },
   "tags": []
 }

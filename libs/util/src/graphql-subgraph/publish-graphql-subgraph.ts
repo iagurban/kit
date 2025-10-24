@@ -1,9 +1,9 @@
-import { RedisScriptManager } from '@poslah/database/redis/redis-script-manager';
+import { retrying } from '@gurban/kit/retrying';
 import { readFileSync } from 'fs';
 import { Redis } from 'ioredis';
 
 import { Logger } from '../logger/logger.module';
-import { retrying } from '../retrying';
+import { RedisScriptManager } from '../nosql/redis/redis-script-manager';
 
 interface PublishOptions {
   redis: Redis;

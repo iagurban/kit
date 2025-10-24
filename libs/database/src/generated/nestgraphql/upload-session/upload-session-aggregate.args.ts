@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UploadSessionAvgAggregateInput } from './upload-session-avg-aggregate.input';
 import { UploadSessionCountAggregateInput } from './upload-session-count-aggregate.input';
 import { UploadSessionMaxAggregateInput } from './upload-session-max-aggregate.input';

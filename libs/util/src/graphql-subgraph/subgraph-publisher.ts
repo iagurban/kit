@@ -1,9 +1,9 @@
 import { once } from '@gurban/kit/core/once';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { RedisService } from '@poslah/database/redis/redis.service';
-import { RedisScriptManager } from '@poslah/database/redis/redis-script-manager';
 
 import { createContextualLogger, Logger } from '../logger/logger.module';
+import { RedisService } from '../nosql/redis/redis.service';
+import { RedisScriptManager } from '../nosql/redis/redis-script-manager';
 import { publishGraphqlSubgraph } from './publish-graphql-subgraph';
 
 export const subgraphPublisherOptionsToken: unique symbol = Symbol(`SUBGRAPH_PUBLISHER_OPTIONS`);

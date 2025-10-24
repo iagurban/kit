@@ -9,6 +9,20 @@ export function catching<T, C>(fn: () => T, onCatch: () => C): T | C {
   }
 }
 
+export function catchingAsync<T, C>(fn: () => Promise<T>, onCatch: () => C | Promise<C>): Promise<T | C>;
+export function catchingAsync<T>(fn: () => Promise<T>, onCatch: () => T | Promise<T>): Promise<T>;
+
+export async function catchingAsync<T, C>(
+  fn: () => Promise<T>,
+  onCatch: () => C | Promise<C>
+): Promise<T | C> {
+  try {
+    return await fn();
+  } catch {
+    return onCatch();
+  }
+}
+
 export const warnCatch = (fn: () => unknown): void => {
   try {
     fn();

@@ -1,11 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist/libs/database",
-    "paths": {
-      "@gurban/kit/*": ["libs/kit/src/*"],
-      "@poslah/util/*": ["libs/util/src/*"]
-    }
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
-  "include": ["src", "test"]
+  "include": ["src", "test"],
+  "exclude": ["node_modules", "dist"]
 }

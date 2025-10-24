@@ -8,7 +8,7 @@
     }
   },
   "files": [],
-  "include": ["nodemon", "concurrently", "run"],
+  "include": ["nodemon", "concurrently", "run", "run-all"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

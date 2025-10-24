@@ -4,12 +4,17 @@
   "sourceRoot": "apps/messages-service/src",
   "projectType": "application",
   "targets": {
-    "run-and-watch-backend": {},
-    "build-and-watch-backend": {},
-    "serve-backend": {},
-    "kill-nx-daemon": {},
-    "build-service-ts": {},
+    "clean-dist": {},
     "copy-assets": {},
+    "build-service": {},
+    "run-service": {},
+    "serve-backend": {},
+    "issue-service-cert": {},
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "gate"
+      }
+    },
 
     "build": {
       "executor": "nx:noop",
@@ -22,13 +27,7 @@
       "dependsOn": ["serve-backend"]
     },
 
-    "generate-proto-code": {
-      "options": {
-        "protoFileName": "gate"
-      }
-    },
-
-    "issue-service-cert": {}
+    "swc-build-ts-watch": {}
   },
   "tags": []
 }

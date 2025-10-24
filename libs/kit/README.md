@@ -15,4 +15,3 @@ See [/wiki](./wiki) — API and usage notes are auto-generated.
 **tldr:**  
 - Use as a workspace package in a monorepo with a shared root `tsconfig.json`.  
 - Import directly from source, not for standalone/npm use.
-- Want React+MobX helpers? Ask me for `react-kit`.

@@ -1,7 +1,6 @@
 import { declareEventsTopic } from '@poslah/util/declare-events-topic';
+import { messageSchema } from '@poslah/util/schemas/message.schema';
 import { z } from 'zod/v4';
-
-import { messageSchema } from '../modules/messages/messages-db';
 
 const attachmentPreview = z.object({
   type: z.string(),

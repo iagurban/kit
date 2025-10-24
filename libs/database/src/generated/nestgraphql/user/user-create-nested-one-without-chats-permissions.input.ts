@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UserCreateOrConnectWithoutChatsPermissionsInput } from './user-create-or-connect-without-chats-permissions.input';
 import { UserCreateWithoutChatsPermissionsInput } from './user-create-without-chats-permissions.input';
 import { UserWhereUniqueInput } from './user-where-unique.input';

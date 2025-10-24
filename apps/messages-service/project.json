@@ -4,12 +4,30 @@
   "sourceRoot": "apps/messages-service/src",
   "projectType": "application",
   "targets": {
-    "run-and-watch-backend": {},
-    "build-and-watch-backend": {},
-    "serve-backend": {},
-    "kill-nx-daemon": {},
-    "build-service-ts": {},
+    "clean-dist": {},
     "copy-assets": {},
+    "build-service": {},
+    "run-service": {
+      "configurations": {
+        "watch": {
+          "watch": [
+            "./dist/**/*",
+            "../../libs/kit/dist/src/**/*",
+            "../../libs/util/dist/src/**/*",
+            "../../libs/database/dist/src/**/*",
+            "../../apps/signing-service/dist/src/**/*",
+            "../../apps/chats-service/dist/src/**/*"
+          ]
+        }
+      }
+    },
+    "serve-backend": {},
+    "issue-service-cert": {},
+    "generate-proto-code": {
+      "options": {
+        "protoFileName": "messages"
+      }
+    },
 
     "build": {
       "executor": "nx:noop",
@@ -20,15 +38,7 @@
     "serve": {
       "executor": "nx:noop",
       "dependsOn": ["serve-backend"]
-    },
-
-    "generate-proto-code": {
-      "options": {
-        "protoFileName": "messages"
-      }
-    },
-
-    "issue-service-cert": {}
+    }
   },
   "tags": []
 }

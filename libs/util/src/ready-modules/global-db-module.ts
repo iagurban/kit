@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DbModule } from '@poslah/database/db/db.module';
+
+import { DbModule } from '../db/db.module';
 
 @Global()
 @Module({

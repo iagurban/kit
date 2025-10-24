@@ -1,7 +1,7 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { MessagesCounterUpdateInput } from './messages-counter-update.input';
 import { MessagesCounterWhereUniqueInput } from './messages-counter-where-unique.input';
 

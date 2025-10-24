@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Run All Executor",
+  "description": "Run all projects with a given target",
+  "type": "object",
+  "properties": {
+    "ci": {
+      "type": "boolean",
+      "description": "Run in CI mode, using 'nx run-many' instead of 'concurrently'.",
+      "default": false
+    },
+    "target": {
+      "type": "string",
+      "description": "The target to run on all projects."
+    },
+    "configuration": {
+      "type": "string",
+      "description": "The configuration to use when running the target."
+    },
+    "tags": {
+      "type": "array",
+      "description": "Filter projects by tags.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "include": {
+      "type": "array",
+      "description": "A list of projects to run.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclude": {
+      "type": "array",
+      "description": "A list of projects to exclude.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "args": {
+      "type": "string",
+      "description": "Additional arguments to pass to the 'nx run' command."
+    },
+    "colorize": {
+      "type": "boolean",
+      "description": "Colorize the output.",
+      "default": true
+    },
+    "labelRegex": {
+      "type": "string",
+      "description": "A regex to extract a label from the project name."
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the command.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["target"]
+}

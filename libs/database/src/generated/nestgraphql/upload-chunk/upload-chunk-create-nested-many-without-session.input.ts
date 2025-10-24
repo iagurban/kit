@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UploadChunkCreateManySessionInputEnvelope } from './upload-chunk-create-many-session-input-envelope.input';
 import { UploadChunkCreateOrConnectWithoutSessionInput } from './upload-chunk-create-or-connect-without-session.input';
 import { UploadChunkCreateWithoutSessionInput } from './upload-chunk-create-without-session.input';

@@ -8,6 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/messages-service/dist-copy" />
       <excludeFolder url="file://$MODULE_DIR$/apps/signing-service/dist-copy" />
       <excludeFolder url="file://$MODULE_DIR$/apps/subscriptions-service/dist-copy" />
+      <excludeFolder url="file://$MODULE_DIR$/unused" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

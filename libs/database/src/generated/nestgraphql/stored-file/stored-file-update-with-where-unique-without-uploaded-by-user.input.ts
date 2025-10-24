@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { StoredFileUpdateWithoutUploadedByUserInput } from './stored-file-update-without-uploaded-by-user.input';
 import { StoredFileWhereUniqueInput } from './stored-file-where-unique.input';
 

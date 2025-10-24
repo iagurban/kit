@@ -1,22 +1,24 @@
 {
   "name": "@gurban/kit",
   "version": "0.0.1",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./*": [
-      "./src/*.ts"
-    ]
+    ".": "./dist/src/index.js",
+    "./*": "./dist/src/*"
   },
   "files": [
     "dist"
   ],
+  "bin": {
+    "build-info-gen": "./dist/src/bin/build-info-gen.js",
+    "clean-md": "./dist/src/bin/clean-md.js",
+    "fetch-unicode-letters-ranges": "./dist/src/bin/fetch-unicode-letters-ranges.js",
+    "fix-graphql-codegen": "./dist/src/bin/fix-graphql-codegen.js",
+    "mirr": "./dist/src/bin/copy.js",
+    "swc-ts-build": "./dist/src/bin/swc-ts-build-runner.js",
+    "watch-n-run": "./dist/src/bin/watch-n-run.js"
+  },
   "scripts": {
     "build": "yarn tsup src/index.ts --format cjs,esm --dts",
     "test": "yarn jest",
@@ -45,6 +47,8 @@
     "typescript-eslint": "^8.46.1"
   },
   "devDependencies": {
+    "@swc/cli": "^0.7.8",
+    "@swc/core": "1.13.5",
     "@tsd/typescript": "^5.9.3",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.20",
@@ -58,10 +62,12 @@
     "jest-html-reporters": "^3.1.7",
     "jest-runner-tsd": "^6.0.0",
     "jest-util": "^30.2.0",
+    "libs": "^0.1.2",
     "nodemon": "^3.1.10",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsup": "^8.5.0",
     "tsx": "^4.20.6",
     "typedoc": "^0.28.5",
@@ -72,8 +78,13 @@
     "node": ">= 12"
   },
   "peerDependencies": {
+    "@dnd-kit/core": "*",
+    "@dnd-kit/sortable": "*",
+    "@dnd-kit/utilities": "*",
     "@nestjs/common": "*",
     "@nestjs/graphql": "*",
-    "clsx": "*"
+    "@tabler/icons-react": "*",
+    "clsx": "*",
+    "mobx-utils": "*"
   }
 }

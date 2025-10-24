@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 
-import { Prisma } from '../../db-client';
+import { Prisma } from '../../db-client/client';
 import { UserCreateOrConnectWithoutUploadedFilesInput } from './user-create-or-connect-without-uploaded-files.input';
 import { UserCreateWithoutUploadedFilesInput } from './user-create-without-uploaded-files.input';
 import { UserWhereUniqueInput } from './user-where-unique.input';

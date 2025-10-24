@@ -1,38 +1,14 @@
 import { ApolloProvider, useApolloClient } from '@apollo/client/react';
-import { AppShell, Box, Burger, Flex, Group, TextInput, Typography } from '@mantine/core';
+import { Burger, Flex, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { registerRootStore, unregisterRootStore } from 'mobx-keystone';
 import { observer } from 'mobx-react-lite';
-import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-import { apolloClient } from './apollo';
-import { ProvideRootStorage, useStorage } from './contexts.ts';
-import { useGetCurrentUserQuery } from './graphql/queries.generated.tsx';
-import { RootStorage } from './storage';
-
-const RootView = observer(function RootView() {
-  const { data } = useGetCurrentUserQuery();
-
-  const storage = useStorage();
-
-  return (
-    <Flex direction="column" gap="md" align="stretch" justify="stretch" h="100%" w="100%" p="md">
-      <Typography>
-        {storage.chat.selectedChatId?.current.title} {data?.dummyQuery}
-      </Typography>
-      <Flex flex="1 0 0">
-        <Box>
-          {storage.chat.messagesLog.map(message => (
-            <Typography>{message.message.nn}</Typography>
-          ))}
-        </Box>
-      </Flex>
-      <Box>
-        <TextInput />
-      </Box>
-    </Flex>
-  );
-});
+import { apolloClient } from './apollo.ts';
+import { ProvideRootStorage } from './contexts.ts';
+import { NavbarView, RootView } from './root-view.tsx';
+import { RootStorage } from './storage.ts';
 
 const RootStoreProvider = observer<PropsWithChildren>(function RootStoreProvider({ children }) {
   const [storage, setStorage] = useState<RootStorage | null>(null);
@@ -49,52 +25,28 @@ const RootStoreProvider = observer<PropsWithChildren>(function RootStoreProvider
   return storage ? <ProvideRootStorage value={storage}>{children}</ProvideRootStorage> : null;
 });
 
-const errorToString = (error: unknown) => (error instanceof Error ? error.message : String(error));
-
-const NavbarView = observer(function NavbarView() {
-  const storage = useStorage();
-  return (
-    <>
-      {storage.chat.loadingError && (
-        <Typography c="red">{errorToString(storage.chat.loadingError)}</Typography>
-      )}
-      {[...storage.chat.chats.entries()].map(([id, chat]) => (
-        <Fragment key={id}>
-          <Typography>
-            {id} {chat.title}
-          </Typography>
-        </Fragment>
-      ))}
-    </>
-  );
-});
-
 const App = observer(function App() {
-  const [opened, { toggle }] = useDisclosure();
+  const [opened, { toggle }] = useDisclosure(true);
 
   return (
     <ApolloProvider client={apolloClient}>
       <RootStoreProvider>
-        <AppShell
-          header={{ height: 60 }}
-          navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-          padding="md"
-        >
-          <AppShell.Header>
-            <Group h="100%" px="md">
-              <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-              <div>LOGO</div>
-            </Group>
-          </AppShell.Header>
+        <Flex component="header" pos="fixed" w="100%" h="4rem" left={0} top={0}>
+          <Group h="100%" px="md">
+            <Burger opened={opened} onClick={toggle} size="sm" />
+            <div>LOGO</div>
+          </Group>
+        </Flex>
 
-          <AppShell.Navbar p="md">
+        <Flex w="100vw">
+          <Flex component="nav" p="md" pt="4rem" mih="100vh" w={opened ? 200 : 0}>
             <NavbarView />
-          </AppShell.Navbar>
+          </Flex>
 
-          <AppShell.Main>
+          <Flex component="main" mih="100vh" p="md" pt="4rem" flex="1 0 0">
             <RootView />
-          </AppShell.Main>
-        </AppShell>
+          </Flex>
+        </Flex>
       </RootStoreProvider>
     </ApolloProvider>
   );

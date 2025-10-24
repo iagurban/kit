@@ -4,6 +4,25 @@
   "sourceRoot": "libs/database/src",
   "projectType": "application",
   "targets": {
+    "clean-dist": {},
+    "copy-assets": {},
+    "build-service": {
+      "executor": "@poslah/nx-poslah:nodemon",
+      "options": {
+        "watch": false,
+        "ext": "ts",
+        "runner": "sh",
+        "exec": "-c 'yarn tsc -p ./tsconfig.build.json && yarn tsc-alias -p ./tsconfig.build.json' && yarn tsx ./bin/fix-compiled.ts ./dist",
+        "cwd": "{workspaceRoot}/{projectRoot}",
+        "verbose": false
+      },
+      "configurations": {
+        "watch": {
+          "watch": ["src/**/*"]
+        }
+      }
+    },
+
     "migrate-cql": {
       "executor": "nx:run-commands",
       "options": {
