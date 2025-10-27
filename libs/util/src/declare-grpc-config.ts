@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 
-import { GRPCConfig } from './register-grpc-module';
+import { GRPCConfig } from './modules/register-grpc-module';
 
 export const declareGRPCConfig = <ClientName extends string>(
   clientName: ClientName,

@@ -1,8 +1,9 @@
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { GRPCClientBase } from '@poslah/util/grpc-client-base';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 
 import { SIGNING_SERVICE_NAME, SigningServiceClient } from '../generated/grpc/src/grpc/signing';
 import { privateSigningGRPCConfig } from './signing.grpc-config';

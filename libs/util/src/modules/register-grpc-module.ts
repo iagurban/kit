@@ -1,0 +1,124 @@
+import { credentials, ServerCredentials } from '@grpc/grpc-js';
+import { isROArray } from '@gurban/kit/core/checks';
+import { DynamicModule, INestApplication, NestInterceptor } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { GrpcAuthInterceptor } from '@poslah/signing-service/token-checker-module/grpc-auth.interceptor';
+import { readFileSync } from 'fs';
+import Long from 'long';
+import { join } from 'path';
+
+import { Logger } from './logger/logger.module';
+
+export type GRPCConfig = {
+  url: string;
+  package: string;
+  path: string;
+  dir: string;
+  channelOptions?: Record<string, unknown>;
+};
+
+export const grpcLoaderOptions = {
+  keepCase: false, // Explicitly convert snake_case to camelCase
+  longs: Long,
+  defaults: true,
+  oneofs: true,
+} as const;
+
+const loadServerCreds = (certsPath: string) =>
+  ServerCredentials.createSsl(
+    readFileSync(join(certsPath, 'ca.crt')),
+    [
+      {
+        private_key: readFileSync(join(certsPath, 'server.key')),
+        cert_chain: readFileSync(join(certsPath, 'server.crt')),
+      },
+    ],
+    true // This is the "mutual" part.
+  );
+
+const loadClientCreds = (certsPath: string) =>
+  credentials.createSsl(
+    // 1. Read the public CA certificate. This is for VERIFYING THE SERVER.
+    readFileSync(join(certsPath, 'ca.crt')),
+    // 2. Read the client's private key. This is for PROVING ITS OWN IDENTITY.
+    readFileSync(join(certsPath, 'client.key')),
+    // 3. Read the client's public certificate. This is also for PROVING ITS OWN IDENTITY.
+    readFileSync(join(certsPath, 'client.crt'))
+  );
+
+const isClientSymbol: unique symbol = Symbol(`GRPC_IS_CLIENT`);
+
+export const createGRPCMicroservice = async (
+  app: INestApplication | null,
+  { url, package: _package, path, dir, channelOptions }: GRPCConfig,
+  certsDir: string | null,
+  isClient?: typeof isClientSymbol
+) => {
+  if (app && certsDir != null && !isClient) {
+    const logger = await app.resolve(Logger); // Resolve the logger from the app
+    logger.silent('Secure gRPC server detected. Verifying security interceptors...');
+
+    try {
+      // Resolve the array of all globally registered interceptors
+      const interceptors = await app.resolve<NestInterceptor | readonly NestInterceptor[]>(APP_INTERCEPTOR);
+
+      const hasAuthInterceptor = (Array.isArray(interceptors) ? interceptors : [interceptors]).some(
+        inst => inst instanceof GrpcAuthInterceptor
+      );
+
+      if (!hasAuthInterceptor) {
+        logger.fatal('FATAL: GrpcAuthInterceptor is not registered globally.');
+        throw new Error('GrpcAuthInterceptor is not registered globally. This is a security risk.');
+      }
+      logger.silent('✅ gRPC security check passed: GrpcAuthInterceptor is registered.');
+    } catch (error) {
+      logger.fatal({ error }, 'Failed to resolve APP_INTERCEPTOR. gRPC auth cannot be verified.');
+      throw error;
+    }
+  }
+
+  return {
+    transport: Transport.GRPC,
+    options: {
+      package: _package,
+      protoPath: join(dir, path),
+      url,
+      loader: grpcLoaderOptions,
+      credentials:
+        certsDir != null ? (isClient ? loadClientCreds(certsDir) : loadServerCreds(certsDir)) : undefined,
+      channelOptions,
+    },
+  } as const;
+};
+
+type Fabric = (configService: ConfigService) => GRPCConfig;
+
+export function registerGRPCClientsModule(
+  clients: Record<string | symbol, Fabric>,
+  certsDir: string
+): DynamicModule;
+export function registerGRPCClientsModule(
+  clients: readonly { clientName: string; config: Fabric }[],
+  certsDir: string
+): DynamicModule;
+
+export function registerGRPCClientsModule(
+  clients: Record<string | symbol, Fabric> | readonly { clientName: string; config: Fabric }[],
+  certsDir: string
+): DynamicModule {
+  return ClientsModule.registerAsync({
+    clients: (isROArray(clients)
+      ? clients.map(c => [c.clientName, c.config] as const)
+      : Object.entries(clients)
+    ).map(([name, o]) => ({
+      name, // The injection token
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) =>
+        createGRPCMicroservice(null, o(configService), certsDir, isClientSymbol),
+    })),
+    isGlobal: true,
+  });
+}

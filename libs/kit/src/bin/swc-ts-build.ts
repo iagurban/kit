@@ -8,8 +8,8 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { isTruthy } from '../core/checks';
-import { retrying } from '../retrying';
-import { catchingAsync } from '../utils/flow-utils';
+import { catchingAsync } from '../utils/flow/flow-utils';
+import { retrying } from '../utils/flow/retrying';
 
 /**
  * Define the SWC configuration for consistency.
@@ -148,9 +148,9 @@ async function compileFile(
 
     // 3. Compare content and only write if it's different
     if (fixedCode.trim() !== existingCode.trim()) {
-      // if (verbose) {
-      console.log(`[SWC] Change detected, writing to ${outPath}`);
-      // }
+      if (verbose) {
+        console.log(`[SWC] Change detected, writing to ${outPath}`);
+      }
       // Ensure the directory exists before writing
       await mkdir(path.dirname(outPath), { recursive: true });
       await writeFile(outPath, fixedCode);

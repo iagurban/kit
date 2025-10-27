@@ -5,7 +5,8 @@ import { SigningModule } from './signing-module/signing.module';
 
 @Module({
   imports: [
-    ...rootImports,
+    ...rootImports(`signing-service`, `signing`),
+
     // GlobalDbModule,
     // RedisStaticModule,
     // AuthStaticModule,

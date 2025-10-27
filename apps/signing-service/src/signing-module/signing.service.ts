@@ -1,4 +1,4 @@
-import { notNull } from '@gurban/kit/utils/flow-utils'; // Using 'node-jose' for robust JWK/JWKS handling
+import { notNull } from '@gurban/kit/utils/flow/flow-utils'; // Using 'node-jose' for robust JWK/JWKS handling
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';

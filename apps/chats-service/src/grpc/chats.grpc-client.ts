@@ -1,12 +1,13 @@
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Nullish } from '@gurban/kit/utils/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { TokenFetcherService } from '@poslah/signing-service/token-fetcher-module/token-fetcher.service';
 import { GRPCClientBase } from '@poslah/util/grpc-client-base';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
-import { protobufTimestampToDate } from '@poslah/util/protobuf-timestamp-to-date';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf/protobuf-long-to-bigint';
+import { protobufTimestampToDate } from '@poslah/util/protobuf/protobuf-timestamp-to-date';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
 import { firstValueFrom } from 'rxjs';
 

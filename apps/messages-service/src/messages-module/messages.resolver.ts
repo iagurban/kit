@@ -1,81 +1,36 @@
 import { isDefined, isROArray, isTruthy } from '@gurban/kit/core/checks';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import {
+  findGqlNodeByPath,
+  flattenSpreads,
+  GqlASTField,
+  GqlASTFragmentDefinition,
+  GqlASTFragmentSpread,
+} from '@gurban/kit/nest/decorators/prisma-selection.decorator';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { Args, Field, GqlExecutionContext, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, GqlExecutionContext, Int, Query, Resolver } from '@nestjs/graphql';
+import { GraphQLError } from 'graphql';
 
 import { Message } from './message.entity';
 import { MessagesService } from './messages.service';
 
-type Loc = { start: number; end: number };
-type Name = { kind: `Name`; value: string; loc: Loc };
-type SelectionSet = { kind: `SelectionSet`; selections: (Field | FragmentSpread)[]; loc: Loc };
-type Field = {
-  kind: `Field`;
-  alias?: Name;
-  name: Name;
-  arguments: { kind: `Argument`; name: Name; value: { kind: `Variable`; name: Name; loc: Loc }; loc: Loc }[];
-  directives: unknown[];
-  selectionSet?: SelectionSet;
-  loc: Loc;
-};
+type ShallowSelect = { [key: string]: boolean };
 
-type FragmentDefinition = {
-  kind: 'FragmentDefinition';
-  name: Name;
-  typeCondition: unknown;
-  directives: unknown[];
-  selectionSet?: SelectionSet;
-  loc: Loc;
-};
-
-type FragmentSpread = {
-  kind: 'FragmentSpread';
-  name: Name;
-};
-
-type RecurSelect = { select: { [key: string]: RecurSelect | boolean } } | boolean;
-
-const gqlSelectionTraverser = (fragments: Record<string, FragmentDefinition>, skip?: Set<string>) => {
-  const flattenSpreads = (fields?: readonly (Field | FragmentSpread)[]): Field[] =>
-    fields
-      ? fields.flatMap(field =>
-          field.kind === `FragmentSpread`
-            ? flattenSpreads(notNull(fragments[field.name.value]).selectionSet?.selections)
-            : [field]
-        )
-      : [];
-
-  const collectSelection = (
-    fields: readonly (Field | FragmentSpread)[] | undefined,
-    path: string
-  ): RecurSelect =>
-    fields?.length
-      ? {
-          select: Object.fromEntries(
-            flattenSpreads(fields)
-              .map(f => {
-                const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
-                return skip?.has(subPath)
-                  ? undefined
-                  : ([f.name.value, collectSelection(f.selectionSet?.selections, subPath)] as const);
-              })
-              .filter(isDefined)
-          ),
-        }
-      : true;
-
-  const findByPath = (path: readonly string[], field: Field): Field | null => {
-    if (/* DEBUG */ path.length < 1) {
-      // path.length > 0 expected
-      throw new Error(`Programming Error: path.length < 1 in findByPath`);
-    }
-
-    const found = flattenSpreads(field.selectionSet?.selections).find(f => f.name.value === path[0]);
-    return !found ? null : path.length === 1 ? found : findByPath(path.slice(1), found);
-  };
-
-  return { collectSelection, findByPath };
-};
+const collectShallowSelection = (
+  fields: readonly (GqlASTField | GqlASTFragmentSpread)[] | undefined,
+  path: string,
+  skip: Set<string> | undefined,
+  fragments: Record<string, GqlASTFragmentDefinition>
+): ShallowSelect =>
+  fields?.length
+    ? Object.fromEntries(
+        flattenSpreads(fields, fragments)
+          .map(f => {
+            const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
+            return skip?.has(subPath) ? undefined : ([f.name.value, true] as const);
+          })
+          .filter(isDefined)
+      )
+    : {};
 
 type ScyllaDecoratorArgs = { path?: readonly string[]; skip?: readonly string[] };
 
@@ -84,7 +39,7 @@ export const getScyllaSelectionFromInfo = (
     fieldName,
     fieldNodes: [fieldNode],
     fragments,
-  }: { fieldName: string; fieldNodes: Field[]; fragments: Record<string, FragmentDefinition> },
+  }: { fieldName: string; fieldNodes: GqlASTField[]; fragments: Record<string, GqlASTFragmentDefinition> },
   opts?: readonly string[] | ScyllaDecoratorArgs | undefined
 ) => {
   // console.log(`opts`, opts);
@@ -93,14 +48,12 @@ export const getScyllaSelectionFromInfo = (
 
   const skipSet = skip && new Set(skip);
 
-  const s = gqlSelectionTraverser(fragments, skipSet);
-  const root = path?.length ? s.findByPath(path, fieldNode) : fieldNode;
+  const root = path?.length ? findGqlNodeByPath(path, fieldNode, fragments) : fieldNode;
   if (!root) {
     throw new Error(`Path "${path?.join(`.`)}" not found in ${fieldName}`);
   }
 
-  const r = s.collectSelection(root.selectionSet?.selections, path?.join(`.`) || ``);
-  return typeof r === `object` ? r['select'] : undefined;
+  return collectShallowSelection(root.selectionSet?.selections, path?.join(`.`) || ``, skipSet, fragments);
 };
 
 const scyllaSelectionFromGqlExecutionCtx = (
@@ -115,38 +68,45 @@ export const ScyllaSelection = createParamDecorator(
     scyllaSelectionFromGqlExecutionCtx(GqlExecutionContext.create(context), opts)
 );
 
-@Resolver()
+@Resolver(() => Message)
 export class MessagesResolver {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Query(type => Message)
+  @Query(() => [Message])
   getMessages(
-    @Args('limit', {
-      type: () => Int,
+    @Args('chatId', { type: () => String })
+    chatId: string,
+    @Args('limit', { type: () => Int, nullable: true, defaultValue: 30 })
+    limit: number,
+    @Args('lt', {
+      type: () => BigInt,
       nullable: true,
-      description: 'The maximum number of messages to return.',
+      description: 'Less than. Fetches messages older than this nn.',
     })
-    limit?: number,
-
-    @Args('lessThanNn', {
-      type: () => Int,
+    lt?: bigint,
+    @Args('gt', {
+      type: () => BigInt,
       nullable: true,
-      description: 'Fetch messages with a sequence number less than this value.',
+      description: 'Greater than. Fetches messages newer than this nn.',
     })
-    lessThanNn?: number,
-
-    @Args('greaterThanNn', {
-      type: () => Int,
-      nullable: true,
-      description: 'Fetch messages with a sequence number greater than this value.',
-    })
-    greaterThanNn?: number,
-
+    gt?: bigint,
     @ScyllaSelection()
     selection?: Record<string, boolean>
   ) {
-    console.log('!!!', selection);
-    throw new Error(`Not implemented`);
-    // return this.messagesService.getMessages(input);
+    if (lt && gt) {
+      throw new GraphQLError('Only one of `lt` or `gt` can be provided.', {
+        extensions: { code: 'BAD_USER_INPUT' },
+      });
+    }
+
+    if (lt) {
+      return this.messagesService.getMessagesOlderThanNn(chatId, lt, limit, selection);
+    }
+
+    if (gt) {
+      return this.messagesService.getMessagesNewerThanNn(chatId, gt, limit, selection);
+    }
+
+    return this.messagesService.getLatestMessages(chatId, limit, selection);
   }
 }

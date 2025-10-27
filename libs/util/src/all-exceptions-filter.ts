@@ -1,8 +1,9 @@
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { createContextualLogger, Logger } from './logger/logger.module';
+import { Logger } from './modules/logger/logger.module';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

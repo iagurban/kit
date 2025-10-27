@@ -1,6 +1,6 @@
 import { Context, createContext, Provider, useContext } from 'react';
 
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 
 export const interleaveWithObject = <T>(a: T[], o: (prev: T, i: number) => T) => {
   if (a.length < 2) {

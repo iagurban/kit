@@ -1,4 +1,4 @@
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 import { tsOperators } from './examples/ts-ast-parser';
 import { Operand, OperandsTreeBuilder, OperatorDef } from './operands-tree-builder';
 

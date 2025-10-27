@@ -1,6 +1,6 @@
+import { stringifiedBigint } from '@gurban/kit/utils/zod-utils';
 import { z } from 'zod/v4';
 
-import { stringifiedBigint } from '../zod';
 import { buildMessageEventSchema } from './raw-event-schema-parts';
 
 export const someMessageEventSchema = buildMessageEventSchema(stringifiedBigint.nullable());

@@ -31,3 +31,9 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyAnyFunction<R = any> = (...args: any[]) => R;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ClassConstructor<Instance extends object> = { new (...args: any[]): Instance };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyArray = any[];

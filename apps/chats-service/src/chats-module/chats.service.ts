@@ -1,39 +1,29 @@
 import type { JsonObject } from '@gurban/kit/core/json-type';
 import { ProgrammingError } from '@gurban/kit/core/manual-sorting';
 import { once } from '@gurban/kit/core/once';
-import { notNull, throwing } from '@gurban/kit/utils/flow-utils';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { notNull, throwing } from '@gurban/kit/utils/flow/flow-utils';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
-import { TokenCheckerService } from '@poslah/signing-service/token-checker-module/token-checker.service';
-import { TokenFetcherService } from '@poslah/signing-service/token-fetcher-module/token-fetcher.service';
-import { DbService } from '@poslah/util/db/db.service';
-import { isPrismaClientError } from '@poslah/util/db/util';
-import type { Topic } from '@poslah/util/declare-events-topic';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisService } from '@poslah/util/nosql/redis/redis.service';
-import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
-import { protobufTimestampFromDate } from '@poslah/util/protobuf-timestamp-to-date';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisStreamEmitter } from '@poslah/util/modules/nosql/redis/redis-stream-emitter';
 import { UpdateChatPermissionsDto } from '@poslah/util/schemas/chat-permissions-schema';
-import { InfoEventDto } from '@poslah/util/schemas/info-event-schema';
 import { MembershipEventDto } from '@poslah/util/schemas/membership-event-schema';
 import type { RawEventDto } from '@poslah/util/schemas/raw-event-schema';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
 import stringify from 'fast-json-stable-stringify';
-import { z } from 'zod/v4';
 
 import type { PushChatEventArgs } from '../entities/push-chat-event.args';
 import type { PushEventResponseDto } from '../entities/push-event-response.dto';
-import { GetLastMessageEventsRequest, GetLastMessageEventsResponse } from '../generated/grpc/src/grpc/chats';
-import { infoPatchedEventTopic } from '../topics/info-patched-event.topic';
-import { membershipChangedEventTopic } from '../topics/membership-changed-event.topic';
-import { messageCreatedEventTopic } from '../topics/message-created-event.topic';
-import { messagePatchedEventTopic } from '../topics/message-patched-event.topic';
-import { rawCreateEventTopic } from '../topics/raw-create-event.topic';
+import { eventsInfoPatchedTopic } from '../topics/events-info-patched-topic';
+import { eventsMembershipChangedTopic } from '../topics/events-membership-changed-topic';
+import { eventsMessageCreatedTopic } from '../topics/events-message-created-topic';
+import { eventsMessagePatchedTopic } from '../topics/events-message-patched-topic';
+import { eventsRawCreateTopic } from '../topics/events-raw-create-topic';
+import { ChatSelectPayload, ChatsRepository } from './chats.repository';
 import { EventsCheckerService } from './events-checker.service';
-
-export type ChatSelectPayload<S extends Prisma.ChatSelect> = Prisma.ChatGetPayload<
-  S extends undefined ? undefined : { select: S }
->;
 
 /**
  *
@@ -53,11 +43,12 @@ interface CandidateEventInput {
 export class ChatsService /*implements OnModuleInit*/ {
   constructor(
     private readonly db: DbService,
-    private readonly redis: RedisService,
     private readonly loggerBase: Logger,
     private readonly eventChecker: EventsCheckerService,
-    private readonly tokenFetcher: TokenFetcherService,
-    private readonly tokenChecker: TokenCheckerService
+    private readonly streamEmitter: RedisStreamEmitter,
+    // private readonly tokenFetcher: TokenFetcherService,
+    // private readonly tokenChecker: TokenCheckerService,
+    private readonly repository: ChatsRepository
   ) {}
 
   // async onModuleInit() {
@@ -82,55 +73,6 @@ export class ChatsService /*implements OnModuleInit*/ {
   }
 
   /**
-   * A generic, type-safe method to publish an event to a Redis Stream.
-   * It validates the event against the topic's schema before publishing.
-   */
-  private async publish<S extends z.ZodType, T extends Topic<S, string>>(
-    topic: T,
-    event: unknown,
-    onBeforePublish?: (data: z.infer<T[`schema`]>) => Promise<void>
-  ): Promise<void> {
-    try {
-      // The schema is already parsed, but this is a final guarantee.
-      const validatedEvent = topic.schema.parse(event);
-      onBeforePublish && (await onBeforePublish(validatedEvent));
-      const eventPayload = JSON.stringify(validatedEvent);
-
-      await this.redis.xadd(topic.name, '*', 'data', eventPayload);
-
-      this.logger.info(`Successfully published event to stream [${topic.name}]`);
-    } catch (error) {
-      this.logger.error({ error }, `Failed to publish event to stream [${topic.name}]`);
-      // Re-throw the error so the caller can handle it (e.g., in a consumer, this would prevent an ack).
-      throw error;
-    }
-  }
-
-  private async getNN(chatId: string): Promise<bigint> {
-    return (
-      await this.db.transaction.chatEventsCounter.update({
-        where: { chatId },
-        data: { lastNn: { increment: 1 } },
-      })
-    ).lastNn;
-  }
-
-  private async applyInfoToDB(payload: InfoEventDto[`payload`], event: ChatEvent): Promise<boolean> {
-    // The payload here is ChatInfoPayload
-    const { title, bio, avatar } = payload;
-    await this.db.transaction.chat.update({
-      where: { id: event.chatId },
-      data: {
-        // Only update fields that are present in the payload
-        ...(title !== undefined && { title }),
-        ...(bio !== undefined && { bio }),
-        ...(avatar !== undefined && { avatar }),
-      },
-    });
-    return true;
-  }
-
-  /**
    * Applies membership changes to the database idempotently.
    * @returns `true` if a state change occurred, `false` otherwise.
    */
@@ -143,9 +85,9 @@ export class ChatsService /*implements OnModuleInit*/ {
     let hasChanged = false;
 
     // --- 1. Handle Permissions Update (for all actions) ---
-    const existingRecord = await this.db.transaction.userChatPermissions.findUnique({
-      where: { userId_chatId: { userId, chatId } },
-      select: { permissions: true, roleId: true },
+    const existingRecord = await this.repository.getUserChatPermissions(chatId, userId, {
+      permissions: true,
+      roleId: true,
     });
 
     const existingPermissions = (existingRecord?.permissions || {}) as Partial<UpdateChatPermissionsDto>;
@@ -171,37 +113,34 @@ export class ChatsService /*implements OnModuleInit*/ {
       (roleId && roleId !== existingRecord?.roleId) ||
       stringify(existingPermissions) !== stringify(newPermissions)
     ) {
-      await this.db.transaction.userChatPermissions.upsert({
-        where: { userId_chatId: { userId, chatId } },
-        update: { permissions: newPermissions, roleId },
-        create: {
+      await this.repository.upsertUserChatPermissions(
+        chatId,
+        userId,
+        { permissions: newPermissions, roleId },
+        {
           userId,
           chatId,
           permissions: newPermissions,
           roleId:
             roleId ??
-            notNull(
-              (await this.db.transaction.chat.findUniqueOrThrow({ where: { id: chatId } })).defaultRoleId
-            ),
-        },
-      });
+            notNull((await this.repository.getUniqueChat(chatId, { defaultRoleId: true })).defaultRoleId),
+        }
+      );
       hasChanged = true;
     }
 
     // --- 2. Handle Membership Status Change ---
     if (action === 'added') {
-      const existingMember = await this.db.transaction.chatMember.findUnique({
-        where: { userId_chatId: { userId, chatId } },
+      const existingMember = await this.repository.getUniqueChatMember(chatId, userId, {
+        chatId: true,
+        userId: true,
       });
       if (!existingMember) {
-        await this.db.transaction.chatMember.create({ data: { userId, chatId } });
+        await this.repository.createChatMember(chatId, userId);
         hasChanged = true;
       }
     } else if (action === 'removed') {
-      const { count } = await this.db.transaction.chatMember.deleteMany({
-        where: { userId, chatId },
-      });
-      if (count > 0) {
+      if (await this.repository.deleteChatMember(chatId, userId)) {
         hasChanged = true;
         // Optionally apply a "permissions on leave" policy here if needed
         // const chat = await this.db.transaction.chat.findUnique(...);
@@ -213,32 +152,16 @@ export class ChatsService /*implements OnModuleInit*/ {
     return hasChanged;
   }
 
-  public async createChat<S extends Prisma.ChatSelect>(
-    data: Omit<Prisma.ChatCreateInput, `counter` | `id` | `events`>,
-    select?: S
-  ): Promise<ChatSelectPayload<S>> {
-    return (await this.db.transaction.chat.create({
-      data: { ...data, eventsCounter: {}, messagesCounter: {} },
-      select,
-    })) as ChatSelectPayload<S>;
-  }
-
   async getUserChatIds(userId: string): Promise<string[]> {
-    const memberships = await this.db.transaction.chatMember.findMany({
-      where: { userId },
-      select: { chatId: true },
-    });
-
-    return memberships.map(m => m.chatId);
+    return (await this.repository.getUserChats(userId, { chatId: true })).map(m => m.chatId);
   }
 
   async getJoinedChats<S extends Prisma.ChatSelect>(
     userId: string,
     selection?: S
   ): Promise<ChatSelectPayload<S>[]> {
-    const memberships = await this.db.transaction.chatMember.findMany({
-      where: { userId },
-      select: { chat: { select: selection } },
+    const memberships = await this.repository.getUserChats(userId, {
+      chat: { select: selection },
     });
     return memberships.map(m => m.chat as ChatSelectPayload<S>);
   }
@@ -247,31 +170,26 @@ export class ChatsService /*implements OnModuleInit*/ {
     messageNn,
     chatId,
     afterNn,
-  }: GetLastMessageEventsRequest): Promise<GetLastMessageEventsResponse> {
-    const events = (await this.db.transaction.chatEvent.findMany({
-      where: {
-        chatId: chatId,
-        type: 'message',
-        nn: { gt: protobufLongToBigint(afterNn) },
-        payload: {
-          path: ['nn'],
-          equals: messageNn.toString(),
-        },
-      },
-      orderBy: { nn: 'asc' },
-      select: {
-        nn: true,
-        payload: true,
-        createdAt: true,
-      },
-    })) as (Pick<ChatEvent, `nn` | `createdAt`> & { payload: MessageEventDto['payload'] })[];
+  }: {
+    chatId: string;
+    messageNn: bigint;
+    afterNn: bigint;
+  }): Promise<{
+    oldestCreatedAt?: Date | undefined;
+    events: {
+      nn: bigint;
+      payload: MessageEventDto['payload'] | undefined;
+    }[];
+  }> {
+    const events = await this.repository.getEventsForMessageSinceNm(chatId, messageNn, afterNn, `asc`, {
+      nn: true,
+      payload: true,
+      createdAt: true,
+    });
 
     return {
-      events: events.map(({ nn, payload }) => ({
-        nn: protobufLongFromBigint(nn),
-        payload,
-      })),
-      oldestCreatedAt: (o => (o ? protobufTimestampFromDate(o) : undefined))(events.at(0)?.createdAt),
+      events: events as ({ payload: MessageEventDto['payload'] } & (typeof events)[0])[],
+      oldestCreatedAt: events.at(0)?.createdAt,
     };
   }
 
@@ -302,9 +220,9 @@ export class ChatsService /*implements OnModuleInit*/ {
     // 5. Validate the event against the generic raw schema
     // 6. Publish the single raw event for internal consumption by this same service
     let nn: bigint | undefined;
-    await this.publish(rawCreateEventTopic, candidateEvent, async data => {
+    await this.streamEmitter.publish(eventsRawCreateTopic, candidateEvent, async data => {
       await this.eventChecker.authorizeEvent(data);
-      nn = data.nn = await this.getNN(chatId);
+      nn = data.nn = await this.repository.popNextChatEventMM(chatId);
     });
 
     // 7. Return the optimistic response
@@ -325,15 +243,13 @@ export class ChatsService /*implements OnModuleInit*/ {
       // All database writes are wrapped in a transaction for atomicity.
       const { savedEvent, hasChanges } = await this.db.inOwnTransaction(async () => {
         // Step 1: Save the event to the source-of-truth table.
-        const savedEvent = await this.db.transaction.chatEvent.create({
-          data: {
-            chatId: event.chatId,
-            nn: event.nn,
-            authorId: event.authorId,
-            type: event.type,
-            payload: event.payload as Prisma.JsonObject, // Cast payload to the expected type
-            createdAt: event.createdAt,
-          },
+        const savedEvent = await this.repository.createChatEvent({
+          chatId: event.chatId,
+          nn: event.nn,
+          authorId: event.authorId,
+          type: event.type,
+          payload: event.payload as Prisma.JsonObject, // Cast payload to the expected type
+          createdAt: event.createdAt,
         });
 
         return {
@@ -342,7 +258,7 @@ export class ChatsService /*implements OnModuleInit*/ {
             event.type === 'message'
               ? true
               : event.type === 'info'
-                ? await this.applyInfoToDB(event.payload, savedEvent)
+                ? await this.repository.applyInfoToDB(event.payload, savedEvent)
                 : event.type === 'membership'
                   ? await this.applyMembershipToDB(event.payload, savedEvent)
                   : throwing(
@@ -357,18 +273,18 @@ export class ChatsService /*implements OnModuleInit*/ {
         switch (savedEvent.type) {
           case 'message': {
             const messagePayload = savedEvent.payload as MessageEventDto[`payload`];
-            await this.publish(
-              messagePayload.nn === null ? messageCreatedEventTopic : messagePatchedEventTopic,
+            await this.streamEmitter.publish(
+              messagePayload.nn === null ? eventsMessageCreatedTopic : eventsMessagePatchedTopic,
               savedEvent
             );
             break;
           }
           case 'info':
-            await this.publish(infoPatchedEventTopic, savedEvent);
+            await this.streamEmitter.publish(eventsInfoPatchedTopic, savedEvent);
             break;
 
           case 'membership':
-            await this.publish(membershipChangedEventTopic, savedEvent);
+            await this.streamEmitter.publish(eventsMembershipChangedTopic, savedEvent);
             break;
 
           default:

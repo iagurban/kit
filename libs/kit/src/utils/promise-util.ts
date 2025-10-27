@@ -1,40 +1,53 @@
+import { ExMap } from '../collections/ex-map';
+import { Errors } from '../core/errors';
+
+export class CancelledError extends Error {
+  constructor(reason: string) {
+    super(`Cancelled with reason: ${reason}`);
+  }
+}
+
 export class PromiseController {
   private _aborted = false;
 
-  private readonly onAborts = new Map<unknown, () => void>();
+  private readonly onAborts = new ExMap<(reason: string) => void, number>();
 
   get aborted() {
     return this._aborted;
   }
 
-  abort() {
-    if (!this._aborted) {
-      this._aborted = true;
-      for (const v of this.onAborts.values()) {
-        v();
+  abort(reason: string) {
+    if (this._aborted) {
+      return;
+    }
+    this._aborted = true;
+    const errors: unknown[] = [];
+    for (const v of this.onAborts.keys()) {
+      try {
+        v(reason);
+      } catch (e) {
+        errors.push(e);
       }
-      this.onAborts.clear();
+    }
+    this.onAborts.clear();
+    if (errors.length > 0) {
+      throw new Errors(errors);
     }
   }
 
-  onAbort(fn: () => void): () => void {
-    const id = Object.create(null);
-    this.onAborts.set(id, fn);
-    return () => void this.onAborts.delete(id);
+  on(fn: (reason: string) => void): void {
+    this.onAborts.update(fn, n => (n || 0) + 1);
+  }
+
+  off(fn: (reason: string) => void, all = false): void {
+    const count = this.onAborts.get(fn);
+    if (count === undefined) {
+      return;
+    }
+    if (all || count === 1) {
+      this.onAborts.delete(fn);
+    } else {
+      this.onAborts.set(fn, count - 1);
+    }
   }
 }
-
-const patch =
-  <A>(fn0: () => void, fn1: (a: A) => void) =>
-  (a: A) => {
-    fn0();
-    return fn1(a);
-  };
-
-export const patchRR = <V>(
-  fn: () => void,
-  resolve: (v: V | PromiseLike<V>) => void,
-  reject: (e: unknown) => void
-) => {
-  return [patch(fn, resolve), patch(fn, reject)] as const;
-};

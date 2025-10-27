@@ -3,7 +3,7 @@ import { maxBy, sortedLastIndexBy, thru } from 'lodash';
 import { isROArray } from '../core/checks';
 import { aggregation } from '../numbers/aggregation';
 import { samplesBy } from '../utils/array-utils';
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 import { makeMatchingTree } from '../utils/string-util';
 import { AnyAnyFunction } from '../utils/types';
 import {

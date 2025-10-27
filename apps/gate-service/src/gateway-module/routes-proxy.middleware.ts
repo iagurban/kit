@@ -2,9 +2,10 @@ import { ServerResponse } from 'node:http';
 
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { PathMatchTree, pathMatchTree } from '@gurban/kit/path-match-tree';
 import { Injectable, NestMiddleware, OnModuleInit } from '@nestjs/common';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { createMatchTree, MatchTreeFn, pathSplitFn } from '@poslah/util/match-tree';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { NextFunction, Request, Response } from 'express';
 import { createProxyMiddleware, Options, RequestHandler } from 'http-proxy-middleware';
 
@@ -23,9 +24,8 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
   }
 
   async onModuleInit() {
-    this.logger.info('Initializing ProxyMiddleware and subscribing to route updates...');
+    this.logger.silent('Initializing ProxyMiddleware and subscribing to route updates...');
     this.registry.proxyRoutesResource.subscribe(() => {
-      this.registry.proxyRoutesResource.fetch(true); // updates promise synchronously
       this.getMatcher(); // start the process for updating routes (internally waits fetch()'s promise)
     });
     // prefetch the routes
@@ -33,16 +33,16 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
   }
 
   private calculated: Readonly<{
-    // The current list of routes, used for matching.
-    routes: readonly ProxyRoute[];
+    // The current map of routes, used for matching.
+    routes: ReadonlyMap<string, readonly ProxyRoute[]>;
     // The cache for proxy handlers. Key: route.path, Value: the proxy function.
-    proxies: Map<string, RequestHandler>;
+    proxies: Map<string, Map<string, RequestHandler>>;
     // The match function for the routes (returns longest prefix match)
-    matchPath: MatchTreeFn<ProxyRoute, string>;
-  }> = { routes: [], proxies: new Map(), matchPath: createMatchTree([], () => ``, pathSplitFn) };
+    matchers: ReadonlyMap<string, PathMatchTree<undefined>>;
+  }> = { routes: new Map(), proxies: new Map(), matchers: new Map() };
 
   // Chaining promise to avoid race conditions and to wait for completion of routes updating if it's in progress.
-  private buildingRoutesPromise: Promise<MatchTreeFn<ProxyRoute, string> | undefined> | null = null;
+  private buildingRoutesPromise: Promise<typeof this.calculated.matchers | undefined> | null = null;
 
   /**
    * Reuses existing handlers for unchanged routes.
@@ -52,42 +52,56 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
   private async getMatcher() {
     return (this.buildingRoutesPromise = (this.buildingRoutesPromise || Promise.resolve())
       .then(async () => {
-        const routes = await this.registry.proxyRoutesResource.fetch(); // joins to fetching-promise if it's in progress, else returns actual value
-        if (routes === this.calculated.routes) {
+        const routesByMethod = await this.registry.proxyRoutesResource.fetch(); // joins to fetching-promise if it's in progress, else returns actual value
+        if (routesByMethod === this.calculated.routes) {
           // Cache returned, results are the same
-          return this.calculated.matchPath;
+          return this.calculated.matchers;
         }
 
-        this.logger.info('Intelligently updating proxy routes...');
+        this.logger.silent('Intelligently updating proxy routes...');
 
-        const proxies = new Map<string, RequestHandler>(); // build new cache
-        const oldRoutesByPath = ExMap.mappedBy(this.calculated.routes, r => r.path);
+        const proxies = new ExMap<string, ExMap<string, RequestHandler>>(); // build new cache
+        const oldRoutesByPath = new ExMap(
+          this.calculated.routes
+            .values()
+            .next()
+            ?.value?.map((r: ProxyRoute) => [r.path, r])
+        );
 
-        for (const newRoute of routes) {
-          const oldRoute = oldRoutesByPath.get(newRoute.path);
-          const existingProxy = this.calculated.proxies.get(newRoute.path);
+        for (const [method, newRoutes] of routesByMethod.entries()) {
+          for (const newRoute of newRoutes) {
+            const oldRoute = oldRoutesByPath.get(newRoute.path);
+            const existingProxy = this.calculated.proxies.get(method)?.get(newRoute.path);
 
-          if (oldRoute && oldRoute.target === newRoute.target && existingProxy) {
-            // Reuse an existing proxy handler.
-            proxies.set(newRoute.path, existingProxy);
-          } else {
-            this.logger.info(`Creating new proxy handler for path: ${newRoute.path}`);
-            proxies.set(newRoute.path, createProxyMiddleware(this.createProxyOptions(newRoute)));
+            if (oldRoute && oldRoute.target === newRoute.target && existingProxy) {
+              // Reuse an existing proxy handler.
+              proxies.getOrCreate(method, () => new ExMap()).set(newRoute.path, existingProxy);
+            } else {
+              this.logger.silent(`Creating new proxy handler for path: ${newRoute.path}`);
+              proxies
+                .getOrCreate(method, () => new ExMap())
+                .set(newRoute.path, createProxyMiddleware(this.createProxyOptions(newRoute)));
+            }
           }
+        }
+
+        const matchers = new Map<string, PathMatchTree<undefined>>();
+        for (const [method, routes] of routesByMethod.entries()) {
+          matchers.set(method, pathMatchTree(routes.map(r => [r.path, undefined] as const)));
         }
 
         // Atomically swap to the new, updated routes, cache and match function.
         this.calculated = {
-          routes,
+          routes: routesByMethod,
           proxies,
-          matchPath: createMatchTree(routes, r => r.path, pathSplitFn),
+          matchers,
         };
         this.logger.info(`Proxy cache updated. Active handlers: ${this.calculated.proxies.size}`);
-        return this.calculated.matchPath;
+        return this.calculated.matchers;
       })
       .catch((error: unknown) => {
         this.logger.error({ error }, `Error while updateProxies()`);
-        return this.calculated.matchPath;
+        return this.calculated.matchers;
       }));
   }
 
@@ -97,12 +111,16 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
    */
   async use(req: Request, res: Response, next: NextFunction) {
     // Wait for the matcher to be ready.
-    const match = (await this.getMatcher())(req.originalUrl);
+    const matchers = await this.getMatcher();
+    const match = matchers?.get(req.method)?.matchStart?.(req.originalUrl);
+
     // Any match will do - full or partial: currently we just need to know which is longest.
     // But it's easy to restrict partial ones, e.g., by configuration provided with module (need to be implemented)
     // or by preference from services (need to put on Redis in fullOnly-field, optional like version -
     // {path, target, version, fullOnly}).
-    const proxy = match && this.calculated.proxies.get(match.value.path);
+    const proxy =
+      match &&
+      this.calculated.proxies.get(req.method)?.get(match.leaf.path.join('/') + match.exact ? '$' : '');
     return proxy ? proxy(req, res, next) : next();
   }
 

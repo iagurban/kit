@@ -1,16 +1,17 @@
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger, IBaseLogger } from '@gurban/kit/interfaces/logger-interface';
+import { RedisPubsubSubscription } from '@gurban/kit/redis-pubsub-subscription';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
-import { userMembershipPubsub } from '@poslah/chats-service/topics/user-membership-pubsub.topic';
+import { userMembershipPubsub } from '@poslah/chats-service/topics/user-membership.pubsub-topic';
 import {
   messagesUpsertPubsub,
   PubsubMessageDto,
-} from '@poslah/messages-service/topics/messages-upsert-pubsub.topic';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisSubscriptionService } from '@poslah/util/nosql/redis/redis.service';
-
-import { RedisPubsubSubscription } from './redis-pubsub-subscription';
+} from '@poslah/messages-service/topics/messages-upsert.pubsub-topic';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisSubscriptionService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { z } from 'zod/v4';
 
 const createStream = <T>(stream: AsyncIterator<T>, unsub: () => Promise<void>): AsyncIterableIterator<T> => ({
   next: stream.next.bind(stream),
@@ -115,6 +116,7 @@ class SubscribedUser<T> {
 
 class JoinsTracker {
   constructor(
+    private readonly logger: IBaseLogger,
     public readonly userId: string,
     private readonly chatsGRPCClient: ChatsGRPCClient,
     private readonly rebuildChatsToUsersMapping: () => void
@@ -122,13 +124,54 @@ class JoinsTracker {
 
   public joins = new Set<string /* chatId */>();
 
-  async update() {
-    this.joins = await this.chatsGRPCClient.getUserChatIds(this.userId);
-    this.rebuildChatsToUsersMapping();
+  private pendingUpdates: z.infer<typeof userMembershipPubsub.schema>[] = [];
+  private fetchingPromise = Promise.resolve();
+  private fetching = false;
+
+  /**
+   * Always enqueue a fetch operation after the current one to maintain a correct list
+   * in situations alike:
+   * [grpc call start ->
+   *      unsubscribe -> <missing events> -> subscribe
+   * -> grpc call end] => <new-fetch>
+   */
+  private fetch() {
+    return (this.fetchingPromise = this.fetchingPromise.then(async () => {
+      // pendingUpdates is empty there since it cleaned at finally-block.
+      this.fetching = true; // start queueing any new incoming updates
+      try {
+        this.joins = await this.chatsGRPCClient.getUserChatIds(this.userId);
+      } catch (error) {
+        this.logger.error({ error }, `Error fetching getUserChatIds(${this.userId})`);
+      } finally {
+        const updatesToApply = this.pendingUpdates.splice(0);
+        this.fetching = false;
+        this.applyUpdates(updatesToApply);
+      }
+    }));
+  }
+
+  /**
+   * Applies an incremental update to the user's chat memberships.
+   * @param updates The details of the membership changes.
+   */
+  applyUpdates(updates: z.infer<typeof userMembershipPubsub.schema>[]) {
+    if (this.fetching) {
+      this.pendingUpdates.push(...updates);
+    } else {
+      for (const update of updates) {
+        if (update.action === 'join') {
+          this.joins.add(update.chatId);
+        } else {
+          this.joins.delete(update.chatId);
+        }
+      }
+      this.rebuildChatsToUsersMapping();
+    }
   }
 
   async initialize() {
-    this.joins = await this.chatsGRPCClient.getUserChatIds(this.userId);
+    await this.fetch();
   }
 }
 
@@ -173,9 +216,17 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
       this.redisSubscriptionService,
       userMembershipPubsub.name,
       {
+        onSubscribed: () => {
+          this.logger.info('Reconnected to Redis. Refreshing all active join trackers.');
+          for (const tracker of this.joinsTrackers.values()) {
+            // Re-fetch the full list for all active trackers to ensure consistency
+            void tracker.initialize();
+          }
+        },
         onMessage: message => {
-          const { userId } = userMembershipPubsub.schema.parse(JSON.parse(message));
-          void this.joinsTrackers.get(userId)?.update();
+          // Expecting a more detailed message: { userId, chatId, type: 'join' | 'leave' }
+          const updatePayload = userMembershipPubsub.schema.parse(JSON.parse(message));
+          this.joinsTrackers.get(updatePayload.userId)?.applyUpdates([updatePayload]);
         },
         onError: (error, message) => {
           this.logger.error({ error, message }, 'Failed to process user-memberships message');
@@ -225,7 +276,9 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
 
     const wasEmpty = this.joinsTrackers.size === 0;
 
-    const tracker = new JoinsTracker(userId, this.chatsGRPCClient, () => this.rebuildChatsToUsersMapping());
+    const tracker = new JoinsTracker(this.logger, userId, this.chatsGRPCClient, () =>
+      this.rebuildChatsToUsersMapping()
+    );
     await tracker.initialize();
     this.joinsTrackers.set(userId, tracker);
 

@@ -1,57 +1,34 @@
 import { once } from '@gurban/kit/core/once';
-import { retrying } from '@gurban/kit/retrying';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils';
+import { retrying } from '@gurban/kit/utils/flow/retrying';
 import { Injectable } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
-import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-created-event.topic';
-import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';
-import { DbService } from '@poslah/util/db/db.service';
-import type { Topic } from '@poslah/util/declare-events-topic';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisService } from '@poslah/util/nosql/redis/redis.service';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisStreamEmitter } from '@poslah/util/modules/nosql/redis/redis-stream-emitter';
 import { CreateMessageEventDTO } from '@poslah/util/schemas/create-message-event-schema';
+import { MessageDto } from '@poslah/util/schemas/message.schema';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
 import { UpdateMessageEventDTO } from '@poslah/util/schemas/update-message-event-schema';
-import { z } from 'zod';
 
-import { LwtError, MessagesDb } from './messages-db';
+import { projectionMessageCreatedTopic } from '../topics/projection-message-created.topic';
+import { projectionMessagePatchedTopic } from '../topics/projection-message-patched.topic';
+import { LwtError, MessagesRepository } from './messages.repository';
 
 @Injectable()
 export class MessagesService {
   constructor(
     private readonly db: DbService,
     private readonly loggerBase: Logger,
-    private readonly messagesDb: MessagesDb,
+    private readonly messagesDb: MessagesRepository,
     private readonly chatsGRPCClient: ChatsGRPCClient,
-    private readonly redis: RedisService
+    private readonly streamEmitter: RedisStreamEmitter
   ) {}
 
   @once
   get logger() {
     return createContextualLogger(this.loggerBase, MessagesService.name);
-  }
-
-  /**
-   * A generic, type-safe method to publish an event to a Redis Stream.
-   * It validates the event against the topic's schema before publishing.
-   */
-  private async publish<S extends z.ZodType, T extends Topic<S, string>>(
-    topic: T,
-    event: unknown
-  ): Promise<void> {
-    try {
-      // The schema is already parsed, but this is a final guarantee.
-      const validatedEvent = topic.schema.parse(event);
-      const eventPayload = JSON.stringify(validatedEvent);
-
-      await this.redis.xadd(topic.name, '*', 'data', eventPayload);
-
-      this.logger.info(`Successfully published event to stream [${topic.name}]`);
-    } catch (error) {
-      this.logger.error({ error }, `Failed to publish event to stream [${topic.name}]`);
-      // Re-throw the error so the caller can handle it (e.g., in a consumer, this would prevent an ack).
-      throw error;
-    }
   }
 
   /**
@@ -76,15 +53,17 @@ export class MessagesService {
 
       await this.messagesDb.insert(event, messageNn);
 
-      const createdMessage = await this.messagesDb.get(event.chatId, messageNn);
+      const [createdMessage] = await this.messagesDb.getById(event.chatId, [messageNn]);
       if (createdMessage) {
-        await this.publish(messageCreatedEventTopic, createdMessage);
+        await this.streamEmitter.publish(projectionMessageCreatedTopic, createdMessage);
       }
     } catch (error) {
       this.logger.error(
         { error },
         `Failed to create message for event nn=${event.nn} in chat ${event.chatId}`
       );
+      // Re-throw to ensure the stream consumer does not acknowledge the source event.
+      throw error;
     }
   }
 
@@ -98,9 +77,9 @@ export class MessagesService {
     try {
       await this.performReliablePatch(event);
 
-      const finalMessageState = await this.messagesDb.get(chatId, targetMessageNn);
+      const [finalMessageState] = await this.messagesDb.getById(chatId, [targetMessageNn]);
       if (finalMessageState) {
-        await this.publish(messagePatchedEventTopic, finalMessageState);
+        await this.streamEmitter.publish(projectionMessagePatchedTopic, finalMessageState);
       }
     } catch (error) {
       this.logger.error(
@@ -187,5 +166,31 @@ export class MessagesService {
     }
 
     return { patch: finalPatch as MessageEventDto['payload'], latest: allRelevantEvents.at(-1)! };
+  }
+
+  async getMessagesOlderThanNn<S extends Partial<Record<keyof MessageDto, boolean>>>(
+    chatId: string,
+    nn: bigint,
+    limit: number,
+    select?: S
+  ) {
+    return this.messagesDb.getMessagesOlderThanNn(chatId, nn, limit, select);
+  }
+
+  async getMessagesNewerThanNn<S extends Partial<Record<keyof MessageDto, boolean>>>(
+    chatId: string,
+    nn: bigint,
+    limit: number,
+    select?: S
+  ) {
+    return this.messagesDb.getMessagesNewerThanNn(chatId, nn, limit, select);
+  }
+
+  async getLatestMessages<S extends Partial<Record<keyof MessageDto, boolean>>>(
+    chatId: string,
+    limit: number,
+    select?: S
+  ) {
+    return this.messagesDb.getLatestMessages(chatId, limit, select);
   }
 }

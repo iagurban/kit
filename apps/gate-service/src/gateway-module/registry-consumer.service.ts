@@ -1,14 +1,14 @@
 import { compose } from '@apollo/composition';
 import { buildSubgraph, Subgraphs } from '@apollo/federation-internals';
+import { CachedResource } from '@gurban/kit/cached-resource';
+import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisService, RedisSubscriptionService } from '@poslah/util/nosql/redis/redis.service';
-import { RedisSubscriber } from '@poslah/util/redis-subscriber';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisService, RedisSubscriptionService } from '@poslah/util/modules/nosql/redis/redis.service';
 import { parse } from 'graphql';
-
-import { CachedResource } from '../util/cached-resource';
 
 export interface ProxyRoute {
   path: string;
@@ -22,10 +22,8 @@ export interface ProxyRoute {
 
 @Injectable()
 export class RegistryConsumerService implements OnModuleInit, OnApplicationShutdown {
-  readonly proxyRoutesResource: CachedResource<ProxyRoute[]>;
+  readonly proxyRoutesResource: CachedResource<ExMap<string, ProxyRoute[]>>;
   readonly supergraphSdlResource: CachedResource<string | null>;
-
-  private readonly subscriber: RedisSubscriber;
 
   constructor(
     private readonly redis: RedisService,
@@ -33,12 +31,10 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     private readonly configService: ConfigService,
     private readonly loggerBase: Logger
   ) {
-    this.subscriber = new RedisSubscriber(this.subRedis);
-
     this.proxyRoutesResource = new CachedResource(
       'ProxyRoutes',
       this.internalFetchAndBuildProxyRoutes.bind(this),
-      this.subscriber,
+      this.subRedis,
       'gateway:routes_updated',
       this.loggerBase
     );
@@ -46,7 +42,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     this.supergraphSdlResource = new CachedResource(
       'SupergraphSDL',
       this.internalFetchAndComposeSupergraph.bind(this),
-      this.subscriber,
+      this.subRedis,
       'gateway:graphql_updated',
       this.loggerBase
     );
@@ -71,41 +67,33 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     await Promise.all([this.proxyRoutesResource.destroy(), this.supergraphSdlResource.destroy()]);
   }
 
-  // --- The public API is a clean pass-through to the helper instances ---
-  public fetchProxyRoutes(): Promise<ProxyRoute[]> {
-    return this.proxyRoutesResource.fetch();
-  }
+  private async internalFetchAndBuildProxyRoutes(): Promise<ExMap<string, ProxyRoute[]>> {
+    const serviceNames = await this.redis.smembers('gateway:proxy-services');
+    const allRoutes = new ExMap<string, ProxyRoute[]>();
 
-  public fetchSupergraphSdl(): Promise<string | null> {
-    return this.supergraphSdlResource.fetch();
-  }
+    for (const serviceName of serviceNames) {
+      const routesJson = await this.redis.hgetall(`gateway:proxy-routes:${serviceName}`);
+      if (!routesJson) {
+        continue;
+      }
 
-  private async internalFetchAndBuildProxyRoutes(): Promise<ProxyRoute[]> {
-    const routesByService = await this.redis.hgetall('gateway:proxy_routes');
-    const allRoutes: ProxyRoute[] = [];
-
-    for (const [serviceName, routesJson] of Object.entries(routesByService)) {
-      const serviceHost = this.configService.get(`SERVICE_HOST_${serviceName.toUpperCase()}`);
+      const serviceHost = `${this.configService.getOrThrow(`${serviceName.toUpperCase()}_SERVICE_HOST`)}:${this.configService.getOrThrow(`${serviceName.toUpperCase()}_SERVICE_PORT`)}`;
       if (!serviceHost) {
         this.logger.warn(`No host configured for service '${serviceName}'. Skipping its routes.`);
         continue;
       }
 
-      const serviceRoutes = JSON.parse(routesJson);
-      for (const [path, targets] of Object.entries(serviceRoutes)) {
-        for (const targetInfo of targets as { target: string; version?: string }[]) {
-          const publicPath = targetInfo.version
-            ? `/api/${targetInfo.version}/${serviceName}${path}`
-            : `/api/${serviceName}${path}`;
-
-          const internalTarget = `${serviceHost}${targetInfo.target}`;
-          allRoutes.push({ path: publicPath, target: internalTarget });
+      for (const [path, targetsJson] of Object.entries(routesJson)) {
+        const targets = JSON.parse(targetsJson);
+        for (const [method, targetPath] of Object.entries(targets)) {
+          const internalTarget = `${serviceHost}${targetPath}`;
+          allRoutes.getOrCreate(method, () => []).push({ path, target: internalTarget });
         }
       }
     }
 
-    allRoutes.sort((a, b) => b.path.length - a.path.length);
-    this.logger.info('Successfully fetched and built proxy routes.');
+    allRoutes.forEach(v => v.sort((a, b) => b.path.length - a.path.length));
+    this.logger.silent('Successfully fetched and built proxy routes.');
     return allRoutes;
   }
 
@@ -126,7 +114,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     const subgraphs = new Subgraphs();
     for (const entry of Object.values(subgraphEntries)) {
       try {
-        const { name, sdl } = JSON.parse(entry); // url might be needed for the constructor
+        const { name, sdl } = JSON.parse(entry);
         if (name && !this.isEmptySchema(sdl)) {
           const upper = name.toUpperCase();
           // noinspection HttpUrlsUsage

@@ -9,9 +9,9 @@ import { SetContextLink } from '@apollo/client/link/context';
 import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { retrying } from '@gurban/kit/retrying';
 import { sleep } from '@gurban/kit/utils/async-utils';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
+import { retrying } from '@gurban/kit/utils/flow/retrying.ts';
 import { createClient } from 'graphql-ws';
 
 const host = notNull(import.meta.env.VITE_GATE_SERVICE_HOST);

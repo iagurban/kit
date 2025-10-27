@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { RedisModule } from '../nosql/redis/redis.module';
-import { RedisService, RedisSubscriptionService } from '../nosql/redis/redis.service';
+import { RedisModule } from '../modules/nosql/redis/redis.module';
+import { RedisService, RedisSubscriptionService } from '../modules/nosql/redis/redis.service';
 
 @Module({
   imports: [

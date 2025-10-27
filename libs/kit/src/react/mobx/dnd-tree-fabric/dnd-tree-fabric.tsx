@@ -37,7 +37,7 @@ import {
 
 import { ExSet } from '../../../collections/ex-set';
 import { ManualSortingAlphabet } from '../../../core/manual-sorting';
-import { notNull } from '../../../utils/flow-utils';
+import { notNull } from '../../../utils/flow/flow-utils';
 import { clamp } from '../../../utils/numeric-utils';
 import { createUsableContext } from '../../react';
 import { ObservableExSet } from '../observable-ex-set';

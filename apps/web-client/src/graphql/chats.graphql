@@ -1,0 +1,6 @@
+mutation PushChatEvent($chatId: ID!, $type: String!, $payload: JSON!) {
+  pushChatEvent(chatId: $chatId, type: $type, payload: $payload) {
+    nn
+    createdAt
+  }
+}

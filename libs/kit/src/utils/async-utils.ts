@@ -1,4 +1,21 @@
-export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import { CancelledError, PromiseController } from './promise-util';
+
+export const sleep = (ms: number, ac?: PromiseController) =>
+  ac
+    ? new Promise((resolve, reject) => {
+        const to = setTimeout(() => {
+          ac.off(handler);
+          resolve(undefined);
+        }, ms);
+
+        const handler = (reason: string) => {
+          clearTimeout(to);
+          ac.off(handler);
+          reject(new CancelledError(reason));
+        };
+        ac.on(handler);
+      })
+    : new Promise(resolve => setTimeout(resolve, ms));
 
 export const isPromise = <T>(o: unknown): o is Promise<T> => {
   return o != null && (o as { then?: unknown }).then != null;
@@ -24,21 +41,4 @@ export const resolveRecord = async <T extends Record<string, unknown>>(
     await Promise.all(promises);
   }
   return r as PromisesRecordValue<T>;
-};
-
-export const retryingAsync = async <R, C extends { error: Error }>(
-  fn: () => R,
-  ctx: C,
-  onFail: (e: unknown, ctx: C) => boolean | void
-) => {
-  for (;;) {
-    try {
-      return await fn();
-    } catch (error) {
-      const r = onFail(error, ctx);
-      if (!r) {
-        throw ctx.error;
-      }
-    }
-  }
 };

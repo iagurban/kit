@@ -1,7 +1,7 @@
 import { execSync, spawn } from 'child_process';
 import * as path from 'path';
 
-import { catchingAsync } from '../utils/flow-utils';
+import { catchingAsync } from '../utils/flow/flow-utils';
 
 async function findBinPath(name: string): Promise<string> {
   return execSync(`yarn bin ${name}`).toString().trim();

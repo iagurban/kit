@@ -1,36 +1,31 @@
 import { Module } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
-import { messageCreatedEventTopic } from '@poslah/chats-service/topics/message-created-event.topic';
-import { messagePatchedEventTopic } from '@poslah/chats-service/topics/message-patched-event.topic';
+import { eventsMessageCreatedTopic } from '@poslah/chats-service/topics/events-message-created-topic';
+import { eventsMessagePatchedTopic } from '@poslah/chats-service/topics/events-message-patched-topic';
 import { TokenCheckerModule } from '@poslah/signing-service/token-checker-module/token-checker.module';
 import { TokenFetcherModule } from '@poslah/signing-service/token-fetcher-module/token-fetcher.module';
-import { RedisStreamConsumerModule } from '@poslah/util/nosql/redis/redis-stream-consumer.module';
-import { ScyllaModule } from '@poslah/util/nosql/scylla/scylla.module';
+import { RedisStreamConsumerModule } from '@poslah/util/modules/nosql/redis/stream-consumer-module/redis-stream-consumer.module';
+import { ScyllaModule } from '@poslah/util/modules/nosql/scylla/scylla.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
-import { MessagesController } from './messages.controller';
+import { MessagesRepository } from './messages.repository';
 import { MessagesResolver } from './messages.resolver';
 import { MessagesService } from './messages.service';
-import { MessagesDb } from './messages-db';
+import { MessagesStreamsController } from './messages.streams-controller';
 import { MessagesGrpcController } from './messages-grpc.controller';
-
-const consumersGroup = 'messages-service';
 
 @Module({
   imports: [
     RedisStaticModule,
     ScyllaModule,
     RedisStreamConsumerModule.forRoot(
-      {
-        [messageCreatedEventTopic.name]: consumersGroup,
-        [messagePatchedEventTopic.name]: consumersGroup,
-      },
+      [eventsMessageCreatedTopic.name, eventsMessagePatchedTopic.name],
       RedisStaticModule
     ),
     TokenFetcherModule,
     TokenCheckerModule,
   ],
-  controllers: [MessagesController, MessagesGrpcController],
-  providers: [MessagesDb, ChatsGRPCClient, MessagesService, MessagesResolver],
+  controllers: [MessagesStreamsController, MessagesGrpcController],
+  providers: [MessagesRepository, ChatsGRPCClient, MessagesService, MessagesResolver],
 })
 export class MessagesModule {}

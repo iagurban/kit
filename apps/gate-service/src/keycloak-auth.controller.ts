@@ -1,13 +1,14 @@
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger, IBaseLogger } from '@gurban/kit/interfaces/logger-interface';
 import { OidcAuthControllerBase } from '@gurban/kit/nest/oidc-auth-controller.base';
-import { retrying } from '@gurban/kit/retrying';
 import { sleep } from '@gurban/kit/utils/async-utils';
+import { retrying } from '@gurban/kit/utils/flow/retrying';
 import { HttpService } from '@nestjs/axios';
 import { Controller, Get, Query, Redirect, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { KeycloakPayload } from '@poslah/util/auth-module/auth.types';
-import { DbService } from '@poslah/util/db/db.service';
-import { BaseLogger, createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { KeycloakPayload } from '@poslah/util/modules/auth-module/auth.types';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { isAxiosError } from 'axios';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { firstValueFrom } from 'rxjs';
@@ -25,7 +26,7 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
-    private readonly logger: BaseLogger
+    private readonly logger: IBaseLogger
   ) {
     super();
   }

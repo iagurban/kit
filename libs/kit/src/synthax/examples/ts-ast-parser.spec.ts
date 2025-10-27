@@ -1,6 +1,6 @@
 import { isDefined, isTruthy } from '../../core/checks';
 import { once } from '../../core/once';
-import { notNull } from '../../utils/flow-utils';
+import { notNull } from '../../utils/flow/flow-utils';
 import { $t, $u, testParser } from '../define';
 import { isExprOperand, OperandsTreeBuilder, OperatorDef } from '../operands-tree-builder';
 import { Tokenizer } from '../tokenizer-def';

@@ -2,87 +2,101 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
 import { isDefined, isROArray, isTruthy } from '../../core/checks';
-import { notNull } from '../../utils/flow-utils';
+import { notNull } from '../../utils/flow/flow-utils';
 
-type Loc = { start: number; end: number };
-type Name = { kind: `Name`; value: string; loc: Loc };
-type SelectionSet = { kind: `SelectionSet`; selections: (Field | FragmentSpread)[]; loc: Loc };
-type Field = {
+export type GqlASTLoc = { start: number; end: number };
+export type GqlASTName = { kind: `Name`; value: string; loc: GqlASTLoc };
+export type GqlASTSelectionSet = {
+  kind: `SelectionSet`;
+  selections: (GqlASTField | GqlASTFragmentSpread)[];
+  loc: GqlASTLoc;
+};
+export type GqlASTField = {
   kind: `Field`;
-  alias?: Name;
-  name: Name;
-  arguments: { kind: `Argument`; name: Name; value: { kind: `Variable`; name: Name; loc: Loc }; loc: Loc }[];
+  alias?: GqlASTName;
+  name: GqlASTName;
+  arguments: {
+    kind: `Argument`;
+    name: GqlASTName;
+    value: { kind: `Variable`; name: GqlASTName; loc: GqlASTLoc };
+    loc: GqlASTLoc;
+  }[];
   directives: unknown[];
-  selectionSet?: SelectionSet;
-  loc: Loc;
+  selectionSet?: GqlASTSelectionSet;
+  loc: GqlASTLoc;
 };
 
-type FragmentDefinition = {
+export type GqlASTFragmentDefinition = {
   kind: 'FragmentDefinition';
-  name: Name;
+  name: GqlASTName;
   typeCondition: unknown;
   directives: unknown[];
-  selectionSet?: SelectionSet;
-  loc: Loc;
+  selectionSet?: GqlASTSelectionSet;
+  loc: GqlASTLoc;
 };
 
-type FragmentSpread = {
+export type GqlASTFragmentSpread = {
   kind: 'FragmentSpread';
-  name: Name;
+  name: GqlASTName;
 };
 
 type RecurSelect = { select: { [key: string]: RecurSelect | boolean } } | boolean;
 
-const gqlSelectionTraverser = (
-  fragments: Record<string, FragmentDefinition>,
-  skip?: Set<string>,
-  check?: (subPath: string, field: Field) => boolean
-) => {
-  const flattenSpreads = (fields?: readonly (Field | FragmentSpread)[]): Field[] =>
-    fields
-      ? fields.flatMap(field =>
-          field.kind === `FragmentSpread`
-            ? flattenSpreads(notNull(fragments[field.name.value]).selectionSet?.selections)
-            : [field]
-        )
-      : [];
+export const flattenSpreads = (
+  fields: readonly (GqlASTField | GqlASTFragmentSpread)[] | undefined,
+  fragments: Record<string, GqlASTFragmentDefinition>
+): GqlASTField[] =>
+  fields
+    ? fields.flatMap(field =>
+        field.kind === `FragmentSpread`
+          ? flattenSpreads(notNull(fragments[field.name.value]).selectionSet?.selections, fragments)
+          : [field]
+      )
+    : [];
 
-  const collectSelection = (
-    fields: readonly (Field | FragmentSpread)[] | undefined,
-    path: string
-  ): RecurSelect =>
-    fields?.length
-      ? {
-          select: Object.fromEntries(
-            flattenSpreads(fields)
-              .map(f => {
-                const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
-                return (skip && skip.has(subPath)) || (check && !check(subPath, f))
-                  ? undefined
-                  : ([f.name.value, collectSelection(f.selectionSet?.selections, subPath)] as const);
-              })
-              .filter(isDefined)
-          ),
-        }
-      : true;
+export const findGqlNodeByPath = (
+  path: readonly string[],
+  field: GqlASTField,
+  fragments: Record<string, GqlASTFragmentDefinition>
+): GqlASTField | null => {
+  if (/* DEBUG */ path.length < 1) {
+    // path.length > 0 expected
+    throw new Error(`Programming Error: path.length < 1 in findByPath`);
+  }
 
-  const findByPath = (path: readonly string[], field: Field): Field | null => {
-    if (/* DEBUG */ path.length < 1) {
-      // path.length > 0 expected
-      throw new Error(`Programming Error: path.length < 1 in findByPath`);
-    }
-
-    const found = flattenSpreads(field.selectionSet?.selections).find(f => f.name.value === path[0]);
-    return !found ? null : path.length === 1 ? found : findByPath(path.slice(1), found);
-  };
-
-  return { collectSelection, findByPath };
+  const found = flattenSpreads(field.selectionSet?.selections, fragments).find(f => f.name.value === path[0]);
+  return !found ? null : path.length === 1 ? found : findGqlNodeByPath(path.slice(1), found, fragments);
 };
+
+const collectRecursiveSelection = (
+  fields: readonly (GqlASTField | GqlASTFragmentSpread)[] | undefined,
+  path: string,
+  skip: Set<string> | undefined,
+  check: ((subPath: string, field: GqlASTField) => boolean) | undefined,
+  fragments: Record<string, GqlASTFragmentDefinition>
+): RecurSelect =>
+  fields?.length
+    ? {
+        select: Object.fromEntries(
+          flattenSpreads(fields, fragments)
+            .map(f => {
+              const subPath = [path, f.name.value].filter(isTruthy).join(`.`);
+              return (skip && skip.has(subPath)) || (check && !check(subPath, f))
+                ? undefined
+                : ([
+                    f.name.value,
+                    collectRecursiveSelection(f.selectionSet?.selections, subPath, skip, check, fragments),
+                  ] as const);
+            })
+            .filter(isDefined)
+        ),
+      }
+    : true;
 
 type Args = {
   path?: readonly string[];
   skip?: readonly string[];
-  check?: (subPath: string, field: Field) => boolean;
+  check?: (subPath: string, field: GqlASTField) => boolean;
 };
 
 export const getPrismaSelectionFromInfo = (
@@ -90,7 +104,7 @@ export const getPrismaSelectionFromInfo = (
     fieldName,
     fieldNodes: [fieldNode],
     fragments,
-  }: { fieldName: string; fieldNodes: Field[]; fragments: Record<string, FragmentDefinition> },
+  }: { fieldName: string; fieldNodes: GqlASTField[]; fragments: Record<string, GqlASTFragmentDefinition> },
   opts?: readonly string[] | Args | undefined
 ) => {
   // console.log(`opts`, opts);
@@ -99,13 +113,18 @@ export const getPrismaSelectionFromInfo = (
 
   const skipSet = skip && new Set(skip);
 
-  const s = gqlSelectionTraverser(fragments, skipSet, check);
-  const root = path?.length ? s.findByPath(path, fieldNode) : fieldNode;
+  const root = path?.length ? findGqlNodeByPath(path, fieldNode, fragments) : fieldNode;
   if (!root) {
     throw new Error(`Path "${path?.join(`.`)}" not found in ${fieldName}`);
   }
 
-  const r = s.collectSelection(root.selectionSet?.selections, path?.join(`.`) || ``);
+  const r = collectRecursiveSelection(
+    root.selectionSet?.selections,
+    path?.join(`.`) || ``,
+    skipSet,
+    check,
+    fragments
+  );
   return typeof r === `object` ? r['select'] : undefined;
 };
 

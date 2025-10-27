@@ -7,13 +7,13 @@
   ],
   "permissions": {
     "ChatsService": {
-      "GetLastMessageEvents": [
+      "getLastMessageEvents": [
         "messages-service"
       ],
-      "GetUserChatIds": "*"
+      "getUserChatIds": "*"
     },
     "MessagesService": {
-      "GetMessageAuthInfo": "*"
+      "getMessageAuthInfo": "*"
     }
   }
 }

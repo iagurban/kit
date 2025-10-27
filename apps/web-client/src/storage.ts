@@ -2,7 +2,8 @@ import { ApolloClient, OperationVariables } from '@apollo/client';
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { disposers, FunctionDisposable, ObjectDisposable } from '@gurban/kit/core/disposers';
 import type { JsonObject } from '@gurban/kit/core/json-type.ts';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
+import { PromiseController } from '@gurban/kit/utils/promise-util.ts';
 import {
   attachmentInfoSchema,
   forwardInfoSchema,
@@ -223,14 +224,14 @@ export class FetchingStore<TData, TVariables extends OperationVariables> extends
     const { onStart, onHandlerError } = this.handlers;
     onStart && safeHandlerCall(() => onStart(options), `onStart`, onHandlerError);
 
-    const controller = { canceled: false };
+    const controller = new PromiseController();
 
     return (this.fetching = {
       promise: (async () => {
         const { onData, onError } = this.handlers;
         try {
           const response = await notNull(this.client()).query<TData, TVariables>(options);
-          if (!controller.canceled) {
+          if (!controller.aborted) {
             const { error, data } = response;
             if (error) {
               onError && safeHandlerCall(() => onError(error, options), `onError`, onHandlerError);
@@ -239,11 +240,11 @@ export class FetchingStore<TData, TVariables extends OperationVariables> extends
             }
           }
         } catch (error) {
-          if (!controller.canceled) {
+          if (!controller.aborted) {
             onError && safeHandlerCall(() => onError(error, options), `onError`, onHandlerError);
           }
         } finally {
-          if (!controller.canceled) {
+          if (!controller.aborted) {
             this.fetching = undefined;
           }
         }
@@ -251,7 +252,7 @@ export class FetchingStore<TData, TVariables extends OperationVariables> extends
       cancel: (reason: string) => {
         const { onCancel } = this.handlers;
         onCancel && safeHandlerCall(() => onCancel(reason, options), `onCancel`, onHandlerError);
-        controller.canceled = true;
+        controller.abort(reason);
       },
     }).promise;
   }
@@ -262,6 +263,29 @@ export class FetchingStore<TData, TVariables extends OperationVariables> extends
       this.fetching = undefined;
     }
     return this;
+  }
+}
+
+class MutatingStore<TData, TVariables extends OperationVariables> extends StoreLifecycle {
+  constructor(
+    readonly client: () => ApolloClient,
+    readonly getOptions: () => Omit<ApolloClient.MutateOptions<TData, TVariables>, `variables`>
+  ) {
+    super();
+  }
+
+  @computed.struct
+  get options() {
+    return this.getOptions();
+  }
+
+  execute(variables: TVariables) {
+    if (this.executing) {
+      throw new Error(`already executing`);
+    }
+    this.executing = {
+      promise: notNull(this.client()).mutate({ variables, ...this.options }),
+    };
   }
 }
 
@@ -502,7 +526,7 @@ export class ChatsStorage extends Model({
 
     if (!this.selectedChatId || !chatsById.has(this.selectedChatId.id)) {
       this.selectedChatId = chats.length ? ChatStore.ref(chats[0].id) : null;
-      console.log(this.selectedChatId);
+      // console.log(this.selectedChatId);
     }
   }
 

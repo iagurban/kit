@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@poslah/util/auth-module/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@poslah/util/modules/auth-module/guards/jwt-auth.guard';
 
 import { WsTicketsService } from './ws-tickets.service';
 

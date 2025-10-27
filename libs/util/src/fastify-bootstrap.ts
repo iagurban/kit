@@ -10,7 +10,7 @@ import { MicroserviceOptions } from '@nestjs/microservices';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { RawServerDefault } from 'fastify';
 
-import { Logger } from './logger/logger.module';
+import { Logger } from './modules/logger/logger.module';
 
 declare const module: {
   hot?: { accept: () => void; dispose: (callback: () => void) => void };
@@ -31,7 +31,10 @@ export const fastifyBootstrap = async (
   nestModule: IEntryNestModule,
   port: number | null | ((config: ConfigService) => number | null),
   options: {
-    microservices?: (app: NestFastifyApplication, config: ConfigService) => readonly MicroserviceOptions[];
+    microservices?: (
+      app: NestFastifyApplication,
+      config: ConfigService
+    ) => readonly MicroserviceOptions[] | Promise<readonly MicroserviceOptions[]>;
     bodyParser?: boolean;
     noHotReload?: boolean;
     http2?: { certsDir: string };
@@ -90,7 +93,7 @@ export const fastifyBootstrap = async (
     // app.useGlobalFilters(new AllExceptionsFilter(rootLogger));
 
     // --- Настройка микросервисов ---
-    const microservices = options.microservices?.(app, configService);
+    const microservices = await options.microservices?.(app, configService);
     if (microservices?.length) {
       for (const microservice of microservices) {
         app.connectMicroservice(microservice);

@@ -1,33 +1,26 @@
-import { Metadata } from '@grpc/grpc-js';
 import { Controller, NotFoundException } from '@nestjs/common';
 import { TokenCheckerService } from '@poslah/signing-service/token-checker-module/token-checker.service';
-import { protobufLongToBigint } from '@poslah/util/protobuf-long-to-bigint';
-import { protobufTimestampFromDate } from '@poslah/util/protobuf-timestamp-to-date';
+import { protobufLongToBigint } from '@poslah/util/protobuf/protobuf-long-to-bigint';
+import { protobufTimestampFromDate } from '@poslah/util/protobuf/protobuf-timestamp-to-date';
 
 import {
   GetMessageAuthInfoRequest,
   GetMessageAuthInfoResponse,
-  MESSAGES_SERVICE_NAME,
   MessagesServiceController,
   MessagesServiceControllerMethods,
 } from '../generated/grpc/src/grpc/messages';
-import { MessagesDb } from './messages-db';
+import { MessagesRepository } from './messages.repository';
 
 @Controller()
 @MessagesServiceControllerMethods()
 export class MessagesGrpcController implements MessagesServiceController {
   constructor(
-    private readonly messagesDb: MessagesDb,
-    private readonly tokenChecker: TokenCheckerService
+    private readonly messagesDb: MessagesRepository,
+    public readonly tokenChecker: TokenCheckerService
   ) {}
 
-  async getMessageAuthInfo(
-    request: GetMessageAuthInfoRequest,
-    metadata: Metadata
-  ): Promise<GetMessageAuthInfoResponse> {
-    await this.tokenChecker.assertAuthorization(metadata, MESSAGES_SERVICE_NAME, `getMessageAuthInfo`);
-
-    const messageInfo = await this.messagesDb.get(request.chatId, protobufLongToBigint(request.nn), {
+  async getMessageAuthInfo(request: GetMessageAuthInfoRequest): Promise<GetMessageAuthInfoResponse> {
+    const [messageInfo] = await this.messagesDb.getById(request.chatId, [protobufLongToBigint(request.nn)], {
       authorId: true,
       createdAt: true,
       deletedAt: true,

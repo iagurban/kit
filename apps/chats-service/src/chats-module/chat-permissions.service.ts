@@ -5,11 +5,12 @@ import {
   getRedisHashToValuesByFields,
   putJSONToRedisHash,
 } from '@gurban/kit/core/redis-helpers';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { DbService } from '@poslah/util/db/db.service';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisService } from '@poslah/util/nosql/redis/redis.service';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisService } from '@poslah/util/modules/nosql/redis/redis.service';
 import {
   ChatPermissionsDto,
   chatPermissionsSchema,

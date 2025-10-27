@@ -1,7 +1,7 @@
 import { ExMap } from '../../collections/ex-map';
 import { isDefined, isTruthy } from '../../core/checks';
 import { samplesBy } from '../../utils/array-utils';
-import { notNull } from '../../utils/flow-utils';
+import { notNull } from '../../utils/flow/flow-utils';
 import { $o, $t, $u, locationInfo } from '../define';
 import { Expr, isExprOperand, Operand, OperandsTreeBuilder, OperatorDef } from '../operands-tree-builder';
 import { Dictionary, Tokenizer, TokenizerResult } from '../tokenizer-def';

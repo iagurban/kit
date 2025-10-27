@@ -1,9 +1,10 @@
 import { Metadata } from '@grpc/grpc-js';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientGrpc } from '@nestjs/microservices';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { firstValueFrom } from 'rxjs';
 
 import { SIGNING_SERVICE_NAME, SigningServiceClient } from '../generated/grpc/src/grpc/signing';

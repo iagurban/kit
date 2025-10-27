@@ -13,7 +13,7 @@ import { WsTicketsService } from './ws-tickets/ws-tickets.service';
 
 @Module({
   imports: [
-    ...rootImports,
+    ...rootImports(`gate-service`, `gate`),
     GlobalDbModule,
     RedisStaticModule,
     AuthStaticModule,

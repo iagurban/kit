@@ -5,16 +5,11 @@ import { SigningController } from './signing.controller';
 import { SigningGrpcController } from './signing.grpc-controller';
 import { SigningService } from './signing.service';
 
-const consumersGroup = 'chats-service';
-
 @Module({
   imports: [
     RedisStaticModule,
     // RedisStreamConsumerModule.forRoot(
-    //   {
-    //     [rawCreateEventTopic.name]: consumersGroup,
-    //     [membershipChangedEventTopic.name]: consumersGroup,
-    //   },
+    //   [rawCreateEventTopic.name, membershipChangedEventTopic.name],
     //   RedisStaticModule
     // ),
   ],

@@ -1,8 +1,9 @@
 import { once } from '@gurban/kit/core/once';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { Injectable, Module, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as http2 from 'http2';

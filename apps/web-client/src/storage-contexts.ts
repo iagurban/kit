@@ -1,5 +1,5 @@
 import { ApolloClient } from '@apollo/client';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
 import { createContext } from 'mobx-keystone';
 
 // keep private

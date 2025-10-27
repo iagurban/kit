@@ -3,7 +3,7 @@ import { maxBy, thru } from 'lodash';
 import { ExMap } from '../collections/ex-map';
 import { isROArray } from '../core/checks';
 import { once } from '../core/once';
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 import { Dictionary } from './tokenizer-def';
 
 export type OperatorDef = {

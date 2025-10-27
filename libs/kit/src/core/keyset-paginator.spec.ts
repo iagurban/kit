@@ -1,4 +1,4 @@
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 import { getModelsMetadataFromString, KeysetPaginatorBuilder } from './keyset-paginator';
 
 describe('Keyset paginator builder', () => {

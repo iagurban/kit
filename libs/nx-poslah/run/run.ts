@@ -1,7 +1,7 @@
 import { isTruthy } from '@gurban/kit/core/checks';
+import { catchingAsync } from '@gurban/kit/utils/flow/flow-utils';
 import { formatDuration } from '@gurban/kit/utils/string-util';
 import { ExecutorContext } from '@nx/devkit';
-import { catchingAsync } from '@poslah/util/util';
 import { spawn, SpawnOptions } from 'child_process';
 
 import { mkDirP } from '../src/mkdir';

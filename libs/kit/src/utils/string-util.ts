@@ -1,5 +1,5 @@
 import { ExMap } from '../collections/ex-map';
-import { notNull } from './flow-utils';
+import { notNull } from './flow/flow-utils';
 
 export const allStringCodePoints = (s: string): number[] => {
   const r: number[] = [];

@@ -7,9 +7,10 @@ import {
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 
 @Injectable()
 export class S3Service {

@@ -2,7 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 
 import { ManualSortingAlphabet } from '@gurban/kit/core/manual-sorting';
 
-import { CurrentUser } from './decorators/current-user';
+import { CurrentUser } from './modules/auth-module/decorators/current-user';
 
 export const manualSort = new ManualSortingAlphabet(ManualSortingAlphabet.presets.invisibleUnicode);
 

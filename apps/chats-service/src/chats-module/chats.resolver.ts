@@ -3,10 +3,10 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@poslah/database/generated/db-client/client';
 import { Chat } from '@poslah/database/generated/nestgraphql/chat/chat.model';
-import { AppUser } from '@poslah/util/auth-module/auth.types';
-import { DbService } from '@poslah/util/db/db.service';
-import { CurrentUser } from '@poslah/util/decorators/current-user';
-import { GqlJwtAuthGuard } from '@poslah/util/guards/gql-jwt-auth-guard';
+import { AppUser } from '@poslah/util/modules/auth-module/auth.types';
+import { CurrentUser } from '@poslah/util/modules/auth-module/decorators/current-user';
+import { GqlJwtAuthGuard } from '@poslah/util/modules/auth-module/guards/gql-jwt-auth-guard';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
 
 import { PushChatEventArgs } from '../entities/push-chat-event.args';
 import { PushEventResponseDto } from '../entities/push-event-response.dto';

@@ -11,9 +11,9 @@ import {
   Query,
   Resolver,
 } from '@nestjs/graphql';
-import { AppUser } from '@poslah/util/auth-module/auth.types';
-import { CurrentUser } from '@poslah/util/auth-module/decorators/current-user';
-import { GqlJwtAuthGuard } from '@poslah/util/auth-module/guards/gql-jwt-auth-guard';
+import { AppUser } from '@poslah/util/modules/auth-module/auth.types';
+import { CurrentUser } from '@poslah/util/modules/auth-module/decorators/current-user';
+import { GqlJwtAuthGuard } from '@poslah/util/modules/auth-module/guards/gql-jwt-auth-guard';
 import { GraphQLBigInt } from 'graphql-scalars';
 import { z } from 'zod/v4';
 

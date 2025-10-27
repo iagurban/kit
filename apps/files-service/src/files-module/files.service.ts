@@ -1,7 +1,8 @@
 import { once } from '@gurban/kit/core/once';
-import { retrying } from '@gurban/kit/retrying';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { sleep } from '@gurban/kit/utils/async-utils';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils';
+import { retrying } from '@gurban/kit/utils/flow/retrying';
 import {
   BadRequestException,
   ForbiddenException,
@@ -9,14 +10,15 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { StoredFile, UploadSession } from '@poslah/database/generated/db-client/client';
-import { DbService } from '@poslah/util/db/db.service';
-import { isPrismaClientError } from '@poslah/util/db/util';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
-import { RedisService } from '@poslah/util/nosql/redis/redis.service';
+import { Prisma, StoredFile, UploadSession } from '@poslah/database/generated/db-client/client';
+import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
+import { RedisService } from '@poslah/util/modules/nosql/redis/redis.service';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod/v4';
 
+import { FilesRepository } from './files.repository';
 import { S3Service } from './s3.service';
 
 export const reportArgsSchema = z.object({
@@ -26,8 +28,6 @@ export const reportArgsSchema = z.object({
 });
 
 export type ReportArgs = { eTag?: string; status?: number; message?: string };
-
-const isOKReportArgs = (r: ReportArgs): r is z.infer<typeof reportArgsSchema> => r.eTag != null;
 
 export const guideUploadResponseSchema = z.object({
   type: z.literal('upload'),
@@ -77,6 +77,9 @@ export interface GetLinkResponseDto {
   reportToken: string;
 }
 
+export type UploadSessionSelectPayload<S extends Prisma.UploadSessionSelect> =
+  Prisma.UploadSessionGetPayload<{ select: S }>;
+
 @Injectable()
 export class FilesService {
   private readonly reportTokenTTLSec = 3900;
@@ -90,7 +93,8 @@ export class FilesService {
     private readonly loggerBase: Logger,
     private readonly db: DbService,
     private readonly s3: S3Service,
-    private readonly redis: RedisService
+    private readonly redis: RedisService,
+    private readonly repository: FilesRepository
   ) {}
 
   @once
@@ -104,9 +108,10 @@ export class FilesService {
     return retrying(
       error => isPrismaClientError(error) && isPrismaClientError.uniqueConstraintFailed(error),
       async () => {
-        const existingFile = await this.db.client.storedFile.findUnique({
-          where: { checksum_sizeBytes: { checksum, sizeBytes } },
-          select: { id: true, cdnUrl: true, uploadSession: { select: { id: true } } },
+        const existingFile = await this.repository.tryFindStoredFile(checksum, sizeBytes, {
+          id: true,
+          cdnUrl: true,
+          uploadSession: { select: { id: true } },
         });
 
         if (existingFile) {
@@ -128,9 +133,11 @@ export class FilesService {
   async getUrlForChunk(chunkId: string, args: GetLinkArgs): Promise<GetLinkResponseDto> {
     const { checksumSha256 } = args;
     return this.db.inOwnTransaction(async () => {
-      const chunk = await this.db.transaction.uploadChunk.findUnique({
-        where: { id: chunkId },
-        include: { session: { include: { file: true } } },
+      const chunk = await this.repository.tryFindUploadChunk(chunkId, {
+        id: true,
+        eTag: true,
+        partNumber: true,
+        session: { select: { id: true, file: true, storageUploadId: true } },
       });
 
       if (!chunk || !chunk.session?.file || chunk.eTag) {
@@ -153,10 +160,7 @@ export class FilesService {
       const redisValue = JSON.stringify({ sessionId: session.id, chunkId: chunk.id });
       await this.redis.set(redisKey, redisValue, 'EX', this.reportTokenTTLSec);
 
-      await this.db.transaction.uploadChunk.update({
-        where: { id: chunkId },
-        data: { leasedAt: new Date() },
-      });
+      await this.repository.uploadChunkHasLeased(chunkId);
 
       return {
         upload: preSignedUrl,
@@ -184,10 +188,7 @@ export class FilesService {
   }
 
   private async handleChunkSuccess(chunkId: string, eTag: string): Promise<void> {
-    await this.db.transaction.uploadChunk.update({
-      where: { id: chunkId },
-      data: { eTag },
-    });
+    await this.repository.setChunkSuccess(chunkId, eTag);
     this.logger.info(`Successfully reported chunk ${chunkId}.`);
   }
 
@@ -195,9 +196,8 @@ export class FilesService {
     sessionId: string,
     failureInfo: { status?: number; message?: string }
   ): Promise<void> {
-    const updatedSession = await this.db.transaction.uploadSession.update({
-      where: { id: sessionId },
-      data: { totalFailureCount: { increment: 1 } },
+    const updatedSession = await this.repository.incrementSessionErrorsCount(sessionId, {
+      totalFailureCount: true,
     });
 
     this.logger.warn(
@@ -213,18 +213,11 @@ export class FilesService {
   private async failUploadSession(sessionId: string, reason: string): Promise<void> {
     this.logger.error(`Session ${sessionId} is being marked as FAILED. Reason: ${reason}`);
 
-    const updateResult = await this.db.client.uploadSession.updateMany({
-      where: { id: sessionId, status: 'ACTIVE' },
-      data: {
-        status: 'FAILED',
-        failReason: reason,
-      },
-    });
-
-    if (updateResult.count > 0) {
-      const sessionToAbort = await this.db.client.uploadSession.findUnique({
-        where: { id: sessionId },
-        include: { file: true },
+    const updated = await this.repository.failActiveSession(sessionId, reason);
+    if (updated) {
+      const sessionToAbort = await this.repository.tryFindUploadSession(sessionId, {
+        storageUploadId: true,
+        file: { select: { storageKey: true } },
       });
 
       if (sessionToAbort?.file) {
@@ -250,17 +243,14 @@ export class FilesService {
       };
     }
 
-    const session = await this.db.client.uploadSession.findUnique({ where: { id: sessionId } });
+    const session = await this.repository.tryFindUploadSession(sessionId, { id: true, fileId: true });
     if (!session) {
       throw new NotFoundException(`Session ${sessionId} disappeared unexpectedly.`);
     }
 
-    const updateResult = await this.db.client.uploadSession.updateMany({
-      where: { id: sessionId, status: 'ACTIVE' },
-      data: { status: 'FINALIZING' },
-    });
+    const didUpdated = await this.repository.setUploadSessionFinalizing(sessionId);
 
-    if (updateResult.count > 0) {
+    if (didUpdated) {
       this.logger.info(`Session ${sessionId} claimed for finalization.`);
       try {
         const finalFile = await this.finalizeUpload(sessionId);
@@ -307,45 +297,17 @@ export class FilesService {
     }
 
     const session = await this.db.inOwnTransaction(async () => {
-      const newFile = await this.db.transaction.storedFile.create({
-        data: {
-          checksum: input.checksum,
-          sizeBytes: input.sizeBytes,
-          originalFilename: input.originalFilename,
-          mimeType: input.mimeType,
-          uploadedByUserId: userId,
-          cdnUrl: 'TBD',
-          storageKey: `TBD`,
-        },
-      });
+      const newFile = await this.repository.createStoredFile(input, userId, { id: true });
 
-      await this.db.transaction.storedFile.update({
-        where: { checksum_sizeBytes: { checksum: input.checksum, sizeBytes: input.sizeBytes } },
-        data: { storageKey: newFile.id },
-      });
-
-      return this.db.transaction.uploadSession.create({
-        data: {
-          storageUploadId: `TBD`,
-          totalChunks: input.totalChunks,
-          fileId: newFile.id,
-          status: 'ACTIVE',
-          chunks: {
-            createMany: {
-              data: Array.from({ length: input.totalChunks }, (_, i) => ({ partNumber: i + 1 })),
-            },
-          },
-        },
-        select: { id: true, file: { select: { id: true, storageKey: true } } },
+      return this.repository.createUploadSession(newFile.id, totalChunks, {
+        id: true,
+        file: { select: { id: true, storageKey: true } },
       });
     });
 
     const storageUploadId = await this.s3.createMultipartUpload(session.file.storageKey, input.mimeType);
 
-    await this.db.transaction.uploadSession.update({
-      where: { id: session.id },
-      data: { storageUploadId, status: 'ACTIVE' },
-    });
+    await this.repository.activateUploadSession(session.id, storageUploadId);
 
     return session;
   }
@@ -355,18 +317,14 @@ export class FilesService {
     limit: number
   ): Promise<{ partNumber: number; chunkId: string }[]> {
     return this.db.inAnyTransaction(async () => {
-      const chunks = await this.db.transaction.uploadChunk.findMany({
-        where: { sessionId, eTag: null },
-        orderBy: { leasedAt: { sort: 'asc', nulls: 'first' } },
-        take: limit,
+      const chunks = await this.repository.findAvailableChunksOfSession(sessionId, limit, {
+        id: true,
+        partNumber: true,
       });
 
       if (chunks.length > 0) {
         const chunkIds = chunks.map(c => c.id);
-        await this.db.transaction.uploadChunk.updateMany({
-          where: { id: { in: chunkIds } },
-          data: { leasedAt: new Date() },
-        });
+        await this.repository.uploadChunkHasLeased(chunkIds);
       }
 
       return chunks.map(c => ({
@@ -384,10 +342,13 @@ export class FilesService {
   > {
     const startTime = Date.now();
     while (Date.now() - startTime < this.finalizationTimeoutMs) {
-      const session = await this.db.client.uploadSession.findUnique({ where: { id: sessionId } });
+      const session = await this.repository.tryFindUploadSession(sessionId, {
+        status: true,
+        failReason: true,
+      });
 
       if (!session) {
-        const finalFile = await this.db.client.storedFile.findUnique({ where: { id: fileId } });
+        const finalFile = await this.repository.tryFindStoredFileById(fileId, { id: true, cdnUrl: true });
         if (!finalFile) {
           throw new InternalServerErrorException('Finalized file could not be found.');
         }
@@ -407,9 +368,11 @@ export class FilesService {
   }
 
   private async finalizeUpload(sessionId: string): Promise<StoredFile> {
-    const session = await this.db.client.uploadSession.findUnique({
-      where: { id: sessionId },
-      include: { chunks: { orderBy: { partNumber: 'asc' } }, file: true },
+    const session = await this.repository.tryFindUploadSession(sessionId, {
+      fileId: true,
+      storageUploadId: true,
+      chunks: { orderBy: { partNumber: 'asc' } },
+      file: { select: { id: true, checksum: true } },
     });
 
     if (!session?.file) {
@@ -431,20 +394,27 @@ export class FilesService {
       );
       const finalUrl = finalS3File.Location || `https://your-cdn.com/${session.file.id}`;
 
-      const updatedFile = await this.db.client.storedFile.update({
-        where: { id: session.fileId },
-        data: { cdnUrl: finalUrl },
+      const updatedFile = await this.repository.setFinalUrlOfStoredFile(session.fileId, finalUrl, {
+        id: true,
+        createdAt: true,
+        checksum: true,
+        sizeBytes: true,
+        originalFilename: true,
+        mimeType: true,
+        storageKey: true,
+        cdnUrl: true,
+        metadata: true,
+        uploadedByUserId: true,
+        updatedAt: true,
       });
 
-      await this.db.client.uploadSession.delete({ where: { id: sessionId } });
+      await this.repository.deleteUploadSession(sessionId);
       this.logger.info(`Successfully finalized and cleaned up session ${sessionId}`);
       return updatedFile;
     } catch (error) {
       this.logger.error({ error }, `S3 completion/verification failed for session ${sessionId}`);
-      await this.db.client.uploadSession.update({
-        where: { id: sessionId },
-        data: { status: 'FAILED', failReason: 'Final S3 completion or verification failed.' },
-      });
+      await this.repository.failSession(sessionId, 'Final S3 completion or verification failed.');
+
       await this.s3.abortMultipartUpload(
         session.file.id, // Using file.id as storageKey
         session.storageUploadId!

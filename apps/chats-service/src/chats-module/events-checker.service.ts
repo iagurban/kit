@@ -1,7 +1,8 @@
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { MessagesGRPCClient } from '@poslah/messages-service/grpc/messages.grpc-client';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import type { RawEventDto } from '@poslah/util/schemas/raw-event-schema';
 
 import { ChatPermissionsService } from './chat-permissions.service';

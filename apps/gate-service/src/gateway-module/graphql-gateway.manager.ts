@@ -1,11 +1,12 @@
 import { checked, isInteger } from '@gurban/kit/core/checks';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Nullish } from '@gurban/kit/utils/types';
 import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 
 import { GraphqlAppModule } from '../graphql-app-module/graphql-app.module';
 import { RegistryConsumerService } from './registry-consumer.service';
@@ -35,9 +36,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
   }
 
   async onModuleInit() {
-    this.logger.info('Initializing Gateway Manager...');
     this.subscription = this.registry.supergraphSdlResource.subscribe(() => {
-      this.registry.supergraphSdlResource.fetch(true);
       this.restartGraphqlApp();
     });
     await this.restartGraphqlApp();
@@ -50,11 +49,14 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         noHotReload: true,
         cors: {
           origin: (origin, cb) => {
-            console.log('graphql-gateway cors check origin:', origin);
-            cb(
-              null,
-              !origin || origin === `https://localhost:${this.config.getOrThrow(`WEB_CLIENT_PORT`, '3000')}`
-            );
+            const allowed =
+              !origin ||
+              origin === this.config.getOrThrow(`APP_FRONTEND_URL`) ||
+              origin ===
+                `https://${this.config.getOrThrow(`GATE_SERVICE_HOST`)}:${this.config.getOrThrow(`GATE_SERVICE_PORT`)}`;
+
+            this.logger.info({ origin, allowed }, 'graphql-gateway cors check origin:');
+            cb(null, allowed);
           },
           credentials: true,
           methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -87,7 +89,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         }
 
         if (supergraphSdl === this.graphqlApp?.sdl) {
-          this.logger.error('Supergraph SDL is same. Skipping restarting the app.');
+          this.logger.silent('Supergraph SDL is same. Skipping restarting the app.');
           return oldApp;
         }
 

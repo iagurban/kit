@@ -1,7 +1,6 @@
 import { jsonObjectSchema } from '@gurban/kit/core/json-type';
+import { stringifiedBigint, stringifiedISODate } from '@gurban/kit/utils/zod-utils';
 import { z } from 'zod/v4';
-
-import { stringifiedBigint, stringifiedISODate } from '../zod';
 
 export const attachmentInfoSchema = z.object({
   fileId: z.uuid(),

@@ -7,7 +7,7 @@ import {
 } from '@loancrate/prisma-schema-parser';
 
 import { ExMap } from '../collections/ex-map';
-import { notNull } from '../utils/flow-utils';
+import { notNull } from '../utils/flow/flow-utils';
 import { once } from './once';
 
 const isFieldMdm = (m: ModelDeclarationMember): m is FieldDeclaration => m.kind === 'field';

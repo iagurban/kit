@@ -76,8 +76,9 @@ export {
   samplesBy,
 } from './utils/array-utils';
 export type { PromiseValue } from './utils/async-utils';
-export { isPromise, resolveRecord, retryingAsync, sleep } from './utils/async-utils';
-export { catching, notNull, NullError, throwing, warnCatch } from './utils/flow-utils';
+export { isPromise, resolveRecord, sleep } from './utils/async-utils';
+export { catching, notNull, NullError, throwing, warnCatch } from './utils/flow/flow-utils';
+export { retrying } from './utils/flow/retrying';
 export {
   addReturn,
   denyRecursion,
@@ -88,6 +89,6 @@ export {
 export { indexed, iterableUtils, iu, reversed } from './utils/iterable-utils';
 export { clamp, scale, scaleFrom01, scaleTo01, snap } from './utils/numeric-utils';
 export { fromEntries } from './utils/object-utils';
-export { patchRR, PromiseController } from './utils/promise-util';
+export { PromiseController } from './utils/promise-util';
 export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
 export type { NotNullish, Nullish, OverrideFields, ValOrArr } from './utils/types';

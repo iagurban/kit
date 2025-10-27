@@ -1,6 +1,6 @@
+import { stringifiedBigint, stringifiedISODate } from '@gurban/kit/utils/zod-utils';
 import { z } from 'zod/v4';
 
-import { stringifiedBigint, stringifiedISODate } from '../zod';
 import { attachmentInfoSchema, forwardInfoSchema } from './message.schema';
 
 export type AttachmentInfoDto = z.infer<typeof attachmentInfoSchema>;

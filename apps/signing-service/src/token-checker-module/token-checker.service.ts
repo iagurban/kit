@@ -1,8 +1,9 @@
 import { Metadata } from '@grpc/grpc-js';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 import * as fs from 'fs';
 import * as https from 'https';
 import * as jwt from 'jsonwebtoken';

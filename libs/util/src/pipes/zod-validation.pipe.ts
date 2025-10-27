@@ -6,7 +6,6 @@ export class ZodValidationPipe implements PipeTransform {
 
   transform(value: unknown, _metadata: ArgumentMetadata) {
     try {
-      // Пытаемся распарсить и провалидировать данные
       return this.schema.parse(value);
     } catch (error) {
       // Если Zod выбросил ошибку, форматируем ее и отправляем клиенту

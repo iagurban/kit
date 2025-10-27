@@ -1,8 +1,9 @@
 import { type Metadata, status as GrpcStatus } from '@grpc/grpc-js';
 import { checked, isSomeObject, isString } from '@gurban/kit/core/checks';
 import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Controller, Inject } from '@nestjs/common';
-import { createContextualLogger, Logger } from '@poslah/util/logger/logger.module';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 
 import {
   IssueTokenRequest,
@@ -10,6 +11,7 @@ import {
   SigningServiceController,
   SigningServiceControllerMethods,
 } from '../generated/grpc/src/grpc/signing';
+import { TokenCheckerService } from '../token-checker-module/token-checker.service';
 import { SigningService } from './signing.service';
 
 const cnPrefix = `CN=`;
@@ -24,6 +26,7 @@ const prepareServiceName = (value: unknown) => {
 export class SigningGrpcController implements SigningServiceController {
   constructor(
     private readonly signingService: SigningService,
+    public readonly tokenChecker: TokenCheckerService,
     @Inject(Logger) private readonly loggerBase: Logger
   ) {}
 
@@ -58,9 +61,9 @@ export class SigningGrpcController implements SigningServiceController {
       }
 
       const serviceName = prepareServiceName(serviceNameValues[0]);
-      this.logger.info(`Issuing token for service: ${serviceName}`);
+      this.logger.silent(`Issuing token for service: ${serviceName}`);
       const { accessToken, expiresIn } = this.signingService.signToken(serviceName);
-      this.logger.info(`Successfully issued token for service: ${serviceName}`);
+      this.logger.silent(`Successfully issued token for service: ${serviceName}`);
 
       return { accessToken, expiresIn };
     } catch (error) {

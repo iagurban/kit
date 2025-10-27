@@ -1,5 +1,5 @@
 import { errorToString } from '@gurban/kit/utils/error-utils.ts';
-import { notNull } from '@gurban/kit/utils/flow-utils.ts';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
 import { Box, Button, Flex, TextInput, Typography } from '@mantine/core';
 import { IconSend } from '@tabler/icons-react';
 import { computed, reaction, toJS } from 'mobx';

@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { URL } from 'node:url';
 
 import httpProxy from '@fastify/http-proxy';
-import { notNull } from '@gurban/kit/utils/flow-utils';
+import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { ConfigService } from '@nestjs/config';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
 
