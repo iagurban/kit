@@ -7,7 +7,6 @@ import { createGRPCMicroservice } from '@poslah/util/modules/register-grpc-modul
 
 import { AppModule } from './app.module';
 import { privateSigningGRPCConfig } from './grpc/signing.grpc-config';
-import { GrpcExceptionFilter } from './grpc-exception.filter';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('SIGNING_SERVICE_INTERNAL_PORT'), {
   server: config => config.getOrThrow<string>('SIGNING_SERVICE_INTERNAL_HOST', '0.0.0.0'),
@@ -19,8 +18,4 @@ void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('SIGNING_SE
       null /* no mTLS, it's made by proxy */
     ),
   ],
-  onAppCreated: app => {
-    // Apply the global filter to catch all gRPC exceptions, including serialization errors.
-    app.useGlobalFilters(new GrpcExceptionFilter());
-  },
 });

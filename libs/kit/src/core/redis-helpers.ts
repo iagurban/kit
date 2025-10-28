@@ -129,10 +129,6 @@ export const putJSONToRedisHash = async (
 
   // 2. Start a Redis pipeline (MULTI/EXEC transaction).
   const pipeline = redis.multi();
-
-  // HSET accepts a key and a flat object/record of fields and values.
-  // The implementation of HSET in many Node.js Redis clients allows passing
-  // the field-value pairs as a single object, similar to HMSET.
   pipeline.hset(key, fieldsToStore);
 
   // 3. If a TTL is provided, add the EXPIRE command to the pipeline.

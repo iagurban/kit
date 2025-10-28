@@ -11,7 +11,6 @@ import {
   SigningServiceController,
   SigningServiceControllerMethods,
 } from '../generated/grpc/src/grpc/signing';
-import { TokenCheckerService } from '../token-checker-module/token-checker.service';
 import { SigningService } from './signing.service';
 
 const cnPrefix = `CN=`;
@@ -26,7 +25,6 @@ const prepareServiceName = (value: unknown) => {
 export class SigningGrpcController implements SigningServiceController {
   constructor(
     private readonly signingService: SigningService,
-    public readonly tokenChecker: TokenCheckerService,
     @Inject(Logger) private readonly loggerBase: Logger
   ) {}
 

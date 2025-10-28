@@ -3,7 +3,7 @@ import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface'
 import { Controller } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisStreamHandler } from '@poslah/util/modules/nosql/redis/stream-consumer-module/redis-stream-handler.decorator';
+import { MqHandler } from '@poslah/util/modules/mq-consumer-module/mq-handler.decorator';
 import { IWithModuleRef } from '@poslah/util/modules/with-module-ref.interface';
 import { z } from 'zod';
 
@@ -30,7 +30,7 @@ export class ChatsStreamsController implements IWithModuleRef {
    * Listens to the durable stream of membership changes.
    * Its only job is to invalidate the Redis cache for the affected user.
    */
-  @RedisStreamHandler(eventsMembershipChangedTopic)
+  @MqHandler(eventsMembershipChangedTopic)
   async handleMembershipChange(data: z.infer<typeof eventsMembershipChangedTopic.schema>) {
     const {
       chatId,
@@ -57,7 +57,7 @@ export class ChatsStreamsController implements IWithModuleRef {
    * Consumes raw events from the internal `events.raw.create` topic,
    * triggers the save process, and handles message acknowledgement.
    */
-  @RedisStreamHandler(eventsRawCreateTopic)
+  @MqHandler(eventsRawCreateTopic)
   async handleRawEventCreate(data: z.infer<typeof eventsRawCreateTopic.schema>) {
     this.logger.info(`Received raw event to save: chatId=${data.chatId}, nn=${data.nn}`);
 

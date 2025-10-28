@@ -1,4 +1,4 @@
-import { DynamicModule, Global, Injectable, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Injectable, Module, Provider } from '@nestjs/common';
 import { randomBytes } from 'crypto';
 
 @Injectable()
@@ -23,15 +23,15 @@ export class ServiceInfo {
   }
 }
 
-@Global()
 @Module({})
 export class ServiceInfoModule {
   static forRootGlobal(name: string, shortName?: string): DynamicModule {
+    const si = ServiceInfo.provide(name, shortName);
     return {
       module: ServiceInfoModule,
       global: true,
-      providers: [ServiceInfo.provide(name, shortName)],
-      exports: [ServiceInfo],
+      providers: [si],
+      exports: [si],
     };
   }
 }

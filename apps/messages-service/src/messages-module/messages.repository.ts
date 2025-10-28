@@ -7,7 +7,7 @@ import { AttachmentInfoDto, ForwardInfoDto, MessageDto } from '@poslah/util/sche
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
 import { sortedIndex, sortedLastIndexBy } from 'lodash';
 
-import { MessagesRedisService } from './messages-redis.service';
+import { MessagesCacheService } from './messages-cache.service';
 
 /**
  * Maps the AttachmentInfoDto from the event to the snake_case format for ScyllaDB.
@@ -203,7 +203,7 @@ export class MessagesRepository {
 
   constructor(
     private readonly scyllaService: ScyllaService,
-    private readonly redisService: MessagesRedisService
+    private readonly redisService: MessagesCacheService
   ) {}
 
   readonly insert = (() => {

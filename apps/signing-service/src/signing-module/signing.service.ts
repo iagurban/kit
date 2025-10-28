@@ -6,14 +6,9 @@ import * as jwt from 'jsonwebtoken';
 import * as jose from 'node-jose';
 import { join } from 'path';
 
+import { InternalJWTPayload } from './internal-jwt-payload';
 import permissionsJson from './permissions.json';
 import { parsePermissions } from './permissions.zod';
-
-export type InternalJWTPayload = {
-  sub: string;
-  aud: string;
-  permissions: Record<string /* service */, readonly string[] /* methods (sorted!) */>;
-};
 
 @Injectable()
 export class SigningService implements OnModuleInit {

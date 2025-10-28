@@ -1,8 +1,7 @@
-import Redis from 'ioredis';
-
 import { isInteger, isString } from './core/checks';
 import { once } from './core/once';
 import { createContextualLogger, ILogger } from './interfaces/logger-interface';
+import { IPubSubSubscriberService } from './pubsub-subscriber-service.interface';
 import { sleep } from './utils/async-utils';
 
 export class RedisPubsubSubscription {
@@ -12,7 +11,7 @@ export class RedisPubsubSubscription {
 
   constructor(
     private readonly loggerBase: ILogger,
-    private readonly redisSubscriptionService: Redis,
+    private readonly subscriber: IPubSubSubscriberService,
     private readonly channel: string,
     handlers: {
       onSubscribed?: () => void;
@@ -79,11 +78,11 @@ export class RedisPubsubSubscription {
   private subscribing: Promise<void> | null = null;
 
   private subscribe() {
-    return this.redisSubscriptionService.subscribe(this.channel, this.callback);
+    return this.subscriber.subscribe(this.channel, this.callback);
   }
 
   private unsubscribe() {
-    return this.redisSubscriptionService.unsubscribe(this.channel, this.callback);
+    return this.subscriber.unsubscribe(this.channel, this.callback);
   }
 
   private readonly resubscribe = (): Promise<void> => {
@@ -139,8 +138,7 @@ export class RedisPubsubSubscription {
     }
 
     this.active = true;
-    this.redisSubscriptionService.on(`message`, this.onMessage);
-    this.redisSubscriptionService.on('ready', this.resubscribe);
+    this.subscriber.onMessage(`on`, this.onMessage).onReady(`on`, this.resubscribe);
     // Initial subscription attempt
     await this.resubscribe();
   }
@@ -151,11 +149,10 @@ export class RedisPubsubSubscription {
     }
     this.active = false;
 
-    this.redisSubscriptionService.off(`message`, this.onMessage);
-    this.redisSubscriptionService.off('ready', this.resubscribe);
+    this.subscriber.onMessage(`off`, this.onMessage).onReady(`off`, this.resubscribe);
 
     await this.subscribing;
-    await this.redisSubscriptionService.unsubscribe(this.channel, this.callback);
+    await this.subscriber.unsubscribe(this.channel, this.callback);
     this.subscribing = null;
   }
 }

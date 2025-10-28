@@ -1,7 +1,6 @@
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Controller } from '@nestjs/common';
-import { TokenCheckerService } from '@poslah/signing-service/token-checker-module/token-checker.service';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { protobufLongFromBigint, protobufLongToBigint } from '@poslah/util/protobuf/protobuf-long-to-bigint';
 import { protobufTimestampFromDate } from '@poslah/util/protobuf/protobuf-timestamp-to-date';
@@ -21,8 +20,7 @@ import { ChatsService } from './chats.service';
 export class ChatsGRPCController implements ChatsServiceController {
   constructor(
     private readonly chatsService: ChatsService,
-    private readonly loggerBase: Logger,
-    private readonly tokenChecker: TokenCheckerService
+    private readonly loggerBase: Logger
   ) {}
 
   @once

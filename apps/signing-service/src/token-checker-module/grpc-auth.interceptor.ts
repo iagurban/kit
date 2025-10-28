@@ -2,7 +2,6 @@ import { Metadata, status as GrpcStatus } from '@grpc/grpc-js';
 import { ServiceInfo } from '@gurban/kit/nest/service-info'; // Adjust path
 import { errorToString } from '@gurban/kit/utils/error-utils';
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RpcException } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
@@ -14,13 +13,6 @@ export class GrpcAuthInterceptor implements NestInterceptor {
     private readonly tokenChecker: TokenCheckerService,
     private readonly serviceInfo: ServiceInfo
   ) {}
-
-  static provide() {
-    return {
-      provide: APP_INTERCEPTOR,
-      useClass: GrpcAuthInterceptor,
-    };
-  }
 
   async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<unknown>> {
     // Check if this is an RPC call. If not, skip.

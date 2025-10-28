@@ -10,7 +10,7 @@ import {
   PubsubMessageDto,
 } from '@poslah/messages-service/topics/messages-upsert.pubsub-topic';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisSubscriptionService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { PubSubSubscriberService } from '@poslah/util/modules/pubsub/pubsub-subscriber.service';
 import { z } from 'zod/v4';
 
 const createStream = <T>(stream: AsyncIterator<T>, unsub: () => Promise<void>): AsyncIterableIterator<T> => ({
@@ -187,11 +187,11 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly chatsGRPCClient: ChatsGRPCClient,
     private readonly loggerBase: Logger,
-    private readonly redisSubscriptionService: RedisSubscriptionService
+    private readonly pubsubSubscriber: PubSubSubscriberService
   ) {
     this.messagesSubscription = new RedisPubsubSubscription(
       this.loggerBase,
-      this.redisSubscriptionService,
+      this.pubsubSubscriber,
       messagesUpsertPubsub.name,
       {
         onMessage: message => {
@@ -213,7 +213,7 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
 
     this.membershipSubscription = new RedisPubsubSubscription(
       this.loggerBase,
-      this.redisSubscriptionService,
+      this.pubsubSubscriber,
       userMembershipPubsub.name,
       {
         onSubscribed: () => {

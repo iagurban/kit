@@ -10,7 +10,7 @@ import * as jwt from 'jsonwebtoken';
 import { JwksClient } from 'jwks-rsa';
 import { sortedIndexOf } from 'lodash';
 
-import { InternalJWTPayload } from '../signing-module/signing.service';
+import { InternalJWTPayload } from '../signing-module/internal-jwt-payload';
 
 @Injectable()
 export class TokenCheckerService {

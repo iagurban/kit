@@ -1,7 +1,6 @@
-import { Redis } from 'ioredis';
-
 import { once } from './core/once';
 import { createContextualLogger, ILogger } from './interfaces/logger-interface';
+import { IPubSubSubscriberService } from './pubsub-subscriber-service.interface';
 import { RedisPubsubSubscription } from './redis-pubsub-subscription';
 import { errorToString } from './utils/error-utils';
 
@@ -23,14 +22,14 @@ export class CachedResource<T> {
   constructor(
     private readonly resourceName: string,
     private readonly fetchFn: () => Promise<T>,
-    redisSubscriptionService: Redis,
+    pubSubSubscriber: IPubSubSubscriberService,
     private readonly channel: string,
     private readonly loggerBase: ILogger,
     private readonly on: {
       loaded?: (data: T) => void;
     } = {}
   ) {
-    this.subscription = new RedisPubsubSubscription(loggerBase, redisSubscriptionService, channel, {
+    this.subscription = new RedisPubsubSubscription(loggerBase, pubSubSubscriber, channel, {
       onSubscribed: () => {
         // when subscribed, invalidate cache and fetch data
         void this.fetch(true);

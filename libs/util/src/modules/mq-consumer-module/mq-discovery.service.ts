@@ -5,16 +5,13 @@ import { Injectable, OnModuleInit, Type } from '@nestjs/common';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 
-import { Logger } from '../../../logger/logger.module';
-import { IWithModuleRef } from '../../../with-module-ref.interface';
-import { RedisStreamConsumer } from './redis-sream.consumer';
-import {
-  REDIS_STREAM_HANDLER_METADATA,
-  RedisStreamHandlerNestMetadata,
-} from './redis-stream-handler.decorator';
+import { Logger } from '../logger/logger.module';
+import { IWithModuleRef } from '../with-module-ref.interface';
+import { MqConsumer } from './mq.consumer';
+import { MQ_HANDLER_METADATA, MqHandlerNestMetadata } from './mq-handler.decorator';
 
 @Injectable()
-export class RedisStreamDiscoveryService implements OnModuleInit {
+export class MqDiscoveryService implements OnModuleInit {
   constructor(
     private readonly discoveryService: DiscoveryService,
     private readonly metadataScanner: MetadataScanner,
@@ -24,7 +21,7 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, RedisStreamDiscoveryService.name);
+    return createContextualLogger(this.loggerBase, MqDiscoveryService.name);
   }
 
   async onModuleInit() {
@@ -52,13 +49,13 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
 
   private async registerHandler(instance: unknown, methodName: string) {
     const methodRef = (instance as Record<string, Type>)[methodName];
-    const metadata = this.reflector.get(REDIS_STREAM_HANDLER_METADATA, methodRef);
+    const metadata = this.reflector.get(MQ_HANDLER_METADATA, methodRef);
 
     if (!metadata) {
       return;
     }
 
-    const { streamName, schema } = metadata as RedisStreamHandlerNestMetadata;
+    const { streamName, schema } = metadata as MqHandlerNestMetadata;
     const providerToken = `RedisStreamConsumer-${streamName}`;
 
     const instanceName = (instance as { constructor: { name: string } }).constructor.name;
@@ -73,7 +70,7 @@ export class RedisStreamDiscoveryService implements OnModuleInit {
 
     try {
       moduleRef
-        .get<RedisStreamConsumer>(providerToken, {
+        .get<MqConsumer>(providerToken, {
           strict: false,
         })
         .setHandler(methodRef.bind(instance), schema, `${instanceName}/${methodName}`);

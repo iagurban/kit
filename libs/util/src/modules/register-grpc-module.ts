@@ -1,10 +1,10 @@
 import { credentials, ServerCredentials } from '@grpc/grpc-js';
 import { isROArray } from '@gurban/kit/core/checks';
-import { DynamicModule, INestApplication, NestInterceptor } from '@nestjs/common';
+import { DynamicModule, INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GrpcAuthInterceptor } from '@poslah/signing-service/token-checker-module/grpc-auth.interceptor';
+import { GrpcExceptionFilter } from '@poslah/signing-service/token-checker-module/grpc-exception-filter';
 import { readFileSync } from 'fs';
 import Long from 'long';
 import { join } from 'path';
@@ -61,20 +61,14 @@ export const createGRPCMicroservice = async (
     logger.silent('Secure gRPC server detected. Verifying security interceptors...');
 
     try {
-      // Resolve the array of all globally registered interceptors
-      const interceptors = await app.resolve<NestInterceptor | readonly NestInterceptor[]>(APP_INTERCEPTOR);
-
-      const hasAuthInterceptor = (Array.isArray(interceptors) ? interceptors : [interceptors]).some(
-        inst => inst instanceof GrpcAuthInterceptor
-      );
-
-      if (!hasAuthInterceptor) {
-        logger.fatal('FATAL: GrpcAuthInterceptor is not registered globally.');
-        throw new Error('GrpcAuthInterceptor is not registered globally. This is a security risk.');
-      }
-      logger.silent('✅ gRPC security check passed: GrpcAuthInterceptor is registered.');
+      await app.resolve(GrpcAuthInterceptor);
+      await app.resolve(GrpcExceptionFilter);
+      logger.silent('gRPC security check passed: GrpcAuthInterceptor is registered.');
     } catch (error) {
-      logger.fatal({ error }, 'Failed to resolve APP_INTERCEPTOR. gRPC auth cannot be verified.');
+      logger.fatal(
+        { error },
+        'Failed to resolve APP_INTERCEPTOR. gRPC auth cannot be verified. Did you forget to import GrpcAuthModule?'
+      );
       throw error;
     }
   }

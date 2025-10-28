@@ -4,11 +4,11 @@ import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface'
 import { Injectable } from '@nestjs/common';
 import { z } from 'zod/v4';
 
-import { Logger } from '../../logger/logger.module';
-import { RedisService } from './redis.service';
+import { Logger } from '../logger/logger.module';
+import { RedisService } from '../nosql/redis/redis.service';
 
 @Injectable()
-export class SubscriptionsPublisherService {
+export class PubSubPublisherService {
   constructor(
     private readonly redis: RedisService,
     private readonly loggerBase: Logger
@@ -16,7 +16,7 @@ export class SubscriptionsPublisherService {
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, SubscriptionsPublisherService.name);
+    return createContextualLogger(this.loggerBase, PubSubPublisherService.name);
   }
 
   async publish<S extends z.ZodType, T extends Topic<S, string>>(

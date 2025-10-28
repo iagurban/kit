@@ -11,9 +11,9 @@ import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/opt
 import { Redis } from 'ioredis';
 import { treeifyError, ZodType } from 'zod/v4';
 
-import { Logger } from '../../../logger/logger.module';
-import { RedisModule } from '../redis.module';
-import { RedisFabric } from '../redis-client.factory';
+import { Logger } from '../logger/logger.module';
+import { RedisModule } from '../nosql/redis/redis.module';
+import { RedisFabric } from '../nosql/redis/redis-client.factory';
 
 export type ProcessMessageFunction = (
   data: ExtendedJsonValue,
@@ -21,7 +21,7 @@ export type ProcessMessageFunction = (
   ctx: { stopped: boolean }
 ) => Promise<void>;
 
-export interface RedisStreamConsumerConfigBase {
+export interface MqConsumerConfigBase {
   redisFabric: RedisFabric;
   consumerName: string;
   consumersGroup: string;
@@ -31,24 +31,28 @@ export interface RedisStreamConsumerConfigBase {
   reclaimOnceCount?: number;
 }
 
-export interface RedisStreamConsumerConfig extends RedisStreamConsumerConfigBase {
+export interface MqConsumerConfig extends MqConsumerConfigBase {
   streamName: string;
 }
 
-type RedisStreamConsumerConfigBaseInput = Omit<RedisStreamConsumerConfigBase, `consumersGroup`> & {
-  consumersGroup: string | { fullConsumersGroupName: string };
+type MqConsumerConfigBaseInput = Omit<MqConsumerConfigBase, `consumersGroup`> & {
+  consumersGroup:
+    | string /* postfix to service name */
+    | {
+        /* full name (dangerous - can be shared group because of group names interference */
+        fullConsumersGroupName: string;
+      }
+    | null /* use service name as a group name */;
 };
 
 // The options-interface is now simpler and more direct.
-export interface RedisStreamConsumerProviderOptions {
+export interface MqConsumerProviderOptions {
   inject?: (InjectionToken | OptionalFactoryDependency)[];
   /**
    * Factory function that returns the complete configuration for the consumer,
    * including the RedisFabric instance.
    */
-  useFactory: AnyAnyFunction<
-    Promise<RedisStreamConsumerConfigBaseInput> | RedisStreamConsumerConfigBaseInput
-  >;
+  useFactory: AnyAnyFunction<Promise<MqConsumerConfigBaseInput> | MqConsumerConfigBaseInput>;
 }
 
 // Type definition for the complex result of the XREADGROUP command
@@ -69,7 +73,7 @@ type XPendingResult =
  * A non-injectable class that encapsulates the logic for consuming messages
  * from a Redis stream. Instances are created and managed via the static `provide` method.
  */
-export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
+export class MqConsumer implements OnModuleInit, OnModuleDestroy {
   private redis?: Redis; // Client for the main consumption loop
   private reclaimRedis?: Redis; // Dedicated client for the reclaim loop
   private isRunning = false;
@@ -86,7 +90,7 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
   private readonly reclaimOnceCount: number;
 
   constructor(
-    config: RedisStreamConsumerConfig,
+    config: MqConsumerConfig,
     private readonly loggerBase: Logger
   ) {
     this.redisFabric = config.redisFabric;
@@ -107,10 +111,11 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, RedisStreamConsumer.name);
+    return createContextualLogger(this.loggerBase, MqConsumer.name);
   }
 
   async onModuleInit() {
+    // we are using dedicated redis clients for each long-running request (they will be busy)
     this.redis = this.redisFabric.create();
     this.reclaimRedis = this.redisFabric.create();
     await this.start();
@@ -218,7 +223,10 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
 
     void this.startReclaimLoop();
 
-    this.logger.info(`[${this.consumerName}] Starting consumption loop for ${this.processFunction.name}...`);
+    this.logger.info(
+      { consumerName: this.consumerName, group: this.consumersGroup },
+      `Starting consumption loop for ${this.processFunction.name}...`
+    );
     while (this.isRunning) {
       let messageId: string | null = null;
       try {
@@ -247,8 +255,12 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           const validationResult = this.processFunction.schema.safeParse(dataObject);
           if (!validationResult.success) {
             this.logger.error(
-              { error: treeifyError(validationResult.error) },
-              `[${this.consumerName}] Zod validation failed for message ${messageId}:`
+              {
+                error: treeifyError(validationResult.error),
+                consumerName: this.consumerName,
+                group: this.consumersGroup,
+              },
+              `Zod validation failed for message ${messageId}:`
             );
             await this.acknowledgeStream(streamName, messageId);
             continue;
@@ -287,7 +299,10 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    this.logger.info(`[${this.consumerName}] Starting reclaim loop for ${this.processFunction.name}...`);
+    this.logger.silent(
+      { consumerName: this.consumerName, group: this.consumersGroup },
+      `Starting reclaim loop for ${this.processFunction.name}...`
+    );
     const maxRetries = 3; // Example max retries for reclaimed messages
 
     while (this.isReclaiming) {
@@ -307,7 +322,8 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
 
           if (pendingInfo.deliveryCount > maxRetries) {
             this.logger.error(
-              `[${this.consumerName}] Message ${pendingInfo.messageId} exceeded max retries. Moving to DLQ.`
+              { consumerName: this.consumerName, group: this.consumersGroup },
+              `Message ${pendingInfo.messageId} exceeded max retries. Moving to DLQ.`
             );
             const claimResult = await this.performClaim(pendingInfo.messageId, 0);
             if (claimResult && claimResult.length > 0) {
@@ -319,7 +335,8 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           }
 
           this.logger.warn(
-            `[${this.consumerName}] Reclaiming stale message ${pendingInfo.messageId} (delivered ${pendingInfo.deliveryCount} times)...`
+            { consumerName: this.consumerName, group: this.consumersGroup },
+            `Reclaiming stale message ${pendingInfo.messageId} (delivered ${pendingInfo.deliveryCount} times)...`
           );
           const claimResult = await this.performClaim(pendingInfo.messageId, this.staleMessageTimeoutMs);
           if (claimResult && claimResult.length > 0) {
@@ -337,7 +354,10 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           }
         }
       } catch (error) {
-        this.logger.error({ error }, `[${this.consumerName}] Error in reclaim loop:`);
+        this.logger.error(
+          { error, consumerName: this.consumerName, group: this.consumersGroup },
+          `Error in reclaim loop:`
+        );
         await sleep(5000);
       }
     }
@@ -357,8 +377,8 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
         return; // Success
       } catch (retryError) {
         this.logger.warn(
-          { error: retryError },
-          `[${this.consumerName}] Attempt ${attempt} failed for message ${messageId}. Retrying...`
+          { error: retryError, consumerName: this.consumerName, group: this.consumersGroup },
+          `Attempt ${attempt} failed for message ${messageId}. Retrying...`
         );
         await sleep(1000 + Math.random() * 2000);
       }
@@ -383,10 +403,7 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
    * @param options The factory options for creating the consumer instance.
    * @returns A NestJS Provider.
    */
-  public static provide(
-    streamName: string,
-    options: RedisStreamConsumerProviderOptions
-  ): FactoryProvider<RedisStreamConsumer> {
+  public static provide(streamName: string, options: MqConsumerProviderOptions): FactoryProvider<MqConsumer> {
     const token = `RedisStreamConsumer-${streamName}`;
 
     return {
@@ -406,33 +423,34 @@ export class RedisStreamConsumer implements OnModuleInit, OnModuleDestroy {
           ...consumerConfig,
           streamName,
           consumersGroup:
-            typeof consumersGroup === `string`
-              ? `${serviceInfo.name}-${consumersGroup}`
-              : consumersGroup.fullConsumersGroupName,
-        } satisfies RedisStreamConsumerConfig;
-        return new RedisStreamConsumer(fullConfig, loggerBase);
-      }) as AnyAnyFunction<Promise<RedisStreamConsumer> | RedisStreamConsumer>,
+            consumersGroup == null
+              ? serviceInfo.name
+              : typeof consumersGroup === `string`
+                ? `${serviceInfo.name}-${consumersGroup}`
+                : consumersGroup.fullConsumersGroupName,
+        } satisfies MqConsumerConfig;
+        return new MqConsumer(fullConfig, loggerBase);
+      }) as AnyAnyFunction<Promise<MqConsumer> | MqConsumer>,
     };
   }
 
   public static provideDefault(
     streamName: string,
-    consumersGroupPostfix: string | { fullConsumersGroupName: string } | null,
+    consumersGroup:
+      | string /* postfix to service name */
+      | {
+          /* full name (dangerous - can be shared group because of group names interference */
+          fullConsumersGroupName: string;
+        }
+      | null /* use service name as a group name */,
     redisFabricConfig: string = `default`
-  ): FactoryProvider<RedisStreamConsumer> {
-    return RedisStreamConsumer.provide(streamName, {
+  ): FactoryProvider<MqConsumer> {
+    return MqConsumer.provide(streamName, {
       inject: [ServiceInfo, RedisModule.getRedisFabricToken(redisFabricConfig)],
-      useFactory: (
-        { clientName: consumerName, name: consumersGroup }: ServiceInfo,
-        redisFabric: RedisFabric
-      ) => ({
+      useFactory: ({ clientName: consumerName }: ServiceInfo, redisFabric: RedisFabric) => ({
         redisFabric,
         consumerName,
-        consumersGroup: consumersGroupPostfix
-          ? typeof consumersGroupPostfix === `string`
-            ? `${consumersGroup}-${consumersGroupPostfix}`
-            : consumersGroupPostfix.fullConsumersGroupName
-          : consumersGroup,
+        consumersGroup,
       }),
     });
   }

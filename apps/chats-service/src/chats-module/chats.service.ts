@@ -8,7 +8,7 @@ import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisStreamEmitter } from '@poslah/util/modules/nosql/redis/redis-stream-emitter';
+import { MqPublisher } from '@poslah/util/modules/nosql/redis/mq-publisher';
 import { UpdateChatPermissionsDto } from '@poslah/util/schemas/chat-permissions-schema';
 import { MembershipEventDto } from '@poslah/util/schemas/membership-event-schema';
 import type { RawEventDto } from '@poslah/util/schemas/raw-event-schema';
@@ -45,7 +45,7 @@ export class ChatsService /*implements OnModuleInit*/ {
     private readonly db: DbService,
     private readonly loggerBase: Logger,
     private readonly eventChecker: EventsCheckerService,
-    private readonly streamEmitter: RedisStreamEmitter,
+    private readonly streamEmitter: MqPublisher,
     // private readonly tokenFetcher: TokenFetcherService,
     // private readonly tokenChecker: TokenCheckerService,
     private readonly repository: ChatsRepository

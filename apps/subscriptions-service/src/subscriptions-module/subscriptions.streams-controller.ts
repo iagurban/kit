@@ -8,15 +8,15 @@ import { messagesUpsertPubsub } from '@poslah/messages-service/topics/messages-u
 import { projectionMessageCreatedTopic } from '@poslah/messages-service/topics/projection-message-created.topic';
 import { projectionMessagePatchedTopic } from '@poslah/messages-service/topics/projection-message-patched.topic';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisStreamHandler } from '@poslah/util/modules/nosql/redis/stream-consumer-module/redis-stream-handler.decorator';
-import { SubscriptionsPublisherService } from '@poslah/util/modules/nosql/redis/subscriptions-publisher.service';
+import { MqHandler } from '@poslah/util/modules/mq-consumer-module/mq-handler.decorator';
+import { PubSubPublisherService } from '@poslah/util/modules/pubsub/pubsub-publisher.service';
 import { IWithModuleRef } from '@poslah/util/modules/with-module-ref.interface';
 import { z } from 'zod/v4';
 
 @Controller()
 export class SubscriptionsStreamsController implements IWithModuleRef {
   constructor(
-    private readonly publisherService: SubscriptionsPublisherService,
+    private readonly publisherService: PubSubPublisherService,
     private readonly loggerBase: Logger,
     readonly moduleRef: ModuleRef
   ) {}
@@ -26,7 +26,7 @@ export class SubscriptionsStreamsController implements IWithModuleRef {
     return createContextualLogger(this.loggerBase, SubscriptionsStreamsController.name);
   }
 
-  @RedisStreamHandler(projectionMessageCreatedTopic)
+  @MqHandler(projectionMessageCreatedTopic)
   async handleMessageCreated(data: z.infer<typeof projectionMessageCreatedTopic.schema>) {
     try {
       await this.publisherService.publish(messagesUpsertPubsub, data);
@@ -36,7 +36,7 @@ export class SubscriptionsStreamsController implements IWithModuleRef {
     }
   }
 
-  @RedisStreamHandler(projectionMessagePatchedTopic)
+  @MqHandler(projectionMessagePatchedTopic)
   async handleMessagePatched(data: z.infer<typeof projectionMessagePatchedTopic.schema>) {
     try {
       await this.publisherService.publish(messagesUpsertPubsub, data);
@@ -46,7 +46,7 @@ export class SubscriptionsStreamsController implements IWithModuleRef {
     }
   }
 
-  @RedisStreamHandler(eventsMembershipChangedTopic)
+  @MqHandler(eventsMembershipChangedTopic)
   async handleMembershipChange(data: z.infer<typeof eventsMembershipChangedTopic.schema>) {
     const { chatId, payload, type } = data;
     try {

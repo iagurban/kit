@@ -8,7 +8,7 @@ import { Logger } from '../../logger/logger.module';
 import { RedisService } from './redis.service';
 
 @Injectable()
-export class RedisStreamEmitter {
+export class MqPublisher {
   constructor(
     private readonly redis: RedisService,
     private readonly loggerBase: Logger
@@ -16,7 +16,7 @@ export class RedisStreamEmitter {
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, RedisStreamEmitter.name);
+    return createContextualLogger(this.loggerBase, MqPublisher.name);
   }
 
   /**

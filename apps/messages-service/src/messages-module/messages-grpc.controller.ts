@@ -1,5 +1,4 @@
 import { Controller, NotFoundException } from '@nestjs/common';
-import { TokenCheckerService } from '@poslah/signing-service/token-checker-module/token-checker.service';
 import { protobufLongToBigint } from '@poslah/util/protobuf/protobuf-long-to-bigint';
 import { protobufTimestampFromDate } from '@poslah/util/protobuf/protobuf-timestamp-to-date';
 
@@ -14,10 +13,7 @@ import { MessagesRepository } from './messages.repository';
 @Controller()
 @MessagesServiceControllerMethods()
 export class MessagesGrpcController implements MessagesServiceController {
-  constructor(
-    private readonly messagesDb: MessagesRepository,
-    public readonly tokenChecker: TokenCheckerService
-  ) {}
+  constructor(private readonly messagesDb: MessagesRepository) {}
 
   async getMessageAuthInfo(request: GetMessageAuthInfoRequest): Promise<GetMessageAuthInfoResponse> {
     const [messageInfo] = await this.messagesDb.getById(request.chatId, [protobufLongToBigint(request.nn)], {

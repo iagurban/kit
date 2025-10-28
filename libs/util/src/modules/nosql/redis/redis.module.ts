@@ -1,12 +1,13 @@
 import { AnyFunction } from '@gurban/kit/utils/types';
-import { Abstract, DynamicModule, ForwardReference, Inject, Module, Provider } from '@nestjs/common';
+import { DynamicModule, Inject, Module, Provider } from '@nestjs/common';
 import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
 
-import { NestImportable } from '../../../nest-types';
+import { NestExportable, NestImportable } from '../../../nest-types';
+import { CacheService } from './cache.service';
+import { MqPublisher } from './mq-publisher';
 import { RedisFabric, RedisFabricOptions } from './redis-client.factory';
 import { RedisScriptManager } from './redis-script-manager';
-import { RedisStreamEmitter } from './redis-stream-emitter';
 
 /** Configuration options for a single Redis instance. */
 export type RedisOptions = {
@@ -29,17 +30,10 @@ export class RedisModule {
   static readonly getRedisFabricToken = (name: string = `default`) => `REDIS_FABRIC_${name}`;
 
   public static forRoot(config: RedisConfig, global?: boolean): DynamicModule {
-    const providers: Provider[] = [RedisScriptManager, RedisStreamEmitter];
-    const exports: (
-      | DynamicModule
-      | string
-      | symbol
-      | Provider
-      | ForwardReference
-      | Abstract<unknown>
-      | AnyFunction
-    )[] = [RedisScriptManager, RedisStreamEmitter];
+    const providers: Provider[] = [RedisScriptManager, MqPublisher, CacheService];
+
     const imports: NestImportable[] = [];
+    const exports: NestExportable[] = [RedisScriptManager, MqPublisher, CacheService];
 
     // --- Create a Fabric Provider for each named configuration ---
     for (const name in config) {

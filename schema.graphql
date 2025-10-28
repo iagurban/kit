@@ -241,15 +241,15 @@ type Query
   dummyQuery: Float! @join__field(graph: CHATS)
   joinedChats: [Chat!]! @join__field(graph: CHATS)
   getMessages(
-    """Fetch messages with a sequence number greater than this value."""
-    greaterThanNn: Int
+    chatId: String!
 
-    """Fetch messages with a sequence number less than this value."""
-    lessThanNn: Int
+    """Greater than. Fetches messages newer than this nn."""
+    gt: BigInt
+    limit: Int = 30
 
-    """The maximum number of messages to return."""
-    limit: Int
-  ): Message! @join__field(graph: MESSAGES)
+    """Less than. Fetches messages older than this nn."""
+    lt: BigInt
+  ): [Message!]! @join__field(graph: MESSAGES)
 }
 
 type RefreshToken

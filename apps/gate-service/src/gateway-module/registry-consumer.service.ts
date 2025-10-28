@@ -4,10 +4,11 @@ import { CachedResource } from '@gurban/kit/cached-resource';
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { IPubSubSubscriberService } from '@gurban/kit/pubsub-subscriber-service.interface';
 import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisService, RedisSubscriptionService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import { parse } from 'graphql';
 
 export interface ProxyRoute {
@@ -26,15 +27,15 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
   readonly supergraphSdlResource: CachedResource<string | null>;
 
   constructor(
-    private readonly redis: RedisService,
-    private readonly subRedis: RedisSubscriptionService,
+    private readonly cache: CacheService,
+    private readonly pubSubSubscriber: IPubSubSubscriberService,
     private readonly configService: ConfigService,
     private readonly loggerBase: Logger
   ) {
     this.proxyRoutesResource = new CachedResource(
       'ProxyRoutes',
       this.internalFetchAndBuildProxyRoutes.bind(this),
-      this.subRedis,
+      this.pubSubSubscriber,
       'gateway:routes_updated',
       this.loggerBase
     );
@@ -42,7 +43,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     this.supergraphSdlResource = new CachedResource(
       'SupergraphSDL',
       this.internalFetchAndComposeSupergraph.bind(this),
-      this.subRedis,
+      this.pubSubSubscriber,
       'gateway:graphql_updated',
       this.loggerBase
     );
@@ -68,11 +69,11 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
   }
 
   private async internalFetchAndBuildProxyRoutes(): Promise<ExMap<string, ProxyRoute[]>> {
-    const serviceNames = await this.redis.smembers('gateway:proxy-services');
+    const serviceNames = await this.cache.getSetMembers('gateway:proxy-services');
     const allRoutes = new ExMap<string, ProxyRoute[]>();
 
     for (const serviceName of serviceNames) {
-      const routesJson = await this.redis.hgetall(`gateway:proxy-routes:${serviceName}`);
+      const routesJson = await this.cache.getAllHashFieldsValues(`gateway:proxy-routes:${serviceName}`);
       if (!routesJson) {
         continue;
       }
@@ -105,7 +106,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
   }
 
   private async internalFetchAndComposeSupergraph(): Promise<string | null> {
-    const subgraphEntries = await this.redis.hgetall('gateway:graphql_subgraphs');
+    const subgraphEntries = await this.cache.getAllHashFieldsValues('gateway:graphql_subgraphs');
 
     if (Object.keys(subgraphEntries).length === 0) {
       this.logger.warn('No subgraph schemas found in Redis. Supergraph not built.');

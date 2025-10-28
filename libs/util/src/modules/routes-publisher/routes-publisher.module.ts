@@ -1,16 +1,15 @@
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
-import { DynamicModule, Inject, Injectable, Module, OnModuleInit, RequestMethod } from '@nestjs/common';
+import { ServiceInfo } from '@gurban/kit/nest/service-info';
+import { Injectable, Module, OnModuleInit, RequestMethod } from '@nestjs/common';
 import { METHOD_METADATA, PATH_METADATA } from '@nestjs/common/constants';
 import { ConfigService } from '@nestjs/config';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 
 import { Logger } from '../logger/logger.module';
-import { RedisService } from '../nosql/redis/redis.service';
+import { CacheService } from '../nosql/redis/cache.service';
 import { GATEWAY_ENDPOINT_METADATA, GatewayEndpointOptions } from './gateway-endpoint.decorator';
-
-const serviceNameSymbol = Symbol(`SERVICE_NAME`);
 
 @Injectable()
 export class RoutePublisherService implements OnModuleInit {
@@ -18,10 +17,10 @@ export class RoutePublisherService implements OnModuleInit {
     private readonly discovery: DiscoveryService,
     private readonly reflector: Reflector,
     private readonly metadataScanner: MetadataScanner,
-    private readonly redis: RedisService,
+    private readonly cache: CacheService,
     private readonly config: ConfigService,
     private readonly loggerBase: Logger,
-    @Inject(serviceNameSymbol) private readonly serviceName: string
+    private readonly serviceInfo: ServiceInfo
   ) {}
 
   @once
@@ -30,7 +29,7 @@ export class RoutePublisherService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    const serviceName = this.serviceName; // e.g., "chats"
+    const serviceName = this.serviceInfo.shortName; // e.g., "chats"
 
     // This is the final object we will publish to Redis.
     // Key: The public wildcard path (e.g., "/api/chats/v1/auth/endpoint/*/something")
@@ -118,20 +117,14 @@ export class RoutePublisherService implements OnModuleInit {
           Object.fromEntries(methods.toArray((v, k) => [k, v] as const))
         );
       }
-      await this.redis.hmset(redisKey, routesToPublish);
-      await this.redis.sadd('gateway:proxy-services', serviceName);
+      await this.cache.putObjectToHash(redisKey, routesToPublish);
+      await this.cache.addToSet('gateway:proxy-services', serviceName);
     }
   }
 }
 
-@Module({})
-export class RoutesPublisherModule {
-  static forRoot = (serviceName: string): DynamicModule => {
-    return {
-      module: RoutesPublisherModule,
-      providers: [{ provide: serviceNameSymbol, useValue: serviceName }, RoutePublisherService],
-      exports: [RoutePublisherService],
-      global: true,
-    };
-  };
-}
+@Module({
+  providers: [RoutePublisherService],
+  exports: [RoutePublisherService],
+})
+export class RoutesPublisherModule {}

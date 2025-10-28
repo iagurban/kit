@@ -3,10 +3,8 @@ import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { eventsMembershipChangedTopic } from '@poslah/chats-service/topics/events-membership-changed-topic';
 import { projectionMessageCreatedTopic } from '@poslah/messages-service/topics/projection-message-created.topic';
 import { projectionMessagePatchedTopic } from '@poslah/messages-service/topics/projection-message-patched.topic';
-import { TokenCheckerModule } from '@poslah/signing-service/token-checker-module/token-checker.module';
 import { TokenFetcherModule } from '@poslah/signing-service/token-fetcher-module/token-fetcher.module';
-import { RedisStreamConsumerModule } from '@poslah/util/modules/nosql/redis/stream-consumer-module/redis-stream-consumer.module';
-import { SubscriptionsPublisherService } from '@poslah/util/modules/nosql/redis/subscriptions-publisher.service';
+import { MqConsumerModule } from '@poslah/util/modules/mq-consumer-module/mq-consumer.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
 import { SubscriptionsResolver } from './subscriptions.resolver';
@@ -16,9 +14,8 @@ import { SubscriptionsStreamsController } from './subscriptions.streams-controll
 @Module({
   imports: [
     TokenFetcherModule,
-    TokenCheckerModule,
     RedisStaticModule,
-    RedisStreamConsumerModule.forRoot(
+    MqConsumerModule.forRoot(
       [
         projectionMessageCreatedTopic.name,
         projectionMessagePatchedTopic.name,
@@ -27,7 +24,7 @@ import { SubscriptionsStreamsController } from './subscriptions.streams-controll
       RedisStaticModule
     ),
   ],
-  providers: [ChatsGRPCClient, SubscriptionsService, SubscriptionsResolver, SubscriptionsPublisherService],
+  providers: [ChatsGRPCClient, SubscriptionsService, SubscriptionsResolver],
   controllers: [SubscriptionsStreamsController],
   exports: [SubscriptionsService],
 })

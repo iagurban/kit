@@ -1,9 +1,10 @@
+import { JsonObject } from '@gurban/kit/core/json-type';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import { MessageDto } from '@poslah/util/schemas/message.schema';
 
 /**
@@ -33,15 +34,15 @@ const chatDeletedCountsKey = 'chats:deleted-counts';
 const chatMetadataKey = (chatId: string) => `chat-metadata:${chatId}`;
 
 @Injectable()
-export class MessagesRedisService {
+export class MessagesCacheService {
   constructor(
-    private readonly redis: RedisService,
+    private readonly cache: CacheService,
     private readonly loggerBase: Logger
   ) {}
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, MessagesRedisService.name);
+    return createContextualLogger(this.loggerBase, MessagesCacheService.name);
   }
 
   // =======================================================================
@@ -53,23 +54,24 @@ export class MessagesRedisService {
    * algorithm in a single, efficient pipelined query.
    */
   async getChatSyncMetadata(chatId: string): Promise<ChatSyncMetadata> {
-    const pipeline = this.redis
-      .pipeline()
-      // 1. Get a total message count for the chat
-      .hget(chatTotalCountsKey, chatId)
-      // 2. Get a deleted message count for the chat
-      .hget(chatDeletedCountsKey, chatId)
-      // 3. Get an `nn` of the last message from the chat's metadata hash
-      .hget(chatMetadataKey(chatId), `nn`);
+    const metadataKey = chatMetadataKey(chatId);
 
-    const results = await pipeline.exec();
+    const results = await this.cache.getManyFieldsValues({
+      // 1. Get a total message count for the chat
+      [chatTotalCountsKey]: chatId,
+      // 2. Get a deleted message count for the chat
+      [chatDeletedCountsKey]: chatId,
+      // 3. Get an `nn` of the last message from the chat's metadata hash
+      [metadataKey]: `nn`,
+    });
+
     if (!results) {
       throw new Error('Redis pipeline execution failed');
     }
 
-    const totalCountStr = results[0][1] as string | null;
-    const deletedCountStr = results[1][1] as string | null;
-    const latestChatNnStr = results[2][1] as string | null;
+    const totalCountStr = results[chatTotalCountsKey];
+    const deletedCountStr = results[chatDeletedCountsKey];
+    const latestChatNnStr = results[metadataKey];
 
     return {
       totalCount: totalCountStr ? parseInt(totalCountStr, 10) : 0,
@@ -83,20 +85,20 @@ export class MessagesRedisService {
    * This is used for populating the chat list UI.
    */
   async getLastMessageSnapshot(chatId: string): Promise<LastMessageSnapshot | null> {
-    const data = (await this.redis.hgetall(chatMetadataKey(chatId))) as {
-      [K in keyof LastMessageSnapshot]?: string;
-    };
+    const data = (await this.cache.getHashAsObject(chatMetadataKey(chatId))) as
+      | { [K in keyof LastMessageSnapshot]?: string }
+      | null;
 
-    if (!data.nn) {
+    if (!data?.nn) {
       return null;
     }
 
-    // Convert from string-based hash back to native types
+    // The values are already parsed from JSON strings to native types.
     return {
+      nn: BigInt(data.nn),
       text: data.text ?? null,
       authorId: notNull(data.authorId),
       createdAt: new Date(notNull(data.createdAt)),
-      nn: BigInt(data.nn),
     };
   }
 
@@ -108,14 +110,14 @@ export class MessagesRedisService {
    * Atomically increments the total message count for a chat.
    */
   async incrementTotalCount(chatId: string): Promise<void> {
-    await this.redis.hincrby(chatTotalCountsKey, chatId, 1);
+    await this.cache.increment(chatTotalCountsKey, chatId, 1);
   }
 
   /**
    * Atomically increments the deleted message count for a chat.
    */
   async incrementDeletedCount(chatId: string): Promise<void> {
-    await this.redis.hincrby(chatDeletedCountsKey, chatId, 1);
+    await this.cache.increment(chatDeletedCountsKey, chatId, 1);
   }
 
   /**
@@ -124,15 +126,15 @@ export class MessagesRedisService {
    * causes the last message to change.
    */
   async setLastMessageSnapshot(chatId: string, message: MessageDto): Promise<void> {
-    // We must convert native types to strings for storage in a Redis Hash.
-    const snapshotData = {
+    // putJSONToRedisHash will JSON.stringify each value, preserving type info.
+    const snapshotData: JsonObject = {
       nn: message.nn.toString(),
-      text: message.text || '',
+      text: message.text || null,
       authorId: message.authorId,
       createdAt: message.createdAt.toISOString(),
-      // authorName: message
-    } satisfies { [K in keyof LastMessageSnapshot]: string };
+    };
 
-    await this.redis.hset(chatMetadataKey(chatId), snapshotData);
+    // This helper function handles serialization and uses a pipeline for atomicity.
+    await this.cache.putObjectToHash(chatMetadataKey(chatId), snapshotData);
   }
 }

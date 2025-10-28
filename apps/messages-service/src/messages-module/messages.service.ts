@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisStreamEmitter } from '@poslah/util/modules/nosql/redis/redis-stream-emitter';
+import { MqPublisher } from '@poslah/util/modules/nosql/redis/mq-publisher';
 import { CreateMessageEventDTO } from '@poslah/util/schemas/create-message-event-schema';
 import { MessageDto } from '@poslah/util/schemas/message.schema';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
@@ -23,7 +23,7 @@ export class MessagesService {
     private readonly loggerBase: Logger,
     private readonly messagesDb: MessagesRepository,
     private readonly chatsGRPCClient: ChatsGRPCClient,
-    private readonly streamEmitter: RedisStreamEmitter
+    private readonly streamEmitter: MqPublisher
   ) {}
 
   @once

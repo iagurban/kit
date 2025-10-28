@@ -4,8 +4,8 @@ import { ServiceInfo } from '@gurban/kit/nest/service-info';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 
 import { Logger } from '../logger/logger.module';
-import { RedisService } from '../nosql/redis/redis.service';
-import { RedisScriptManager } from '../nosql/redis/redis-script-manager';
+import { CacheService } from '../nosql/redis/cache.service';
+import { PubSubPublisherService } from '../pubsub/pubsub-publisher.service';
 import { publishGraphqlSubgraph } from './publish-graphql-subgraph';
 
 export const subgraphPublisherOptionsToken: unique symbol = Symbol(`SUBGRAPH_PUBLISHER_OPTIONS`);
@@ -18,8 +18,8 @@ export type SubgraphPublisherOptions = {
 @Injectable()
 export class SubgraphPublisher implements OnModuleInit {
   constructor(
-    private readonly redis: RedisService,
-    private readonly scriptManager: RedisScriptManager,
+    private readonly cache: CacheService,
+    private readonly publisher: PubSubPublisherService,
     private readonly loggerBase: Logger,
 
     @Inject(subgraphPublisherOptionsToken)
@@ -35,8 +35,8 @@ export class SubgraphPublisher implements OnModuleInit {
 
   async onModuleInit() {
     await publishGraphqlSubgraph({
-      redis: this.redis,
-      scriptManager: this.scriptManager,
+      cache: this.cache,
+      publisher: this.publisher,
       logger: this.loggerBase,
       serviceName: this.serviceInfo.shortName, // The name of this subgraph
       schemaPath: this.options.schemaPath, // Path to its schema file

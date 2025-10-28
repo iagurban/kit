@@ -14,7 +14,7 @@ import { Prisma, StoredFile, UploadSession } from '@poslah/database/generated/db
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod/v4';
 
@@ -93,7 +93,7 @@ export class FilesService {
     private readonly loggerBase: Logger,
     private readonly db: DbService,
     private readonly s3: S3Service,
-    private readonly redis: RedisService,
+    private readonly cache: CacheService,
     private readonly repository: FilesRepository
   ) {}
 
@@ -158,7 +158,7 @@ export class FilesService {
       const reportToken = uuidv4();
       const redisKey = `upload:report-token:${reportToken}`;
       const redisValue = JSON.stringify({ sessionId: session.id, chunkId: chunk.id });
-      await this.redis.set(redisKey, redisValue, 'EX', this.reportTokenTTLSec);
+      await this.cache.setKey(redisKey, redisValue, { ttl: this.reportTokenTTLSec });
 
       await this.repository.uploadChunkHasLeased(chunkId);
 
@@ -171,7 +171,7 @@ export class FilesService {
 
   async reportChunk(reportToken: string, body: ReportArgs, parallel: number = 4): Promise<GuideResponseDto> {
     const redisKey = `upload:report-token:${reportToken}`;
-    const tokenDataJson = await this.redis.getdel(redisKey);
+    const tokenDataJson = await this.cache.getAndDeleteKey(redisKey);
     if (!tokenDataJson) {
       throw new ForbiddenException('Invalid or expired report token.');
     }

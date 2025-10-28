@@ -1,16 +1,11 @@
 import { JsonObject } from '@gurban/kit/core/json-type';
 import { once } from '@gurban/kit/core/once';
-import {
-  getRedisHashToJSON,
-  getRedisHashToValuesByFields,
-  putJSONToRedisHash,
-} from '@gurban/kit/core/redis-helpers';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { RedisService } from '@poslah/util/modules/nosql/redis/redis.service';
+import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import {
   ChatPermissionsDto,
   chatPermissionsSchema,
@@ -31,7 +26,7 @@ export class ChatPermissionsService {
   constructor(
     private readonly db: DbService,
     private readonly loggerBase: Logger,
-    private readonly redis: RedisService
+    private readonly cache: CacheService
   ) {}
 
   @once
@@ -122,8 +117,7 @@ export class ChatPermissionsService {
         effectivePermissions === true ? ChatPermissionsService.ownerPermissions : effectivePermissions;
 
       const cacheKey = ChatPermissionsService.cacheKey(chatId, userId);
-      await putJSONToRedisHash(
-        this.redis,
+      await this.cache.putObjectToHash(
         cacheKey,
         permissionsToCache as JsonObject, // Cast to JsonObject for the utility function
         { ttl: 600 } // 10 minutes
@@ -147,7 +141,7 @@ export class ChatPermissionsService {
     const cacheKey = ChatPermissionsService.cacheKey(chatId, userId);
 
     // 2. Try to get the permissions from the Redis Hash.
-    const cachedData = await getRedisHashToJSON(this.redis, cacheKey, {
+    const cachedData = await this.cache.getHashAsObject(cacheKey, {
       // Implement the fallback to log the corruption/parsing error
       fallback: (stringValue, error) => {
         this.logger.warn(
@@ -216,7 +210,7 @@ export class ChatPermissionsService {
     const cacheKey = ChatPermissionsService.cacheKey(chatId, userId);
 
     // 1. Try to fetch only the required keys from the Redis Hash.
-    const cachedData = await getRedisHashToValuesByFields(this.redis, cacheKey, keys, {
+    const cachedData = await this.cache.getHashFieldsValues(cacheKey, keys, {
       fallback: (stringValue, field, error) => {
         // Log corruption and return null to treat this field as a cache miss/missing key.
         this.logger.warn(
@@ -252,6 +246,6 @@ export class ChatPermissionsService {
    */
   public async invalidatePermissionsCache(chatId: string, userId: string): Promise<void> {
     const cacheKey = ChatPermissionsService.cacheKey(chatId, userId);
-    await this.redis.del(cacheKey);
+    await this.cache.delete(cacheKey);
   }
 }
