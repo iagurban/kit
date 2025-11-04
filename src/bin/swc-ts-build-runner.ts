@@ -1,7 +1,17 @@
 import { execSync, spawn } from 'child_process';
+import * as fs from 'fs';
 import * as path from 'path';
 
 import { catchingAsync } from '../utils/flow/flow-utils';
+
+function pickExisting(paths: string[]): string | undefined {
+  for (const p of paths) {
+    if (fs.existsSync(p)) {
+      return p;
+    }
+  }
+  return undefined;
+}
 
 async function findBinPath(name: string): Promise<string> {
   return execSync(`yarn bin ${name}`).toString().trim();
@@ -17,7 +27,14 @@ const kill = (pid: number, signal: NodeJS.Signals) => {
 };
 
 async function main() {
-  const scriptToRun = path.join(path.dirname(process.argv[1]), '../../../src/bin/swc-ts-build.ts');
+  const scriptToRun = pickExisting([
+    path.join(path.dirname(process.argv[1]), './swc-ts-build.ts'),
+    path.join(path.dirname(process.argv[1]), './swc-ts-build.js'),
+  ]);
+  if (!scriptToRun) {
+    console.error('Failed to find script to run');
+    process.exit(1);
+  }
   const argsForScript = process.argv.slice(2);
 
   const command = await catchingAsync(
@@ -25,7 +42,7 @@ async function main() {
     () => findBinPath(`ts-node`)
   );
 
-  const child = spawn(command, [scriptToRun, ...argsForScript], {
+  const child = spawn(`yarn`, [`node`, command, scriptToRun, ...argsForScript], {
     detached: true, // Detach the child process into its own process group
     stdio: 'inherit', // Pipe child's stdio to parent's stdio
   });
