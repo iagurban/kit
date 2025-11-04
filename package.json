@@ -15,7 +15,6 @@
     "clean-md": "./dist/src/bin/clean-md.js",
     "fetch-unicode-letters-ranges": "./dist/src/bin/fetch-unicode-letters-ranges.js",
     "fix-graphql-codegen": "./dist/src/bin/fix-graphql-codegen.js",
-    "mirr": "./dist/src/bin/copy.js",
     "swc-ts-build": "./dist/src/bin/swc-ts-build-runner.js",
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
   },
