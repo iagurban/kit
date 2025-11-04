@@ -48,13 +48,11 @@ export class MtlsProxyService implements OnModuleInit, OnApplicationShutdown {
     const publicPort = this.configService.getOrThrow<string>('SIGNING_SERVICE_PORT');
     const publicUrl = `${publicHost}:${publicPort}`;
 
-    const certsFolder = join(__dirname, '../../certs');
-
     // 1. Configure the HTTP/2 server for mTLS.
     const httpsOptions: http2.SecureServerOptions = {
-      key: fs.readFileSync(join(certsFolder, 'server.key')),
-      cert: fs.readFileSync(join(certsFolder, 'server.crt')),
-      ca: [fs.readFileSync(join(certsFolder, 'ca.crt'))],
+      key: fs.readFileSync(join(process.cwd(), this.configService.getOrThrow(`CERTS_SERVER_KEY`))),
+      cert: fs.readFileSync(join(process.cwd(), this.configService.getOrThrow(`CERTS_SERVER_CRT`))),
+      ca: [fs.readFileSync(join(process.cwd(), this.configService.getOrThrow(`CA_CRT`)))],
       requestCert: true, // Ask for a client cert, but don't require it.
       rejectUnauthorized: false, // ** THE KEY FIX **: Allow clients without certs to connect.
     };

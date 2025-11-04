@@ -57,7 +57,7 @@ export class CachedResource<T> {
    * This should be called from the parent service's `onModuleInit`.
    */
   public async initialize(): Promise<void> {
-    this.logger.silent(`Initializing and warming cache for resource: [${this.resourceName}]`);
+    this.logger.trace(`Initializing and warming cache for resource: [${this.resourceName}]`);
 
     await this.subscription.activate();
     // The initial fetch will be triggered in onSubscribed
@@ -84,7 +84,7 @@ export class CachedResource<T> {
    */
   public fetch(force: boolean = false): Promise<T> {
     if (force || !this.dataPromise) {
-      this.logger.silent(`Cache miss for [${this.resourceName}]. Initiating fetch.`);
+      this.logger.trace(`Cache miss for [${this.resourceName}]. Initiating fetch.`);
       const dataPromise = this.fetchFn().then(data => {
         if (dataPromise === this.dataPromise) {
           try {

@@ -1,17 +1,19 @@
+import { isTruthy } from '@gurban/kit/core/checks';
 import { JsonObject } from '@gurban/kit/core/json-type';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { DbService } from '@poslah/util/modules/db-module/db.service';
+import { CacheService } from '@poslah/util/modules/cache/cache.module';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import {
   ChatPermissionsDto,
   chatPermissionsSchema,
   UpdateChatPermissionsDto,
   updateChatPermissionsSchema,
 } from '@poslah/util/schemas/chat-permissions-schema';
+
+import { ChatsRepository } from './chats.repository';
 
 /**
  * Type definition to map an input array of keys (K) to an output tuple of boolean values.
@@ -24,7 +26,7 @@ type GetPermissionsByKeysReturn<K extends readonly (keyof ChatPermissionsDto)[]>
 @Injectable()
 export class ChatPermissionsService {
   constructor(
-    private readonly db: DbService,
+    private readonly repository: ChatsRepository,
     private readonly loggerBase: Logger,
     private readonly cache: CacheService
   ) {}
@@ -46,69 +48,49 @@ export class ChatPermissionsService {
     chatId: string,
     userId: string
   ): Promise<ChatPermissionsDto | boolean> {
-    // --- First, try the most specific query ---
-    const userPermsRecord = await this.db.client.userChatPermissions.findUnique({
-      where: { userId_chatId: { userId, chatId } },
-      select: {
-        permissions: true, // Layer 3: The user's overrides
-        role: { select: { permissions: true } }, // Layer 2: The user's assigned role
-        chat: { select: { ownerId: true } }, // Also get ownerId here
+    const userPermissions = await this.repository.getUserChatPermissions(chatId, userId, {
+      role: { select: { permissions: true } }, // The user's assigned role
+      permissions: true, // The user's overrides
+      chat: {
+        select: {
+          defaultRole: { select: { permissions: true } },
+          ownerId: true,
+        },
       },
     });
 
-    if (userPermsRecord) {
-      // Owner check is the highest priority
-      if (userPermsRecord.chat.ownerId === userId) {
-        return true;
-      }
-
-      // Since we have the user's record, we still need the chat's default role as a fallback.
-      // This is a second, but very fast, query.
-      const defaultRoleRecord = await this.db.client.chat.findUniqueOrThrow({
-        where: { id: chatId },
-        select: { defaultRole: { select: { permissions: true } } },
-      });
-
-      const defaultRolePerms = (defaultRoleRecord.defaultRole?.permissions ||
-        {}) as Partial<UpdateChatPermissionsDto>;
-      const assignedRolePerms = (userPermsRecord.role?.permissions ||
-        {}) as Partial<UpdateChatPermissionsDto>;
-      const userOverridePerms = (userPermsRecord.permissions || {}) as Partial<UpdateChatPermissionsDto>;
-
-      const effectivePermissions = {
-        ...defaultRolePerms,
-        ...assignedRolePerms,
-        ...userOverridePerms,
-        changeOwner: false,
-      };
-
-      return chatPermissionsSchema.parse(effectivePermissions);
-    }
-
-    // User has NO specific permissions record ---
-    // Perform the fallback query to get chat-level info.
-    const chat = await this.db.client.chat.findUnique({
-      where: { id: chatId },
-      select: {
-        ownerId: true,
+    const {
+      defaultRole,
+      ownerId,
+    } = // even if userPermissions is null, we still need defaultRole and ownerId
+      userPermissions?.chat ||
+      (await this.repository.getUniqueChat(chatId, {
         defaultRole: { select: { permissions: true } },
-      },
-    });
+        ownerId: true,
+      })) ||
+      {};
 
-    if (!chat) {
+    if (ownerId == null) {
       return false;
     }
 
-    if (chat.ownerId === userId) {
+    if (ownerId === userId) {
       return true;
     }
 
-    // If not the owner, their permissions are simply the default role's permissions.
-    const effectivePermissions = (chat.defaultRole?.permissions || {}) as Partial<ChatPermissionsDto>;
-    return chatPermissionsSchema.parse(effectivePermissions);
+    return chatPermissionsSchema.parse({
+      ...(defaultRole?.permissions || {}),
+      ...(userPermissions?.role?.permissions || {}),
+      ...(userPermissions?.permissions || {}),
+      changeOwner: false,
+    });
   }
 
-  private async updatePermissionCache(chatId: string, userId: string): Promise<ChatPermissionsDto> {
+  private async updatePermissionCache(
+    chatId: string,
+    userId: string,
+    cacheKey: string
+  ): Promise<ChatPermissionsDto> {
     const effectivePermissions = await this.calculateEffectivePermissions(chatId, userId);
 
     // 4. Store the result in the Redis Hash with a Time-To-Live (TTL).
@@ -116,7 +98,6 @@ export class ChatPermissionsService {
       const permissionsToCache =
         effectivePermissions === true ? ChatPermissionsService.ownerPermissions : effectivePermissions;
 
-      const cacheKey = ChatPermissionsService.cacheKey(chatId, userId);
       await this.cache.putObjectToHash(
         cacheKey,
         permissionsToCache as JsonObject, // Cast to JsonObject for the utility function
@@ -173,7 +154,7 @@ export class ChatPermissionsService {
 
     this.logger.debug(`Cache MISS for permissions: ${cacheKey}. Calculating...`);
     // 3. If the cache misses, run the original, expensive calculation.
-    return this.updatePermissionCache(chatId, userId);
+    return this.updatePermissionCache(chatId, userId, cacheKey);
   }
 
   static readonly ownerPermissions: ChatPermissionsDto = {
@@ -224,13 +205,13 @@ export class ChatPermissionsService {
     // A full hit means we retrieved the expected number of fields.
     if (cachedData.length === keys.length && cachedData.every(v => v != null)) {
       this.logger.debug(`Cache HIT for all requested permissions in ${cacheKey}.`);
-      return cachedData.map(v => !!v) as GetPermissionsByKeysReturn<K>;
+      return cachedData.map(isTruthy) as GetPermissionsByKeysReturn<K>;
     }
 
     // 2b. Cache MISS/CORRUPTION. Recalculate, update cache, and return requested fields.
     this.logger.debug(`Partial cache MISS/Corruption for ${cacheKey}. Recalculating full permissions.`);
 
-    const effectivePermissions = await this.updatePermissionCache(chatId, userId);
+    const effectivePermissions = await this.updatePermissionCache(chatId, userId, cacheKey);
     this.logger.debug(`Cache updated after miss/corruption for ${cacheKey}.`);
 
     // 4. Extract the specific requested fields from the calculated object and return as the tuple.
@@ -238,7 +219,7 @@ export class ChatPermissionsService {
   }
 
   async isMemberOfChat(chatId: string, userId: string): Promise<boolean> {
-    return (await this.db.transaction.chatMember.findFirstOrThrow({ where: { chatId, userId } })) != null;
+    return (await this.repository.getUniqueChatMember(chatId, userId)) != null;
   }
 
   /**

@@ -44,6 +44,7 @@ type AttachmentPreview
 """64-bit signed integer"""
 scalar BigInt
   @join__type(graph: CHATS)
+  @join__type(graph: FILES)
   @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 
@@ -159,12 +160,45 @@ type ForwardInfo
   text: String
 }
 
+type GetLinkResponse
+  @join__type(graph: FILES)
+{
+  reportToken: String!
+  upload: String!
+}
+
+type GuideFailed
+  @join__type(graph: FILES)
+{
+  error: String!
+}
+
+type GuideFile
+  @join__type(graph: FILES)
+{
+  file: UploadedFile!
+}
+
+union GuideResponse
+  @join__type(graph: FILES)
+  @join__unionMember(graph: FILES, member: "GuideFailed")
+  @join__unionMember(graph: FILES, member: "GuideFile")
+  @join__unionMember(graph: FILES, member: "GuideUpload")
+ = GuideFailed | GuideFile | GuideUpload
+
+type GuideUpload
+  @join__type(graph: FILES)
+{
+  uploads: [UploadPart!]!
+}
+
 scalar join__FieldSet
 
 enum join__Graph {
-  CHATS @join__graph(name: "chats", url: "http://localhost:11115/graphql")
+  CHATS @join__graph(name: "chats", url: "http://localhost:11112/graphql")
+  FILES @join__graph(name: "files", url: "http://localhost:9999/graphql")
   MESSAGES @join__graph(name: "messages", url: "http://localhost:22225/graphql")
-  SUBSCRIPTIONS @join__graph(name: "subscriptions", url: "http://localhost:3333/graphql")
+  SUBSCRIPTIONS @join__graph(name: "subscriptions", url: "http://localhost:3335/graphql")
 }
 
 """
@@ -219,8 +253,11 @@ type MessagesCounter
 
 type Mutation
   @join__type(graph: CHATS)
+  @join__type(graph: FILES)
 {
-  pushChatEvent(chatId: ID!, payload: JSON!, type: String!): PushEventResponseDto!
+  pushChatEvent(chatId: ID!, payload: JSON!, type: String!): PushEventResponseDto! @join__field(graph: CHATS)
+  createOrJoinUploadSession(checksum: String!, mimeType: String!, originalFilename: String!, parallel: Int, sizeBytes: BigInt!, totalChunks: Int!): GuideResponse! @join__field(graph: FILES)
+  reportChunk(body: ReportChunkInput!, parallel: Int, reportToken: String!): GuideResponse! @join__field(graph: FILES)
 }
 
 type PushEventResponseDto
@@ -235,11 +272,14 @@ type PushEventResponseDto
 
 type Query
   @join__type(graph: CHATS)
+  @join__type(graph: FILES)
   @join__type(graph: MESSAGES)
   @join__type(graph: SUBSCRIPTIONS)
 {
   dummyQuery: Float! @join__field(graph: CHATS)
   joinedChats: [Chat!]! @join__field(graph: CHATS)
+  joinedChatsIds: [String!]! @join__field(graph: CHATS)
+  getUrlForChunk(checksumSha256: String!, chunkId: String!): GetLinkResponse! @join__field(graph: FILES)
   getMessages(
     chatId: String!
 
@@ -271,6 +311,14 @@ type ReplyToPreview
   authorId: ID!
   nn: ID!
   text: String
+}
+
+input ReportChunkInput
+  @join__type(graph: FILES)
+{
+  eTag: String
+  message: String
+  status: Int
 }
 
 type StoredFile
@@ -306,6 +354,20 @@ type UploadChunk
   partNumber: Int!
   session: UploadSession!
   sessionId: String!
+}
+
+type UploadedFile
+  @join__type(graph: FILES)
+{
+  cdnUrl: String!
+  id: String!
+}
+
+type UploadPart
+  @join__type(graph: FILES)
+{
+  chunkId: String!
+  partNumber: Int!
 }
 
 type UploadSession

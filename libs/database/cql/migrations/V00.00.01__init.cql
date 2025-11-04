@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS messages (
 
   -- === Timestamps for State Management ===
                                       created_at timestamp,
+                                      updated_at timestamp,
                                       edited_at timestamp,
                                       deleted_at timestamp,
 

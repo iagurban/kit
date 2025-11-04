@@ -1,0 +1,208 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""64-bit signed integer"""
+scalar BigInt
+
+type Chat {
+  _count: ChatCount!
+  avatar: String
+  bio: String
+  defaultRole: ChatRole
+  defaultRoleId: String
+  events: [ChatEvent!]
+  eventsCounter: ChatEventsCounter
+  id: ID!
+  members: [ChatMember!]
+  messagesCounter: MessagesCounter
+  owner: User!
+  ownerId: String!
+  roles: [ChatRole!]
+  title: String!
+  userPermissions: [UserChatPermissions!]
+}
+
+type ChatCount {
+  events: Int!
+  members: Int!
+  roles: Int!
+  userPermissions: Int!
+}
+
+type ChatEvent {
+  author: User!
+  authorId: String!
+  chat: Chat!
+  chatId: String!
+  createdAt: DateTime!
+  id: ID!
+  nn: String!
+  payload: JSON!
+  type: String!
+}
+
+type ChatEventsCounter {
+  chat: Chat!
+  chatId: ID!
+  lastNn: String!
+}
+
+type ChatMember {
+  chat: Chat!
+  chatId: String!
+  joinedAt: DateTime!
+  user: User!
+  userId: String!
+}
+
+type ChatRole {
+  _count: ChatRoleCount!
+  chat: Chat!
+  chatId: String!
+  id: ID!
+  isDefaultForChats: [Chat!]
+  name: String!
+  permissions: JSON!
+  tags: [ChatRoleTag!]
+  userPermissions: [UserChatPermissions!]
+}
+
+type ChatRoleCount {
+  isDefaultForChats: Int!
+  userPermissions: Int!
+}
+
+enum ChatRoleTag {
+  ADMIN
+  BANNED
+  MEMBER
+  MODERATOR
+  VIEWER
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type MessagesCounter {
+  chat: Chat!
+  chatId: ID!
+  lastNn: String!
+}
+
+type Mutation {
+  pushChatEvent(chatId: ID!, payload: JSON!, type: String!): PushEventResponseDto!
+}
+
+type PushEventResponseDto {
+  """Серверное время генерации события"""
+  createdAt: DateTime!
+
+  """Присвоенный порядковый номер события в чате"""
+  nn: String!
+}
+
+type Query {
+  dummyQuery: Float!
+  joinedChats: [Chat!]!
+  joinedChatsIds: [String!]!
+}
+
+type RefreshToken {
+  createdAt: DateTime!
+  expiresAt: DateTime!
+  hash: String!
+  id: ID!
+  user: User!
+  userId: String!
+}
+
+type StoredFile {
+  cdnUrl: String!
+  checksum: String!
+  createdAt: DateTime!
+  id: ID!
+  metadata: JSON
+  mimeType: String!
+  originalFilename: String!
+  sizeBytes: String!
+  storageKey: String!
+  updatedAt: DateTime!
+  uploadSession: UploadSession
+  uploadedByUser: User!
+  uploadedByUserId: String!
+}
+
+type UploadChunk {
+  eTag: String
+  id: ID!
+  leasedAt: DateTime
+  partNumber: Int!
+  session: UploadSession!
+  sessionId: String!
+}
+
+type UploadSession {
+  _count: UploadSessionCount!
+  chunks: [UploadChunk!]
+  createdAt: DateTime!
+  failReason: String
+  file: StoredFile!
+  fileId: String!
+  id: ID!
+  status: UploadStatus!
+  storageUploadId: String!
+  totalChunks: Int!
+  totalFailureCount: Int!
+}
+
+type UploadSessionCount {
+  chunks: Int!
+}
+
+enum UploadStatus {
+  ACTIVE
+  FAILED
+  FINALIZING
+}
+
+type User {
+  RefreshToken: [RefreshToken!]
+  _count: UserCount!
+  abbrev: String
+  chatEvents: [ChatEvent!]
+  chatsMmbership: [ChatMember!]
+  chatsPermissions: [UserChatPermissions!]
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  ownChats: [Chat!]
+  uploadedFiles: [StoredFile!]
+}
+
+type UserChatPermissions {
+  chat: Chat!
+  chatId: String!
+  permissions: JSON
+  role: ChatRole
+  roleId: String
+  user: User!
+  userId: String!
+}
+
+type UserCount {
+  RefreshToken: Int!
+  chatEvents: Int!
+  chatsMmbership: Int!
+  chatsPermissions: Int!
+  ownChats: Int!
+  uploadedFiles: Int!
+}

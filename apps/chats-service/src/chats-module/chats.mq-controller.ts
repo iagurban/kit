@@ -1,10 +1,8 @@
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Controller } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { MqHandler } from '@poslah/util/modules/mq-consumer-module/mq-handler.decorator';
-import { IWithModuleRef } from '@poslah/util/modules/with-module-ref.interface';
 import { z } from 'zod';
 
 import { eventsMembershipChangedTopic } from '../topics/events-membership-changed-topic';
@@ -13,17 +11,16 @@ import { ChatPermissionsService } from './chat-permissions.service';
 import { ChatsService } from './chats.service';
 
 @Controller()
-export class ChatsStreamsController implements IWithModuleRef {
+export class ChatsMqController {
   constructor(
     private readonly chatsService: ChatsService,
     private readonly permissionsService: ChatPermissionsService,
-    private readonly loggerBase: Logger,
-    readonly moduleRef: ModuleRef
+    private readonly loggerBase: Logger
   ) {}
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, ChatsStreamsController.name);
+    return createContextualLogger(this.loggerBase, ChatsMqController.name);
   }
 
   /**
@@ -59,6 +56,7 @@ export class ChatsStreamsController implements IWithModuleRef {
    */
   @MqHandler(eventsRawCreateTopic)
   async handleRawEventCreate(data: z.infer<typeof eventsRawCreateTopic.schema>) {
+    console.log(`2222222222222222222222222`);
     this.logger.info(`Received raw event to save: chatId=${data.chatId}, nn=${data.nn}`);
 
     try {

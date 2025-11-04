@@ -72,7 +72,7 @@ export class GraphqlAppModule {
     return {
       module: GraphqlAppModule,
       imports: [
-        ...rootImports(`gate-graphql-app`, `gate-graphql`),
+        ...rootImports(`gate-graphql-app`),
         GraphQLModule.forRootAsync<ApolloGatewayDriverConfig>({
           driver: ApolloGatewayDriver,
           imports: [AuthStaticModule],

@@ -25,9 +25,10 @@ export class ChatsRepository {
 
   async popNextChatEventMM(chatId: string): Promise<bigint> {
     return (
-      await this.db.transaction.chatEventsCounter.update({
+      await this.db.transaction.chatEventsCounter.upsert({
         where: { chatId },
-        data: { lastNn: { increment: 1 } },
+        update: { lastNn: { increment: 1 } },
+        create: { lastNn: 0n, chatId },
       })
     ).lastNn;
   }
@@ -50,11 +51,11 @@ export class ChatsRepository {
     chatId: string,
     userId: string,
     select?: S
-  ): Promise<UserChatPermissionsSelectPayload<S>> {
+  ): Promise<UserChatPermissionsSelectPayload<S> | null> {
     return (await this.db.transaction.userChatPermissions.findUnique({
       where: { userId_chatId: { userId, chatId } },
       select,
-    })) as UserChatPermissionsSelectPayload<S>;
+    })) as UserChatPermissionsSelectPayload<S> | null;
   }
 
   async upsertUserChatPermissions<S extends Prisma.UserChatPermissionsSelect>(
@@ -75,6 +76,16 @@ export class ChatsRepository {
   async getUniqueChat<S extends Prisma.ChatSelect>(
     chatId: string,
     select?: S
+  ): Promise<ChatSelectPayload<S> | null> {
+    return (await this.db.transaction.chat.findUnique({
+      where: { id: chatId },
+      select,
+    })) as ChatSelectPayload<S> | null;
+  }
+
+  async getUniqueChatOrThrow<S extends Prisma.ChatSelect>(
+    chatId: string,
+    select?: S
   ): Promise<ChatSelectPayload<S>> {
     return (await this.db.transaction.chat.findUniqueOrThrow({
       where: { id: chatId },
@@ -86,11 +97,11 @@ export class ChatsRepository {
     chatId: string,
     userId: string,
     select?: S
-  ): Promise<ChatMemberSelectPayload<S>> {
+  ): Promise<ChatMemberSelectPayload<S> | null> {
     return (await this.db.transaction.chatMember.findUnique({
       where: { userId_chatId: { userId, chatId } },
       select,
-    })) as ChatMemberSelectPayload<S>;
+    })) as ChatMemberSelectPayload<S> | null;
   }
 
   createChatMember(chatId: string, userId: string) {

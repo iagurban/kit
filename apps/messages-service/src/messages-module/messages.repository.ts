@@ -5,9 +5,21 @@ import { Injectable } from '@nestjs/common';
 import { ScyllaService } from '@poslah/util/modules/nosql/scylla/scylla.service';
 import { AttachmentInfoDto, ForwardInfoDto, MessageDto } from '@poslah/util/schemas/message.schema';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
+import { types } from 'cassandra-driver';
 import { sortedIndex, sortedLastIndexBy } from 'lodash';
+import long from 'long';
 
 import { MessagesCacheService } from './messages-cache.service';
+
+// cassandra driver uses an old Long library, which have no method to convert to BigInt.
+// closing eyes and crossing ourselves, call this method on the old object.
+const longToBigIntMethod = notNull(long.prototype.toBigInt) satisfies () => bigint;
+
+const scyllaLongToBigint = (l: long) => longToBigIntMethod.call(l);
+const scyllaLongFromBigint = (n: bigint) => long.fromBigInt(n);
+
+const scyllaUuidToString = (uuid: types.Uuid) => uuid.toString();
+const scyllaUuidFromString = (uuid: string) => types.Uuid.fromString(uuid);
 
 /**
  * Maps the AttachmentInfoDto from the event to the snake_case format for ScyllaDB.
@@ -52,39 +64,43 @@ export const mapForwardFromDb = (dbObject: ForwardDb): ForwardInfoDto => ({
 });
 
 export const mapMessageToDb = (messageDto: MessageDto) => ({
-  chat_id: messageDto.chatId,
-  nn: messageDto.nn,
-  event_nn: messageDto.eventNn,
-  author_id: messageDto.authorId,
+  chat_id: scyllaUuidFromString(messageDto.chatId),
+  nn: scyllaLongFromBigint(messageDto.nn),
+  event_nn: messageDto.eventNn != null ? scyllaLongFromBigint(messageDto.eventNn) : null,
+  author_id: scyllaUuidFromString(messageDto.authorId),
   text: messageDto.text,
-  reply_to_nn: messageDto.replyToNn,
-  attachments: messageDto.attachments?.map(mapAttachmentToDb),
-  forwarded: messageDto.forwarded?.map(mapForwardToDb),
+  reply_to_nn: messageDto.replyToNn != null ? scyllaLongFromBigint(messageDto.replyToNn) : null,
+  attachments: messageDto.attachments?.map(mapAttachmentToDb) ?? null,
+  forwarded: messageDto.forwarded?.map(mapForwardToDb) ?? null,
   created_at: messageDto.createdAt,
   updated_at: messageDto.updatedAt,
   edited_at: messageDto.editedAt,
   edited_nn: messageDto.editedNn,
+  deleted_at: messageDto.deletedAt ?? null,
 });
+
 type MessageDbRow = ReturnType<typeof mapMessageToDb>;
 export const mapMessageFromDb = (dbRow: Partial<MessageDbRow>): Partial<MessageDto> => ({
-  chatId: dbRow.chat_id,
-  nn: dbRow.nn,
-  eventNn: dbRow.event_nn,
-  authorId: dbRow.author_id,
+  chatId: dbRow.chat_id ? scyllaUuidToString(dbRow.chat_id) : undefined,
+  nn: dbRow.nn != null ? scyllaLongToBigint(dbRow.nn) : undefined,
+  eventNn: dbRow.event_nn != null ? scyllaLongToBigint(dbRow.event_nn) : undefined,
+  authorId: dbRow.author_id ? scyllaUuidToString(dbRow.author_id) : undefined,
   text: dbRow.text,
-  replyToNn: dbRow.reply_to_nn,
+  replyToNn: dbRow.reply_to_nn != null ? scyllaLongToBigint(dbRow.reply_to_nn) : null,
   attachments: dbRow.attachments?.map(mapAttachmentFromDb) ?? null,
   forwarded: dbRow.forwarded?.map(mapForwardFromDb) ?? null,
   createdAt: dbRow.created_at,
   updatedAt: dbRow.updated_at,
   editedAt: dbRow.edited_at,
   editedNn: dbRow.edited_nn,
+  deletedAt: dbRow.deleted_at,
 });
 
 interface UpdateContext {
   latestEventTime: Date;
   latestEventNn: bigint;
 }
+//
 
 const messagesDbInfo = (() => {
   const mapper = {
@@ -95,12 +111,12 @@ const messagesDbInfo = (() => {
     },
     nn: {
       cc: `nn`,
-      insertValue: (event, nn) => nn,
+      insertValue: (_event, nn) => nn.toString(),
       updateValue: null,
     },
     event_nn: {
       cc: `eventNn`,
-      insertValue: event => event.nn,
+      insertValue: event => event.nn.toString(),
       updateValue: null,
     },
     author_id: {
@@ -115,7 +131,7 @@ const messagesDbInfo = (() => {
     },
     reply_to_nn: {
       cc: `replyToNn`,
-      insertValue: event => event.payload.replyToNn ?? null,
+      insertValue: event => event.payload.replyToNn?.toString() ?? null,
       updateValue: p => p.replyToNn,
     },
     attachments: {
@@ -136,7 +152,7 @@ const messagesDbInfo = (() => {
     edited_at: {
       cc: `editedAt`,
       insertValue: () => null,
-      updateValue: (p, context) => context.latestEventTime,
+      updateValue: (_p, context) => context.latestEventTime,
     },
     deleted_at: {
       cc: `deletedAt`,
@@ -151,7 +167,7 @@ const messagesDbInfo = (() => {
     edited_nn: {
       cc: 'editedNn',
       insertValue: () => null,
-      updateValue: (p, context) => context.latestEventNn,
+      updateValue: (_p, context) => context.latestEventNn,
     },
   } satisfies Record<
     string,
@@ -230,7 +246,7 @@ export class MessagesRepository {
     return (
       await this.scyllaService.execute(
         `SELECT edited_nn FROM poslah.messages WHERE chat_id = ? AND nn = ?`,
-        [chatId, nn],
+        [chatId, nn.toString()],
         { prepare: true }
       )
     ).rows
@@ -289,7 +305,10 @@ export class MessagesRepository {
       : null;
   }
 
-  private columnsClause<S extends Partial<Record<keyof MessageDto, boolean>>>(select?: S) {
+  private columnsClause<S extends Partial<Record<keyof MessageDto, boolean>>>(select?: S | `*`) {
+    if (select === `*`) {
+      return [...messagesDbInfo.sc2cc.keys()].join(', ');
+    }
     const extendedSelect = { ...select, nn: true };
     const columns = Object.keys(extendedSelect)
       .map(key => extendedSelect[key as keyof MessageDto] && messagesDbInfo.cc2sc.get(key))
@@ -300,24 +319,25 @@ export class MessagesRepository {
   }
 
   /**
-   * Fetches a single message from ScyllaDB by its primary key.
+   * Fetches messages of a chat from ScyllaDB by theirs Nn.
    */
-  async getById<S extends Partial<Record<keyof MessageDto, boolean>>>(
+  async getByNn<S extends Partial<Record<keyof MessageDto, boolean>>>(
     chatId: string,
     nn: readonly bigint[],
-    select?: S
+    select?: S | `*`
   ): Promise<SelectedMessage<S>[]> {
     checkLimit(nn.length, MessagesRepository.maxIndividualLimit);
 
-    const nnSet = new Set(nn);
+    const nnSet = new Set(nn.map(s => s.toString()));
     if (nnSet.size === 0) {
       return [];
     }
     const { rows } = await this.scyllaService.execute(
       `SELECT ${this.columnsClause(select)} FROM poslah.messages WHERE chat_id = ? AND nn ${nnSet.size > 1 ? 'IN' : '='} ?`,
-      [chatId, nnSet.size > 1 ? [...nnSet] : nnSet.values().next().value],
+      [chatId, nnSet.size > 1 ? [...nnSet] : (nnSet.values().next().value ?? null)],
       { prepare: true }
     );
+
     return rows.map(row => mapMessageFromDb(row as Partial<MessageDbRow>) as SelectedMessage<S>);
   }
 
@@ -326,7 +346,7 @@ export class MessagesRepository {
     return (
       await this.scyllaService.execute(
         `SELECT ${columnsClause} FROM poslah.messages WHERE chat_id = ? AND nn < ? ORDER BY nn DESC LIMIT ?`,
-        [chatId, nn, limit],
+        [chatId, nn.toString(), limit],
         { prepare: true }
       )
     ).rows.reverse() as Partial<MessageDbRow>[];
@@ -398,7 +418,8 @@ export class MessagesRepository {
     ];
     if (results.length >= extendedLimit /* has more */) {
       for (;;) {
-        const lower = notNull(results.at(0)!.nn);
+        const lowerLong = notNull(results.at(0)!.nn);
+        const lower = scyllaLongToBigint(lowerLong);
         if (lower <= minimalNn) {
           break;
         }
@@ -412,7 +433,7 @@ export class MessagesRepository {
       }
     }
 
-    const start = sortedLastIndexBy(results, { nn }, r => notNull(r.nn));
+    const start = sortedLastIndexBy(results, { nn: scyllaLongFromBigint(nn) }, r => notNull(r.nn));
     return results
       .slice(start, start + limit) // will be empty if startIndex === results.length
       .map(row => mapMessageFromDb(row) as SelectedMessage<S>);

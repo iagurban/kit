@@ -24,8 +24,10 @@ export class PubSubPublisherService {
     payload: unknown
   ): Promise<number> {
     try {
-      const validatedPayload = topic.schema.parse(payload);
-      return this.redis.publish(topic.name, JSON.stringify(validatedPayload));
+      const validatedPayload = topic.schema.encode(payload as z.output<T[`schema`]>);
+      const result = await this.redis.publish(topic.name, JSON.stringify(validatedPayload));
+      this.logger.debug({ result }, `Published event to channel [${topic.name}]`);
+      return result;
     } catch (error) {
       this.logger.error({ error, payload }, `Failed to publish event to channel [${topic.name}]`);
       throw error;

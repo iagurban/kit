@@ -6,11 +6,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { FastifyRequest } from 'fastify';
 import { GraphQLError } from 'graphql';
 import { Context } from 'graphql-ws';
+import { join } from 'path';
 import { z } from 'zod/v4';
 
-import { NestImportable } from '../../nest-types';
 import { AuthStaticModule } from '../../ready-modules/auth-static-module';
+import { RedisStaticModule } from '../../ready-modules/redis-static-module';
 import { AuthService } from '../auth-module/auth.service';
+import { CacheModule } from '../cache/cache.module';
+import { PubSubModule } from '../pubsub/pubsub.module';
 import { BigIntScalar } from './bigint.scalar';
 import {
   SubgraphPublisher,
@@ -25,16 +28,15 @@ const authHeadersSchema = z.object({
 
 @Module({})
 export class GraphqlSubgraphModule {
-  static forRootAsync(
-    schemaPath: string,
-    version: number,
-    redisModule: NestImportable,
-    options: { subscriptions?: boolean } = {}
-  ): DynamicModule {
+  static forRootAsync(version: number, options: { subscriptions?: boolean } = {}): DynamicModule {
+    const schemaPath = join(process.cwd(), 'schema.graphql');
+
     return {
       module: GraphqlSubgraphModule,
       imports: [
-        redisModule,
+        RedisStaticModule,
+        PubSubModule,
+        CacheModule,
         GraphQLModule.forRootAsync<ApolloFederationDriverConfig>({
           driver: ApolloFederationDriver,
 

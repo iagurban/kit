@@ -3,8 +3,8 @@ import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface'
 import { ServiceInfo } from '@gurban/kit/nest/service-info';
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 
+import { CacheService } from '../cache/cache.module';
 import { Logger } from '../logger/logger.module';
-import { CacheService } from '../nosql/redis/cache.service';
 import { PubSubPublisherService } from '../pubsub/pubsub-publisher.service';
 import { publishGraphqlSubgraph } from './publish-graphql-subgraph';
 

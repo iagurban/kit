@@ -1,7 +1,6 @@
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Controller } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { eventsMembershipChangedTopic } from '@poslah/chats-service/topics/events-membership-changed-topic';
 import { userMembershipPubsub } from '@poslah/chats-service/topics/user-membership.pubsub-topic';
 import { messagesUpsertPubsub } from '@poslah/messages-service/topics/messages-upsert.pubsub-topic';
@@ -10,26 +9,24 @@ import { projectionMessagePatchedTopic } from '@poslah/messages-service/topics/p
 import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { MqHandler } from '@poslah/util/modules/mq-consumer-module/mq-handler.decorator';
 import { PubSubPublisherService } from '@poslah/util/modules/pubsub/pubsub-publisher.service';
-import { IWithModuleRef } from '@poslah/util/modules/with-module-ref.interface';
 import { z } from 'zod/v4';
 
 @Controller()
-export class SubscriptionsStreamsController implements IWithModuleRef {
+export class SubscriptionsMqController {
   constructor(
-    private readonly publisherService: PubSubPublisherService,
-    private readonly loggerBase: Logger,
-    readonly moduleRef: ModuleRef
+    private readonly pubSubPublisher: PubSubPublisherService,
+    private readonly loggerBase: Logger
   ) {}
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, SubscriptionsStreamsController.name);
+    return createContextualLogger(this.loggerBase, SubscriptionsMqController.name);
   }
 
   @MqHandler(projectionMessageCreatedTopic)
   async handleMessageCreated(data: z.infer<typeof projectionMessageCreatedTopic.schema>) {
     try {
-      await this.publisherService.publish(messagesUpsertPubsub, data);
+      await this.pubSubPublisher.publish(messagesUpsertPubsub, data);
     } catch (error) {
       this.logger.error({ error }, `Failed to process message created event for chat ${data.chatId}`);
       throw error;
@@ -39,7 +36,7 @@ export class SubscriptionsStreamsController implements IWithModuleRef {
   @MqHandler(projectionMessagePatchedTopic)
   async handleMessagePatched(data: z.infer<typeof projectionMessagePatchedTopic.schema>) {
     try {
-      await this.publisherService.publish(messagesUpsertPubsub, data);
+      await this.pubSubPublisher.publish(messagesUpsertPubsub, data);
     } catch (error) {
       this.logger.error({ error }, `Failed to process message patched event for chat ${data.chatId}`);
       throw error;
@@ -50,7 +47,7 @@ export class SubscriptionsStreamsController implements IWithModuleRef {
   async handleMembershipChange(data: z.infer<typeof eventsMembershipChangedTopic.schema>) {
     const { chatId, payload, type } = data;
     try {
-      await this.publisherService.publish(userMembershipPubsub, { chatId, userId: payload.userId, type });
+      await this.pubSubPublisher.publish(userMembershipPubsub, { chatId, userId: payload.userId, type });
     } catch (error) {
       this.logger.error({ error }, `Failed to process membership change for user ${payload.userId}`);
       throw error;

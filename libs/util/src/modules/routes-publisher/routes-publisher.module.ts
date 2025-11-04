@@ -7,8 +7,8 @@ import { METHOD_METADATA, PATH_METADATA } from '@nestjs/common/constants';
 import { ConfigService } from '@nestjs/config';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 
+import { CacheService } from '../cache/cache.module';
 import { Logger } from '../logger/logger.module';
-import { CacheService } from '../nosql/redis/cache.service';
 import { GATEWAY_ENDPOINT_METADATA, GatewayEndpointOptions } from './gateway-endpoint.decorator';
 
 @Injectable()

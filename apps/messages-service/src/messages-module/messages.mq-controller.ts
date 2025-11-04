@@ -1,27 +1,24 @@
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Controller } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
 import { eventsMessageCreatedTopic } from '@poslah/chats-service/topics/events-message-created-topic';
 import { eventsMessagePatchedTopic } from '@poslah/chats-service/topics/events-message-patched-topic';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { MqHandler } from '@poslah/util/modules/mq-consumer-module/mq-handler.decorator';
-import { IWithModuleRef } from '@poslah/util/modules/with-module-ref.interface';
 import { z } from 'zod/v4';
 
 import { MessagesService } from './messages.service';
 
 @Controller()
-export class MessagesStreamsController implements IWithModuleRef {
+export class MessagesMqController {
   constructor(
-    readonly moduleRef: ModuleRef,
     private readonly messagesService: MessagesService,
     private readonly loggerBase: Logger
   ) {}
 
   @once
   get logger() {
-    return createContextualLogger(this.loggerBase, MessagesStreamsController.name);
+    return createContextualLogger(this.loggerBase, MessagesMqController.name);
   }
 
   /**

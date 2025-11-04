@@ -1,0 +1,76 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AttachmentInfo {
+  fileId: ID!
+  filename: String!
+  metadata: JSON
+  mimeType: String!
+  size: BigInt!
+  url: String!
+}
+
+type AttachmentPreview {
+  thumbnail: String
+  type: String!
+}
+
+"""64-bit signed integer"""
+scalar BigInt
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ForwardInfo {
+  attachments: [AttachmentInfo!]
+  authorId: ID!
+  chatId: ID!
+  createdAt: DateTime!
+  nn: BigInt!
+  text: String
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type Message {
+  attachments: [AttachmentInfo!]
+  authorId: ID!
+  chatId: ID!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  editedAt: DateTime
+  editedNn: BigInt
+  eventNn: BigInt
+  forwarded: [ForwardInfo!]
+  nn: BigInt!
+  replyToNn: BigInt
+  replyToPreview: ReplyToPreview
+  text: String
+  updatedAt: DateTime!
+}
+
+type Query {
+  getMessages(
+    chatId: String!
+
+    """Greater than. Fetches messages newer than this nn."""
+    gt: BigInt
+    limit: Int = 30
+
+    """Less than. Fetches messages older than this nn."""
+    lt: BigInt
+  ): [Message!]!
+}
+
+type ReplyToPreview {
+  attachments: [AttachmentPreview!]
+  authorId: ID!
+  nn: ID!
+  text: String
+}

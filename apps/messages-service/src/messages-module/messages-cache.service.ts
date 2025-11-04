@@ -3,8 +3,8 @@ import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { Injectable } from '@nestjs/common';
+import { CacheService } from '@poslah/util/modules/cache/cache.module';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import { MessageDto } from '@poslah/util/schemas/message.schema';
 
 /**

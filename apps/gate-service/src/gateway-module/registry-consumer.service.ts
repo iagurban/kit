@@ -4,11 +4,11 @@ import { CachedResource } from '@gurban/kit/cached-resource';
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
-import { IPubSubSubscriberService } from '@gurban/kit/pubsub-subscriber-service.interface';
 import { Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { CacheService } from '@poslah/util/modules/cache/cache.module';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
+import { PubSubSubscriberService } from '@poslah/util/modules/pubsub/pubsub-subscriber.service';
 import { parse } from 'graphql';
 
 export interface ProxyRoute {
@@ -28,7 +28,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
 
   constructor(
     private readonly cache: CacheService,
-    private readonly pubSubSubscriber: IPubSubSubscriberService,
+    private readonly pubSubSubscriber: PubSubSubscriberService,
     private readonly configService: ConfigService,
     private readonly loggerBase: Logger
   ) {
@@ -94,7 +94,7 @@ export class RegistryConsumerService implements OnModuleInit, OnApplicationShutd
     }
 
     allRoutes.forEach(v => v.sort((a, b) => b.path.length - a.path.length));
-    this.logger.silent('Successfully fetched and built proxy routes.');
+    this.logger.debug('Successfully fetched and built proxy routes.');
     return allRoutes;
   }
 

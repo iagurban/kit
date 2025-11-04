@@ -4,7 +4,7 @@ import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-toke
 import { Provider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { DiscoveryModule } from '@nestjs/core';
 
-import { NestImportable } from '../../nest-types';
+import { RedisStaticModule } from '../../ready-modules/redis-static-module';
 import { MqConsumer, MqConsumerProviderOptions } from './mq.consumer';
 import { MqDiscoveryService } from './mq-discovery.service';
 
@@ -19,8 +19,7 @@ export class MqConsumerModule {
       | Record<
           string /* stream name */,
           MqConsumerProviderOptions | string /* consumers group postfix */ | null
-        >,
-    redisModule: NestImportable
+        >
   ): DynamicModule {
     const providers: Provider[] = [MqDiscoveryService];
     const exports: InjectionToken[] = [];
@@ -38,7 +37,7 @@ export class MqConsumerModule {
 
     return {
       module: MqConsumerModule,
-      imports: [DiscoveryModule, redisModule],
+      imports: [DiscoveryModule, RedisStaticModule],
       providers,
       exports,
     };

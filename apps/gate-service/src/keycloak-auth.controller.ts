@@ -56,7 +56,7 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
   }
 
   getLogoutUrl(idTokenHint?: string): string {
-    const postLogoutRedirectUri = this.configService.getOrThrow<string>('APP_FRONTEND_URL');
+    const postLogoutRedirectUri = `${this.configService.getOrThrow<string>('APP_FRONTEND_URL')}/`;
 
     const params = new URLSearchParams({
       post_logout_redirect_uri: postLogoutRedirectUri,
@@ -102,6 +102,8 @@ class KeycloakAuthControllerImpl extends OidcAuthControllerBase {
         return false;
       },
       async () => {
+        console.log(params);
+        this.logger.warn({ params }, `Calling token endpoint`);
         const tokenResponse = await firstValueFrom(
           this.httpService.post(`${issuerUrl}/protocol/openid-connect/token`, params)
         );
@@ -227,7 +229,7 @@ export class KeycloakAuthController {
         update: { email: data.email, name: data.preferred_username },
       });
 
-      const frontendUrl = this.configService.getOrThrow<string>('APP_FRONTEND_URL');
+      const frontendUrl = `${this.configService.getOrThrow<string>('APP_FRONTEND_URL')}/`;
       if (!tokens.refreshToken || !tokens.refreshExpiresIn) {
         this.logger.error({ tokens }, 'Can not establish session: refresh token or expiration is missing.');
         return res.status(500).send('Can not establish session.');
@@ -271,6 +273,7 @@ export class KeycloakAuthController {
     @Req() req: FastifyRequest,
     @Res({ passthrough: true }) res: FastifyReply
   ): Promise<{ accessToken: string; expiresIn: number }> {
+    this.logger.warn(`11`);
     const oldRefreshToken = req.cookies['refresh_token'];
     if (!oldRefreshToken) {
       // means "do not retry unless re-login"

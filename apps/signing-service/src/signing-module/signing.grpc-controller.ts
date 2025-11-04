@@ -59,9 +59,9 @@ export class SigningGrpcController implements SigningServiceController {
       }
 
       const serviceName = prepareServiceName(serviceNameValues[0]);
-      this.logger.silent(`Issuing token for service: ${serviceName}`);
+      this.logger.trace(`Issuing token for service: ${serviceName}`);
       const { accessToken, expiresIn } = this.signingService.signToken(serviceName);
-      this.logger.silent(`Successfully issued token for service: ${serviceName}`);
+      this.logger.trace(`Successfully issued token for service: ${serviceName}`);
 
       return { accessToken, expiresIn };
     } catch (error) {

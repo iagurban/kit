@@ -16,7 +16,7 @@ export class MessagesGrpcController implements MessagesServiceController {
   constructor(private readonly messagesDb: MessagesRepository) {}
 
   async getMessageAuthInfo(request: GetMessageAuthInfoRequest): Promise<GetMessageAuthInfoResponse> {
-    const [messageInfo] = await this.messagesDb.getById(request.chatId, [protobufLongToBigint(request.nn)], {
+    const [messageInfo] = await this.messagesDb.getByNn(request.chatId, [protobufLongToBigint(request.nn)], {
       authorId: true,
       createdAt: true,
       deletedAt: true,

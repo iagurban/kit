@@ -3,8 +3,8 @@ import { retrying } from '@gurban/kit/utils/flow/retrying';
 import { readFileSync } from 'fs';
 import { z } from 'zod/v4';
 
+import { CacheService } from '../cache/cache.module';
 import { Logger } from '../logger/logger.module';
-import { CacheService } from '../nosql/redis/cache.service';
 import { PubSubPublisherService } from '../pubsub/pubsub-publisher.service';
 
 interface PublishOptions {
@@ -32,7 +32,7 @@ export const publishGraphqlSubgraph = async (options: PublishOptions): Promise<v
     },
     async attempt => {
       try {
-        logger.silent(`Starting schema publication for [${serviceName}]...`);
+        logger.debug(`Starting schema publication for [${serviceName}]...`);
 
         // 1. Get the schema, hash, and version from the local file
         const sdl = readFileSync(schemaPath, 'utf-8');
@@ -50,7 +50,7 @@ export const publishGraphqlSubgraph = async (options: PublishOptions): Promise<v
           await publisher.publish(gatewayGraphqlUpdatedTopic, serviceName);
           logger.info(`Successfully published new schema version [${options.version}] for [${serviceName}].`);
         } else {
-          logger.silent(`Schema for [${serviceName}] is already up-to-date.`);
+          logger.debug(`Schema for [${serviceName}] is already up-to-date.`);
         }
       } catch (error) {
         if (attempt > 5) {

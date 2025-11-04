@@ -7,7 +7,6 @@ import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module'
 import { GlobalDbModule } from '@poslah/util/ready-modules/global-db-module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 import { rootImports } from '@poslah/util/root-imports';
-import { join } from 'path';
 
 import buildInfo from './build-info.json';
 import { SubscriptionsModule } from './subscriptions-module/subscriptions.module';
@@ -18,14 +17,9 @@ import { SubscriptionsModule } from './subscriptions-module/subscriptions.module
     GlobalDbModule,
     RedisStaticModule,
     AuthStaticModule,
-    registerGRPCClientsModule([signingGRPCConfig, chatsGRPCConfig], join(__dirname, '../../certs')),
+    registerGRPCClientsModule([signingGRPCConfig, chatsGRPCConfig]),
 
-    GraphqlSubgraphModule.forRootAsync(
-      join(__dirname, 'schema.graphql'),
-      buildInfo.buildTime,
-      RedisStaticModule,
-      { subscriptions: true }
-    ),
+    GraphqlSubgraphModule.forRootAsync(buildInfo.buildTime, { subscriptions: true }),
 
     SubscriptionsModule,
   ],

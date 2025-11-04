@@ -44,17 +44,18 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
 
   private async create(sdl: string): Promise<Exclude<typeof this.graphqlApp, Nullish>> {
     const dynamicModule = GraphqlAppModule.forRoot(sdl);
+    const origins = new Set(
+      this.config
+        .getOrThrow<string>(`ALLOWED_ORIGINS_CSV`)
+        .split(',')
+        .map(s => s.trim())
+    );
     return {
       app: await fastifyBootstrap(dynamicModule, null, {
         noHotReload: true,
         cors: {
           origin: (origin, cb) => {
-            const allowed =
-              !origin ||
-              origin === this.config.getOrThrow(`APP_FRONTEND_URL`) ||
-              origin ===
-                `https://${this.config.getOrThrow(`GATE_SERVICE_HOST`)}:${this.config.getOrThrow(`GATE_SERVICE_PORT`)}`;
-
+            const allowed = !origin || origins.has(origin);
             this.logger.info({ origin, allowed }, 'graphql-gateway cors check origin:');
             cb(null, allowed);
           },
@@ -89,7 +90,7 @@ export class GraphqlGatewayManager implements OnModuleInit, OnApplicationShutdow
         }
 
         if (supergraphSdl === this.graphqlApp?.sdl) {
-          this.logger.silent('Supergraph SDL is same. Skipping restarting the app.');
+          this.logger.debug('Supergraph SDL is same. Skipping restarting the app.');
           return oldApp;
         }
 

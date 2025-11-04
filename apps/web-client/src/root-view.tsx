@@ -1,6 +1,7 @@
 import { errorToString } from '@gurban/kit/utils/error-utils.ts';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
 import { Box, Button, Flex, TextInput, Typography } from '@mantine/core';
+import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema.ts';
 import { IconSend } from '@tabler/icons-react';
 import { computed, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -46,7 +47,23 @@ const MessageInputBlock = observer(function MessageInputBlock() {
           onChange={e => getOrCreate().setText(e.target.value)}
         />
       </Flex>
-      <Button size="compact-md">
+      <Button
+        size="compact-md"
+        onClick={() => {
+          const chatId = getOrCreate().chatId;
+          const snapshot = draft.get()?.$;
+          return storge.chats.chats.get(chatId)?.sendingMessage.execute({
+            chatId,
+            type: `message`,
+            payload: {
+              nn: null,
+              ...snapshot,
+              replyToNn: draft.get()?.replyToNn ?? null,
+              attachments: snapshot?.attachments ?? null,
+            } satisfies MessageEventDto[`payload`],
+          });
+        }}
+      >
         <IconSend />
       </Button>
     </Flex>

@@ -1,22 +1,21 @@
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
-import { notNull } from '@gurban/kit/utils/flow/flow-utils';
-import { Injectable, OnModuleInit, Type } from '@nestjs/common';
-import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
+import { Injectable, OnApplicationBootstrap, Type } from '@nestjs/common';
+import { DiscoveryService, MetadataScanner, ModuleRef, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 
 import { Logger } from '../logger/logger.module';
-import { IWithModuleRef } from '../with-module-ref.interface';
 import { MqConsumer } from './mq.consumer';
 import { MQ_HANDLER_METADATA, MqHandlerNestMetadata } from './mq-handler.decorator';
 
 @Injectable()
-export class MqDiscoveryService implements OnModuleInit {
+export class MqDiscoveryService implements OnApplicationBootstrap {
   constructor(
     private readonly discoveryService: DiscoveryService,
     private readonly metadataScanner: MetadataScanner,
     private readonly reflector: Reflector,
-    private readonly loggerBase: Logger
+    private readonly loggerBase: Logger,
+    readonly moduleRef: ModuleRef
   ) {}
 
   @once
@@ -24,7 +23,7 @@ export class MqDiscoveryService implements OnModuleInit {
     return createContextualLogger(this.loggerBase, MqDiscoveryService.name);
   }
 
-  async onModuleInit() {
+  async onApplicationBootstrap() {
     await this.findAndRegisterHandlers();
   }
 
@@ -60,19 +59,9 @@ export class MqDiscoveryService implements OnModuleInit {
 
     const instanceName = (instance as { constructor: { name: string } }).constructor.name;
 
-    const moduleRef = notNull(
-      (instance as IWithModuleRef).moduleRef,
-      () =>
-        new Error(
-          `The service "${instanceName}" uses @RedisStreamHandler but does not have a 'moduleRef' property or does not implement IWithModuleRef correctly.`
-        )
-    );
-
     try {
-      moduleRef
-        .get<MqConsumer>(providerToken, {
-          strict: false,
-        })
+      this.moduleRef
+        .get<MqConsumer>(providerToken, { strict: false })
         .setHandler(methodRef.bind(instance), schema, `${instanceName}/${methodName}`);
     } catch (error) {
       this.logger.error(

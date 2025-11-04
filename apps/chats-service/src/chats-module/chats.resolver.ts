@@ -29,6 +29,12 @@ export class ChatsResolver {
     return this.chatsService.getJoinedChats(user.id, selection);
   }
 
+  @UseGuards(GqlJwtAuthGuard)
+  @Query(() => [String])
+  async joinedChatsIds(@CurrentUser() user: AppUser): Promise<string[]> {
+    return (await this.chatsService.getJoinedChats(user.id, { id: true })).map(c => c.id);
+  }
+
   /**
    * Handles incoming commands from clients to create a new event.
    * Returns an optimistic response immediately.
@@ -45,7 +51,7 @@ export class ChatsResolver {
   @UseGuards(GqlJwtAuthGuard)
   @Query(() => Number)
   async dummyQuery(@CurrentUser() user: AppUser) {
-    console.log(user);
+    // console.log(user);
     const chat =
       (await this.db.transaction.chat.findFirst({ select: { id: true } })) ||
       (await this.db.transaction.chat.create({

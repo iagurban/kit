@@ -1,5 +1,6 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@poslah/util/modules/cache/cache.module';
 import { AuthStaticModule } from '@poslah/util/ready-modules/auth-static-module';
 import { GlobalDbModule } from '@poslah/util/ready-modules/global-db-module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
@@ -17,7 +18,8 @@ import { WsTicketsService } from './ws-tickets/ws-tickets.service';
     GlobalDbModule,
     RedisStaticModule,
     AuthStaticModule,
-    // registerGRPCClientsModule([messagesGRPCConfig], join(__dirname, '../../certs')),
+    CacheModule,
+    // registerGRPCClientsModule([messagesGRPCConfig]),
 
     HttpModule,
 

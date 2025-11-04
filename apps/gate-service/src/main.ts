@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 
-import { join } from 'node:path';
 import { URL } from 'node:url';
 
 import httpProxy from '@fastify/http-proxy';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { ConfigService } from '@nestjs/config';
 import { fastifyBootstrap } from '@poslah/util/fastify-bootstrap';
+import { Logger } from '@poslah/util/modules/logger/logger.module';
 
 import { AppModule } from './app.module';
 import { GraphqlGatewayManager } from './gateway-module/graphql-gateway.manager';
@@ -14,16 +14,23 @@ import { WsTicketsService } from './ws-tickets/ws-tickets.service';
 
 void fastifyBootstrap(AppModule, config => config.getOrThrow<number>('GATE_SERVICE_PORT'), {
   server: config => config.getOrThrow<string>('GATE_SERVICE_HOST', '0.0.0.0'),
-  cors: {
-    origin: (origin, cb) => {
-      // console.log(`>>> Origin 1: ${origin}`);
-      cb(null, !origin || origin === `https://localhost:3000`);
-    },
-    credentials: true,
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+  cors: async app => {
+    const aoc = app.get<ConfigService>(ConfigService).getOrThrow<string>(`ALLOWED_ORIGINS_CSV`);
+    const origins = new Set(aoc.split(',').map(s => s.trim()));
+    const logger = app.get<Logger>(Logger);
+    logger.info({ origins: [...origins], aoc }, `allowed origins`);
+    return {
+      origin: (origin, cb) => {
+        const allowed = !origin || origins.has(origin);
+        logger.info(`[Gateway] >>> Origin: ${origin} - Allowed: ${allowed}`);
+        cb(null, allowed);
+      },
+      credentials: true,
+      methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    };
   },
-  https: { certsDir: join(__dirname, '../certs') },
+  https: true,
   onAppCreated: async app => {
     const gatewayManager = app.get(GraphqlGatewayManager);
     const configService = app.get(ConfigService);

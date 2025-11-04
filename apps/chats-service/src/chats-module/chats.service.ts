@@ -8,7 +8,7 @@ import { ChatEvent, Prisma } from '@poslah/database/generated/db-client/client';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { MqPublisher } from '@poslah/util/modules/nosql/redis/mq-publisher';
+import { MqPublisher } from '@poslah/util/modules/mq-publisher/mq-publisher.module';
 import { UpdateChatPermissionsDto } from '@poslah/util/schemas/chat-permissions-schema';
 import { MembershipEventDto } from '@poslah/util/schemas/membership-event-schema';
 import type { RawEventDto } from '@poslah/util/schemas/raw-event-schema';
@@ -33,9 +33,9 @@ import { EventsCheckerService } from './events-checker.service';
 interface CandidateEventInput {
   chatId: string;
   authorId: string;
-  nn: string;
-  createdAt: string;
-  type: string;
+  nn: bigint;
+  createdAt: Date;
+  type: `message` | `info` | `membership`;
   payload: JsonObject;
 }
 
@@ -45,7 +45,7 @@ export class ChatsService /*implements OnModuleInit*/ {
     private readonly db: DbService,
     private readonly loggerBase: Logger,
     private readonly eventChecker: EventsCheckerService,
-    private readonly streamEmitter: MqPublisher,
+    private readonly mqPublisher: MqPublisher,
     // private readonly tokenFetcher: TokenFetcherService,
     // private readonly tokenChecker: TokenCheckerService,
     private readonly repository: ChatsRepository
@@ -123,7 +123,9 @@ export class ChatsService /*implements OnModuleInit*/ {
           permissions: newPermissions,
           roleId:
             roleId ??
-            notNull((await this.repository.getUniqueChat(chatId, { defaultRoleId: true })).defaultRoleId),
+            notNull(
+              (await this.repository.getUniqueChatOrThrow(chatId, { defaultRoleId: true })).defaultRoleId
+            ),
         }
       );
       hasChanged = true;
@@ -211,18 +213,19 @@ export class ChatsService /*implements OnModuleInit*/ {
     const candidateEvent: CandidateEventInput = {
       chatId,
       authorId,
-      nn: '0', // placeholder
-      createdAt: createdAt.toISOString(),
-      type,
+      nn: 0n, // placeholder
+      createdAt,
+      type: type as `message` | `info` | `membership`,
       payload,
     } satisfies CandidateEventInput;
 
     // 5. Validate the event against the generic raw schema
     // 6. Publish the single raw event for internal consumption by this same service
     let nn: bigint | undefined;
-    await this.streamEmitter.publish(eventsRawCreateTopic, candidateEvent, async data => {
+    await this.mqPublisher.publish(eventsRawCreateTopic, candidateEvent, async data => {
       await this.eventChecker.authorizeEvent(data);
       nn = data.nn = await this.repository.popNextChatEventMM(chatId);
+      return data;
     });
 
     // 7. Return the optimistic response
@@ -273,18 +276,18 @@ export class ChatsService /*implements OnModuleInit*/ {
         switch (savedEvent.type) {
           case 'message': {
             const messagePayload = savedEvent.payload as MessageEventDto[`payload`];
-            await this.streamEmitter.publish(
+            await this.mqPublisher.publish(
               messagePayload.nn === null ? eventsMessageCreatedTopic : eventsMessagePatchedTopic,
               savedEvent
             );
             break;
           }
           case 'info':
-            await this.streamEmitter.publish(eventsInfoPatchedTopic, savedEvent);
+            await this.mqPublisher.publish(eventsInfoPatchedTopic, savedEvent);
             break;
 
           case 'membership':
-            await this.streamEmitter.publish(eventsMembershipChangedTopic, savedEvent);
+            await this.mqPublisher.publish(eventsMembershipChangedTopic, savedEvent);
             break;
 
           default:

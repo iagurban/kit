@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 import { ChatsGRPCClient } from '@poslah/chats-service/grpc/chats.grpc-client';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { MqPublisher } from '@poslah/util/modules/nosql/redis/mq-publisher';
+import { MqPublisher } from '@poslah/util/modules/mq-publisher/mq-publisher.module';
 import { CreateMessageEventDTO } from '@poslah/util/schemas/create-message-event-schema';
 import { MessageDto } from '@poslah/util/schemas/message.schema';
 import { MessageEventDto } from '@poslah/util/schemas/some-message-event-schema';
@@ -23,7 +23,7 @@ export class MessagesService {
     private readonly loggerBase: Logger,
     private readonly messagesDb: MessagesRepository,
     private readonly chatsGRPCClient: ChatsGRPCClient,
-    private readonly streamEmitter: MqPublisher
+    private readonly mqPublisher: MqPublisher
   ) {}
 
   @once
@@ -36,9 +36,10 @@ export class MessagesService {
    */
   private async popNn(chatId: string): Promise<bigint> {
     return (
-      await this.db.transaction.messagesCounter.update({
+      await this.db.transaction.messagesCounter.upsert({
         where: { chatId },
-        data: { lastNn: { increment: 1 } },
+        update: { lastNn: { increment: 1 } },
+        create: { lastNn: 0n, chatId },
       })
     ).lastNn;
   }
@@ -53,9 +54,10 @@ export class MessagesService {
 
       await this.messagesDb.insert(event, messageNn);
 
-      const [createdMessage] = await this.messagesDb.getById(event.chatId, [messageNn]);
+      const [createdMessage] = await this.messagesDb.getByNn(event.chatId, [messageNn], `*`);
+
       if (createdMessage) {
-        await this.streamEmitter.publish(projectionMessageCreatedTopic, createdMessage);
+        await this.mqPublisher.publish(projectionMessageCreatedTopic, createdMessage);
       }
     } catch (error) {
       this.logger.error(
@@ -77,9 +79,9 @@ export class MessagesService {
     try {
       await this.performReliablePatch(event);
 
-      const [finalMessageState] = await this.messagesDb.getById(chatId, [targetMessageNn]);
+      const [finalMessageState] = await this.messagesDb.getByNn(chatId, [targetMessageNn]);
       if (finalMessageState) {
-        await this.streamEmitter.publish(projectionMessagePatchedTopic, finalMessageState);
+        await this.mqPublisher.publish(projectionMessagePatchedTopic, finalMessageState);
       }
     } catch (error) {
       this.logger.error(

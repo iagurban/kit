@@ -11,13 +11,15 @@ export const privateSigningGRPCConfig = declareGRPCConfig('SIGNING_SERVICE_CLIEN
   const port = grpcUrl.split(':')[1];
 
   return {
-    path: 'grpc/signing.proto',
+    path: '../../apps/signing-service/src/grpc/signing.proto',
     package: 'poslah.signing',
     // ** THE FIX IS HERE **
     // Force the gRPC server to listen on all network interfaces (0.0.0.0).
     // This makes it reachable from inside the Docker container.
     url: `0.0.0.0:${port}`,
     dir: path.join(__dirname, '..'),
+
+    noMTls: true,
   };
 });
 
@@ -26,10 +28,9 @@ export const privateSigningGRPCConfig = declareGRPCConfig('SIGNING_SERVICE_CLIEN
  * It correctly points to the public-facing proxy port.
  */
 export const signingGRPCConfig = declareGRPCConfig('SIGNING_SERVICE_CLIENT', config => ({
-  path: 'grpc/signing.proto',
+  path: '../../apps/signing-service/src/grpc/signing.proto',
   package: 'poslah.signing',
   url: `${config.getOrThrow('SIGNING_SERVICE_HOST')}:${config.getOrThrow('SIGNING_SERVICE_PORT')}`,
-  dir: path.join(__dirname, '..'),
   // channelOptions: {
   //   // This forces the client to validate the proxy's certificate against 'localhost',
   //   // resolving the ERR_TLS_CERT_ALTNAME_INVALID error without needing to change the cert.

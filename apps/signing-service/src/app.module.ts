@@ -10,9 +10,9 @@ import { SigningModule } from './signing-module/signing.module';
     // GlobalDbModule,
     // RedisStaticModule,
     // AuthStaticModule,
-    // registerGRPCClientsModule([messagesGRPCConfig], join(__dirname, '../../certs')),
+    // registerGRPCClientsModule([messagesGRPCConfig])),
 
-    // GraphqlSubgraphModule.forRoot(`signing`, join(__dirname, 'schema.graphql'), RedisStaticModule),
+    // GraphqlSubgraphModule.forRoot(`signing`),
 
     SigningModule,
     // MtlsProxyModule,

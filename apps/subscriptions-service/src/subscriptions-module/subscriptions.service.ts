@@ -257,6 +257,7 @@ export class SubscriptionsService implements OnModuleInit, OnModuleDestroy {
   private usersByChat = new ExMap<string /* chatId */, Set<string /* userId */>>();
 
   private rebuildChatsToUsersMapping() {
+    this.logger.debug(`REBUILDING`);
     const usersByChat = new ExMap<
       Parameters<typeof this.usersByChat.set>[0],
       Parameters<typeof this.usersByChat.set>[1]

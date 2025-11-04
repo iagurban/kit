@@ -4,7 +4,7 @@ import { GrpcAuthModule } from '@poslah/signing-service/token-checker-module/grp
 
 import { LoggerModule } from './modules/logger/logger.module';
 
-export const rootImports = (name: string, shortName: string) => [
+export const rootImports = (name: string, shortName?: string) => [
   ConfigModule.forRoot({
     isGlobal: true,
     cache: true,

@@ -1,9 +1,10 @@
-import { ApolloClient, OperationVariables } from '@apollo/client';
+import { ApolloClient, ErrorLike, OperationVariables } from '@apollo/client';
 import { ExMap } from '@gurban/kit/collections/ex-map';
 import { disposers, FunctionDisposable, ObjectDisposable } from '@gurban/kit/core/disposers';
-import type { JsonObject } from '@gurban/kit/core/json-type.ts';
+import type { JsonObject, JsonValue } from '@gurban/kit/core/json-type.ts';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
 import { PromiseController } from '@gurban/kit/utils/promise-util.ts';
+import { AppUser } from '@poslah/util/modules/auth-module/auth.types.ts';
 import {
   attachmentInfoSchema,
   forwardInfoSchema,
@@ -12,6 +13,7 @@ import {
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import {
   applySnapshot,
+  createContext,
   ExtendedModel,
   idProp,
   isoStringToDateTransform,
@@ -26,8 +28,13 @@ import {
   stringToBigIntTransform,
 } from 'mobx-keystone';
 import type { Subscription } from 'rxjs';
-import { z } from 'zod/v4';
 
+import { accessTokenStore } from './apollo.ts';
+import {
+  PushChatEventDocument,
+  PushChatEventMutation,
+  PushChatEventMutationVariables,
+} from './graphql/chats.generated.tsx';
 import {
   AllMessagesSubscriptionDocument,
   AllMessagesSubscriptionSubscription,
@@ -49,7 +56,7 @@ class AttachmentInfoStore extends Model({
   url: prop<string>().withSetter(),
   filename: prop<string>().withSetter(),
   size: prop<string>().withTransform(stringToBigIntTransform()).withSetter(),
-  metadata: prop<Record<string, unknown> | null>(null).withSetter(),
+  metadata: prop<Record<string, JsonValue> | null>(null).withSetter(),
 }) {
   static fromRaw(data: JsonObject) {
     const parsed = attachmentInfoSchema.parse(data);
@@ -57,9 +64,9 @@ class AttachmentInfoStore extends Model({
   }
 }
 
-export type AttachmentInfoGuard = StaticAssert<
-  AssertExtends<z.input<typeof attachmentInfoSchema>, SnapshotInOf<AttachmentInfoStore>>
->;
+// export type AttachmentInfoGuard = StaticAssert<
+//   AssertExtends<z.input<typeof attachmentInfoSchema>, SnapshotInOf<AttachmentInfoStore>>
+// >;
 
 @model(`poslah/ForwardInfo`)
 class ForwardInfoStore extends Model({
@@ -79,12 +86,13 @@ class ForwardInfoStore extends Model({
   }
 }
 
-export type ForwardInfoGuard = StaticAssert<
-  AssertExtends<z.input<typeof forwardInfoSchema>, SnapshotInOf<ForwardInfoStore>>
->;
+// export type ForwardInfoGuard = StaticAssert<
+//   AssertExtends<z.input<typeof forwardInfoSchema>, SnapshotInOf<ForwardInfoStore>>
+// >;
 
 @model(`poslah/MessageDraft`)
 export class MessageDraftStore extends Model({
+  chatId: prop<string>(),
   text: prop<string | null>().withSetter(),
   replyToNn: prop<string | null>().withTransform(stringToBigIntTransform()).withSetter(),
   attachments: prop<AttachmentInfoStore[] | null>().withSetter(),
@@ -124,9 +132,9 @@ class MessageStore extends ExtendedModel(MessageDraftStore, {
   }
 }
 
-export type MessageTypeGuard = StaticAssert<
-  AssertExtends<z.input<typeof messageSchema>, SnapshotInOf<MessageStore>>
->;
+// export type MessageTypeGuard = StaticAssert<
+//   AssertExtends<z.input<typeof messageSchema>, SnapshotInOf<MessageStore>>
+// >;
 
 class StoreLifecycle {
   constructor(private readonly disposables: readonly (FunctionDisposable | ObjectDisposable)[]) {}
@@ -271,7 +279,13 @@ class MutatingStore<TData, TVariables extends OperationVariables> extends StoreL
     readonly client: () => ApolloClient,
     readonly getOptions: () => Omit<ApolloClient.MutateOptions<TData, TVariables>, `variables`>
   ) {
-    super();
+    super([
+      () => () => {
+        if (this.executing) {
+          throw new Error(`Store has been disposed while executing, mutation results will be logged`);
+        }
+      },
+    ]);
   }
 
   @computed.struct
@@ -279,12 +293,31 @@ class MutatingStore<TData, TVariables extends OperationVariables> extends StoreL
     return this.getOptions();
   }
 
+  executing?: {
+    promise: Promise<{ result?: TData; error?: ErrorLike | null }>;
+  };
+
   execute(variables: TVariables) {
     if (this.executing) {
       throw new Error(`already executing`);
     }
     this.executing = {
-      promise: notNull(this.client()).mutate({ variables, ...this.options }),
+      promise: (async () => {
+        const options = { variables, ...this.options };
+        try {
+          const result = await notNull(this.client()).mutate(options);
+          if (!this.initialized) {
+            console.error(`Store has been disposed while executing, there is abandoned mutation info:`);
+            console.error(`options:`);
+            console.error(options);
+            console.error(`result:`);
+            console.error(result);
+          }
+          return { result: result.data, error: result.error };
+        } finally {
+          this.executing = undefined;
+        }
+      })(),
     };
   }
 }
@@ -444,10 +477,24 @@ class ChatStore extends Model({
   title: prop<string>(),
   bio: prop<string>(() => ``),
   draft: prop<MessageDraftStore>(
-    () => new MessageDraftStore({ text: ``, attachments: null, forwarded: null, replyToNn: null })
+    () => new MessageDraftStore({ chatId: ``, text: ``, attachments: null, forwarded: null, replyToNn: null })
   ),
 }) {
   static ref = rootRef<ChatStore>(`poslah/ChatRef`);
+
+  @computed
+  get client() {
+    return getGraphqlClient(this);
+  }
+
+  public sendingMessage = new MutatingStore<PushChatEventMutation, PushChatEventMutationVariables>(
+    () => this.client,
+    () => ({ mutation: PushChatEventDocument })
+  );
+
+  protected onAttachedToRootStore(): (() => void) | void {
+    return disposers([this.sendingMessage]);
+  }
 }
 
 @model(`poslah/ChatsStorage`)
@@ -536,7 +583,13 @@ export class ChatsStorage extends Model({
     if (draft) {
       return draft;
     }
-    const newDraft = new MessageDraftStore({ text: ``, replyToNn: null, attachments: null, forwarded: null });
+    const newDraft = new MessageDraftStore({
+      chatId,
+      text: ``,
+      replyToNn: null,
+      attachments: null,
+      forwarded: null,
+    });
     this.messagesDrafts.set(chatId, newDraft);
     return newDraft;
   }
@@ -545,6 +598,8 @@ export class ChatsStorage extends Model({
     return disposers([this.messagesSubscription, this.joinedChatsFetcher]);
   }
 }
+
+const meContext = createContext<AppUser | null>();
 
 @model(`poslah/RootStorage`)
 export class RootStorage extends Model({
@@ -561,12 +616,36 @@ export class RootStorage extends Model({
     return o;
   }
 
+  @computed
+  get maybeCurrentUser() {
+    return meContext.get(this);
+  }
+
+  @computed
+  get currentUser() {
+    return notNull(this.maybeCurrentUser);
+  }
+
   protected onInit() {
     const args = notNull(
       RootStorage.tempArgs,
       () => `You should create RootStorage with RootStorage.whitArgs(args)`
     );
     setGraphqlClient(this, args.client);
+  }
+
+  protected onAttachedToRootStore(): (() => void) | void {
+    return disposers([
+      () => {
+        const fn = (user: AppUser) => {
+          meContext.set(this, user);
+        };
+        accessTokenStore.events.on(`updated`, fn);
+        return () => {
+          accessTokenStore.events.off(`updated`, fn);
+        };
+      },
+    ]);
   }
 }
 

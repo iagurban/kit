@@ -7,10 +7,11 @@ import {
   putJSONToRedisHash,
   RedisHashOptions,
 } from '@gurban/kit/core/redis-helpers';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Module } from '@nestjs/common';
 
-import { RedisService } from './redis.service';
-import { RedisScriptManager } from './redis-script-manager';
+import { RedisStaticModule } from '../../ready-modules/redis-static-module';
+import { RedisService } from '../nosql/redis/redis.service';
+import { RedisScriptManager } from '../nosql/redis/redis-script-manager';
 
 type Nullable<T> = { [K in keyof T]: T[K] | null };
 
@@ -41,28 +42,28 @@ export class CacheService {
     return this.redis.sadd(key, ...members);
   }
 
-  putObjectToHash(cacheKey: string, data: JsonObject, options?: { ttl?: number }) {
-    return putJSONToRedisHash(this.redis, cacheKey, data, options);
+  putObjectToHash(key: string, data: JsonObject, options?: { ttl?: number }) {
+    return putJSONToRedisHash(this.redis, key, data, options);
   }
 
-  getHashAsObject(cacheKey: string, options?: RedisHashOptions) {
-    return getRedisHashToJSON(this.redis, cacheKey, options);
+  getHashAsObject(key: string, options?: RedisHashOptions) {
+    return getRedisHashToJSON(this.redis, key, options);
   }
 
-  getHashFieldsValues(cacheKey: string, fields: readonly string[], options?: RedisHashOptions) {
-    return getRedisHashToValuesByFields(this.redis, cacheKey, fields, options);
+  getHashFieldsValues(key: string, fields: readonly string[], options?: RedisHashOptions) {
+    return getRedisHashToValuesByFields(this.redis, key, fields, options);
   }
 
   getAllHashFieldsValues(key: string) {
     return this.redis.hgetall(key);
   }
 
-  delete(cacheKey: string) {
-    return this.redis.del(cacheKey);
+  delete(key: string) {
+    return this.redis.del(key);
   }
 
-  increment(chatkey: string, field: string, amount: number) {
-    return this.redis.hincrby(chatkey, field, amount);
+  increment(key: string, field: string, amount: number) {
+    return this.redis.hincrby(key, field, amount);
   }
 
   async getManyFieldsValues<O extends Record<string, string>>(request: O): Promise<Nullable<O> | null> {
@@ -126,3 +127,10 @@ export class CacheService {
     return result === 1;
   }
 }
+
+@Module({
+  imports: [RedisStaticModule],
+  providers: [CacheService],
+  exports: [CacheService],
+})
+export class CacheModule {}

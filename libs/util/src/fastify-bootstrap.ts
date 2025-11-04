@@ -3,12 +3,29 @@ import { join } from 'node:path';
 
 import fastifyCookie, { FastifyCookieOptions } from '@fastify/cookie';
 import { FastifyCorsOptions } from '@fastify/cors';
-import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import {
+  ArgumentsHost,
+  CallHandler,
+  Catch,
+  DynamicModule,
+  ExceptionFilter,
+  ExecutionContext,
+  ForwardReference,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NestInterceptor,
+  Type,
+} from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { RawServerDefault } from 'fastify';
+import { FastifyReply, FastifyRequest, RawServerDefault } from 'fastify';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { Logger } from './modules/logger/logger.module';
 
@@ -18,14 +35,85 @@ declare const module: {
 
 type IEntryNestModule = Type | DynamicModule | ForwardReference | Promise<IEntryNestModule>;
 
-const createHttps = (dir: string) =>
-  ({
-    key: readFileSync(join(dir, 'server.key')),
-    cert: readFileSync(join(dir, 'server.crt')),
-    ca: readFileSync(join(dir, 'ca.crt')),
+export const createStandaloneConfig = async () => (await NestFactory.create(ConfigModule)).get(ConfigService);
+
+@Injectable()
+export class HttpLoggingInterceptor implements NestInterceptor {
+  constructor(private readonly loggerBase: Logger) {}
+
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, HttpLoggingInterceptor.name);
+  }
+
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+    // Check if it's an HTTP request
+    if (context.getType() !== 'http') {
+      return next.handle();
+    }
+
+    const httpContext = context.switchToHttp();
+    const request = httpContext.getRequest<FastifyRequest>();
+    const response = httpContext.getResponse<FastifyReply>();
+    const startTime = Date.now();
+
+    const { method, url } = request;
+
+    return next.handle().pipe(
+      tap(() => {
+        const duration = Date.now() - startTime;
+        this.logger.info(`[${response.statusCode}] ${method} ${url} - ${duration}ms`);
+      })
+    );
+  }
+}
+
+@Catch()
+export class AllExceptionsFilter implements ExceptionFilter {
+  constructor(private readonly loggerBase: Logger) {}
+
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, AllExceptionsFilter.name);
+  }
+
+  catch(exception: unknown, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<FastifyReply>();
+    const request = ctx.getRequest<FastifyRequest>();
+
+    const status =
+      exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    const message = exception instanceof Error ? exception.message : 'Internal server error';
+
+    // Log the error
+    if (status >= 500) {
+      this.logger.error({ exception }, `[${status}] ${request.method} ${request.url} - ${message}`);
+    } else {
+      this.logger.warn(`[${status}] ${request.method} ${request.url} - ${message}`);
+    }
+
+    // Send the JSON response to the client
+    response.code(status).send({
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      message,
+    });
+  }
+}
+
+const createHttps = async () => {
+  const config = await createStandaloneConfig();
+  return {
+    key: readFileSync(join(process.cwd(), config.getOrThrow(`CERTS_SERVER_KEY`))),
+    cert: readFileSync(join(process.cwd(), config.getOrThrow(`CERTS_SERVER_CRT`))),
+    ca: readFileSync(join(process.cwd(), config.getOrThrow(`CERTS_CA_CRT`))),
     requestCert: true,
     rejectUnauthorized: false,
-  }) as const;
+  } as const;
+};
 
 export const fastifyBootstrap = async (
   nestModule: IEntryNestModule,
@@ -37,28 +125,30 @@ export const fastifyBootstrap = async (
     ) => readonly MicroserviceOptions[] | Promise<readonly MicroserviceOptions[]>;
     bodyParser?: boolean;
     noHotReload?: boolean;
-    http2?: { certsDir: string };
-    https?: { certsDir: string };
+    http2?: true;
+    https?: true;
     server?: string | ((config: ConfigService) => string);
     onAppCreated?: (app: NestFastifyApplication) => void | Promise<void>;
     onAppConfigured?: (app: NestFastifyApplication) => void;
     onAppListening?: (app: NestFastifyApplication) => void;
-    cors?: FastifyCorsOptions;
+    cors?: FastifyCorsOptions | ((app: NestFastifyApplication) => Promise<FastifyCorsOptions>);
     noCookies?: boolean;
   }
 ): Promise<NestFastifyApplication<RawServerDefault>> => {
   const app = await NestFactory.create<NestFastifyApplication>(
     nestModule,
     options.http2
-      ? new FastifyAdapter({ http2: true, https: createHttps(options.http2.certsDir) })
+      ? new FastifyAdapter({ http2: true, https: await createHttps() })
       : options.https
-        ? new FastifyAdapter({ https: createHttps(options.https.certsDir) })
+        ? new FastifyAdapter({ https: await createHttps() })
         : new FastifyAdapter(),
     {
       bufferLogs: true,
       bodyParser: options.bodyParser ?? true,
     }
   );
+
+  app.enableShutdownHooks();
 
   // When running in HTTP/2 mode, we must manually teach Fastify how to handle gRPC requests.
   if (options.http2) {
@@ -78,7 +168,7 @@ export const fastifyBootstrap = async (
   await options.onAppCreated?.(app);
 
   if (options.cors) {
-    app.enableCors(options.cors);
+    app.enableCors(typeof options.cors === `function` ? await options.cors(app) : options.cors);
   }
 
   // app.useLogger(app.get(Logger));
@@ -102,6 +192,9 @@ export const fastifyBootstrap = async (
       await app.startAllMicroservices();
       logger.info('All microservices started successfully.');
     }
+
+    app.useGlobalInterceptors(new HttpLoggingInterceptor(rootLogger));
+    app.useGlobalFilters(new AllExceptionsFilter(rootLogger));
 
     options.onAppConfigured?.(app);
 

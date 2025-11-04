@@ -28,7 +28,7 @@ export class TokenCheckerService {
   get client() {
     // Create a custom HTTPS agent that trusts our local CA.
     const httpsAgent = new https.Agent({
-      ca: fs.readFileSync('./certs/ca.crt'),
+      ca: fs.readFileSync(process.cwd(), this.configService.getOrThrow(`CERTS_CA_CRT`)),
     });
 
     return new JwksClient({

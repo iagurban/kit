@@ -2,7 +2,6 @@ import { Metadata } from '@grpc/grpc-js';
 import { once } from '@gurban/kit/core/once';
 import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
 import { firstValueFrom } from 'rxjs';
@@ -20,7 +19,6 @@ export class TokenFetcherService {
 
   constructor(
     @Inject(signingGRPCConfig.clientName) private readonly grpcClient: ClientGrpc,
-    private readonly configService: ConfigService,
     private readonly loggerBase: Logger
   ) {}
 

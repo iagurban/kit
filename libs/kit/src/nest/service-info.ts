@@ -26,12 +26,12 @@ export class ServiceInfo {
 @Module({})
 export class ServiceInfoModule {
   static forRootGlobal(name: string, shortName?: string): DynamicModule {
-    const si = ServiceInfo.provide(name, shortName);
+    const serviceInfo = ServiceInfo.provide(name, shortName);
     return {
       module: ServiceInfoModule,
       global: true,
-      providers: [si],
-      exports: [si],
+      providers: [serviceInfo],
+      exports: [serviceInfo],
     };
   }
 }

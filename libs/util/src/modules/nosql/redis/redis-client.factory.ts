@@ -1,3 +1,5 @@
+import { once } from '@gurban/kit/core/once';
+import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
 import { AnyFunction } from '@gurban/kit/utils/types';
 import { Injectable, OnModuleDestroy, Provider } from '@nestjs/common';
 import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
@@ -5,12 +7,14 @@ import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/opt
 import { ConfigService } from '@nestjs/config';
 import Redis, { Redis as RedisClient, RedisOptions } from 'ioredis';
 
+import { Logger } from '../../logger/logger.module';
+
 /**
  * Options for configuring the Redis client, extending ioredis's RedisOptions.
  */
 export type RedisFabricOptions = RedisOptions;
 
-export const defaultRedisOptions = (configService: ConfigService) => ({
+export const redisOptions = (configService: ConfigService) => ({
   host: configService.get<string>('REDIS_HOST', 'localhost'),
   port: configService.get<number>('REDIS_PORT', 6379),
 });
@@ -20,13 +24,21 @@ export const defaultRedisOptions = (configService: ConfigService) => ({
  * This factory creates unique, non-shared clients and tracks them to ensure
  * they are gracefully closed on application shutdown.
  *
- * Instances of this class are created via the static `provide` method.
+ * Injectable instances of this class are created via the static `provide` method.
  */
 @Injectable()
 export class RedisFabric implements OnModuleDestroy {
   private readonly clients = new Set<RedisClient>();
 
-  constructor(private readonly options: RedisFabricOptions) {}
+  constructor(
+    private readonly options: RedisFabricOptions,
+    private readonly loggerBase: Logger
+  ) {}
+
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, RedisFabric.name);
+  }
 
   /**
    * Creates a new, unique Redis client instance using the provided configuration.
@@ -35,9 +47,7 @@ export class RedisFabric implements OnModuleDestroy {
    */
   public create(): RedisClient {
     const client = new Redis(this.options);
-
     this.clients.add(client);
-    console.log(`[RedisFabric] Created and tracking new Redis client. Total clients: ${this.clients.size}`);
     return client;
   }
 
@@ -50,7 +60,7 @@ export class RedisFabric implements OnModuleDestroy {
     if (this.clients.has(client)) {
       await client.quit();
       this.clients.delete(client);
-      console.log(`[RedisFabric] Gracefully disconnected a client. Remaining clients: ${this.clients.size}`);
+      this.logger.trace(`Gracefully disconnected a client.`);
     }
   }
 
@@ -59,7 +69,7 @@ export class RedisFabric implements OnModuleDestroy {
    * when the application shuts down.
    */
   async onModuleDestroy() {
-    console.log(`[RedisFabric] Shutting down. Disconnecting ${this.clients.size} clients...`);
+    this.logger.info(`[RedisFabric] Shutting down. Disconnecting ${this.clients.size} clients...`);
     await Promise.all(Array.from(this.clients).map(client => this.kill(client)));
   }
 
@@ -79,19 +89,20 @@ export class RedisFabric implements OnModuleDestroy {
   ) {
     return {
       provide: token,
-      useFactory: (async (...args) => {
+      inject: [Logger, ...(options.inject ?? [])],
+      useFactory: (async (loggerBase, ...args) => {
         const fabricOptions = await options.useFactory(...args);
-        return new RedisFabric(fabricOptions);
+        return new RedisFabric(fabricOptions, loggerBase);
       }) as AnyFunction<Promise<RedisFabric>>,
-      inject: options.inject || [],
     } satisfies Provider;
   }
+  //
 
   public static provideDefault(token: InjectionToken = RedisFabric): Provider {
     return RedisFabric.provide(token, {
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        ...defaultRedisOptions(configService),
+        ...redisOptions(configService),
         maxRetriesPerRequest: 3,
       }),
     });

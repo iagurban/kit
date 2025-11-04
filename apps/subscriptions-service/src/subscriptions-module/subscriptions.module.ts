@@ -4,28 +4,29 @@ import { eventsMembershipChangedTopic } from '@poslah/chats-service/topics/event
 import { projectionMessageCreatedTopic } from '@poslah/messages-service/topics/projection-message-created.topic';
 import { projectionMessagePatchedTopic } from '@poslah/messages-service/topics/projection-message-patched.topic';
 import { TokenFetcherModule } from '@poslah/signing-service/token-fetcher-module/token-fetcher.module';
+import { CacheModule } from '@poslah/util/modules/cache/cache.module';
 import { MqConsumerModule } from '@poslah/util/modules/mq-consumer-module/mq-consumer.module';
+import { PubSubModule } from '@poslah/util/modules/pubsub/pubsub.module';
 import { RedisStaticModule } from '@poslah/util/ready-modules/redis-static-module';
 
+import { SubscriptionsMqController } from './subscriptions.mq-controller';
 import { SubscriptionsResolver } from './subscriptions.resolver';
 import { SubscriptionsService } from './subscriptions.service';
-import { SubscriptionsStreamsController } from './subscriptions.streams-controller';
 
 @Module({
   imports: [
     TokenFetcherModule,
     RedisStaticModule,
-    MqConsumerModule.forRoot(
-      [
-        projectionMessageCreatedTopic.name,
-        projectionMessagePatchedTopic.name,
-        eventsMembershipChangedTopic.name,
-      ],
-      RedisStaticModule
-    ),
+    MqConsumerModule.forRoot([
+      projectionMessageCreatedTopic.name,
+      projectionMessagePatchedTopic.name,
+      eventsMembershipChangedTopic.name,
+    ]),
+    CacheModule,
+    PubSubModule,
   ],
   providers: [ChatsGRPCClient, SubscriptionsService, SubscriptionsResolver],
-  controllers: [SubscriptionsStreamsController],
+  controllers: [SubscriptionsMqController],
   exports: [SubscriptionsService],
 })
 export class SubscriptionsModule {}

@@ -4,8 +4,6 @@ import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-toke
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
 
 import { NestExportable, NestImportable } from '../../../nest-types';
-import { CacheService } from './cache.service';
-import { MqPublisher } from './mq-publisher';
 import { RedisFabric, RedisFabricOptions } from './redis-client.factory';
 import { RedisScriptManager } from './redis-script-manager';
 
@@ -30,10 +28,10 @@ export class RedisModule {
   static readonly getRedisFabricToken = (name: string = `default`) => `REDIS_FABRIC_${name}`;
 
   public static forRoot(config: RedisConfig, global?: boolean): DynamicModule {
-    const providers: Provider[] = [RedisScriptManager, MqPublisher, CacheService];
+    const providers: Provider[] = [RedisScriptManager];
+    const exports: NestExportable[] = [RedisScriptManager];
 
     const imports: NestImportable[] = [];
-    const exports: NestExportable[] = [RedisScriptManager, MqPublisher, CacheService];
 
     // --- Create a Fabric Provider for each named configuration ---
     for (const name in config) {

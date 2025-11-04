@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { MessagesStreamsController } from './messages.streams-controller';
+import { MessagesMqController } from './messages.mq-controller';
 
 describe('MessagesController', () => {
-  let controller: MessagesStreamsController;
+  let controller: MessagesMqController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [MessagesStreamsController],
+      controllers: [MessagesMqController],
     }).compile();
 
-    controller = module.get<MessagesStreamsController>(MessagesStreamsController);
+    controller = module.get<MessagesMqController>(MessagesMqController);
   });
 
   it('should be defined', () => {

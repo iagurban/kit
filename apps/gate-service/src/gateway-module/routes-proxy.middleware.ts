@@ -24,7 +24,7 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
   }
 
   async onModuleInit() {
-    this.logger.silent('Initializing ProxyMiddleware and subscribing to route updates...');
+    this.logger.trace('Initializing ProxyMiddleware and subscribing to route updates...');
     this.registry.proxyRoutesResource.subscribe(() => {
       this.getMatcher(); // start the process for updating routes (internally waits fetch()'s promise)
     });
@@ -58,7 +58,7 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
           return this.calculated.matchers;
         }
 
-        this.logger.silent('Intelligently updating proxy routes...');
+        this.logger.trace('Updating proxy routes...');
 
         const proxies = new ExMap<string, ExMap<string, RequestHandler>>(); // build new cache
         const oldRoutesByPath = new ExMap(
@@ -77,7 +77,7 @@ export class RoutesProxyMiddleware implements NestMiddleware, OnModuleInit {
               // Reuse an existing proxy handler.
               proxies.getOrCreate(method, () => new ExMap()).set(newRoute.path, existingProxy);
             } else {
-              this.logger.silent(`Creating new proxy handler for path: ${newRoute.path}`);
+              this.logger.trace(`Creating new proxy handler for path: ${newRoute.path}`);
               proxies
                 .getOrCreate(method, () => new ExMap())
                 .set(newRoute.path, createProxyMiddleware(this.createProxyOptions(newRoute)));

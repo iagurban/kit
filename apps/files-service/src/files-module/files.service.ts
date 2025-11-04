@@ -11,10 +11,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma, StoredFile, UploadSession } from '@poslah/database/generated/db-client/client';
+import { CacheService } from '@poslah/util/modules/cache/cache.module';
 import { DbService } from '@poslah/util/modules/db-module/db.service';
 import { isPrismaClientError } from '@poslah/util/modules/db-module/util';
 import { Logger } from '@poslah/util/modules/logger/logger.module';
-import { CacheService } from '@poslah/util/modules/nosql/redis/cache.service';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod/v4';
 

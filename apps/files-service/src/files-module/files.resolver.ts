@@ -14,7 +14,6 @@ import {
 import { AppUser } from '@poslah/util/modules/auth-module/auth.types';
 import { CurrentUser } from '@poslah/util/modules/auth-module/decorators/current-user';
 import { GqlJwtAuthGuard } from '@poslah/util/modules/auth-module/guards/gql-jwt-auth-guard';
-import { GraphQLBigInt } from 'graphql-scalars';
 import { z } from 'zod/v4';
 
 import {
@@ -117,7 +116,7 @@ export class FilesResolver {
   async createOrJoinUploadSession(
     @CurrentUser() user: AppUser,
     @Args('checksum') checksum: string,
-    @Args('sizeBytes', { type: () => GraphQLBigInt }) sizeBytes: bigint,
+    @Args('sizeBytes', { type: () => BigInt }) sizeBytes: bigint,
     @Args('originalFilename') originalFilename: string,
     @Args('mimeType') mimeType: string,
     @Args('totalChunks', { type: () => Int }) totalChunks: number,

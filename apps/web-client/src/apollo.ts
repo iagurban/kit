@@ -9,17 +9,25 @@ import { SetContextLink } from '@apollo/client/link/context';
 import { ErrorLink } from '@apollo/client/link/error';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
+import EventEmitter from '@foxify/events';
 import { sleep } from '@gurban/kit/utils/async-utils';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils.ts';
 import { retrying } from '@gurban/kit/utils/flow/retrying.ts';
+import { AppUser } from '@poslah/util/modules/auth-module/auth.types.ts';
 import { createClient } from 'graphql-ws';
+import { jwtDecode } from 'jwt-decode';
 
 const host = notNull(import.meta.env.VITE_GATE_SERVICE_HOST);
 const port = notNull(import.meta.env.VITE_GATE_SERVICE_PORT);
 
 const PREFETCHED_ACCESS_TOKEN_WINDOW_KEY = `PREFETCHED_ACCESS_TOKEN_WINDOW_KEY`;
 
-const accessTokenStore = (() => {
+export const accessTokenStore = (() => {
+  const ee = new EventEmitter<{
+    invalidated(): void;
+    updated(data: AppUser): void;
+  }>();
+
   let fetching = false;
   const prefetched = (window as { [PREFETCHED_ACCESS_TOKEN_WINDOW_KEY]?: string })[
     PREFETCHED_ACCESS_TOKEN_WINDOW_KEY
@@ -46,6 +54,7 @@ const accessTokenStore = (() => {
           }
 
           const data = await response.json();
+          ee.emit(`updated`, jwtDecode(data.accessToken));
           return data.accessToken;
         } catch (error) {
           console.error('Failed to refresh token:', error);
@@ -59,7 +68,14 @@ const accessTokenStore = (() => {
   };
 
   // if somebody is already fetching, join to wait it
-  const invalidate = () => (fetching ? promise : (promise = refreshToken()));
+  const invalidate = () => {
+    if (fetching) {
+      return promise;
+    }
+    promise = refreshToken();
+    ee.emit(`invalidated`);
+    return promise;
+  };
 
   if (!promise) {
     invalidate();
@@ -68,6 +84,7 @@ const accessTokenStore = (() => {
   return {
     invalidate,
     get: () => notNull(promise),
+    events: ee,
   };
 })();
 
@@ -79,9 +96,15 @@ class HttpError extends Error {
 const authorizedFetch = (path: string, init?: RequestInit): Promise<Response> =>
   retrying(
     async (error, attempt) => {
-      if (error instanceof HttpError && error.response.status === 401 && attempt < 5) {
-        accessTokenStore.invalidate();
-        return 1000 * 2 ** (attempt - 1);
+      if (error instanceof HttpError) {
+        if (error.response.status >= 500) {
+          await sleep(Math.min(attempt, 3) * 1000);
+          return true;
+        }
+        if (error.response.status === 401 && attempt < 5) {
+          accessTokenStore.invalidate();
+          return 1000 * 2 ** (attempt - 1);
+        }
       }
       return false;
     },

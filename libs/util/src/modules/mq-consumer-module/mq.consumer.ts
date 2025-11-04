@@ -1,11 +1,12 @@
+import { checked, isInteger, isROArray, isString } from '@gurban/kit/core/checks';
 import { ExtendedJsonValue } from '@gurban/kit/core/json-type';
 import { once } from '@gurban/kit/core/once';
-import { createContextualLogger } from '@gurban/kit/interfaces/logger-interface';
+import { createContextualLogger, IBaseLogger } from '@gurban/kit/interfaces/logger-interface';
 import { ServiceInfo } from '@gurban/kit/nest/service-info';
 import { sleep } from '@gurban/kit/utils/async-utils';
 import { notNull } from '@gurban/kit/utils/flow/flow-utils';
 import { AnyAnyFunction } from '@gurban/kit/utils/types';
-import { FactoryProvider, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { FactoryProvider, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
 import { Redis } from 'ioredis';
@@ -13,6 +14,7 @@ import { treeifyError, ZodType } from 'zod/v4';
 
 import { Logger } from '../logger/logger.module';
 import { RedisModule } from '../nosql/redis/redis.module';
+import { RedisService } from '../nosql/redis/redis.service';
 import { RedisFabric } from '../nosql/redis/redis-client.factory';
 
 export type ProcessMessageFunction = (
@@ -20,6 +22,12 @@ export type ProcessMessageFunction = (
   messageId: string,
   ctx: { stopped: boolean }
 ) => Promise<void>;
+
+type ProcessMessageFunctionData = {
+  fn: ProcessMessageFunction;
+  schema: ZodType;
+  name: string;
+};
 
 export interface MqConsumerConfigBase {
   redisFabric: RedisFabric;
@@ -69,179 +77,144 @@ type XPendingResult =
     }[]
   | null;
 
-/**
- * A non-injectable class that encapsulates the logic for consuming messages
- * from a Redis stream. Instances are created and managed via the static `provide` method.
- */
-export class MqConsumer implements OnModuleInit, OnModuleDestroy {
-  private redis?: Redis; // Client for the main consumption loop
-  private reclaimRedis?: Redis; // Dedicated client for the reclaim loop
-  private isRunning = false;
-  private isReclaiming = false;
-  private processFunction: { fn: ProcessMessageFunction; schema: ZodType; name: string } | null = null;
+type ConsumerConfig = {
+  consumerName: string;
+  consumersGroup: string;
+  streamName: string;
+  dlqStreamName: string | undefined;
+  staleMessageTimeoutMs: number;
+  reclaimSleepMs: number;
+  reclaimOnceCount: number;
+};
 
-  private readonly redisFabric: RedisFabric;
-  private readonly consumerName: string;
-  private readonly consumersGroup: string;
-  private readonly streamName: string;
-  private readonly staleMessageTimeoutMs: number;
-  private readonly reclaimSleepMs: number;
-  private readonly dlqStreamName?: string;
-  private readonly reclaimOnceCount: number;
-
+abstract class SomeLoop {
   constructor(
-    config: MqConsumerConfig,
-    private readonly loggerBase: Logger
-  ) {
-    this.redisFabric = config.redisFabric;
-    this.consumerName = config.consumerName;
-    this.consumersGroup = config.consumersGroup;
-    this.streamName = config.streamName;
-    this.dlqStreamName =
-      typeof config.dlqStreamName === 'string'
-        ? config.dlqStreamName
-        : config.dlqStreamName === true
-          ? `${this.streamName}-dlq`
-          : undefined;
-    this.reclaimOnceCount = config.reclaimOnceCount ?? 2;
-    // Set configurable values with sensible defaults
-    this.staleMessageTimeoutMs = config.staleMessageTimeoutMs ?? 60000;
-    this.reclaimSleepMs = config.reclaimSleepMs ?? 10000; // Sleep for 10 sec if no stale messages found
-  }
+    private readonly redisFabric: RedisFabric,
+    protected readonly logger: IBaseLogger,
+    protected readonly config: ConsumerConfig
+  ) {}
 
-  @once
-  get logger() {
-    return createContextualLogger(this.loggerBase, MqConsumer.name);
-  }
+  protected isStarted = false;
+  protected isRunning = false;
 
-  async onModuleInit() {
+  abstract loop(): void;
+
+  protected redis?: Redis;
+
+  init() {
     // we are using dedicated redis clients for each long-running request (they will be busy)
     this.redis = this.redisFabric.create();
-    this.reclaimRedis = this.redisFabric.create();
-    await this.start();
   }
 
-  async onModuleDestroy() {
+  async destroy() {
     await this.stop();
-    if (this.redis) {
-      await this.redisFabric.kill(this.redis);
-    }
-    if (this.reclaimRedis) {
-      await this.redisFabric.kill(this.reclaimRedis);
-    }
-  }
-
-  public setHandler(handler: ProcessMessageFunction, schema: ZodType, name: string): void {
-    if (typeof handler !== 'function') {
-      throw new Error('Handler must be a function.');
-    }
-    this.processFunction = { fn: handler, schema, name };
-    if (!this.isRunning && this.redis) {
-      void this.startConsumptionLoop();
+    const { redis } = this;
+    if (redis) {
+      this.redis = undefined;
+      await this.redisFabric.kill(redis);
     }
   }
 
-  public async start(): Promise<void> {
-    if (this.isRunning) {
+  async start() {
+    if (this.isStarted) {
       return;
     }
-    if (!this.redis || !this.reclaimRedis) {
-      throw new Error('Redis clients have not been initialized.');
+    this.isStarted = true;
+    if (!this.redis) {
+      throw new Error('Redis client has not been initialized.');
     }
-
-    await this.createGroupIfNotExists();
-
-    // Start both loops in parallel
-    void this.startConsumptionLoop();
-
-    this.isRunning = true;
-    this.isReclaiming = true;
+    void this.loop();
   }
 
-  public async stop(): Promise<void> {
+  async stop() {
+    this.isStarted = false;
     this.isRunning = false;
-    this.isReclaiming = false;
+    this.redis?.disconnect();
   }
 
-  private async createGroupIfNotExists() {
-    try {
-      await notNull(this.redis).xgroup('CREATE', this.streamName, this.consumersGroup, '0', 'MKSTREAM');
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('BUSYGROUP')) {
-        // The group already exists, which is fine.
-      } else {
-        throw error;
+  protected convertArrayToObject(arr: string[]): Record<string, string> {
+    const obj: Record<string, string> = {};
+    for (let i = 0; i < arr.length; i += 2) {
+      obj[arr[i]] = arr[i + 1];
+    }
+    return obj;
+  }
+
+  protected async processWithRetries(
+    validatedData: ExtendedJsonValue,
+    fn: ProcessMessageFunction,
+    messageId: string
+  ): Promise<void> {
+    const ctx = { stopped: false };
+    const to = setTimeout(() => {
+      ctx.stopped = true;
+    }, this.config.staleMessageTimeoutMs);
+    let attempt = 0;
+    while (!ctx.stopped) {
+      try {
+        attempt++;
+        await fn(validatedData, messageId, ctx);
+        clearTimeout(to);
+        return; // Success
+      } catch (retryError) {
+        this.logger.warn(
+          { error: retryError, consumerName: this.config.consumerName, group: this.config.consumersGroup },
+          `Attempt ${attempt} failed for message ${messageId}. Retrying...`
+        );
+        await sleep(1000 + Math.random() * 2000);
       }
     }
-  }
-
-  private async performClaim(messageId: string, minIdleTime: string | number | Buffer<ArrayBufferLike>) {
-    return (await notNull(this.reclaimRedis).xclaim(
-      this.streamName,
-      this.consumersGroup,
-      this.consumerName,
-      minIdleTime,
-      messageId
-    )) as XClaimResult;
-  }
-
-  private async deadLetter(messageId: string, error: string, fields?: string[]): Promise<void> {
-    // Check if a DLQ is configured for this consumer.
-    if (!this.dlqStreamName) {
-      this.logger.warn(
-        `[${this.consumerName}] DLQ is not configured. Discarding failed message ${messageId}.`
-      );
-      return;
-    }
-
-    const dataPayload = fields ? JSON.stringify(this.convertArrayToObject(fields)) : 'unknown';
-
-    await notNull(this.reclaimRedis).xadd(
-      this.dlqStreamName,
-      '*',
-      'message_id',
-      messageId,
-      'error',
-      error,
-      'data',
-      dataPayload
+    clearTimeout(to);
+    throw new Error(
+      `Processing failed for message ${messageId} after ${this.config.staleMessageTimeoutMs}ms of retries.`
     );
   }
+}
 
-  private async acknowledgeReclaim(claimedId: string) {
-    await notNull(this.reclaimRedis).xack(this.streamName, this.consumersGroup, claimedId);
+class ConsumptionLoop extends SomeLoop {
+  constructor(
+    redisFabric: RedisFabric,
+    loggerBase: Logger,
+    config: ConsumerConfig,
+    private readonly processFunction: () => ProcessMessageFunctionData | null
+  ) {
+    super(redisFabric, createContextualLogger(loggerBase, ConsumptionLoop.name), config);
   }
 
-  private async acknowledgeStream(streamName: string, messageId: string) {
-    await notNull(this.redis).xack(streamName, this.consumersGroup, messageId);
+  private async acknowledgeStream(streamName: string, consumersGroup: string, messageId: string) {
+    await notNull(this.redis).xack(streamName, consumersGroup, messageId);
   }
 
-  private async startConsumptionLoop(): Promise<void> {
-    if (this.isRunning || !this.processFunction) {
+  async loop() {
+    const processFunction = this.processFunction();
+    if (this.isRunning || !processFunction) {
       return;
     }
 
-    void this.startReclaimLoop();
+    const { consumersGroup, consumerName, streamName: inputStreamName } = this.config;
 
     this.logger.info(
-      { consumerName: this.consumerName, group: this.consumersGroup },
-      `Starting consumption loop for ${this.processFunction.name}...`
+      { consumerName, group: consumersGroup },
+      `Starting consumption loop for ${inputStreamName} with function ${processFunction.name}...`
     );
+    this.isRunning = true;
     while (this.isRunning) {
       let messageId: string | null = null;
       try {
+        this.logger.debug(`XREADGROUP going to wait for new events`);
         const result = (await notNull(this.redis).xreadgroup(
           'GROUP',
-          this.consumersGroup,
-          this.consumerName,
+          consumersGroup,
+          consumerName,
           'COUNT',
           1,
           'BLOCK',
           0,
           'STREAMS',
-          this.streamName,
+          inputStreamName,
           '>'
         )) as XReadGroupResult | null;
+        this.logger.debug(`XREADGROUP has exit`);
 
         if (!result) {
           continue;
@@ -252,77 +225,144 @@ export class MqConsumer implements OnModuleInit, OnModuleDestroy {
           messageId = msgId;
           const dataObject = this.convertArrayToObject(rawMessage);
 
-          const validationResult = this.processFunction.schema.safeParse(dataObject);
+          const parsed = JSON.parse(dataObject.data);
+          const validationResult = processFunction.schema.safeParse(parsed);
           if (!validationResult.success) {
             this.logger.error(
               {
                 error: treeifyError(validationResult.error),
-                consumerName: this.consumerName,
-                group: this.consumersGroup,
+                consumerName,
+                group: consumersGroup,
               },
               `Zod validation failed for message ${messageId}:`
             );
-            await this.acknowledgeStream(streamName, messageId);
+            await this.acknowledgeStream(streamName, consumersGroup, messageId);
             continue;
           }
 
-          await this.processWithRetries(validationResult.data as ExtendedJsonValue, messageId);
-          await this.acknowledgeStream(streamName, messageId);
+          await this.processWithRetries(
+            validationResult.data as ExtendedJsonValue,
+            processFunction.fn,
+            messageId
+          );
+          await this.acknowledgeStream(streamName, consumersGroup, messageId);
         }
       } catch (error) {
+        // If the loop is stopping, this error is expected.
+        if (!this.isRunning) {
+          this.logger.info('Consumption loop is stopping.');
+          break;
+        }
         this.logger.error(
           { error },
-          `[${this.consumerName}] Processing failed for message ${messageId} after all retries. Leaving for reclaim worker.`
+          `[${consumerName}] Processing failed for message ${messageId} after all retries. Leaving for reclaim worker.`
         );
         await new Promise(resolve => setTimeout(resolve, 5000));
       }
     }
   }
+}
 
-  private async fetchPending() {
-    return (await notNull(this.reclaimRedis).xpending(
-      this.streamName,
-      this.consumersGroup,
-      'IDLE',
-      this.staleMessageTimeoutMs,
-      '-',
-      '+',
-      this.reclaimOnceCount // Check up to 10 stale messages at a time
-    )) as XPendingResult;
+class ReclaimLoop extends SomeLoop {
+  constructor(
+    redisFabric: RedisFabric,
+    loggerBase: Logger,
+    config: ConsumerConfig,
+    private readonly processFunction: () => ProcessMessageFunctionData | null
+  ) {
+    super(redisFabric, createContextualLogger(loggerBase, ReclaimLoop.name), config);
   }
 
-  /**
-   * A separate, parallel loop that runs periodically to find and process stale messages.
-   */
-  private async startReclaimLoop(): Promise<void> {
-    if (this.isRunning || !this.processFunction) {
+  private async acknowledgeReclaim(claimedId: string) {
+    await notNull(this.redis).xack(this.config.streamName, this.config.consumersGroup, claimedId);
+  }
+
+  private async fetchPending(): Promise<XPendingResult> {
+    const result = await notNull(this.redis).xpending(
+      this.config.streamName,
+      this.config.consumersGroup,
+      'IDLE',
+      this.config.staleMessageTimeoutMs,
+      '-',
+      '+',
+      this.config.reclaimOnceCount // Check up to 10 stale messages at a time
+    );
+
+    return result
+      .map(r => checked(r, isROArray, () => `Pending result is not an array`))
+      .map(([messageId, consumerName, idleTime, deliveryCount]) => ({
+        consumerName: checked(consumerName, isString, () => `Consumer name is not a string`),
+        messageId: checked(messageId, isString, () => `Message ID is not a string`),
+        deliveryCount: checked(deliveryCount, isInteger, () => `Delivery count is not a string`),
+        idleTime: checked(idleTime, isInteger, () => `Idle time is not a string`),
+      }));
+  }
+
+  private async performClaim(messageId: string, minIdleTime: string | number | Buffer<ArrayBufferLike>) {
+    return (await notNull(this.redis).xclaim(
+      this.config.streamName,
+      this.config.consumersGroup,
+      this.config.consumerName,
+      minIdleTime,
+      messageId
+    )) as XClaimResult;
+  }
+
+  private async deadLetter(messageId: string, error: string, fields?: string[]): Promise<void> {
+    // Check if a DLQ is configured for this consumer.
+    if (!this.config.dlqStreamName) {
+      this.logger.warn(
+        `[${this.config.consumerName}] DLQ is not configured. Discarding failed message ${messageId}.`
+      );
       return;
     }
 
-    this.logger.silent(
-      { consumerName: this.consumerName, group: this.consumersGroup },
-      `Starting reclaim loop for ${this.processFunction.name}...`
+    const dataPayload = fields ? JSON.stringify(this.convertArrayToObject(fields)) : 'unknown';
+
+    await notNull(this.redis).xadd(
+      this.config.dlqStreamName,
+      '*',
+      'message_id',
+      messageId,
+      'error',
+      error,
+      'data',
+      dataPayload
+    );
+  }
+
+  async loop(): Promise<void> {
+    const processFunction = this.processFunction();
+    if (this.isRunning || !processFunction) {
+      return;
+    }
+
+    const { consumersGroup, consumerName, reclaimSleepMs, staleMessageTimeoutMs } = this.config;
+    this.logger.trace(
+      { consumerName, group: consumersGroup },
+      `Starting reclaim loop for ${processFunction.name}...`
     );
     const maxRetries = 3; // Example max retries for reclaimed messages
 
-    while (this.isReclaiming) {
+    this.isRunning = true;
+    while (this.isRunning) {
       try {
         const pendingResult = await this.fetchPending();
 
         if (!pendingResult?.length) {
           // If no stale messages, sleep for a while before checking again.
-          await sleep(this.reclaimSleepMs);
+          await sleep(reclaimSleepMs);
           continue;
         }
 
         for (const pendingInfo of pendingResult) {
-          if (!this.isReclaiming) {
+          if (!this.isRunning) {
             break;
           } // Check flag before processing each message
 
           if (pendingInfo.deliveryCount > maxRetries) {
             this.logger.error(
-              { consumerName: this.consumerName, group: this.consumersGroup },
+              { consumerName, group: consumersGroup },
               `Message ${pendingInfo.messageId} exceeded max retries. Moving to DLQ.`
             );
             const claimResult = await this.performClaim(pendingInfo.messageId, 0);
@@ -335,66 +375,142 @@ export class MqConsumer implements OnModuleInit, OnModuleDestroy {
           }
 
           this.logger.warn(
-            { consumerName: this.consumerName, group: this.consumersGroup },
+            { consumerName, group: consumersGroup },
             `Reclaiming stale message ${pendingInfo.messageId} (delivered ${pendingInfo.deliveryCount} times)...`
           );
-          const claimResult = await this.performClaim(pendingInfo.messageId, this.staleMessageTimeoutMs);
+          const claimResult = await this.performClaim(pendingInfo.messageId, staleMessageTimeoutMs);
           if (claimResult && claimResult.length > 0) {
             const [claimedId, fields] = claimResult[0];
             const dataObject = this.convertArrayToObject(fields);
-            const validationResult = notNull(this.processFunction).schema.safeParse(dataObject);
+            const parsed = JSON.parse(dataObject.data);
+            const validationResult = processFunction.schema.safeParse(parsed);
 
             // On reclaim, we are stricter. If validation or processing fails, it goes to DLQ.
             if (!validationResult.success) {
               await this.deadLetter(claimedId, 'Zod validation failed', fields);
             } else {
-              await this.processWithRetries(validationResult.data as ExtendedJsonValue, claimedId);
+              await this.processWithRetries(
+                validationResult.data as ExtendedJsonValue,
+                processFunction.fn,
+                claimedId
+              );
             }
             await this.acknowledgeReclaim(claimedId);
           }
         }
       } catch (error) {
-        this.logger.error(
-          { error, consumerName: this.consumerName, group: this.consumersGroup },
-          `Error in reclaim loop:`
-        );
+        // If the loop is stopping, this error is expected.
+        if (!this.isRunning) {
+          this.logger.info('Reclaim loop is stopping.');
+          break;
+        }
+        this.logger.error({ error, consumerName, group: consumersGroup }, `Error in reclaim loop:`);
         await sleep(5000);
       }
     }
   }
+}
 
-  private async processWithRetries(validatedData: ExtendedJsonValue, messageId: string): Promise<void> {
-    const ctx = { stopped: false };
-    const to = setTimeout(() => {
-      ctx.stopped = true;
-    }, this.staleMessageTimeoutMs);
-    let attempt = 0;
-    while (!ctx.stopped) {
-      try {
-        attempt++;
-        await notNull(this.processFunction).fn(validatedData, messageId, ctx);
-        clearTimeout(to);
-        return; // Success
-      } catch (retryError) {
-        this.logger.warn(
-          { error: retryError, consumerName: this.consumerName, group: this.consumersGroup },
-          `Attempt ${attempt} failed for message ${messageId}. Retrying...`
-        );
-        await sleep(1000 + Math.random() * 2000);
-      }
-    }
-    clearTimeout(to);
-    throw new Error(
-      `Processing failed for message ${messageId} after ${this.staleMessageTimeoutMs}ms of retries.`
+/**
+ * A non-injectable class that encapsulates the logic for consuming messages
+ * from a Redis stream. Instances are created and managed via the static `provide` method.
+ */
+@Injectable()
+export class MqConsumer implements OnModuleInit, OnModuleDestroy {
+  private processFunction: ProcessMessageFunctionData | null = null;
+
+  private readonly config: ConsumerConfig;
+
+  private readonly consumptionLoop: ConsumptionLoop;
+  private readonly reclaimLoop: ReclaimLoop;
+
+  private readonly loops: readonly SomeLoop[];
+
+  constructor(
+    config: MqConsumerConfig,
+    private readonly redis: RedisService,
+    private readonly loggerBase: Logger
+  ) {
+    this.config = {
+      consumerName: config.consumerName,
+      consumersGroup: config.consumersGroup,
+      streamName: config.streamName,
+      dlqStreamName:
+        typeof config.dlqStreamName === 'string'
+          ? config.dlqStreamName
+          : config.dlqStreamName === true
+            ? `${config.streamName}-dlq`
+            : undefined,
+      staleMessageTimeoutMs: config.staleMessageTimeoutMs ?? 60000,
+      reclaimSleepMs: config.reclaimSleepMs ?? 10000,
+      reclaimOnceCount: config.reclaimOnceCount ?? 2,
+    };
+
+    this.consumptionLoop = new ConsumptionLoop(
+      config.redisFabric,
+      loggerBase,
+      this.config,
+      () => this.processFunction
     );
+
+    this.reclaimLoop = new ReclaimLoop(
+      config.redisFabric,
+      loggerBase,
+      this.config,
+      () => this.processFunction
+    );
+
+    this.loops = [this.consumptionLoop, this.reclaimLoop];
   }
 
-  private convertArrayToObject(arr: string[]): Record<string, string> {
-    const obj: Record<string, string> = {};
-    for (let i = 0; i < arr.length; i += 2) {
-      obj[arr[i]] = arr[i + 1];
+  @once
+  get logger() {
+    return createContextualLogger(this.loggerBase, MqConsumer.name);
+  }
+
+  async onModuleInit() {
+    this.loops.forEach(loop => loop.init());
+    await this.createGroupIfNotExists();
+  }
+
+  async onModuleDestroy() {
+    await this.stop();
+    await Promise.all(this.loops.map(loop => loop.destroy()));
+  }
+
+  public setHandler(handler: ProcessMessageFunction, schema: ZodType, name: string): void {
+    this.logger.debug({ handler: handler.name }, `setHandler`);
+    if (typeof handler !== 'function') {
+      throw new Error('Handler must be a function.');
     }
-    return obj;
+    this.processFunction = { fn: handler, schema, name };
+    void this.start();
+  }
+
+  public async start(): Promise<void> {
+    this.loops.forEach(loop => loop.start());
+  }
+
+  public async stop(): Promise<void> {
+    await Promise.all(this.loops.map(loop => loop.stop()));
+  }
+
+  private async createGroupIfNotExists() {
+    try {
+      await notNull(this.redis).xgroup(
+        'CREATE',
+        this.config.streamName,
+        this.config.consumersGroup,
+        '0',
+        'MKSTREAM'
+      );
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('BUSYGROUP')) {
+        // The group already exists, which is fine.
+      } else {
+        throw error;
+      }
+    }
   }
 
   /**
@@ -408,8 +524,8 @@ export class MqConsumer implements OnModuleInit, OnModuleDestroy {
 
     return {
       provide: token,
-      inject: [Logger, ServiceInfo, ...(options.inject || [])],
-      useFactory: (async (loggerBase: Logger, serviceInfo: ServiceInfo, ...args) => {
+      inject: [Logger, ServiceInfo, RedisService, ...(options.inject || [])],
+      useFactory: (async (loggerBase: Logger, serviceInfo: ServiceInfo, redis: RedisService, ...args) => {
         const consumerConfig = await options.useFactory(...args);
 
         if (!consumerConfig.redisFabric) {
@@ -429,7 +545,7 @@ export class MqConsumer implements OnModuleInit, OnModuleDestroy {
                 ? `${serviceInfo.name}-${consumersGroup}`
                 : consumersGroup.fullConsumersGroupName,
         } satisfies MqConsumerConfig;
-        return new MqConsumer(fullConfig, loggerBase);
+        return new MqConsumer(fullConfig, redis, loggerBase);
       }) as AnyAnyFunction<Promise<MqConsumer> | MqConsumer>,
     };
   }
