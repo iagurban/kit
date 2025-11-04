@@ -80,7 +80,7 @@ function resolveAndFixImport(importPath: string, fileBeingCompiled: string): str
 
     // external library
 
-    if (/(?:..\/)+node_modules\//.test(relativeToCwd)) {
+    if (/(?:^|..\/)+node_modules\//.test(relativeToCwd)) {
       return importPath;
     }
 

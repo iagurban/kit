@@ -1,0 +1,12 @@
+{
+  "name": "kit",
+  "root": "libs/kit",
+  "sourceRoot": "libs/kit/src",
+  "projectType": "library",
+  "targets": {
+    "clean-dist": {},
+    "copy-assets": {},
+    "build-service": {}
+  },
+  "tags": []
+}

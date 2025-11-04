@@ -1046,6 +1046,7 @@ __metadata:
     jwks-rsa: "npm:^3.2.0"
     libs: "npm:^0.1.2"
     lodash: "npm:^4.17.21"
+    mirr: "npm:^0.0.1"
     mobx: "npm:^6.15.0"
     mobx-keystone: "npm:^1.11.4"
     mobx-react-lite: "npm:^4.1.1"
@@ -10177,6 +10178,19 @@ __metadata:
   dependencies:
     minipass: "npm:^7.1.2"
   checksum: 10c0/5aad75ab0090b8266069c9aabe582c021ae53eb33c6c691054a13a45db3b4f91a7fb1bd79151e6b4e9e9a86727b522527c0a06ec7d45206b745d54cd3097bcec
+  languageName: node
+  linkType: hard
+
+"mirr@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "mirr@npm:0.0.1"
+  dependencies:
+    glob: "npm:^11.0.3"
+    p-limit: "npm:^7.2.0"
+    yargs: "npm:^18.0.0"
+  bin:
+    mirr: dist/src/bin.js
+  checksum: 10c0/1dfaaa4ca70696a62cab8c2ab48e759a00b2bc09ff7baf305e8ab53b5c7bc043afd6fa321855f0511560b749acdeaf5fcf89778dba631dc1116515c922933d77
   languageName: node
   linkType: hard
 
