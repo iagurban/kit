@@ -234,7 +234,7 @@ function startTsc(tsConfigPath: string, outDir: string, watch: boolean, verbose:
         '-p',
         tsConfigPath,
         '--declarationDir',
-        path.join(outDir, `_declarations`),
+        path.join(outDir, `../_declarations`),
         watch && '--watch',
         '--emitDeclarationOnly',
         watch && '--preserveWatchOutput',

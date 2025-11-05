@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.0-alpha.4",
+  "version": "0.0.0-alpha.5",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
@@ -19,7 +19,7 @@
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
   },
   "scripts": {
-    "build": "yarn tsx ./src/bin/swc-ts-build.ts -s src -d dist/src -p tsconfig.build.json && cp -r ./src/helpers/ ./dist/src",
+    "build": "yarn tsx ./src/bin/swc-ts-build.ts -s src -d dist/src -p tsconfig.build.json && cp -r ./src/helpers/ ./dist/src && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declaration",
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
