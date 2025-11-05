@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.7",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
@@ -15,11 +15,10 @@
     "clean-md": "./dist/src/bin/clean-md.js",
     "fetch-unicode-letters-ranges": "./dist/src/bin/fetch-unicode-letters-ranges.js",
     "fix-graphql-codegen": "./dist/src/bin/fix-graphql-codegen.js",
-    "swc-ts-build": "./dist/src/bin/swc-ts-build-runner.js",
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
   },
   "scripts": {
-    "build": "yarn tsx ./src/bin/swc-ts-build.ts -s src -d dist/src -p tsconfig.build.json && cp -r ./src/helpers/ ./dist/src",
+    "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -r ./src/helpers/ ./dist/src && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
@@ -35,6 +34,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^9.38.0",
+    "@grbn/swc-ts": "^0.0.1",
     "@mantine/core": "^8.3.6",
     "@nestjs/common": "^11.1.8",
     "@nestjs/graphql": "^13.2.0",
