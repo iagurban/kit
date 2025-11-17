@@ -13,6 +13,7 @@
   "bin": {
     "build-info-gen": "./dist/src/bin/build-info-gen.js",
     "clean-md": "./dist/src/bin/clean-md.js",
+    "dotenv-flat": "./dist/src/bin/dotenv-flat.js",
     "fetch-unicode-letters-ranges": "./dist/src/bin/fetch-unicode-letters-ranges.js",
     "fix-graphql-codegen": "./dist/src/bin/fix-graphql-codegen.js",
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
@@ -59,6 +60,8 @@
     "clsx": "^2.1.1",
     "concat-md": "^0.5.1",
     "documentation": "^14.0.3",
+    "dotenv": "^17.2.3",
+    "dotenv-expand": "^12.0.3",
     "eslint": "^9.38.0",
     "eslint-config-next": "^15.5.6",
     "eslint-config-prettier": "^10.1.8",

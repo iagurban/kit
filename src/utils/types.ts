@@ -25,7 +25,8 @@ export type PickUndefinedKeys<T> = { [K in keyof T as T[K] extends undefined ? K
 type RecurOrderObj<T, Values> = Record<string, Values | T | undefined>;
 export interface IRecurOrderObj<Values> extends RecurOrderObj<IRecurOrderObj<Values>, Values> {}
 
-export type AnyFunction<R = unknown> = (...a: readonly never[]) => R;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyFunction<R = unknown> = (...a: readonly any[]) => R;
 
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 
