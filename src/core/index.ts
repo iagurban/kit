@@ -96,6 +96,7 @@ export {
 } from './numbers/geometry';
 export { NumberBase } from './numbers/number-base';
 export { NumberConverter, Powers } from './numbers/number-converter';
+export { convertToRoman } from './numbers/roman';
 export { clamp, scale, scale_unsafe, scaleFrom01, scaleTo01, scaleTo01_unsafe, snap } from './numbers/utils';
 export { once, setValueProperty } from './once';
 export { sleep } from './sleep';
@@ -109,6 +110,7 @@ export {
   samples,
   samplesBy,
 } from './utils/array-utils';
+export { makeMatchingTree } from './utils/code-points-matching-tree';
 export { errorFromUnknown, errorToString } from './utils/error-utils';
 export { indexed, iterableUtils, iu, reverse, reversed } from './utils/iterable-utils';
 export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './utils/object-utils';
@@ -118,7 +120,6 @@ export {
   binaryStringSearch,
   formatDuration,
   isUppercase,
-  makeMatchingTree,
 } from './utils/string-util';
 export type {
   AnyAnyFunction,

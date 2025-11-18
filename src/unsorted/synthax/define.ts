@@ -1,10 +1,9 @@
 import { maxBy, sortedLastIndexBy, thru } from 'lodash';
 
 import { isROArray } from '../../core/checks';
-import { notNull } from '../../core/index';
+import { makeMatchingTree, notNull } from '../../core/index';
 import { aggregation } from '../../core/numbers/aggregation';
 import { samplesBy } from '../../core/utils/array-utils';
-import { makeMatchingTree } from '../../core/utils/string-util';
 import { AnyAnyFunction } from '../../core/utils/types';
 import {
   AnyAst,

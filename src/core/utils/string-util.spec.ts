@@ -1,6 +1,7 @@
 import 'ts-jest';
 
-import { allCodePoints, binaryStringSearch, isUppercase, makeMatchingTree } from './string-util';
+import { makeMatchingTree } from './code-points-matching-tree';
+import { allCodePoints, binaryStringSearch, isUppercase } from './string-util';
 
 describe('string utils', () => {
   test('allCodePoints', () => {
