@@ -1,7 +1,6 @@
 import { isDefined } from '../../../core/checks';
 import { reversed } from '../../../core/utils/iterable-utils';
 import { Nullish } from '../../../core/utils/types';
-import { $t } from '../define';
 import { Expr, isExprOperand, Operand } from '../operands-tree-builder';
 import { AnyAst } from '../tokenizer-def';
 import {
@@ -10,7 +9,6 @@ import {
   definePinqLisplLang,
   ExprAst,
   Op,
-  printExpr,
   resolveTypesBase,
   TypeHint,
   VarAst,
@@ -336,31 +334,31 @@ describe('parser', () => {
 
     const resolveTypes = (ops: TypeHint<string>) => resolveTypesBase(v => v, ops);
 
-    if (false) {
-      const r = $t.run(`1 || 456`, expression);
-
-      const cc = compileAst(r.result);
-
-      console.log(printExpr(r.result));
-      console.dir(cc, { depth: 10 });
-      console.dir(
-        cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
-        { depth: 10 }
-      );
-    }
-
-    {
-      const r = $t.run(`a = 456`, expression);
-
-      const cc = compileAst(r.result);
-
-      console.log(printExpr(r.result));
-      console.dir(cc, { depth: 10 });
-      console.dir(
-        cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
-        { depth: 10 }
-      );
-    }
+    // if (false) {
+    //   const r = $t.run(`1 || 456`, expression);
+    //
+    //   const cc = compileAst(r.result);
+    //
+    //   console.log(printExpr(r.result));
+    //   console.dir(cc, { depth: 10 });
+    //   console.dir(
+    //     cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
+    //     { depth: 10 }
+    //   );
+    // }
+    //
+    // {
+    //   const r = $t.run(`a = 456`, expression);
+    //
+    //   const cc = compileAst(r.result);
+    //
+    //   console.log(printExpr(r.result));
+    //   console.dir(cc, { depth: 10 });
+    //   console.dir(
+    //     cc.hints && Object.fromEntries(Object.entries(cc.hints).map(([key, g]) => [key, resolveTypes(g)])),
+    //     { depth: 10 }
+    //   );
+    // }
   });
 });
 

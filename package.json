@@ -34,7 +34,7 @@
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
-    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/core/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ../kit-wiki/Home.md)"
+    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/core/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/Home.md)"
   },
   "dependencies": {
     "@loancrate/prisma-schema-parser": "^3.0.0",

@@ -1,4 +1,4 @@
-import { ProgrammingError } from '../errors/programming-error';
+import { ProgrammingError } from './errors/programming-error';
 import { binaryStringSearch } from './utils/string-util';
 
 /**
