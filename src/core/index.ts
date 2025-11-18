@@ -1,5 +1,3 @@
-export { Errors } from '../errors/errors';
-export { ProgrammingError } from '../errors/programming-error';
 export { debouncedCollectingAsync } from './async/debounced-collecting-async';
 export { PromiseController } from './async/promise-controller';
 export type { PromisesRecordValue, PromiseValue } from './async/promise-util';
@@ -36,7 +34,9 @@ export { disposers } from './disposers';
 export type { Listener } from './emitter';
 export { Emitter } from './emitter';
 export { CancelledError } from './errors/cancelled-error';
+export { Errors } from './errors/errors';
 export { NullError } from './errors/null-error';
+export { ProgrammingError } from './errors/programming-error';
 export { catchingAsync } from './flow/catching';
 export { catching } from './flow/catching';
 export { warnCatch } from './flow/catching';

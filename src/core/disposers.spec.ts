@@ -1,5 +1,5 @@
-import { Errors } from '../errors/errors';
 import { disposers, FunctionDisposable, ObjectDisposable } from './disposers';
+import { Errors } from './errors/errors';
 
 const reaction: (name: string, init: () => void, destroy: () => void) => FunctionDisposable = (
   name,
