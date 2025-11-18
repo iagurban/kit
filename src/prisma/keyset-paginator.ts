@@ -6,9 +6,7 @@ import {
   parsePrismaSchema,
 } from '@loancrate/prisma-schema-parser';
 
-import { ExMap } from '../core/collections/ex-map';
-import { notNull } from '../core/flow/not-null';
-import { once } from '../core/once';
+import { ExMap, notNull, once } from '../core';
 
 const isFieldMdm = (m: ModelDeclarationMember): m is FieldDeclaration => m.kind === 'field';
 const isBlockAttributeMdm = (m: ModelDeclarationMember): m is BlockAttribute => m.kind === 'blockAttribute';
@@ -84,7 +82,17 @@ class ModelMeta {
   }
 }
 
-export const getModelsMetadataFromString = (s: string) => {
+/**
+ * Parses a Prisma schema string and extracts metadata information for all model declarations.
+ *
+ * This function processes the provided Prisma schema string, identifies model declarations,
+ * and creates a mapping of model names to their corresponding metadata.
+ *
+ * @param {string} s - A string representation of the Prisma schema.
+ * @returns {{ models: ExMap<string, ModelMeta> }} An object containing a mapping of model names
+ * to their respective metadata as `ModelMeta` objects.
+ */
+export const getModelsMetadataFromString = (s: string): { models: ExMap<string, ModelMeta> } => {
   const schema = parsePrismaSchema(s);
 
   const models = new ExMap<string, ModelMeta>();
@@ -102,6 +110,13 @@ export const getModelsMetadataFromString = (s: string) => {
 
 type OrderFromObject<T> = { [K in keyof T]?: T[K] extends object ? OrderFromObject<T[K]> : 'asc' | 'desc' };
 
+/**
+ * Class representing a builder for generating keyset pagination queries.
+ * This provides methods to construct the necessary SQL-like clauses for
+ * cursor-based pagination, based on the provided entity schema and ordering configuration.
+ *
+ * @template T The type of the paginated items.
+ */
 export class KeysetPaginatorBuilder<T> {
   constructor(
     orders: readonly OrderFromObject<T>[],
@@ -132,6 +147,12 @@ export class KeysetPaginatorBuilder<T> {
 
   readonly orders: readonly OrderFromObject<T>[];
 
+  /**
+   * Generates a "select" clause object representing the fields required for cursor-based pagination
+   * based on the ordering configuration of the current instance.
+   *
+   * @return An object containing the structured fields to be selected for the query.
+   */
   cursorSelectClause() {
     const select = {};
 
@@ -158,6 +179,12 @@ export class KeysetPaginatorBuilder<T> {
     return select;
   }
 
+  /**
+   * Constructs and returns a structured "where" clause object based on the provided cursor and predefined orders.
+   *
+   * @param {T} cursor - The cursor object used to generate comparison values for the "where" clause.
+   * @return A structured object representing the "where" clause containing logical operators and conditions.
+   */
   whereClause(cursor: T) {
     const valueFor = (o: OrderFromObject<T>, isLast: boolean) => {
       const root1 = {};
@@ -195,6 +222,17 @@ export class KeysetPaginatorBuilder<T> {
   }
 }
 
+/**
+ * The `KeySetPaginator` class implements a mechanism for performing efficient
+ * keyset pagination on a data set using a cursor-based approach.
+ *
+ * This class is generic and can be used with any data type `T`.
+ *
+ * @template T The type of the entity being paginated.
+ * @template WhereUniqueInput The type of the input used to uniquely identify a record.
+ * @template WhereInput The type of the input used for filtering a collection.
+ * @template Select The type of the input used for selecting specific fields.
+ */
 export class KeySetPaginator<T, WhereUniqueInput, WhereInput, Select> {
   constructor(
     readonly findUnique: (where: WhereUniqueInput, select: Select) => Promise<T>,

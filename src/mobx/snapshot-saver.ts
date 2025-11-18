@@ -1,8 +1,15 @@
-import { reaction } from 'mobx';
+import { IReactionDisposer, reaction } from 'mobx';
 import { getSnapshot, SnapshotInOf } from 'mobx-keystone';
 
 import { sleep } from '../core/index';
 
+/**
+ * A utility class for saving snapshots with throttle control and error handling. The class ensures that snapshots
+ * are saved in a controlled manner, with throttled save requests, handling successive save requests efficiently,
+ * and retrying in case of failures.
+ *
+ * @template S - The type of the snapshot data structure to be saved.
+ */
 export class SnapshotSaver<S> {
   constructor(
     private userId: () => string,
@@ -14,6 +21,13 @@ export class SnapshotSaver<S> {
   private needSave: SnapshotInOf<S> | undefined = undefined;
   private lastSuccessSave = new Date();
 
+  /**
+   * Saves a snapshot. Ensures that multiple save requests are throttled and managed to avoid race conditions
+   * and excessive save operations. If a save is already in progress, the method queues the latest snapshot to be saved after the current one completes.
+   *
+   * @param {SnapshotInOf<S>} snapshot - The snapshot data to be saved.
+   * @return {void} This method does not return a value.
+   */
   save(snapshot: SnapshotInOf<S>) {
     if (this.saving) {
       this.needSave = snapshot;
@@ -59,7 +73,14 @@ export class SnapshotSaver<S> {
     };
   }
 
-  reaction(node: S) {
+  /**
+   * Creates a reaction that observes changes in the snapshot of the given node
+   * and performs an action when changes are detected.
+   *
+   * @param {S} node - The observable node to watch for changes.
+   * @return {IReactionDisposer} Returns a disposer function to stop the reaction.
+   */
+  reaction(node: S): IReactionDisposer {
     return reaction(
       () => getSnapshot(node),
       snapshot => this.save(snapshot)

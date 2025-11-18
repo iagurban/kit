@@ -43,4 +43,3 @@ export { KeycloakJwtConfig, keycloakJwtConfigToken, OidcJwtStrategyBase } from '
 export { JwtStrategyBase } from './passport-strategies/jwt-strategy-base';
 export { LocalStrategyBase } from './passport-strategies/local-strategy-base';
 export { ServiceInfo, ServiceInfoModule } from './service-info';
-export { UnauthenticatedError } from './unauthenticated-error';

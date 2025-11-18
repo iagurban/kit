@@ -52,17 +52,16 @@ const combined = files
   })
   .join('\n\n');
 
+const outputDir = path.dirname(outputFile);
+fs.mkdirSync(outputDir, { recursive: true });
+
 fs.writeFileSync(outputFile, combined);
 console.log(`Combined ${files.length} files into ${outputFile}`);
 
 // ——— КОПИРОВАНИЕ ВСЕХ ФАЙЛОВ В СТРУКТУРУ РЯДОМ С ВЫХОДНЫМ ———
 
 // Каталог для копий
-const outputDir = path.dirname(outputFile);
 const copyDir = outputDir;
-
-// Создаём папку, если нет
-fs.mkdirSync(copyDir, { recursive: true });
 
 for (const f of files) {
   if (!fs.existsSync(f)) {

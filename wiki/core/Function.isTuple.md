@@ -1,0 +1,32 @@
+# Function: isTuple()
+
+```ts
+function isTuple<Vs>(...items): Checker<Vs>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:244](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/checks.ts#L244)
+
+A utility function used to determine whether a given value is a tuple of a specific structure.
+
+This function accepts an array of type checkers and validates if the provided value is a tuple
+matching the specified type structure. Each element in the tuple is validated against its corresponding type checker.
+
+## Type Parameters
+
+### Vs
+
+`Vs` *extends* readonly `unknown`[]
+
+## Parameters
+
+### items
+
+...[`Checkers`](TypeAlias.Checkers.md)\<`Vs`\>
+
+An array of type-checking functions, one for each element in the tuple.
+
+## Returns
+
+[`Checker`](TypeAlias.Checker.md)\<`Vs`\>
+
+- A function that takes a value `o` and checks if it matches the tuple defined by the specified type checkers.

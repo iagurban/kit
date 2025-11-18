@@ -112,15 +112,10 @@ export {
 } from './utils/array-utils';
 export { makeMatchingTree } from './utils/code-points-matching-tree';
 export { errorFromUnknown, errorToString } from './utils/error-utils';
+export { formatDuration } from './utils/format-duration';
 export { indexed, iterableUtils, iu, reverse, reversed } from './utils/iterable-utils';
 export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './utils/object-utils';
-export {
-  allCodePoints,
-  allStringCodePoints,
-  binaryStringSearch,
-  formatDuration,
-  isUppercase,
-} from './utils/string-util';
+export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
 export type {
   AnyAnyFunction,
   AnyArray,

@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { notNull } from '../../core/flow/not-null';
+import { notNull } from '../../core';
 
 export const getCurrentUserFromExeContext = <CurrentUser>(
   context: ExecutionContext

@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { CookieOptions } from 'express';
 
-import { UnauthenticatedError } from './unauthenticated-error';
+import { UnauthenticatedError } from '../graphql/unauthenticated-error';
 
 const saltOrRounds = 10;
 

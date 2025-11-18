@@ -8,11 +8,28 @@ import {
   sleep,
 } from '../core';
 
+/**
+ * This class represents a Redis pub/sub subscription handler. It manages subscribing,
+ * unsubscribing, and handling messages from a specific Redis channel. The class ensures
+ * resilience by implementing automatic resubscription in case of connection issues.
+ */
 export class RedisPubsubSubscription {
   private readonly callback: (error: Error | null | undefined, message: unknown) => void;
   private readonly onMessage: (channel: string, message: string) => void;
   private readonly onConnected: () => void;
 
+  /**
+   * Constructor for creating an instance of a subscription handler.
+   *
+   * @param {ILogger} loggerBase - A logger instance used for logging errors and events.
+   * @param {IPubSubSubscriberService} subscriber - An instance of a pub/sub subscriber service.
+   * @param {string} channel - The channel name to subscribe to for receiving messages.
+   * @param {Object} handlers - Object containing callback functions for various subscription events.
+   * @param {() => void} [handlers.onSubscribed] - Callback invoked when successfully subscribed to the channel.
+   * @param {(message: string) => void} handlers.onMessage - Callback invoked when a message is received as a string.
+   * @param {(buffer: Buffer) => void} [handlers.onBuffer] - Callback invoked when a message is received as a buffer.
+   * @param {(error: Error, message: unknown) => void} [handlers.onError] - Callback invoked on errors in message handling or subscription process.
+   */
   constructor(
     private readonly loggerBase: ILogger,
     private readonly subscriber: IPubSubSubscriberService,
@@ -136,7 +153,14 @@ export class RedisPubsubSubscription {
     })());
   };
 
-  async activate() {
+  /**
+   * Activates the current instance by setting it to active and establishing necessary subscriptions.
+   * Ensures the instance is not already active before proceeding. Upon activation, it sets up message
+   * listeners and initiates an initial subscription attempt.
+   *
+   * @return {Promise<void>} A promise that resolves once the activation logic has completed.
+   */
+  async activate(): Promise<void> {
     if (this.active) {
       return;
     }
@@ -147,7 +171,13 @@ export class RedisPubsubSubscription {
     await this.resubscribe();
   }
 
-  async deactivate() {
+  /**
+   * Deactivates the current subscriber instance if it is active.
+   * This method unsubscribes from the specified channel and cleans up resources.
+   *
+   * @return {Promise<void>} A promise that resolves when the deactivation process is complete.
+   */
+  async deactivate(): Promise<void> {
     if (!this.active) {
       return;
     }

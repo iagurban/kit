@@ -12,7 +12,16 @@ My collection for every fullstack project — personal TypeScript utilities and 
 - Everything here *comes from the wild* — resuing in actual production or recurring experiments
 
 **Docs:**  
-See [/wiki](./wiki/Home.md) — API and usage notes are auto-generated.
+
+- See [/wiki/core](./wiki/core/Home.md)
+- See [/wiki/graphql](./wiki/graphql/Home.md)
+- See [/wiki/mobx](./wiki/mobx/Home.md)
+- See [/wiki/nest](./wiki/nest/Home.md)
+- See [/wiki/prisma](./wiki/prisma/Home.md)
+- See [/wiki/react](./wiki/react/Home.md)
+- See [/wiki/react-mobx](./wiki/react-mobx/Home.md)
+- See [/wiki/redis](./wiki/redis/Home.md)
+- See [/wiki/zod](./wiki/zod/Home.md)
 
 **tldr:**  
 - Use as a workspace package in a monorepo with a shared root `tsconfig.json`.  

@@ -1,0 +1,201 @@
+# @grbn/kit
+
+## Functions
+
+- [createUsableContext](Function.createUsableContext.md)
+- [findNodeBy](Function.findNodeBy.md)
+- [findNodeOfType](Function.findNodeOfType.md)
+- [interleaveWithObject](Function.interleaveWithObject.md)
+- [isMounted](Function.isMounted.md)
+
+
+# Function: createUsableContext()
+
+```ts
+function createUsableContext<T>(name): object;
+```
+
+Defined in: [create-usable-context.ts:28](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/create-usable-context.ts#L28)
+
+A utility function to create a reusable React context with strict type safety.
+
+This function generates a context that enforces access to values through
+custom hooks, ensuring that a value is always provided within the React
+component tree or explicitly handled otherwise.
+
+## Type Parameters
+
+### T `T`
+
+The type of the value that the context will hold.
+
+## Parameters
+
+### name `string`
+
+The display name of the context, used for debugging and error messages.
+
+## Returns
+
+`object`
+
+### ctx
+
+```ts
+ctx: Context<T | undefined>;
+```
+
+### provider
+
+```ts
+provider: Provider<T | undefined>;
+```
+
+### use()
+
+```ts
+use: () => T;
+```
+
+#### Returns `T`
+
+### useIfProvided()
+
+```ts
+useIfProvided: () => T | undefined;
+```
+
+#### Returns `T` \| `undefined`
+
+
+# Function: findNodeBy()
+
+```ts
+function findNodeBy<T>(n, is): T | null;
+```
+
+Defined in: [html.ts:30](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L30)
+
+Recursively searches for and returns a node within the DOM tree that satisfies a specified condition.
+
+## Type Parameters
+
+### T `T` *extends* `Element`
+
+The type of element to be returned.
+
+## Parameters
+
+### n `Element`
+
+The root element to start the search from.
+
+### is
+
+(`e`) => `boolean`
+
+A callback function that takes an element as an argument and returns a boolean indicating whether the element matches the desired condition.
+
+## Returns
+
+`T` \| `null`
+
+- Returns the first element of type T that matches the condition, or null if no matching element is found.
+
+
+# Function: findNodeOfType()
+
+```ts
+function findNodeOfType<T>(n, nodeName): T | null;
+```
+
+Defined in: [html.ts:9](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L9)
+
+Recursively searches for a node of the specified type within a given element's descendants.
+
+## Type Parameters
+
+### T `T` *extends* `Element`
+
+The specific type of the node to be returned, extending the base Element type.
+
+## Parameters
+
+### n `Element`
+
+The starting element to begin the search from.
+
+### nodeName `string`
+
+The name of the node to search for (case-sensitive).
+
+## Returns
+
+`T` \| `null`
+
+- Returns the first matching node cast to the specified type, or null if no match is found.
+
+
+# Function: interleaveWithObject()
+
+```ts
+function interleaveWithObject<T>(a, o): T[];
+```
+
+Defined in: [interleave-with-object.ts:12](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/interleave-with-object.ts#L12)
+
+Creates a new array by interleaving the elements of the input array with the result of a callback function.
+
+## Type Parameters
+
+### T `T`
+
+The type of elements in the input array.
+
+## Parameters
+
+### a `T`[]
+
+The input array to be interleaved.
+
+### o
+
+(`prev`, `i`) => `T`
+
+A callback function invoked for each pair of elements in the array.
+                                   The function takes the current element and its index as arguments and
+                                   returns the value to be interleaved.
+
+## Returns
+
+`T`[]
+
+A new array where each pair of elements is interleaved with the result of the callback function.
+               If the input array has fewer than two elements, it is returned unchanged.
+
+
+# Function: isMounted()
+
+```ts
+function isMounted(node): boolean;
+```
+
+Defined in: [html.ts:53](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L53)
+
+Checks if a given HTML element is mounted to the DOM.
+
+This function determines whether the specified HTML element is part of the document's
+node tree, either directly or through one of its parent elements, ensuring it is connected
+to the document and therefore "mounted."
+
+## Parameters
+
+### node `HTMLElement`
+
+The HTML element to be checked for its mounted status.
+
+## Returns
+
+`boolean`
+
+True if the element is mounted to the DOM, false otherwise.

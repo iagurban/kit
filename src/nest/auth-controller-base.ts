@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
+import { UnauthenticatedError } from '../graphql/unauthenticated-error';
 import { AuthServiceBase } from './auth-service-base';
-import { UnauthenticatedError } from './unauthenticated-error';
 
 /**
  * Base controller class that implements JWT-based authentication flow with access and refresh tokens.
