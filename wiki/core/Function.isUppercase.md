@@ -4,7 +4,7 @@
 function isUppercase(word): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/string-util.ts:52](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/string-util.ts#L52)
+Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:52](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/string-util.ts#L52)
 
 Determines whether the given string contains at least one uppercase letter.
 

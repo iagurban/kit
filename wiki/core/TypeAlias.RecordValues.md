@@ -4,7 +4,7 @@
 type RecordValues<T> = T[keyof T];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/types.ts:104](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/types.ts#L104)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:104](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/types.ts#L104)
 
 A utility type that extracts the values of an object type.
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { UnauthenticatedError } from '../graphql/unauthenticated-error';
+import { UnauthenticatedError } from '../graphql';
 import { AuthServiceBase } from './auth-service-base';
 
 /**

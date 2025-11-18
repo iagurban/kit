@@ -1,9 +1,22 @@
 # Class: PromiseController
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:8](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:21](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-controller.ts#L21)
 
-A class that provides a mechanism to handle the abortion of asynchronous operations.
-It maintains a set of listeners that can be notified when an abortion occurs.
+A class that provides a mechanism to broadcast abortion (cancellation) events.
+
+Architectural choice: attachable many-to-many controller
+- This controller can be shared across multiple concurrent or sequential operations.
+- Calling [abort](#abort) notifies all handlers that are registered at the moment of the call,
+  regardless of which operation they belong to or whether some operations have already finished.
+- Libraries that use the controller (e.g., [sleep](Function.sleep.md)) must unsubscribe their own internal
+  handlers when their operation completes or is aborted.
+- Client code is responsible for unsubscribing its own handlers via [off](#off) when they are no
+  longer needed (e.g., after a successful operation) to avoid receiving future abort notifications.
+
+This aligns with a broadcaster-style cancellation model similar in spirit to AbortController,
+without introducing a new cancellable-promise API. If per-operation isolation is required,
+create a dedicated controller instance for that operation or ensure handlers are removed on
+completion.
 
 ## Accessors
 
@@ -15,7 +28,7 @@ It maintains a set of listeners that can be notified when an abortion occurs.
 get aborted(): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:18](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L18)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:31](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-controller.ts#L31)
 
 Retrieves the current aborted state.
 
@@ -33,9 +46,15 @@ The value of the aborted state.
 abort(reason): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:28](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:47](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-controller.ts#L47)
 
-Aborts the current operation and notifies all registered abort handlers.
+Aborts and notifies all currently registered abort handlers.
+
+Notes:
+- Handlers are invoked in the order provided by the underlying map’s iteration order.
+- After notification, all handlers are cleared, and the controller remains in the aborted state.
+- If any handler throws, an Errors aggregating all thrown errors is raised after
+  all handlers have been invoked.
 
 #### Parameters
 
@@ -43,13 +62,13 @@ Aborts the current operation and notifies all registered abort handlers.
 
 `string`
 
-The reason for aborting the operation.
+The reason for aborting.
 
 #### Returns
 
 `void`
 
-- Does not return a value. Throws an error if any abort handlers throw exceptions.
+- Throws an aggregated error if some handlers throw.
 
 ***
 
@@ -59,9 +78,9 @@ The reason for aborting the operation.
 off(fn, all?): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:64](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L64)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:87](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-controller.ts#L87)
 
-Removes a function from the list of abort handlers. If `all` is true, it removes all instances of the given function; otherwise, it decrements its count.
+Removes a handler from the list of abort handlers. If `all` is true, removes all instances; otherwise, decrements its count.
 
 #### Parameters
 
@@ -69,13 +88,13 @@ Removes a function from the list of abort handlers. If `all` is true, it removes
 
 (`reason`) => `void`
 
-The function to remove from the list of abort handlers. It receives a reason string when called.
+The handler to remove.
 
 ##### all?
 
 `boolean` = `false`
 
-If true, removes all occurrences of the function from the abort handlers. Defaults to false, removing only one occurrence.
+If true, removes all occurrences. Defaults to removing a single occurrence.
 
 #### Returns
 
@@ -91,9 +110,13 @@ This method does not return a value.
 on(fn): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:53](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L53)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:76](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-controller.ts#L76)
 
-Registers a callback function to be executed when a specific event occurs.
+Registers an abort handler.
+
+Handlers will be called upon [abort](#abort) while they remain registered. If you add a handler for a
+specific operation, remember to call [off](#off) when the operation finishes successfully and you no longer
+want to receive abort notifications.
 
 #### Parameters
 
@@ -101,7 +124,7 @@ Registers a callback function to be executed when a specific event occurs.
 
 (`reason`) => `void`
 
-A callback function that receives a string parameter representing the reason for the event.
+A callback function that receives the abort reason.
 
 #### Returns
 

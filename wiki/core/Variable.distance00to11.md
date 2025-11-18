@@ -4,7 +4,7 @@
 const distance00to11: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:22](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/numbers/geometry.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:22](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/geometry.ts#L22)
 
 Represents the distance from coordinate (0, 0) to coordinate (1, 1).
 

@@ -4,7 +4,7 @@
 function safeParseJSONValue(stringValue, fallback?): JsonValue;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/safe-parse-json-value.ts:15](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/json/safe-parse-json-value.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/json/safe-parse-json-value.ts:15](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/json/safe-parse-json-value.ts#L15)
 
 Safely parses a JSON-encoded string into its corresponding JavaScript value.
 If parsing fails, either a custom fallback function or the original string is returned.

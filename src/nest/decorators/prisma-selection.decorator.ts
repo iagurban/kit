@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { isDefined } from '../../core/checks';
+import { isDefined } from '../../core';
 import {
   BasicSelectionArgs,
   collectRecursiveSelectionPair,
@@ -12,7 +12,7 @@ import {
   GqlASTInlineFragmentSpread,
   GqlContextInfo,
   unpackSelectArgs,
-} from './graphql-traverse';
+} from '../../graphql';
 
 type RecurSelect = { select: { [key: string]: RecurSelect | boolean } } | boolean;
 

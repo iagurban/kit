@@ -1,4 +1,4 @@
-import { isDefined } from './checks';
+import { isDefined } from '../checks';
 
 export type CompareResult = number;
 export type CompareFunction<T> = (a: T, b: T) => CompareResult;

@@ -1,6 +1,6 @@
 # Class: KeysetPaginatorBuilder\<T\>
 
-Defined in: [keyset-paginator.ts:120](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L120)
+Defined in: [keyset-paginator.ts:12](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/prisma/keyset-paginator.ts#L12)
 
 Class representing a builder for generating keyset pagination queries.
 This provides methods to construct the necessary SQL-like clauses for
@@ -22,7 +22,7 @@ The type of the paginated items.
 cursorSelectClause(): object;
 ```
 
-Defined in: [keyset-paginator.ts:156](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L156)
+Defined in: [keyset-paginator.ts:48](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/prisma/keyset-paginator.ts#L48)
 
 Generates a "select" clause object representing the fields required for cursor-based pagination
 based on the ordering configuration of the current instance.
@@ -41,7 +41,7 @@ An object containing the structured fields to be selected for the query.
 whereClause(cursor): object;
 ```
 
-Defined in: [keyset-paginator.ts:188](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L188)
+Defined in: [keyset-paginator.ts:80](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/prisma/keyset-paginator.ts#L80)
 
 Constructs and returns a structured "where" clause object based on the provided cursor and predefined orders.
 

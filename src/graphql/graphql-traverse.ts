@@ -1,5 +1,4 @@
-import { isROArray, isTruthy } from '../../core/checks';
-import { notNull } from '../../core/flow/not-null';
+import { isROArray, isTruthy, notNull } from '../core';
 
 export type GqlASTLoc = { start: number; end: number };
 

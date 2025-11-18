@@ -1,4 +1,4 @@
-import { ClassConstructor } from './utils/types';
+import { ClassConstructor } from './types';
 
 /**
  * A type definition for a utility function that determines whether a given value

@@ -7,7 +7,7 @@ function createContextualLogger(
    payload?): IBaseLogger;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:47](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/interfaces/logger-interface.ts#L47)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:47](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/interfaces/logger-interface.ts#L47)
 
 Creates a contextual logger by extending the base logger with additional context information.
 

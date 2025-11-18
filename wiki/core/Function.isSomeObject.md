@@ -4,7 +4,7 @@
 function isSomeObject<T, R>(o): o is T & Record<string, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:151](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/checks.ts#L151)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:151](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/checks.ts#L151)
 
 Checks if the provided value is an object and not null, while also ensuring
 it is not an array. This function performs a type guard that verifies the

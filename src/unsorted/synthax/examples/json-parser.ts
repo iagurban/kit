@@ -1,7 +1,7 @@
 import { isTruthy } from '../../../core/checks';
+import { fromEntries } from '../../../core/collections/object-utils';
 import { NumberBase } from '../../../core/numbers/number-base';
 import { once } from '../../../core/once';
-import { fromEntries } from '../../../core/utils/object-utils';
 import { $t, $u } from '../define';
 import { AnyAst, Tokenizer, TokenizerResult } from '../tokenizer-def';
 

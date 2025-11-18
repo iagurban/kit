@@ -1,5 +1,5 @@
-import { ExMap } from '../collections/ex-map';
-import { notNull } from '../flow/not-null';
+import { ExMap } from './collections/ex-map';
+import { notNull } from './flow/not-null';
 
 type CPsTreeNode = { match?: string; sub?: CPsTree };
 

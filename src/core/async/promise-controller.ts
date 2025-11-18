@@ -2,8 +2,21 @@ import { ExMap } from '../collections/ex-map';
 import { Errors } from '../errors/errors';
 
 /**
- * A class that provides a mechanism to handle the abortion of asynchronous operations.
- * It maintains a set of listeners that can be notified when an abortion occurs.
+ * A class that provides a mechanism to broadcast abortion (cancellation) events.
+ *
+ * Architectural choice: attachable many-to-many controller
+ * - This controller can be shared across multiple concurrent or sequential operations.
+ * - Calling {@link abort} notifies all handlers that are registered at the moment of the call,
+ *   regardless of which operation they belong to or whether some operations have already finished.
+ * - Libraries that use the controller (e.g., {@link sleep}) must unsubscribe their own internal
+ *   handlers when their operation completes or is aborted.
+ * - Client code is responsible for unsubscribing its own handlers via {@link off} when they are no
+ *   longer needed (e.g., after a successful operation) to avoid receiving future abort notifications.
+ *
+ * This aligns with a broadcaster-style cancellation model similar in spirit to AbortController,
+ * without introducing a new cancellable-promise API. If per-operation isolation is required,
+ * create a dedicated controller instance for that operation or ensure handlers are removed on
+ * completion.
  */
 export class PromiseController {
   private _aborted = false;
@@ -20,10 +33,16 @@ export class PromiseController {
   }
 
   /**
-   * Aborts the current operation and notifies all registered abort handlers.
+   * Aborts and notifies all currently registered abort handlers.
    *
-   * @param {string} reason - The reason for aborting the operation.
-   * @return {void} - Does not return a value. Throws an error if any abort handlers throw exceptions.
+   * Notes:
+   * - Handlers are invoked in the order provided by the underlying map’s iteration order.
+   * - After notification, all handlers are cleared, and the controller remains in the aborted state.
+   * - If any handler throws, an {@link Errors} aggregating all thrown errors is raised after
+   *   all handlers have been invoked.
+   *
+   * @param {string} reason - The reason for aborting.
+   * @return {void} - Throws an aggregated error if some handlers throw.
    */
   abort(reason: string): void {
     if (this._aborted) {
@@ -45,9 +64,13 @@ export class PromiseController {
   }
 
   /**
-   * Registers a callback function to be executed when a specific event occurs.
+   * Registers an abort handler.
    *
-   * @param {function} fn - A callback function that receives a string parameter representing the reason for the event.
+   * Handlers will be called upon {@link abort} while they remain registered. If you add a handler for a
+   * specific operation, remember to call {@link off} when the operation finishes successfully and you no longer
+   * want to receive abort notifications.
+   *
+   * @param {function} fn - A callback function that receives the abort reason.
    * @return {void}
    */
   on(fn: (reason: string) => void): void {
@@ -55,10 +78,10 @@ export class PromiseController {
   }
 
   /**
-   * Removes a function from the list of abort handlers. If `all` is true, it removes all instances of the given function; otherwise, it decrements its count.
+   * Removes a handler from the list of abort handlers. If `all` is true, removes all instances; otherwise, decrements its count.
    *
-   * @param {Function} fn - The function to remove from the list of abort handlers. It receives a reason string when called.
-   * @param {boolean} [all=false] - If true, removes all occurrences of the function from the abort handlers. Defaults to false, removing only one occurrence.
+   * @param {Function} fn - The handler to remove.
+   * @param {boolean} [all=false] - If true, removes all occurrences. Defaults to removing a single occurrence.
    * @return {void} This method does not return a value.
    */
   off(fn: (reason: string) => void, all: boolean = false): void {

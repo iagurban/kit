@@ -13,7 +13,7 @@ class NoSpaceError extends Error {}
  *
  * **Side effect**: Mutates `actualSorted` and `actualIndex` when rebalance() is called.
  */
-class Balancer {
+export class Balancer {
   leftRebalanced = 0;
   rightRebalanced = 0;
   actualSorted: string[];

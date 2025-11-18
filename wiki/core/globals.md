@@ -2,6 +2,7 @@
 
 ## Classes
 
+- [Balancer](Class.Balancer.md)
 - [ExMap](Class.ExMap.md)
 - [ExSet](Class.ExSet.md)
 - [ManualSortingAlphabet](Class.ManualSortingAlphabet.md)

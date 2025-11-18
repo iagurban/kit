@@ -4,7 +4,7 @@
 function isUndefined(o): o is undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:69](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/checks.ts#L69)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:69](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/checks.ts#L69)
 
 A type guard function to determine if a given value is undefined.
 

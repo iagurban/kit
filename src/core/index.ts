@@ -27,12 +27,24 @@ export {
   validator,
   validator0,
 } from './checks';
+export { makeMatchingTree } from './code-points-matching-tree';
+export {
+  ArrayMutators,
+  buckets,
+  mapArrayIfNotEmpty,
+  pickRandomItems,
+  samples,
+  samplesBy,
+} from './collections/array-utils';
 export { ExMap } from './collections/ex-map';
 export { ExSet } from './collections/ex-set';
+export { indexed, iterableUtils, iu, reverse, reversed } from './collections/iterable-utils';
+export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './collections/object-utils';
 export type { FunctionDisposable, ObjectDisposable } from './disposers';
 export { disposers } from './disposers';
 export type { Listener } from './emitter';
 export { Emitter } from './emitter';
+export { errorFromUnknown, errorToString } from './error-utils';
 export { CancelledError } from './errors/cancelled-error';
 export { Errors } from './errors/errors';
 export { NullError } from './errors/null-error';
@@ -42,6 +54,7 @@ export { catching } from './flow/catching';
 export { warnCatch } from './flow/catching';
 export { notNull } from './flow/not-null';
 export { throwing } from './flow/throwing';
+export { formatDuration } from './format-duration';
 export { multiRecurringDenier } from './functions/deny-recursion';
 export { denyRecursion } from './functions/deny-recursion';
 export { skipCalls } from './functions/skip-calls';
@@ -64,7 +77,7 @@ export type {
 } from './json/readonly-extended-json-type';
 export type { ReadonlyJsonArray, ReadonlyJsonObject, ReadonlyJsonValue } from './json/readonly-json-type';
 export { safeParseJSONValue } from './json/safe-parse-json-value';
-export { ManualSortingAlphabet } from './manual-sorting';
+export { Balancer, ManualSortingAlphabet } from './manual-sorting';
 export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export {
@@ -101,21 +114,7 @@ export { clamp, scale, scale_unsafe, scaleFrom01, scaleTo01, scaleTo01_unsafe, s
 export { once, setValueProperty } from './once';
 export { sleep } from './sleep';
 export { emptySymbol, jnsp, nbsp, stringConstants, svgNS } from './string-const';
-export { uidGenerator } from './uid-generator';
-export {
-  ArrayMutators,
-  buckets,
-  mapArrayIfNotEmpty,
-  pickRandomItems,
-  samples,
-  samplesBy,
-} from './utils/array-utils';
-export { makeMatchingTree } from './utils/code-points-matching-tree';
-export { errorFromUnknown, errorToString } from './utils/error-utils';
-export { formatDuration } from './utils/format-duration';
-export { indexed, iterableUtils, iu, reverse, reversed } from './utils/iterable-utils';
-export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './utils/object-utils';
-export { allCodePoints, allStringCodePoints, isUppercase } from './utils/string-util';
+export { allCodePoints, allStringCodePoints, isUppercase } from './string-util';
 export type {
   AnyAnyFunction,
   AnyArray,
@@ -131,5 +130,6 @@ export type {
   RequiredKeys,
   UnwrapArray,
   ValOrArr,
-} from './utils/types';
+} from './types';
+export { uidGenerator } from './uid-generator';
 export { weakCache } from './weak-cache';

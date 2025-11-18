@@ -28,7 +28,7 @@ export class SnapshotSaver<S> {
    * @param {SnapshotInOf<S>} snapshot - The snapshot data to be saved.
    * @return {void} This method does not return a value.
    */
-  save(snapshot: SnapshotInOf<S>) {
+  save(snapshot: SnapshotInOf<S>): void {
     if (this.saving) {
       this.needSave = snapshot;
       return;
@@ -80,7 +80,7 @@ export class SnapshotSaver<S> {
    * @param {S} node - The observable node to watch for changes.
    * @return {IReactionDisposer} Returns a disposer function to stop the reaction.
    */
-  reaction(node: S): IReactionDisposer {
+  public reaction(node: S): IReactionDisposer {
     return reaction(
       () => getSnapshot(node),
       snapshot => this.save(snapshot)

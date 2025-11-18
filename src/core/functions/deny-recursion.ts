@@ -1,5 +1,5 @@
 import { isPromise } from '../async/promise-util';
-import { AnyAnyFunction } from '../utils/types';
+import { AnyAnyFunction } from '../types';
 
 type BusyGuardResult<T extends AnyAnyFunction> =
   ReturnType<T> extends Promise<unknown> ? Promise<ReturnType<T>> : ReturnType<T>;

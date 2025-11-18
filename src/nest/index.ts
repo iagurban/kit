@@ -6,21 +6,6 @@ export {
   TryCurrentUserBase,
 } from './decorators/current-user.decorator-base';
 export {
-  BasicSelectionArgs,
-  collectRecursiveSelectionPair,
-  findGqlNodeByPath,
-  flattenSpreads,
-  GqlASTField,
-  GqlASTFragmentDefinition,
-  GqlASTFragmentSpread,
-  GqlASTInlineFragmentSpread,
-  GqlASTLoc,
-  GqlASTName,
-  GqlASTSelectionSet,
-  GqlContextInfo,
-  unpackSelectArgs,
-} from './decorators/graphql-traverse';
-export {
   getPrismaSelectionFromInfo,
   PrismaSelection,
   prismaSelectionFromGqlExecutionCtx,

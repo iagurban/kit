@@ -1,6 +1,6 @@
 # Class: AuthControllerBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:32](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/nest/auth-controller-base.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:32](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/auth-controller-base.ts#L32)
 
 Base controller class that implements JWT-based authentication flow with access and refresh tokens.
 Uses bearer tokens for access authorization and HTTP-only cookies for refresh tokens.
@@ -49,7 +49,7 @@ login(
 res): Promise<string>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:71](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/nest/auth-controller-base.ts#L71)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:71](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/auth-controller-base.ts#L71)
 
 Authenticates user credentials and creates new session.
 Sets refresh token in cookies and returns access token.
@@ -92,7 +92,7 @@ If credentials are invalid
 logout(req, res): Promise<boolean>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:87](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/nest/auth-controller-base.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:87](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/auth-controller-base.ts#L87)
 
 Ends the user session by invalidating refresh token and clearing cookies.
 If refresh token exists, it will be invalidated on the server.
@@ -125,7 +125,7 @@ True if logout was successful
 refresh(req, res): Promise<Response<any, Record<string, any>>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:47](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/nest/auth-controller-base.ts#L47)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:47](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/auth-controller-base.ts#L47)
 
 Refreshes the access token using a refresh token from cookies.
 Issues new refresh token and returns new access token.

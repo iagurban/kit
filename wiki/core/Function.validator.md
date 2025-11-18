@@ -4,7 +4,7 @@
 function validator<K>(isK): <R>(o, fn) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:283](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/checks.ts#L283)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:283](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/checks.ts#L283)
 
 A higher-order function that validates an input against a specified checker function
 and applies a transformation function if the validation is successful.

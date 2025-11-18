@@ -1,6 +1,6 @@
 import { isDefined } from '../../../core/checks';
-import { reversed } from '../../../core/utils/iterable-utils';
-import { Nullish } from '../../../core/utils/types';
+import { reversed } from '../../../core/collections/iterable-utils';
+import { Nullish } from '../../../core/types';
 import { Expr, isExprOperand, Operand } from '../operands-tree-builder';
 import { AnyAst } from '../tokenizer-def';
 import {

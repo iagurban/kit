@@ -4,7 +4,7 @@
 type PromiseValue<T> = T extends Promise<infer R> ? R : T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:23](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-util.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:23](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/async/promise-util.ts#L23)
 
 A utility type that extracts the resolved value type of Promise.
 If the provided type `T` is a Promise, `PromiseValue<T>` resolves to the type of the value that the Promise resolves/rejects with.

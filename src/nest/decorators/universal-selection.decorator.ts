@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
-import { isDefined } from '../../core/checks';
+import { isDefined } from '../../core';
 import {
   BasicSelectionArgs,
   collectRecursiveSelectionPair,
@@ -12,7 +12,7 @@ import {
   GqlASTInlineFragmentSpread,
   GqlContextInfo,
   unpackSelectArgs,
-} from './graphql-traverse';
+} from '../../graphql';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface UniversalSelection extends Record<string, boolean | UniversalSelection> {}

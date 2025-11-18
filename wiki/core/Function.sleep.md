@@ -4,10 +4,17 @@
 function sleep(ms, ac?): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:13](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/sleep.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:20](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/sleep.ts#L20)
 
 Suspends the execution for a specified duration in milliseconds.
-If a PromiseController is provided, the sleep can be interrupted.
+If a [PromiseController](Class.PromiseController.md) is provided, the sleep can be interrupted.
+
+Notes about the controller model:
+- The controller is an attachable, many-to-many broadcaster. `abort()` notifies all handlers
+  currently registered on the controller, regardless of which operation they belong to.
+- `sleep` subscribes its own internal handler and automatically unsubscribes it when the
+  timeout fires (resolve) or when an abort occurs (reject). External handlers added by the caller
+  remain the caller's responsibility: unsubscribe them via `ac.off(...)` when no longer needed.
 
 ## Parameters
 
@@ -21,7 +28,7 @@ The number of milliseconds to pause execution.
 
 [`PromiseController`](Class.PromiseController.md)
 
-Optional PromiseController instance used to control or cancel the delay.
+Optional controller used to cancel the delay.
 
 ## Returns
 
