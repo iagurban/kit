@@ -1,6 +1,6 @@
 import {
   checked,
-  isArray,
+  isArrayOf,
   isDefined,
   isInstanceOf,
   isInteger,
@@ -122,7 +122,7 @@ describe('Type Checks', () => {
     });
 
     it('should validate array elements', () => {
-      const isNumberArray = isArray(isNumber);
+      const isNumberArray = isArrayOf(isNumber);
       expect(isNumberArray([1, 2, 3])).toBe(true);
       expect(isNumberArray([1, '2', 3])).toBe(false);
       expect(isNumberArray([])).toBe(true);

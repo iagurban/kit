@@ -4,7 +4,7 @@ import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-toke
 import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 
-import { AnyFunction } from '../utils/types';
+import { AnyFunction } from '../core/utils/types';
 
 export type DynamicModuleFabric<T> = {
   imports?: (Type | DynamicModule | Promise<DynamicModule> | ForwardReference)[];

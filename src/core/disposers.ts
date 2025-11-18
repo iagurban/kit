@@ -1,4 +1,4 @@
-import { Errors } from './errors';
+import { Errors } from '../errors/errors';
 
 export type FunctionDisposable = () => () => void;
 export type ObjectDisposable = { init(): void; destroy(): void };

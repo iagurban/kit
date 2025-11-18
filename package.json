@@ -4,8 +4,15 @@
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
-    ".": "./dist/src/index.js",
-    "./*": "./dist/src/*"
+    ".": "./dist/src/core/index.js",
+    "./graphql": "./dist/src/graphql/index.js",
+    "./mobx": "./dist/src/mobx/index.js",
+    "./nest": "./dist/src/nest/index.js",
+    "./react": "./dist/src/react/index.js",
+    "./react/mobx": "./dist/src/react/mobx/index.js",
+    "./redis": "./dist/src/redis/index.js",
+    "./zod": "./dist/src/zod/index.js",
+    "./*": "./dist/src/core/*"
   },
   "files": [
     "dist"
@@ -23,7 +30,7 @@
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
-    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ../kit-wiki/Home.md)"
+    "docs:md": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/core/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ../kit-wiki/Home.md)"
   },
   "dependencies": {
     "@loancrate/prisma-schema-parser": "^3.0.0",

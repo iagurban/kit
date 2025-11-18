@@ -4,8 +4,8 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { checked, isSomeOf, isUndefined } from '../core/checks';
-import { INodemonOptions, isNodeJSSignal, Nodemon } from '../nodemon';
-import { notNull } from '../utils/flow/flow-utils';
+import { notNull } from '../core/flow/not-null';
+import { INodemonOptions, isNodeJSSignal, Nodemon } from '../unsorted/nodemon';
 
 async function main() {
   const argv = await yargs(hideBin(process.argv))

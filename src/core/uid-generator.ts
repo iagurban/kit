@@ -1,4 +1,4 @@
-import { NumberBase } from '../numbers/number-base';
+import { NumberBase } from './numbers/number-base';
 
 const {
   b62: { from10, to10, mask, fixedWidthRandomGenerator },

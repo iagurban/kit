@@ -35,12 +35,9 @@ import {
   useRef,
 } from 'react';
 
-import { ExSet } from '../../../collections/ex-set';
-import { ManualSortingAlphabet } from '../../../core/manual-sorting';
-import { notNull } from '../../../utils/flow/flow-utils';
-import { clamp } from '../../../utils/numeric-utils';
-import { createUsableContext } from '../../react';
-import { ObservableExSet } from '../observable-ex-set';
+import { clamp, ExSet, ManualSortingAlphabet, notNull } from '../../../core';
+import { ObservableExSet } from '../../../mobx';
+import { createUsableContext } from '../../create-usable-context';
 import classNames from './dnd-tree.module.scss';
 
 const preDroppableId = `!!!PRE!!!`;

@@ -1,9 +1,5 @@
-import { binaryStringSearch } from '../utils/string-util';
-
-/**
- * Indicates a programming error in the sorting algorithm implementation
- */
-export class ProgrammingError extends Error {}
+import { ProgrammingError } from '../errors/programming-error';
+import { binaryStringSearch } from './utils/string-util';
 
 /**
  * Indicates there isn't enough space between keys to perform the requested insertion

@@ -1,4 +1,4 @@
-import { notNull } from '../utils/flow/flow-utils';
+import { notNull } from '../core/flow/not-null';
 
 export const accentChars = {
   ld: '″', // long down (⁀)
