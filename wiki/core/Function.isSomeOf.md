@@ -4,7 +4,7 @@
 function isSomeOf<Vs>(...checkers): Checker<Vs[number]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:224](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/checks.ts#L224)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:224](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/checks.ts#L224)
 
 A utility function that checks whether a given value satisfies at least one of the provided type-checking functions.
 

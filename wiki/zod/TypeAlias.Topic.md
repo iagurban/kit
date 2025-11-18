@@ -7,7 +7,7 @@ type Topic<S, N> = Readonly<{
 }>;
 ```
 
-Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/zod/declare-events-topic.ts#L12)
+Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/zod/declare-events-topic.ts#L12)
 
 Represents a Topic with a unique name and an associated schema.
 

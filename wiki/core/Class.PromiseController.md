@@ -1,6 +1,6 @@
 # Class: PromiseController
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:8](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/async/promise-controller.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:8](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L8)
 
 A class that provides a mechanism to handle the abortion of asynchronous operations.
 It maintains a set of listeners that can be notified when an abortion occurs.
@@ -15,7 +15,7 @@ It maintains a set of listeners that can be notified when an abortion occurs.
 get aborted(): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:18](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/async/promise-controller.ts#L18)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:18](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L18)
 
 Retrieves the current aborted state.
 
@@ -33,7 +33,7 @@ The value of the aborted state.
 abort(reason): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:28](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/async/promise-controller.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:28](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L28)
 
 Aborts the current operation and notifies all registered abort handlers.
 
@@ -59,7 +59,7 @@ The reason for aborting the operation.
 off(fn, all?): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:64](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/async/promise-controller.ts#L64)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:64](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L64)
 
 Removes a function from the list of abort handlers. If `all` is true, it removes all instances of the given function; otherwise, it decrements its count.
 
@@ -91,7 +91,7 @@ This method does not return a value.
 on(fn): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:53](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/async/promise-controller.ts#L53)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:53](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/async/promise-controller.ts#L53)
 
 Registers a callback function to be executed when a specific event occurs.
 

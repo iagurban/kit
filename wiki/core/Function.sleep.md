@@ -4,7 +4,7 @@
 function sleep(ms, ac?): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:13](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/sleep.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:13](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/sleep.ts#L13)
 
 Suspends the execution for a specified duration in milliseconds.
 If a PromiseController is provided, the sleep can be interrupted.

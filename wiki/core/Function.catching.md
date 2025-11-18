@@ -18,7 +18,7 @@ The fallback function to execute if the first function throws an exception.
 function catching<T, C>(fn, onCatch): T | C;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/flow/catching.ts#L1)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/flow/catching.ts#L1)
 
 ### Type Parameters
 
@@ -50,7 +50,7 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.co
 function catching<T>(fn, onCatch): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/flow/catching.ts#L2)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/flow/catching.ts#L2)
 
 ### Type Parameters
 

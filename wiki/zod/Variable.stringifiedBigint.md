@@ -4,7 +4,7 @@
 const stringifiedBigint: ZodCodec<ZodString, ZodBigInt>;
 ```
 
-Defined in: [stringified-types.ts:21](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/zod/stringified-types.ts#L21)
+Defined in: [stringified-types.ts:21](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/zod/stringified-types.ts#L21)
 
 A codec for handling the conversion between a stringified representation of
 a bigint and its actual bigint value. This ensures strict validation and

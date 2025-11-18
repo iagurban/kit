@@ -7,7 +7,7 @@ function clamp(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:121](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/numbers/utils.ts#L121)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:121](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/numbers/utils.ts#L121)
 
 Restricts a number to be within a specified range.
 

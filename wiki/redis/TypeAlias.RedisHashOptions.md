@@ -4,7 +4,7 @@
 type RedisHashOptions = object;
 ```
 
-Defined in: [redis-helpers.ts:8](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/redis/redis-helpers.ts#L8)
+Defined in: [redis-helpers.ts:8](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/redis/redis-helpers.ts#L8)
 
 Options for Redis Hash conversion.
 
@@ -16,7 +16,7 @@ Options for Redis Hash conversion.
 optional fallback: (stringValue, field, error) => JsonValue;
 ```
 
-Defined in: [redis-helpers.ts:13](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/redis/redis-helpers.ts#L13)
+Defined in: [redis-helpers.ts:13](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/redis/redis-helpers.ts#L13)
 
 Optional function to handle string values that fail JSON.parse.
 Accepts the problematic string value and must return a JsonValue.

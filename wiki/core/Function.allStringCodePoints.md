@@ -4,7 +4,7 @@
 function allStringCodePoints(s): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/string-util.ts:11](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/utils/string-util.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/utils/string-util.ts:11](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/string-util.ts#L11)
 
 Converts a given string into an array of its Unicode code points.
 

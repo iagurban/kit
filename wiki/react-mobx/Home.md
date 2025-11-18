@@ -20,7 +20,7 @@
 
 # Class: KeyframesBuilder
 
-Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/keyframes-builder.tsx#L25)
+Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/keyframes-builder.tsx#L25)
 
 The KeyframesBuilder class provides functionality to dynamically create CSS keyframes
 and manage them in the document's styles through unique naming and caching mechanisms.
@@ -35,7 +35,7 @@ are identical, while also cleaning up unused styles.
 inject(label, steps): IComputedValue<string>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/keyframes-builder.tsx#L39)
+Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/keyframes-builder.tsx#L39)
 
 Injects a CSS animation keyframes rule into the DOM and returns a computed value representing the animation name.
 
@@ -62,7 +62,7 @@ When the computed value is no longer observed, the animation styles are automati
 function dndTreeFabric<Item, State>(methods, mlStep): object;
 ```
 
-Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
+Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
 
 Creates context accessors for DndTreeState (which user must provide with ProvideDndTreeState) and
 components for rendering tree bound to that context.
@@ -239,7 +239,7 @@ useDndTreeState: () => State;
 function enhanceStepsEvenly(steps, o?): Record<`${number}%`, CSSProperties>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/keyframes-builder.tsx#L94)
+Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/keyframes-builder.tsx#L94)
 
 Generates a mapping of percentages to CSS properties, evenly distributing the provided steps.
 Optionally completes a cycle by repeating the first step at the end.
@@ -273,7 +273,7 @@ A record where keys are percentage strings and values are CSS properties.
 function useResizeObserver(callback): GraphNodeViewStore;
 ```
 
-Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/use-resize-observer.ts#L57)
+Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/use-resize-observer.ts#L57)
 
 useResizeObserver is a custom hook that creates a reference to a `GraphNodeViewStore`
 instance for handling resize events using a provided callback function.
@@ -302,7 +302,7 @@ Returns an instance of `GraphNodeViewStore` that manages
 const gradientPresets: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
 
 Предопределённые градиенты (массивы GradientStop)
 
@@ -636,7 +636,7 @@ readonly sunSky: readonly [{
 const keyframesBuilder: KeyframesBuilder;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/keyframes-builder.tsx#L121)
+Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/keyframes-builder.tsx#L121)
 
 A variable that holds an instance of the KeyframesBuilder class.
 The KeyframesBuilder is used to programmatically create CSS keyframes
@@ -650,7 +650,7 @@ adding keyframes and managing animations dynamically.
 const moveAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
 
 Предопределённые паттерны анимации позиции фона
 
@@ -753,7 +753,7 @@ readonly zigzag: readonly [{
 const rotateAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
 
 Предопределённые ключевые кадры вращения градиента
 

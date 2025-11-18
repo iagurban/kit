@@ -4,7 +4,7 @@
 type NonOptional<T> = Pick<T, RequiredKeys<T>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/types.ts:83](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/utils/types.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/core/utils/types.ts:83](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/types.ts#L83)
 
 A utility type that creates a new type by extracting all required (non-optional) properties
 from the given type `T`. The resulting type includes only the keys of `T` that are not marked

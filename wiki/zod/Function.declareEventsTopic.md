@@ -4,7 +4,7 @@
 function declareEventsTopic<S, N>(name, schema): Topic<S, N>;
 ```
 
-Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/zod/declare-events-topic.ts#L23)
+Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/zod/declare-events-topic.ts#L23)
 
 Declares an event topic with the specified name and schema.
 

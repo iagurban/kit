@@ -9,7 +9,7 @@ function rotatePoint(
    rad): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:96](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/numbers/geometry.ts#L96)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:96](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/numbers/geometry.ts#L96)
 
 Rotates a point around a specified pivot point by a given angle in radians.
 

@@ -7,7 +7,7 @@ function scaleTo01_unsafe(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:40](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/numbers/utils.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:40](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/numbers/utils.ts#L40)
 
 Scales a given value to a normalized range between 0 and 1.
 

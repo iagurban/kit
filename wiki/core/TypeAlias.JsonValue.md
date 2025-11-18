@@ -4,7 +4,7 @@
 type JsonValue = JsonScalar | JsonObject | JsonArray;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/json-type.ts:12](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/json/json-type.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/core/json/json-type.ts:12](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/json/json-type.ts#L12)
 
 Represents a JSON value that can either be a scalar, an object, or an array.
 

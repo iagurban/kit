@@ -4,7 +4,7 @@
 function isInstanceOf<C>(...classes): Checker<C>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:194](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/checks.ts#L194)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:194](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/checks.ts#L194)
 
 A utility function to check if a given object is an instance of one or more specified classes.
 

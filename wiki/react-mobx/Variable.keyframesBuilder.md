@@ -4,7 +4,7 @@
 const keyframesBuilder: KeyframesBuilder;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/mobx/keyframes-builder.tsx#L121)
+Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/mobx/keyframes-builder.tsx#L121)
 
 A variable that holds an instance of the KeyframesBuilder class.
 The KeyframesBuilder is used to programmatically create CSS keyframes

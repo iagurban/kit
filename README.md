@@ -1,6 +1,6 @@
 # kit
 
-TypeScript utility kit for full‑stack projects — collections, functional helpers, React/MobX utilities, NestJS building blocks, Prisma pagination, Redis helpers, and Zod utilities.
+TypeScript utility kit for full‑stack projects – collections, functional helpers, React and MobX utilities, NestJS building blocks, Prisma, Redis helpers, and Zod utilities.
 
 ### Core highlights
 
@@ -29,7 +29,6 @@ TypeScript utility kit for full‑stack projects — collections, functional hel
 - Target: TypeScript projects (frontend and backend) that prefer zero runtime deps and strong typing.
 - Modules are split by domain (core, react, mobx, nest, prisma, redis, graphql, zod) — import only what you need.
 - Many utilities are small, composable functions — favor composition over inheritance; see docs for focused examples.
-- Not intended for standalone/npm consumption outside a workspace; import directly from the source in your monorepo.
 
 ### Scripts
 

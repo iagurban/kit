@@ -4,7 +4,7 @@
 function weakCache<T, E>(create): (o) => E;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/weak-cache.ts:11](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/weak-cache.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/weak-cache.ts:11](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/weak-cache.ts#L11)
 
 Creates a weak cache generator function that memoizes the output of a given creation function
 associated with the input object. The cache automatically ensures that objects are garbage

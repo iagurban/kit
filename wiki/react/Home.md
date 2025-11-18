@@ -15,7 +15,7 @@
 function createUsableContext<T>(name): object;
 ```
 
-Defined in: [create-usable-context.ts:28](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/create-usable-context.ts#L28)
+Defined in: [create-usable-context.ts:28](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/create-usable-context.ts#L28)
 
 A utility function to create a reusable React context with strict type safety.
 
@@ -74,7 +74,7 @@ useIfProvided: () => T | undefined;
 function findNodeBy<T>(n, is): T | null;
 ```
 
-Defined in: [html.ts:30](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L30)
+Defined in: [html.ts:30](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/html.ts#L30)
 
 Recursively searches for and returns a node within the DOM tree that satisfies a specified condition.
 
@@ -109,7 +109,7 @@ A callback function that takes an element as an argument and returns a boolean i
 function findNodeOfType<T>(n, nodeName): T | null;
 ```
 
-Defined in: [html.ts:9](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L9)
+Defined in: [html.ts:9](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/html.ts#L9)
 
 Recursively searches for a node of the specified type within a given element's descendants.
 
@@ -142,7 +142,7 @@ The name of the node to search for (case-sensitive).
 function interleaveWithObject<T>(a, o): T[];
 ```
 
-Defined in: [interleave-with-object.ts:12](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/interleave-with-object.ts#L12)
+Defined in: [interleave-with-object.ts:12](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/interleave-with-object.ts#L12)
 
 Creates a new array by interleaving the elements of the input array with the result of a callback function.
 
@@ -180,7 +180,7 @@ A new array where each pair of elements is interleaved with the result of the ca
 function isMounted(node): boolean;
 ```
 
-Defined in: [html.ts:53](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L53)
+Defined in: [html.ts:53](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/html.ts#L53)
 
 Checks if a given HTML element is mounted to the DOM.
 

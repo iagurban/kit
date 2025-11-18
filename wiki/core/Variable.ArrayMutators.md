@@ -4,7 +4,7 @@
 const ArrayMutators: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/array-utils.ts:70](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/utils/array-utils.ts#L70)
+Defined in: [IdeaProjects/kit/kit/src/core/utils/array-utils.ts:70](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/array-utils.ts#L70)
 
 A collection of utility functions for manipulating arrays. Each function allows optional mutation of the original array.
 

@@ -4,7 +4,7 @@
 type ClassConstructor<Instance> = (...args) => Instance;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/utils/types.ts:192](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/utils/types.ts#L192)
+Defined in: [IdeaProjects/kit/kit/src/core/utils/types.ts:192](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/utils/types.ts#L192)
 
 Represents a constructor type for a class, which can be used to create
 instances of the class.

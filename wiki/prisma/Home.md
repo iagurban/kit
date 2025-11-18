@@ -12,7 +12,7 @@
 
 # Class: KeySetPaginator\<T, WhereUniqueInput, WhereInput, Select\>
 
-Defined in: [keyset-paginator.ts:236](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/prisma/keyset-paginator.ts#L236)
+Defined in: [keyset-paginator.ts:236](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L236)
 
 The `KeySetPaginator` class implements a mechanism for performing efficient
 keyset pagination on a data set using a cursor-based approach.
@@ -40,7 +40,7 @@ The type of the input used for selecting specific fields.
 
 # Class: KeysetPaginatorBuilder\<T\>
 
-Defined in: [keyset-paginator.ts:120](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/prisma/keyset-paginator.ts#L120)
+Defined in: [keyset-paginator.ts:120](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L120)
 
 Class representing a builder for generating keyset pagination queries.
 This provides methods to construct the necessary SQL-like clauses for
@@ -60,7 +60,7 @@ The type of the paginated items.
 cursorSelectClause(): object;
 ```
 
-Defined in: [keyset-paginator.ts:156](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/prisma/keyset-paginator.ts#L156)
+Defined in: [keyset-paginator.ts:156](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L156)
 
 Generates a "select" clause object representing the fields required for cursor-based pagination
 based on the ordering configuration of the current instance.
@@ -77,7 +77,7 @@ An object containing the structured fields to be selected for the query.
 whereClause(cursor): object;
 ```
 
-Defined in: [keyset-paginator.ts:188](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/prisma/keyset-paginator.ts#L188)
+Defined in: [keyset-paginator.ts:188](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L188)
 
 Constructs and returns a structured "where" clause object based on the provided cursor and predefined orders.
 
@@ -104,7 +104,7 @@ OR: object[] = ands;
 function getModelsMetadataFromString(s): object;
 ```
 
-Defined in: [keyset-paginator.ts:95](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/prisma/keyset-paginator.ts#L95)
+Defined in: [keyset-paginator.ts:95](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/prisma/keyset-paginator.ts#L95)
 
 Parses a Prisma schema string and extracts metadata information for all model declarations.
 

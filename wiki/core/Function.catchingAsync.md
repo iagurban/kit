@@ -18,7 +18,7 @@ A function that gets invoked with the caught error if `fn` throws or rejects. Th
 function catchingAsync<T, C>(fn, onCatch): Promise<T | C>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:20](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/flow/catching.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:20](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/flow/catching.ts#L20)
 
 ### Type Parameters
 
@@ -50,7 +50,7 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:20](https://github.c
 function catchingAsync<T>(fn, onCatch): Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:24](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/flow/catching.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:24](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/flow/catching.ts#L24)
 
 ### Type Parameters
 

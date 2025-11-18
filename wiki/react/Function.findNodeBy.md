@@ -4,7 +4,7 @@
 function findNodeBy<T>(n, is): T | null;
 ```
 
-Defined in: [html.ts:30](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/react/html.ts#L30)
+Defined in: [html.ts:30](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/react/html.ts#L30)
 
 Recursively searches for and returns a node within the DOM tree that satisfies a specified condition.
 

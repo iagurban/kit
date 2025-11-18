@@ -4,7 +4,7 @@
 const jnsp: "⁠";
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:30](https://github.com/iagurban/kit/blob/8ed9974b40a00d80dd9ba7a56ab347e7cbde291d/src/core/string-const.ts#L30)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:30](https://github.com/iagurban/kit/blob/88f6c87858ca712c618c2fee11d3d113250c16fc/src/core/string-const.ts#L30)
 
 A constant variable `jnsp` representing the Unicode character 'WORD JOINER' (U+2060).
 It is used to indicate a position where line breaks or spacing are not allowed.
