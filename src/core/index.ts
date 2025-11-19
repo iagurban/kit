@@ -77,6 +77,8 @@ export type {
 export type { ReadonlyJsonArray, ReadonlyJsonObject, ReadonlyJsonValue } from './json/readonly-json-type';
 export { safeParseJSONValue } from './json/safe-parse-json-value';
 export { Balancer, ManualSortingAlphabet } from './manual-sorting';
+export { isNodeJSSignal } from './node-util';
+export { INodemonOptions, MtimeTracker, Nodemon, NodemonFileWatcher } from './nodemon';
 export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export {
@@ -111,6 +113,15 @@ export { NumberConverter, Powers } from './numbers/number-converter';
 export { convertToRoman } from './numbers/roman';
 export { clamp, scale, scale_unsafe, scaleFrom01, scaleTo01, scaleTo01_unsafe, snap } from './numbers/utils';
 export { once, setValueProperty } from './once';
+export {
+  PathMatchLeaf,
+  PathMatchNode,
+  PathMatchResult,
+  PathMatchStrictResult,
+  PathMatchTree,
+  pathMatchTree,
+  PathMatchTreeOptions,
+} from './path-match-tree';
 export { sleep } from './sleep';
 export { emptySymbol, jnsp, nbsp, stringConstants, svgNS } from './string-const';
 export { allCodePoints, allStringCodePoints, isUppercase } from './string-util';
