@@ -1,14 +1,14 @@
+import { spawn } from 'node:child_process';
 import { EventEmitter } from 'node:events';
-import { constants } from 'node:os';
 
-import { ChildProcess, spawn, SpawnOptions } from 'child_process';
+import { ChildProcess, SpawnOptions } from 'child_process';
 import * as fs from 'fs';
 import { glob } from 'glob';
 import path from 'path';
 
-import { isTruthy } from '../core/checks';
-import { ReadonlyExtendedJsonObject } from '../core/json/readonly-extended-json-type';
-import { sleep } from '../core/sleep';
+import { isTruthy } from './checks';
+import { ReadonlyExtendedJsonObject } from './json/readonly-extended-json-type';
+import { sleep } from './sleep';
 
 type LogFunction = (
   channel: `error` | `warn` | `log`,
@@ -597,18 +597,3 @@ export const formatDuration = (durationInMs: number): string => {
   const milliseconds = durationInMs % 1000;
   return `${seconds}.${String(milliseconds).padStart(3, '0')}s`;
 };
-
-// Create a Set of valid signal names for efficient O(1) lookups.
-// This is created only once when the module is loaded.
-const validSignalNames = new Set(Object.keys(constants.signals));
-
-/**
- * Type guard to check if a value is a valid NodeJS.Signals string.
- * @param value The value to check.
- * @returns True if the value is a valid signal name, false otherwise.
- */
-export function isNodeJSSignal(value: unknown): value is NodeJS.Signals | number {
-  return typeof value === 'string'
-    ? validSignalNames.has(value)
-    : typeof value === 'number' && value >= 1 && value <= 64;
-}
