@@ -13,6 +13,8 @@
  * const power5 = hexPowers.get(5); // Returns 1048576n
  * ```
  */
+import { randomBytes } from 'crypto';
+
 export class Powers {
   /**
    * Creates a new Powers calculator.
@@ -207,15 +209,36 @@ export class NumberConverter {
    * @throws {Error} If length is not a positive integer
    */
   readonly fixedWidthRandomGenerator: (length: number) => () => string = (length: number) => {
-    const gen = (mask: number, width: number, pad: string) =>
-      this.from10(Math.floor(Math.random() * mask)).padStart(width, pad);
-
-    const genRepeat = (n: number, mask: number, width: number, pad: string) => {
-      const r: string[] = [];
-      for (let i = 0; i < n; ++i) {
-        r.push(gen(mask, width, pad));
+    // Secure, unbiased integer in [0, mask) using Node's crypto.
+    // Reference (non-secure) equivalent for understanding `mask` meaning:
+    //   Math.floor(Math.random() * mask)  // yields 0..mask-1
+    // Instead of fixed 8 bytes, compute the minimal number of bytes required per mask
+    // and build a sampler once to avoid extra work per generated chunk.
+    const makeSecureIntBelow = (mask: number): (() => number) => {
+      if (mask <= 0 || !Number.isFinite(mask)) {
+        throw new Error(`invalid mask: ${mask}`);
       }
-      return r.join('');
+      const m = BigInt(mask);
+      // bits needed to represent values in [0, mask)
+      const bits = Math.ceil(Math.log2(mask));
+      const nBytes = Math.max(1, Math.ceil(bits / 8));
+      const maximum = 1n << BigInt(8 * nBytes);
+      const limit = maximum - (maximum % m); // largest multiple of m within [0, 2^(8*nBytes))
+
+      return () => {
+        while (true) {
+          const buf = randomBytes(nBytes);
+          // Interpret as unsigned big-endian integer
+          let x = 0n;
+          for (let i = 0; i < nBytes; i++) {
+            x = (x << 8n) | BigInt(buf[i]);
+          }
+          if (x < limit) {
+            return Number(x % m);
+          }
+          // else retry to keep distribution uniform
+        }
+      };
     };
 
     if (length < 1 || Math.floor(length) !== length) {
@@ -228,16 +251,36 @@ export class NumberConverter {
     const mask0 = Number(this.to10(this.mask(mask0Digits)));
 
     const mask1Digits = length % mask0Digits;
-    const mask1 = Number(this.to10(this.mask(mask1Digits)));
+    const mask1 = mask1Digits > 0 ? Number(this.to10(this.mask(mask1Digits))) : 0;
 
     const mask0Count = Math.floor(length / mask0Digits);
 
-    if (mask0Count < 1) {
-      return () => gen(mask1, length, pad);
+    // Build samplers once per generator instance
+    const sample0 = mask0Count > 0 ? makeSecureIntBelow(mask0) : undefined;
+    const sample1 = mask1Digits > 0 ? makeSecureIntBelow(mask1) : undefined;
+
+    const genWith = (sampler: () => number, width: number, p: string) =>
+      this.from10(sampler()).padStart(width, p);
+
+    const genRepeatWith = (n: number, sampler: () => number, width: number, p: string) => {
+      const r: string[] = [];
+      for (let i = 0; i < n; ++i) {
+        r.push(genWith(sampler, width, p));
+      }
+      return r.join('');
+    };
+
+    if (mask0Count < 1 && sample1) {
+      return () => genWith(sample1, length, pad);
     }
-    if (mask1Digits < 1) {
-      return () => genRepeat(mask0Count, mask0, mask0Digits, pad);
+    if (mask1Digits < 1 && sample0) {
+      return () => genRepeatWith(mask0Count, sample0, mask0Digits, pad);
     }
-    return () => `${genRepeat(mask0Count, mask0, mask0Digits, pad)}${gen(mask1, mask1Digits, pad)}`;
+    if (sample0 && sample1) {
+      return () =>
+        `${genRepeatWith(mask0Count, sample0, mask0Digits, pad)}${genWith(sample1, mask1Digits, pad)}`;
+    }
+    // Fallback (should not be reached given validations)
+    return () => '';
   };
 }

@@ -1,5 +1,5 @@
-import { GraphQLResolveInfo } from 'graphql';
-import { Path } from 'graphql/jsutils/Path';
+import type { GraphQLResolveInfo } from 'graphql';
+import type { Path } from 'graphql/jsutils/Path';
 
 /**
  * Turns the "info.path" object into a unique string key.

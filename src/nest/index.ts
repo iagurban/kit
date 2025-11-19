@@ -6,21 +6,6 @@ export {
   TryCurrentUserBase,
 } from './decorators/current-user.decorator-base';
 export {
-  BasicSelectionArgs,
-  collectRecursiveSelectionPair,
-  findGqlNodeByPath,
-  flattenSpreads,
-  GqlASTField,
-  GqlASTFragmentDefinition,
-  GqlASTFragmentSpread,
-  GqlASTInlineFragmentSpread,
-  GqlASTLoc,
-  GqlASTName,
-  GqlASTSelectionSet,
-  GqlContextInfo,
-  unpackSelectArgs,
-} from './decorators/graphql-traverse';
-export {
   getPrismaSelectionFromInfo,
   PrismaSelection,
   prismaSelectionFromGqlExecutionCtx,
@@ -43,4 +28,3 @@ export { KeycloakJwtConfig, keycloakJwtConfigToken, OidcJwtStrategyBase } from '
 export { JwtStrategyBase } from './passport-strategies/jwt-strategy-base';
 export { LocalStrategyBase } from './passport-strategies/local-strategy-base';
 export { ServiceInfo, ServiceInfoModule } from './service-info';
-export { UnauthenticatedError } from './unauthenticated-error';

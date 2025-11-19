@@ -1,5 +1,6 @@
+import { sortedIndexOf } from 'lodash';
+
 import { ProgrammingError } from './errors/programming-error';
-import { binaryStringSearch } from './utils/string-util';
 
 /**
  * Indicates there isn't enough space between keys to perform the requested insertion
@@ -12,7 +13,7 @@ class NoSpaceError extends Error {}
  *
  * **Side effect**: Mutates `actualSorted` and `actualIndex` when rebalance() is called.
  */
-class Balancer {
+export class Balancer {
   leftRebalanced = 0;
   rightRebalanced = 0;
   actualSorted: string[];
@@ -502,7 +503,7 @@ export class ManualSortingAlphabet {
     key: string,
     count: number
   ): { newKeys: string[]; updated: Map<string, string> } {
-    const keyIndex = binaryStringSearch(sorted, key);
+    const keyIndex = sortedIndexOf(sorted, key);
     if (keyIndex === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);
     }
@@ -514,7 +515,7 @@ export class ManualSortingAlphabet {
     key: string,
     count: number
   ): { newKeys: string[]; updated: Map<string, string> } {
-    const index = binaryStringSearch(sorted, key);
+    const index = sortedIndexOf(sorted, key);
     if (index === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);
     }

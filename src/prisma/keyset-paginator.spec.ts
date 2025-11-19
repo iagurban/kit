@@ -1,5 +1,6 @@
 import { notNull } from '../core/flow/not-null';
-import { getModelsMetadataFromString, KeysetPaginatorBuilder } from './keyset-paginator';
+import { KeysetPaginatorBuilder } from './keyset-paginator';
+import { getModelsMetadataFromString } from './models-metadata';
 
 describe('Keyset paginator builder', () => {
   test('single id creation', () => {

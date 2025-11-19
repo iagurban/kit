@@ -50,6 +50,14 @@ const basic2 = {
   sumOfSquares: nn => nn.reduce((acc, x) => acc + x * x, 0),
 } satisfies Record<string, (nn: readonly number[]) => number>;
 
+/**
+ * Aggregation methods for statistical calculations.
+ * This object provides various utility functions to calculate descriptive
+ * statistics, such as measures of central tendency, dispersion, and distribution
+ * characteristics for numerical data sets.
+ *
+ * @type {Object}
+ */
 export const aggregation = {
   ...({
     ...basic,

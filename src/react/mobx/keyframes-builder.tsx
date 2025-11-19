@@ -16,11 +16,26 @@ function stableStringify(obj: unknown): string {
   return `{${entries.join(',')}}`;
 }
 
+/**
+ * The KeyframesBuilder class provides functionality to dynamically create CSS keyframes
+ * and manage them in the document's styles through unique naming and caching mechanisms.
+ * This ensures animations have unique names and are efficiently reused when their steps
+ * are identical, while also cleaning up unused styles.
+ */
 export class KeyframesBuilder {
   private static readonly usedNames = new Set<string>();
 
   private readonly computedCache = new Map<string, IComputedValue<string>>();
 
+  /**
+   * Injects a CSS animation keyframes rule into the DOM and returns a computed value representing the animation name.
+   *
+   * @param {string} label - A descriptive label used for creating a unique animation name.
+   * @param {Record<`${number}%`, CSSProperties>} steps - An object representing the keyframes for the animation.
+   * Each key is a percentage of the animation's duration, and its value is a CSSProperties object defining the styles.
+   * @return {IComputedValue<string>} A computed observable value that holds the name of the created animation.
+   * When the computed value is no longer observed, the animation styles are automatically removed from the DOM.
+   */
   inject(label: string, steps: Record<`${number}%`, CSSProperties>): IComputedValue<string> {
     const key = stableStringify(steps);
     const cached = this.computedCache.get(key);
@@ -67,6 +82,15 @@ export class KeyframesBuilder {
   }
 }
 
+/**
+ * Generates a mapping of percentages to CSS properties, evenly distributing the provided steps.
+ * Optionally completes a cycle by repeating the first step at the end.
+ *
+ * @param {readonly CSSProperties[]} steps - An array of CSS properties representing animation steps.
+ * @param {object} [o] - An options-object.
+ * @param {boolean} [o.cycle] - If true, appends the first step to the end to create a seamless loop.
+ * @return {Record<`${number}%`, CSSProperties>} A record where keys are percentage strings and values are CSS properties.
+ */
 export function enhanceStepsEvenly(
   steps: readonly CSSProperties[],
   o: { cycle?: boolean } = {}
@@ -88,4 +112,10 @@ export function enhanceStepsEvenly(
   return result;
 }
 
+/**
+ * A variable that holds an instance of the KeyframesBuilder class.
+ * The KeyframesBuilder is used to programmatically create CSS keyframes
+ * that define animations for HTML elements. It provides methods for
+ * adding keyframes and managing animations dynamically.
+ */
 export const keyframesBuilder = new KeyframesBuilder();

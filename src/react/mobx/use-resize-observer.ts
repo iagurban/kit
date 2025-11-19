@@ -44,7 +44,17 @@ class GraphNodeViewStore {
   }
 }
 
-export const useResizeObserver = (callback: (e: ResizeObserverEntry) => void) => {
+/**
+ * useResizeObserver is a custom hook that creates a reference to a `GraphNodeViewStore`
+ * instance for handling resize events using a provided callback function.
+ *
+ * @param {function} callback - A function that will be triggered when a resize event occurs.
+ *                              It receives a single parameter of type `ResizeObserverEntry`,
+ *                              which contains details of the resize event.
+ * @returns {GraphNodeViewStore} Returns an instance of `GraphNodeViewStore` that manages
+ *                               the resize observer and its lifecycle.
+ */
+export const useResizeObserver = (callback: (e: ResizeObserverEntry) => void): GraphNodeViewStore => {
   const watchingRef = useRef<GraphNodeViewStore>(undefined);
   watchingRef.current ||= new GraphNodeViewStore();
   watchingRef.current.callback = callback;

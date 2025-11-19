@@ -1,107 +1,14 @@
-import {
-  BlockAttribute,
-  FieldDeclaration,
-  ModelDeclaration,
-  ModelDeclarationMember,
-  parsePrismaSchema,
-} from '@loancrate/prisma-schema-parser';
-
-import { ExMap } from '../core/collections/ex-map';
-import { notNull } from '../core/flow/not-null';
-import { once } from '../core/once';
-
-const isFieldMdm = (m: ModelDeclarationMember): m is FieldDeclaration => m.kind === 'field';
-const isBlockAttributeMdm = (m: ModelDeclarationMember): m is BlockAttribute => m.kind === 'blockAttribute';
-
-class ModelBlockAttribute {
-  constructor(readonly raw: BlockAttribute) {}
-}
-
-class ModelFieldMeta {
-  constructor(readonly raw: FieldDeclaration) {}
-
-  get name() {
-    return this.raw.name.value;
-  }
-
-  @once
-  get attributes() {
-    return this.raw.attributes || [];
-  }
-
-  @once
-  get hasIdAttribute() {
-    return this.attributes.some(a => a.path.value.length === 1 && a.path.value[0] === `id`);
-  }
-}
-
-class ModelMeta {
-  constructor(readonly raw: ModelDeclaration) {}
-
-  @once
-  get fields() {
-    return this.raw.members.filter(isFieldMdm).map(m => new ModelFieldMeta(m));
-  }
-
-  @once
-  get fieldsByName() {
-    return ExMap.mappedBy(this.fields, f => f.name);
-  }
-
-  @once
-  get blockAttributes() {
-    return this.raw.members.filter(isBlockAttributeMdm).map(m => new ModelBlockAttribute(m));
-  }
-
-  @once
-  get idBlockAttribute() {
-    const ba = this.blockAttributes.find(b => b.raw.path.value.length === 1 && b.raw.path.value[0] === `id`);
-    if (!ba) {
-      return null;
-    }
-
-    const args = notNull(ba.raw.args);
-    if (args.length !== 1) {
-      throw new Error(`unsupported schema: @@id is in unknown format`);
-    }
-    const [arg] = args;
-    if (arg.kind !== `array`) {
-      throw new Error(`unsupported schema: @@id is in unknown format`);
-    }
-
-    return arg.items.map(a => {
-      if (a.kind !== `path` || a.value.length !== 1) {
-        throw new Error(`unsupported schema: @@id is in unknown format`);
-      }
-      const [name] = a.value;
-      return notNull(this.fieldsByName.get(name), () => `field ${name} not declared`);
-    });
-  }
-
-  @once
-  get allIdFields() {
-    return [...new Set([...(this.idBlockAttribute || []), ...this.fields.filter(f => f.hasIdAttribute)])];
-  }
-}
-
-export const getModelsMetadataFromString = (s: string) => {
-  const schema = parsePrismaSchema(s);
-
-  const models = new ExMap<string, ModelMeta>();
-
-  for (const d of schema.declarations) {
-    switch (d.kind) {
-      case 'model':
-        models.set(d.name.value, new ModelMeta(d));
-        break;
-    }
-  }
-
-  return { models };
-};
+import { ModelMeta } from './models-metadata';
 
 type OrderFromObject<T> = { [K in keyof T]?: T[K] extends object ? OrderFromObject<T[K]> : 'asc' | 'desc' };
 
+/**
+ * Class representing a builder for generating keyset pagination queries.
+ * This provides methods to construct the necessary SQL-like clauses for
+ * cursor-based pagination, based on the provided entity schema and ordering configuration.
+ *
+ * @template T The type of the paginated items.
+ */
 export class KeysetPaginatorBuilder<T> {
   constructor(
     orders: readonly OrderFromObject<T>[],
@@ -132,6 +39,12 @@ export class KeysetPaginatorBuilder<T> {
 
   readonly orders: readonly OrderFromObject<T>[];
 
+  /**
+   * Generates a "select" clause object representing the fields required for cursor-based pagination
+   * based on the ordering configuration of the current instance.
+   *
+   * @return An object containing the structured fields to be selected for the query.
+   */
   cursorSelectClause() {
     const select = {};
 
@@ -158,6 +71,12 @@ export class KeysetPaginatorBuilder<T> {
     return select;
   }
 
+  /**
+   * Constructs and returns a structured "where" clause object based on the provided cursor and predefined orders.
+   *
+   * @param {T} cursor - The cursor object used to generate comparison values for the "where" clause.
+   * @return A structured object representing the "where" clause containing logical operators and conditions.
+   */
   whereClause(cursor: T) {
     const valueFor = (o: OrderFromObject<T>, isLast: boolean) => {
       const root1 = {};
@@ -195,6 +114,17 @@ export class KeysetPaginatorBuilder<T> {
   }
 }
 
+/**
+ * The `KeySetPaginator` class implements a mechanism for performing efficient
+ * keyset pagination on a data set using a cursor-based approach.
+ *
+ * This class is generic and can be used with any data type `T`.
+ *
+ * @template T The type of the entity being paginated.
+ * @template WhereUniqueInput The type of the input used to uniquely identify a record.
+ * @template WhereInput The type of the input used for filtering a collection.
+ * @template Select The type of the input used for selecting specific fields.
+ */
 export class KeySetPaginator<T, WhereUniqueInput, WhereInput, Select> {
   constructor(
     readonly findUnique: (where: WhereUniqueInput, select: Select) => Promise<T>,
