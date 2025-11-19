@@ -8,7 +8,7 @@ function putJSONToRedisHash(
 options): Promise<void>;
 ```
 
-Defined in: [redis-helpers.ts:107](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/redis/redis-helpers.ts#L107)
+Defined in: [redis-helpers.ts:107](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L107)
 
 Stores a JavaScript object into a Redis Hash key, atomically setting the fields
 and an optional Time-To-Live (TTL) using a pipeline.

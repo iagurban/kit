@@ -1,17 +1,16 @@
 /**
- * Determines if the given object is Promise.
+ * Determines whether the given object is a Promise.
  *
- * This function checks if the provided object is not null or undefined
- * and possesses a `then` property, which is characteristic of Promise objects.
- * It uses type narrowing to assert the object as a Promise of a given type.
- *
- * @template T - The type of the value that the Promise resolves to.
- * @param {unknown} o - The object to be checked.
- * @returns {o is Promise<T>} Returns `true` if the object is a Promise, otherwise `false`.
+ * @template T
+ * @param {unknown} o - The object to test.
+ * @returns {o is Promise<T>} - Returns `true` if the object is a Promise; otherwise, `false`.
  */
-export const isPromise = <T>(o: unknown): o is Promise<T> => {
-  return o != null && (o as { then?: unknown }).then != null;
-};
+export const isPromise = <T>(o: unknown): o is Promise<T> =>
+  o instanceof Promise ||
+  (o != null &&
+    (o as { then?: unknown }).then != null &&
+    (o as { catch?: unknown }).catch != null &&
+    (o as { finally?: unknown }).finally != null);
 
 /**
  * A utility type that extracts the resolved value type of Promise.

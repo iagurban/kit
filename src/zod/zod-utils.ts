@@ -1,4 +1,4 @@
-import { z, ZodType } from 'zod/v4';
+import type { z, ZodType } from 'zod/v4';
 
 /**
  * Determines if a given input conforms to the specified Zod schema.

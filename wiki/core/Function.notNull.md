@@ -4,7 +4,7 @@
 function notNull<T>(o, message?): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/not-null.ts:15](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/flow/not-null.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/not-null.ts:15](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/not-null.ts#L15)
 
 Ensures that the provided value is not null or undefined. If the value is null or undefined,
 an error is thrown based on the specified message or error-generating function.

@@ -58,7 +58,6 @@ export { formatDuration } from './format-duration';
 export { multiRecurringDenier } from './functions/deny-recursion';
 export { denyRecursion } from './functions/deny-recursion';
 export { skipCalls } from './functions/skip-calls';
-export { callableFunctionsQueue, FunctionsQueue } from './functions-queue';
 export type { IBaseLogger, ILogger } from './interfaces/logger-interface';
 export { createContextualLogger } from './interfaces/logger-interface';
 export type { IPubSubSubscriberService } from './interfaces/pubsub-subscriber-service.interface';

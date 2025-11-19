@@ -4,7 +4,7 @@
 function disposers(initializers, onInit?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/disposers.ts:43](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/disposers.ts#L43)
+Defined in: [IdeaProjects/kit/kit/src/core/disposers.ts:43](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/disposers.ts#L43)
 
 Creates a composite disposer function that manages multiple disposable resources.
 Particularly useful for managing MobX reactions and store cleanup in a unified way.

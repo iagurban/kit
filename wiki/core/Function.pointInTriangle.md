@@ -12,7 +12,7 @@ function pointInTriangle(
    y3): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:300](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/geometry.ts#L300)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:300](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/geometry.ts#L300)
 
 Determines if a point is inside a triangle using the area comparison method.
 

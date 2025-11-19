@@ -4,7 +4,7 @@
 function makeMatchingTree(samples): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/code-points-matching-tree.ts:22](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/code-points-matching-tree.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/core/code-points-matching-tree.ts:22](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/code-points-matching-tree.ts#L22)
 
 Constructs a tree structure (matching tree) that maps a set of strings to
 their respective Unicode code points for efficient prefix matching.

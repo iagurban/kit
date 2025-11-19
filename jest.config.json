@@ -8,5 +8,8 @@
       "filename": "report.html",
       "expand": true
     }]
+  ],
+  "testMatch": [
+    "**/*.spec.ts"
   ]
 }

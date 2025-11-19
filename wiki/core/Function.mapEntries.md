@@ -4,7 +4,7 @@
 function mapEntries<K, V, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/collections/object-utils.ts#L54)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/object-utils.ts#L54)
 
 Transforms the entries of an object by applying a mapping function to its values and keys.
 

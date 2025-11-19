@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 import { ExSet } from '../core';
 
@@ -13,6 +13,6 @@ import { ExSet } from '../core';
 export class ObservableExSet<Value> extends ExSet<Value> {
   constructor(pairs?: Iterable<Value>) {
     super(pairs);
-    makeObservable<this, '_s'>(this, { _s: observable });
+    makeObservable<this, '_s'>(this, { _s: observable, add: action, delete: action, clear: action });
   }
 }

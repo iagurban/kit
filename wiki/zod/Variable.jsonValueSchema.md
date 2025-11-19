@@ -4,7 +4,7 @@
 const jsonValueSchema: z.ZodType<JsonValue>;
 ```
 
-Defined in: [json-schema.ts:22](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/zod/json-schema.ts#L22)
+Defined in: [json-schema.ts:22](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/json-schema.ts#L22)
 
 Represents a Zod schema for validating JSON values, supporting recursive structures.
 A JSON value can be a literal (string, number, boolean, or null), an array of JSON values,

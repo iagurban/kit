@@ -7,7 +7,7 @@ function getRedisHashToJSON(
 options): Promise<JsonObject | null>;
 ```
 
-Defined in: [redis-helpers.ts:27](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/redis/redis-helpers.ts#L27)
+Defined in: [redis-helpers.ts:27](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L27)
 
 Retrieves all fields of a Redis Hash, converts the string values back to their
 native JavaScript types using JSON.parse(), and returns the resulting object.

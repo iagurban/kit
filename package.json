@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
@@ -30,7 +30,7 @@
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
   },
   "scripts": {
-    "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -r ./src/helpers/ ./dist/src && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
+    "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -R ./src/helpers/ ./dist/src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/{package,project,tsconfig}.json' -x '../tsconfig.*.json' './dist' && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
     "test": "yarn jest",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
@@ -55,9 +55,10 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^9.38.0",
-    "@grbn/swc-ts": "^0.0.1",
+    "@grbn/swc-ts": "^0.0.2",
     "@mantine/core": "^8.3.6",
     "@nestjs/common": "^11.1.9",
+    "@nestjs/core": "^11.1.9",
     "@nestjs/graphql": "^13.2.0",
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/passport": "^11.0.5",
@@ -65,6 +66,7 @@
     "@swc/core": "1.13.5",
     "@swc/helpers": "^0.5.17",
     "@tabler/icons-react": "^3.35.0",
+    "@testing-library/react": "^16.3.0",
     "@tsd/typescript": "^5.9.3",
     "@types/bcrypt": "^6",
     "@types/express": "^5",
@@ -120,6 +122,7 @@
     "passport-local": "^1.0.0",
     "prettier": "^3.6.2",
     "react": "^19.2.0",
+    "reflect-metadata": "^0.2.2",
     "rimraf": "^6.0.1",
     "rxjs": "^7.8.2",
     "ts-jest": "^29.4.5",

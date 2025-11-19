@@ -4,7 +4,7 @@
 function enhanceStepsEvenly(steps, o?): Record<`${number}%`, CSSProperties>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/react/mobx/keyframes-builder.tsx#L94)
+Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/mobx/keyframes-builder.tsx#L94)
 
 Generates a mapping of percentages to CSS properties, evenly distributing the provided steps.
 Optionally completes a cycle by repeating the first step at the end.

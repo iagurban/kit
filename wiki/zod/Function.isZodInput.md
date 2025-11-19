@@ -4,7 +4,7 @@
 function isZodInput<T>(schema, o): o is input<T>;
 ```
 
-Defined in: [zod-utils.ts:11](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/zod/zod-utils.ts#L11)
+Defined in: [zod-utils.ts:11](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/zod-utils.ts#L11)
 
 Determines if a given input conforms to the specified Zod schema.
 

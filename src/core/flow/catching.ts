@@ -1,19 +1,18 @@
-export function catching<T, C>(fn: () => T, onCatch: () => C): T | C;
-export function catching<T>(fn: () => T, onCatch: () => T): T;
+export function catching<T, C>(fn: () => T, onCatch: (error: unknown) => C): T | C;
+export function catching<T>(fn: () => T, onCatch: (error: unknown) => T): T;
 
 /**
- * Executes a function and, if an exception is thrown, executes a fallback function.
+ * Executes a function and provides a mechanism to handle errors by executing a provided error-handling function.
  *
- * @template T
- * @param {() => T} fn - The function to execute. If it runs without throwing, its result is returned.
- * @param {() => C} onCatch - The fallback function to execute if the first function throws an exception.
- * @return {T | C} Returns the result of the `fn` function if it succeeds, or the result of the `onCatch` function if an exception is caught.
+ * @param {Function} fn - The function to execute, which may throw an error.
+ * @param {Function} onCatch - The error-handling function to execute if an error is thrown. Receives the error as its argument.
+ * @return {T | C} The result of the executed function if no error occurs, or the result of the error-handling function if an error is caught.
  */
-export function catching<T, C>(fn: () => T, onCatch: () => C): T | C {
+export function catching<T, C>(fn: () => T, onCatch: (error: unknown) => C): T | C {
   try {
     return fn();
-  } catch {
-    return onCatch();
+  } catch (error) {
+    return onCatch(error);
   }
 }
 

@@ -47,6 +47,16 @@ export type GqlASTInlineFragmentSpread = {
   loc: GqlASTLoc;
 };
 
+/**
+ * Recursively processes an array of GraphQL AST fields, fragment spreads, and inline fragment spreads,
+ * and returns a flattened array of `GqlASTField` objects.
+ *
+ * @param {readonly (GqlASTField | GqlASTFragmentSpread | GqlASTInlineFragmentSpread)[] | undefined} fields - The array of fields, fragment spreads, and inline fragment spreads to be processed.
+ *     It may be `undefined`.
+ * @param {Record<string, GqlASTFragmentDefinition>} fragments - A map of fragment definitions, keyed by the fragment name.
+ * @returns {GqlASTField[]} A flattened array containing only `GqlASTField` objects from the input fields,
+ *     including those contained within fragment spreads or inline fragments.
+ */
 export const flattenSpreads = (
   fields: readonly (GqlASTField | GqlASTFragmentSpread | GqlASTInlineFragmentSpread)[] | undefined,
   fragments: Record<string, GqlASTFragmentDefinition>
@@ -63,6 +73,18 @@ export const flattenSpreads = (
     : [];
 };
 
+/**
+ * Recursively finds a GraphQL node by traversing a path through a GraphQL Abstract Syntax Tree (AST).
+ *
+ * @param {readonly string[]} path - An array of strings representing the path to the node in the GraphQL AST.
+ *                                   Each string corresponds to a field name to traverse.
+ * @param {GqlASTField} field - The starting field node in the GraphQL AST to begin the traversal.
+ * @param {Record<string, GqlASTFragmentDefinition>} fragments - A mapping of fragment names to their
+ *                                                               corresponding definitions in the GraphQL AST.
+ * @returns {GqlASTField | null} - The GraphQL AST node found at the specified path, or null if the path
+ *                                 does not exist in the AST.
+ * @throws {Error} - Throws an error if the provided path array is empty, as it expects a non-empty path to traverse.
+ */
 export const findGqlNodeByPath = (
   path: readonly string[],
   field: GqlASTField,
@@ -94,6 +116,18 @@ type UnpackedBasicSelectionOptions = {
   getCheckedSubpath: (path: string, f: GqlASTField) => string | undefined;
 };
 
+/**
+ * Processes and unpacks selection arguments for a GraphQL field node, combining
+ * user-provided options with information from the GraphQL query AST.
+ *
+ * @template Add - An additional set of properties that can be extended in the returned object.
+ * @param {BasicSelectionArgs<Add> | undefined} opts - Selection options, which may include a path, skip list, check function, or additional properties.
+ * @param {GqlASTField} fieldNode - The GraphQL AST field node that serves as the starting point for selection.
+ * @param {Record<string, GqlASTFragmentDefinition>} fragments - A mapping of fragment names to their respective GraphQL AST definitions.
+ * @param {string} fieldName - The name of the GraphQL field being processed.
+ * @returns {UnpackedBasicSelectionOptions & Add} Processed selection data, including the root node, path, skip set, and additional methods for subpath checks and extensions.
+ * @throws {Error} If the provided path does not exist within the specified field node or fragments.
+ */
 export const unpackSelectArgs = <Add extends Record<string, unknown>>(
   opts: BasicSelectionArgs<Add> | undefined,
   fieldNode: GqlASTField,
@@ -127,6 +161,7 @@ export type GqlContextInfo = {
   fieldNodes: GqlASTField[];
   fragments: Record<string, GqlASTFragmentDefinition>;
 };
+
 type RecursiveSelectionGaterFunction<R> = (
   fields: readonly (GqlASTField | GqlASTFragmentSpread | GqlASTInlineFragmentSpread)[] | undefined,
   path: string,
@@ -134,13 +169,33 @@ type RecursiveSelectionGaterFunction<R> = (
   fragments: Record<string, GqlASTFragmentDefinition>
 ) => R;
 
+/**
+ * Collects recursive selection pairs based on a GraphQL field and its subpath.
+ *
+ * This function is utilized for traversing and processing a GraphQL Abstract Syntax Tree (AST),
+ * extracting a defined recursive selection pair from the provided field and its substructure.
+ * It invokes a recursive gating function to process nested selections when a valid subpath is available.
+ *
+ * @template T The type parameter associated with the recursive gating function.
+ * @param {string} path The current path in the GraphQL query structure.
+ * @param {GqlASTField} f The current field in the GraphQL AST being processed.
+ * @param {(path: string, f: GqlASTField) => (string | undefined)} getCheckedSubpath
+ * A function that determines the subpath for the current field, returning `undefined` if invalid.
+ * @param {Record<string, GqlASTFragmentDefinition>} fragments
+ * A record of GraphQL fragment definitions used for resolving fragment spreads.
+ * @param {RecursiveSelectionGaterFunction<T>} recur
+ * A recursive function that processes the selection set and returns gated selections.
+ * @returns {readonly [string, T] | undefined}
+ * A tuple containing the field's name and the result of the recursive processing for its selection set,
+ * or `undefined` if no valid subpath is found.
+ */
 export const collectRecursiveSelectionPair = <T>(
   path: string,
   f: GqlASTField,
   getCheckedSubpath: (path: string, f: GqlASTField) => string | undefined,
   fragments: Record<string, GqlASTFragmentDefinition>,
   recur: RecursiveSelectionGaterFunction<T>
-) => {
+): readonly [string, T] | undefined => {
   const subPath = getCheckedSubpath(path, f);
   return subPath
     ? ([f.name.value, recur(f.selectionSet?.selections, subPath, getCheckedSubpath, fragments)] as const)

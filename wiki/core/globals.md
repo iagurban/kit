@@ -3,11 +3,11 @@
 ## Classes
 
 - [Balancer](Class.Balancer.md)
+- [Emitter](Class.Emitter.md)
 - [ExMap](Class.ExMap.md)
 - [ExSet](Class.ExSet.md)
 - [ManualSortingAlphabet](Class.ManualSortingAlphabet.md)
 - [NumberConverter](Class.NumberConverter.md)
-- [Powers](Class.Powers.md)
 - [ProgrammingError](Class.ProgrammingError.md)
 - [PromiseController](Class.PromiseController.md)
 

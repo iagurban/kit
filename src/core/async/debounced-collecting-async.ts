@@ -21,10 +21,10 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
   collect: (o: R | null, ...args: Args) => R,
   fn: (o: R) => Promise<T>
 ): ((...args: Args) => Promise<T>) & { cancel: () => void } => {
-  type Lane = { stamp: unknown; p: Promise<T>; o: R; canceled?: boolean };
+  type Lane = { stamp: unknown; p: Promise<T>; o: R; canceled?: boolean; ready?: boolean };
   const lanes: { executingLane?: Lane; pendingLane?: Lane } = {};
 
-  const emitter = new Emitter<{ cancel: void }>();
+  const emitter = new Emitter<{ cancel: [] }>();
 
   const cancelable = <T>(p: Promise<T>) =>
     new Promise<T>((resolve, reject) => {
@@ -32,45 +32,61 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
       p.then(resolve).catch(reject);
     });
 
-  const goToExecution = (stamp: unknown) => {
-    const { pendingLane } = lanes;
-    if (!pendingLane || pendingLane.stamp !== stamp || lanes.executingLane) {
+  const goToExecution = (l: Lane) => {
+    // There must be no executing lane at this point because we waited for it.
+    if (lanes.executingLane) {
       throw new Error('inconsistency');
     }
-    if (pendingLane.canceled) {
+    if (l.canceled) {
       throw new Error('canceled');
     }
-    lanes.executingLane = pendingLane;
-    lanes.pendingLane = undefined;
+    lanes.executingLane = l;
+    // If the lane we promote is still referenced as pending, clear it;
+    // otherwise leave the current pending lane intact (it belongs to the next batch).
+    if (lanes.pendingLane === l) {
+      lanes.pendingLane = undefined;
+    }
+    // When this lane finishes, clear executing reference.
     lanes.executingLane.p = lanes.executingLane.p.finally(() => {
-      if (lanes.executingLane?.stamp !== stamp) {
+      if (lanes.executingLane && lanes.executingLane !== l) {
+        // Another lane slipped into executing, which should be impossible here.
         throw new Error('inconsistency');
       }
       lanes.executingLane = undefined;
     });
-    return pendingLane;
+    return l;
   };
 
-  const waitForNeedExec = (): Promise<void> =>
+  const waitForNeedExec = (l: Lane): Promise<void> =>
     Promise.all([
       lanes.executingLane?.p.catch(error => {
         console.error(error);
         return null;
       }),
       new Promise<void>(resolve => {
-        emitter.on('cancel', () => {
+        const onCancel = () => {
           clearTimeout(h);
           resolve();
-        });
-        const h = setTimeout(resolve, delay);
+        };
+        emitter.on('cancel', onCancel);
+        const h = setTimeout(() => {
+          // Mark THIS lane as ready: after delay elapses, it should stop collecting
+          // additional arguments; subsequent calls start a new lane.
+          l.ready = true;
+          emitter.off('cancel', onCancel);
+          resolve();
+        }, delay);
       }),
     ]).then(() => undefined);
 
-  const executeFullLane = async (stamp: unknown) => {
-    await cancelable(waitForNeedExec());
+  const executeFullLane = async (l: Lane) => {
+    await cancelable(waitForNeedExec(l));
 
-    const { o, canceled } = goToExecution(stamp);
-    if (!o || canceled) {
+    // After both the delay and any currently executing lane complete,
+    // promote this specific lane to executing and run it.
+    const { o, canceled } = goToExecution(l);
+    // Do not treat falsy "o" as an inconsistency: valid collected values may be 0, '', false, etc.
+    if (canceled) {
       throw new Error('inconsistency');
     }
 
@@ -78,20 +94,28 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
   };
 
   const lane = (...args: Args) => {
-    if (lanes.pendingLane) {
+    if (lanes.pendingLane && !lanes.pendingLane.ready) {
       throw new Error('inconsistency');
     }
-    const stamp = Object.create(null);
-    return (lanes.pendingLane = {
-      stamp,
-      p: executeFullLane(stamp),
+    const l: Lane = {
+      stamp: Object.create(null),
+      // p will be assigned just below to capture this lane
+      // so that later promotion doesn't depend on global pending reference.
+      p: undefined as unknown as Promise<T>,
       o: collect(null, ...args),
-    }).p;
+    };
+    l.p = executeFullLane(l);
+    lanes.pendingLane = l;
+    return l.p;
   };
 
   return Object.assign(
     (...args: Args): Promise<T> => {
       if (lanes.pendingLane) {
+        if (lanes.pendingLane.ready) {
+          // The previous pending lane is already scheduled; start a new one.
+          return lane(...args);
+        }
         lanes.pendingLane.o = collect(lanes.pendingLane.o, ...args);
         return lanes.pendingLane.p;
       }

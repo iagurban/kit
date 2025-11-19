@@ -21,31 +21,34 @@ export const denyRecursion = <T extends AnyAnyFunction>(
   err: string | ((...args: Parameters<T>) => Error | string)
 ): ((...args: Parameters<T>) => BusyGuardResult<T>) => {
   let busy = false;
+  let isAsync: boolean | undefined;
 
   return (...args) => {
     if (busy) {
-      if (typeof err === `string`) {
-        throw new Error(err);
+      const e = typeof err === 'function' ? err(...args) : err;
+      const error = typeof e === 'string' ? new Error(e) : e;
+      if (isAsync) {
+        return Promise.reject(error) as BusyGuardResult<T>;
       }
-      const e = err(...args);
-      throw typeof e === `string` ? new Error(e) : e;
+      throw error;
     }
 
     busy = true;
-    let r: BusyGuardResult<T>;
     try {
-      r = action(...args);
+      const result = action(...args);
+      if (isPromise(result)) {
+        isAsync = true;
+        return result.finally(() => {
+          busy = false;
+        }) as BusyGuardResult<T>;
+      }
+      isAsync = false;
+      busy = false;
+      return result;
     } catch (error) {
       busy = false;
       throw error;
     }
-
-    if (isPromise(r)) {
-      return r.finally(() => void (busy = false));
-    }
-
-    busy = false;
-    return r;
   };
 };
 const busySymbol: unique symbol = Symbol(`multiRecurringDenier.busy`);
@@ -85,6 +88,7 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
   error: (...args: Parameters<Fn>) => string | Error
 ): ((...args: Parameters<Fn>) => ReturnType<Fn>) => {
   const mapping = new Map<K, typeof busySymbol | ReturnType<Fn>>();
+  const asyncMap = new Map<K, boolean>();
 
   return (...args) => {
     const k = key(...args);
@@ -92,7 +96,11 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
     const ready = mapping.get(k);
     if (ready === busySymbol) {
       const e = error(...args);
-      throw typeof e === `string` ? new Error(e) : e;
+      const err = typeof e === `string` ? new Error(e) : e;
+      if (asyncMap.get(k)) {
+        return Promise.reject(err) as ReturnType<Fn>;
+      }
+      throw err;
     }
     if (ready) {
       return ready;
@@ -101,10 +109,28 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
 
     try {
       const ret = fn(...args);
-      mapping.set(k, ret);
+      if (isPromise(ret)) {
+        asyncMap.set(k, true);
+        // eslint-disable-next-line promise/catch-or-return
+        ret.then(
+          (resolved) => {
+            mapping.set(k, resolved as ReturnType<Fn>);
+            return resolved;
+          },
+          (rejection) => {
+            mapping.delete(k);
+            asyncMap.delete(k);
+            throw rejection;
+          }
+        );
+      } else {
+        asyncMap.set(k, false);
+        mapping.set(k, ret);
+      }
       return ret;
     } catch (error) {
       mapping.delete(k);
+      asyncMap.delete(k);
       throw error;
     }
   };

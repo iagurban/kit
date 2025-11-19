@@ -1,6 +1,6 @@
 # Abstract Class: ServerTimestampInterceptorBase\<Intermediate, Result\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:33](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:33](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L33)
 
 Base interceptor class for adding server-side timestamp information to request processing.
 Tracks request timing by adding timestamps at entry and exit points of NestJS request pipeline.
@@ -59,7 +59,7 @@ Final type of the processed response
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -97,7 +97,7 @@ NestInterceptor.intercept
 abstract prepare(t1, data): Intermediate;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:60](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:60](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L60)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -149,7 +149,7 @@ prepare(t1: number, data: Record<string, string>) {
 abstract update(o): Result;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:87](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:87](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L87)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.

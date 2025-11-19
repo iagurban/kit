@@ -9,7 +9,7 @@ function lerpPoint(
    t): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:66](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/geometry.ts#L66)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:66](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/geometry.ts#L66)
 
 Computes a point along a linear interpolation between two points in a 2D space.
 

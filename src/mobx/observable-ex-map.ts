@@ -1,4 +1,4 @@
-import { makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 import { ExMap } from '../core';
 
@@ -24,6 +24,6 @@ import { ExMap } from '../core';
 export class ObservableExMap<Key, Value> extends ExMap<Key, Value> {
   constructor(pairs?: Iterable<[Key, Value]>) {
     super(pairs);
-    makeObservable<this, '_m'>(this, { _m: observable });
+    makeObservable<this, '_m'>(this, { _m: observable, set: action, delete: action, clear: action });
   }
 }
