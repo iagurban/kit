@@ -4,7 +4,7 @@
 const moveAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
 
 Предопределённые паттерны анимации позиции фона
 

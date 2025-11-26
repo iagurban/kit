@@ -6,14 +6,18 @@ import {
   isInteger,
   isNotNull,
   isNotUndefined,
+  isNull,
+  isNullish,
   isNumber,
   isPlainObject,
   isROArray,
+  isSomeObject,
   isSomeOf,
   isString,
   isTruthy,
   isTuple,
   isTuples,
+  isUndefined,
   validator,
   validator0,
 } from './checks';
@@ -74,6 +78,43 @@ describe('Type Checks', () => {
     });
   });
 
+  describe('isUndefined', () => {
+    it('should return true for undefined', () => {
+      expect(isUndefined(undefined)).toBe(true);
+    });
+
+    it('should return false for other values', () => {
+      expect(isUndefined(null)).toBe(false);
+      expect(isUndefined(0)).toBe(false);
+      expect(isUndefined('')).toBe(false);
+    });
+  });
+
+  describe('isNull', () => {
+    it('should return true for null', () => {
+      expect(isNull(null)).toBe(true);
+    });
+
+    it('should return false for other values', () => {
+      expect(isNull(undefined)).toBe(false);
+      expect(isNull(0)).toBe(false);
+      expect(isNull('')).toBe(false);
+    });
+  });
+
+  describe('isNullish', () => {
+    it('should return true for null and undefined', () => {
+      expect(isNullish(null)).toBe(true);
+      expect(isNullish(undefined)).toBe(true);
+    });
+
+    it('should return false for other values', () => {
+      expect(isNullish(0)).toBe(false);
+      expect(isNullish('')).toBe(false);
+      expect(isNullish({})).toBe(false);
+    });
+  });
+
   describe('isString/isNumber/isInteger', () => {
     it('should correctly identify strings', () => {
       expect(isString('')).toBe(true);
@@ -112,6 +153,22 @@ describe('Type Checks', () => {
     });
   });
 
+  describe('isSomeObject', () => {
+    it('should identify objects', () => {
+      expect(isSomeObject({})).toBe(true);
+      expect(isSomeObject({ a: 1 })).toBe(true);
+      class TestClass {}
+      expect(isSomeObject(new TestClass())).toBe(true);
+    });
+
+    it('should reject non-objects', () => {
+      expect(isSomeObject([])).toBe(false);
+      expect(isSomeObject(null)).toBe(false);
+      expect(isSomeObject(undefined)).toBe(false);
+      expect(isSomeObject(123)).toBe(false);
+    });
+  });
+
   describe('isROArray and isArray', () => {
     it('should identify arrays', () => {
       const arr = [1, 2, 3];
@@ -126,6 +183,7 @@ describe('Type Checks', () => {
       expect(isNumberArray([1, 2, 3])).toBe(true);
       expect(isNumberArray([1, '2', 3])).toBe(false);
       expect(isNumberArray([])).toBe(true);
+      expect(isNumberArray({})).toBe(false);
     });
   });
 
@@ -165,6 +223,7 @@ describe('Type Checks', () => {
       expect(isStringNumberTuple(['text', 123])).toBe(true);
       expect(isStringNumberTuple(['text', '123'])).toBe(false);
       expect(isStringNumberTuple(['text'])).toBe(false);
+      expect(isStringNumberTuple({})).toBe(false);
     });
 
     it('should validate arrays of tuples', () => {

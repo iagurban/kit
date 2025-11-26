@@ -111,13 +111,12 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
       const ret = fn(...args);
       if (isPromise(ret)) {
         asyncMap.set(k, true);
-        // eslint-disable-next-line promise/catch-or-return
         ret.then(
-          (resolved) => {
+          resolved => {
             mapping.set(k, resolved as ReturnType<Fn>);
             return resolved;
           },
-          (rejection) => {
+          rejection => {
             mapping.delete(k);
             asyncMap.delete(k);
             throw rejection;

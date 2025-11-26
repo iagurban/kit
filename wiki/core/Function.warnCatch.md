@@ -4,7 +4,7 @@
 function warnCatch(fn): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:50](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/catching.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:50](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/flow/catching.ts#L50)
 
 Executes a provided function and catches any thrown errors, logging them as warnings.
 

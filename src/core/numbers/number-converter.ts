@@ -15,6 +15,9 @@
  */
 import { randomBytes } from 'crypto';
 
+import { isROArray } from '../checks';
+import { once } from '../once';
+
 export class Powers {
   /**
    * Creates a new Powers calculator.
@@ -88,24 +91,35 @@ export class NumberConverter {
   }
 
   /** Gets array of character codes for all digits in order */
-  get digits(): readonly number[] {
-    const r: number[] = [];
-    for (const e of this.parts) {
-      if (Array.isArray(e)) {
+  @once
+  get digits() {
+    const set = [...this.digitsSet];
+    return set.sort((a, b) => a - b);
+  }
+
+  @once
+  get digitsSet(): ReadonlySet<number> {
+    const r = new Set<number>();
+    for (const [idx, e] of this.parts.entries()) {
+      if (isROArray(e)) {
         if (e.length !== 2 || e[0].length !== 1 || e[1].length !== 1) {
-          throw new Error('fskdfjgksj');
+          throw new Error(`parts[${idx}] must be ['a','z'] (to add a range) or 'abc0xyz' (to add by char)`);
         }
-        const [from, to] = Array.from(e).map(s => s.charCodeAt(0));
+        const [from, to] = Array.from(e).map(s => s.codePointAt(0)!);
         if (from > to) {
-          throw new Error('sfldhgsjfgk');
+          throw new Error(`parts[${idx}] 'from' must be <= 'to', got '${from}' > '${to}'`);
         }
-        r.push(...Array.from({ length: to - from + 1 }, (_, i) => from + i));
+        for (let i = 0; i < to - from + 1; ++i) {
+          r.add(from + i);
+        }
       } else {
-        r.push(...Array.from(e).map(s => s.charCodeAt(0)));
+        for (let i = 0; i < e.length; ++i) {
+          r.add(e.codePointAt(i)!);
+        }
       }
     }
-    if (new Set(r).size !== r.length) {
-      throw new Error('duplicates');
+    if (r.size < 2) {
+      throw new Error(`empty digits set`);
     }
     return r;
   }
@@ -117,7 +131,7 @@ export class NumberConverter {
 
   /** Maps each digit's character code to its numeric value in the system */
   get byChar(): Map<number, bigint> {
-    return new Map(this.digits.map((cc, i) => [cc, BigInt(i)] as const));
+    return new Map([...this.digits].map((cc, i) => [cc, BigInt(i)] as const));
   }
 
   /** Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER */

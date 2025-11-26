@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { debouncedCollectingAsync } from './async/debounced-collecting-async';
 export { PromiseController } from './async/promise-controller';
 export type { PromisesRecordValue, PromiseValue } from './async/promise-util';
@@ -40,6 +41,7 @@ export { ExMap } from './collections/ex-map';
 export { ExSet } from './collections/ex-set';
 export { indexed, iterableUtils, iu, reverse, reversed } from './collections/iterable-utils';
 export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './collections/object-utils';
+export { createContextualLogger } from './contextual-logger';
 export type { FunctionDisposable, ObjectDisposable } from './disposers';
 export { disposers } from './disposers';
 export type { Listener } from './emitter';
@@ -57,9 +59,7 @@ export { throwing } from './flow/throwing';
 export { formatDuration } from './format-duration';
 export { multiRecurringDenier } from './functions/deny-recursion';
 export { denyRecursion } from './functions/deny-recursion';
-export { skipCalls } from './functions/skip-calls';
 export type { IBaseLogger, ILogger } from './interfaces/logger-interface';
-export { createContextualLogger } from './interfaces/logger-interface';
 export type { IPubSubSubscriberService } from './interfaces/pubsub-subscriber-service.interface';
 export { createIoCContainer } from './ioc';
 export type {

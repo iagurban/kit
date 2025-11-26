@@ -4,7 +4,7 @@
 function isROArray<A>(a): a is readonly A[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:161](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/checks.ts#L161)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:161](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L161)
 
 Determines if the provided value is a read-only array.
 

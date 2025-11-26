@@ -1,6 +1,6 @@
 # Class: ServiceInfo
 
-Defined in: [IdeaProjects/kit/kit/src/nest/service-info.ts:21](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/service-info.ts#L21)
+Defined in: [IdeaProjects/kit/kit/src/nest/service-info.ts:21](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/service-info.ts#L21)
 
 Represents service information, including its name, optional short name,
 and a uniquely generated client name.

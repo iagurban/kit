@@ -85,6 +85,7 @@
 - [isDefined](Function.isDefined.md)
 - [isInstanceOf](Function.isInstanceOf.md)
 - [isInteger](Function.isInteger.md)
+- [isNodeJSSignal](Function.isNodeJSSignal.md)
 - [isNotNull](Function.isNotNull.md)
 - [isNotUndefined](Function.isNotUndefined.md)
 - [isNull](Function.isNull.md)

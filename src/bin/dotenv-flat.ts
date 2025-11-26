@@ -6,7 +6,7 @@ import * as path from 'path';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
-import { errorToString } from '../core/error-utils';
+import { errorToString } from '../core';
 
 /**
  * Strips matching outer quotes from a string.

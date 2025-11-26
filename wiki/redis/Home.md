@@ -18,7 +18,7 @@
 
 # Class: CachedResource\<T\>
 
-Defined in: [cached-resource.ts:14](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/cached-resource.ts#L14)
+Defined in: [cached-resource.ts:14](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/cached-resource.ts#L14)
 
 A class that manages a cached resource, providing the ability to fetch data,
 subscribe to updates, and handle cleanup when the application shuts down.
@@ -41,7 +41,7 @@ The type of the resource being managed.
 destroy(): Promise<void>;
 ```
 
-Defined in: [cached-resource.ts:107](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/cached-resource.ts#L107)
+Defined in: [cached-resource.ts:107](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/cached-resource.ts#L107)
 
 Cleans up the subscription.
 This should be called from the parent service's `onApplicationShutdown`.
@@ -56,7 +56,7 @@ This should be called from the parent service's `onApplicationShutdown`.
 fetch(force): Promise<T>;
 ```
 
-Defined in: [cached-resource.ts:82](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/cached-resource.ts#L82)
+Defined in: [cached-resource.ts:82](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/cached-resource.ts#L82)
 
 Initiates a fetch operation for retrieving data, returning a cached result unless forced.
 
@@ -78,7 +78,7 @@ A promise that resolves to the fetched data.
 initialize(): Promise<void>;
 ```
 
-Defined in: [cached-resource.ts:56](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/cached-resource.ts#L56)
+Defined in: [cached-resource.ts:56](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/cached-resource.ts#L56)
 
 Initializes the resource by fetching the initial data and subscribing to updates.
 This should be called from the parent service's `onModuleInit`.
@@ -93,7 +93,7 @@ This should be called from the parent service's `onModuleInit`.
 subscribe(onUpdate): () => void;
 ```
 
-Defined in: [cached-resource.ts:69](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/cached-resource.ts#L69)
+Defined in: [cached-resource.ts:69](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/cached-resource.ts#L69)
 
 Subscribes a callback function to be invoked on updates.
 
@@ -118,7 +118,7 @@ A function to unsubscribe the callback.
 
 # Class: RedisPubsubSubscription
 
-Defined in: [redis-pubsub-subscription.ts:16](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-pubsub-subscription.ts#L16)
+Defined in: [redis-pubsub-subscription.ts:16](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-pubsub-subscription.ts#L16)
 
 This class represents a Redis pub/sub subscription handler. It manages subscribing,
 unsubscribing, and handling messages from a specific Redis channel. The class ensures
@@ -136,7 +136,7 @@ new RedisPubsubSubscription(
    handlers): RedisPubsubSubscription;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:33](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-pubsub-subscription.ts#L33)
+Defined in: [redis-pubsub-subscription.ts:33](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-pubsub-subscription.ts#L33)
 
 Constructor for creating an instance of a subscription handler.
 
@@ -193,7 +193,7 @@ Callback invoked when successfully subscribed to the channel.
 activate(): Promise<void>;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:163](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-pubsub-subscription.ts#L163)
+Defined in: [redis-pubsub-subscription.ts:163](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-pubsub-subscription.ts#L163)
 
 Activates the current instance by setting it to active and establishing necessary subscriptions.
 Ensures the instance is not already active before proceeding. Upon activation, it sets up message
@@ -211,7 +211,7 @@ A promise that resolves once the activation logic has completed.
 deactivate(): Promise<void>;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:180](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-pubsub-subscription.ts#L180)
+Defined in: [redis-pubsub-subscription.ts:180](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-pubsub-subscription.ts#L180)
 
 Deactivates the current subscriber instance if it is active.
 This method unsubscribes from the specified channel and cleans up resources.
@@ -230,7 +230,7 @@ function getRedisHashToJSON(
 options): Promise<JsonObject | null>;
 ```
 
-Defined in: [redis-helpers.ts:27](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L27)
+Defined in: [redis-helpers.ts:27](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-helpers.ts#L27)
 
 Retrieves all fields of a Redis Hash, converts the string values back to their
 native JavaScript types using JSON.parse(), and returns the resulting object.
@@ -270,7 +270,7 @@ function putJSONToRedisHash(
 options): Promise<void>;
 ```
 
-Defined in: [redis-helpers.ts:107](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L107)
+Defined in: [redis-helpers.ts:107](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-helpers.ts#L107)
 
 Stores a JavaScript object into a Redis Hash key, atomically setting the fields
 and an optional Time-To-Live (TTL) using a pipeline.
@@ -306,7 +306,7 @@ Optional configuration, including TTL (in seconds).
 function stringifyJsObjectToRedisHash(data): Record<string, string>;
 ```
 
-Defined in: [redis-helpers.ts:87](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L87)
+Defined in: [redis-helpers.ts:87](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-helpers.ts#L87)
 
 Prepares a JavaScript object for consistent storage in a Redis Hash.
 All field values are individually JSON.stringified to preserve type information.
@@ -330,7 +330,7 @@ A Record<string, string> where all values are JSON strings.
 type RedisHashOptions = object;
 ```
 
-Defined in: [redis-helpers.ts:8](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L8)
+Defined in: [redis-helpers.ts:8](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-helpers.ts#L8)
 
 Options for Redis Hash conversion.
 
@@ -342,7 +342,7 @@ Options for Redis Hash conversion.
 optional fallback: (stringValue, field, error) => JsonValue;
 ```
 
-Defined in: [redis-helpers.ts:13](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/redis/redis-helpers.ts#L13)
+Defined in: [redis-helpers.ts:13](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/redis/redis-helpers.ts#L13)
 
 Optional function to handle string values that fail JSON.parse.
 Accepts the problematic string value and must return a JsonValue.

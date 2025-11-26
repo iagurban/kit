@@ -67,6 +67,7 @@ export type NotNullish<T> = Exclude<T, Nullish>;
  * @returns A union type of the required keys of `T`.
  */
 export type RequiredKeys<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   [K in keyof T]: {} extends { [P in K]: T[K] } ? never : K;
 }[keyof T];
 

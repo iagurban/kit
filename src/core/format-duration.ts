@@ -11,7 +11,13 @@
  *                   where X represents seconds and XXX represents milliseconds.
  */
 export const formatDuration = (durationInMs: number): string => {
-  const seconds = Math.floor(durationInMs / 1000);
-  const milliseconds = durationInMs % 1000;
-  return `${seconds}.${String(milliseconds).padStart(3, '0')}s`;
+  const isNegative = durationInMs < 0;
+  const absDuration = Math.abs(durationInMs);
+
+  const seconds = Math.floor(absDuration / 1000);
+  const milliseconds = absDuration % 1000;
+
+  const formatted = `${seconds}.${String(milliseconds).padStart(3, '0')}s`;
+
+  return isNegative ? `-${formatted}` : formatted;
 };

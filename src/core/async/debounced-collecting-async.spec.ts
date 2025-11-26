@@ -49,8 +49,8 @@ describe('debouncedCollectingAsync', () => {
   });
 
   it('should handle multiple arguments correctly', async () => {
-    const collectMock = jest.fn((acc: number | null, ...args: number[]) =>
-      (acc ?? 0) + args.reduce((sum, num) => sum + num, 0)
+    const collectMock = jest.fn(
+      (acc: number | null, ...args: number[]) => (acc ?? 0) + args.reduce((sum, num) => sum + num, 0)
     );
     const asyncMock = jest.fn(async (sum: number) => sum * 2);
     const debounce = debouncedCollectingAsync(100, collectMock, asyncMock);

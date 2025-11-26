@@ -1,6 +1,6 @@
 # Class: NumberConverter
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:76](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L76)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:79](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L79)
 
 Converts numbers between decimal and a custom number system with configurable digit symbols.
 Supports random number generation and fixed-width formatting in the custom system.
@@ -32,7 +32,7 @@ console.log(base36.random(5)); // Random 5-char string
 new NumberConverter(parts): NumberConverter;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:83](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:86](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L86)
 
 Creates a number converter with the specified digit mappings.
 
@@ -60,7 +60,7 @@ If there are duplicate characters in the mappings
 readonly fixedWidthRandomGenerator: (length) => () => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:211](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L211)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:225](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L225)
 
 Creates a function that generates fixed-width random numbers efficiently.
 
@@ -96,7 +96,7 @@ If length is not a positive integer
 readonly from10: (input) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:135](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L135)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:149](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L149)
 
 Converts a decimal number to this number system.
 
@@ -126,7 +126,7 @@ If input is floating point, negative, or base is 10
 readonly mask: (length) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:183](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L183)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:197](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L197)
 
 Creates a string of specified length using the maximum digit value.
 
@@ -152,7 +152,7 @@ String of specified length filled with max digit
 readonly parts: readonly (string | readonly [string, string])[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:83](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:86](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L86)
 
 Array of single characters or [start,end] character ranges defining the digits
 
@@ -164,7 +164,7 @@ Array of single characters or [start,end] character ranges defining the digits
 readonly random: (length) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:195](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L195)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:209](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L209)
 
 Generates a random number string of specified length.
 
@@ -194,7 +194,7 @@ If length is not a positive integer
 readonly to10: (n) => bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:164](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L164)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:178](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L178)
 
 Converts a number from this system to decimal.
 
@@ -226,7 +226,7 @@ If string contains invalid digits
 get base(): bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:86](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L86)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:89](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L89)
 
 Gets the numeric base of this number system (total count of unique digits)
 
@@ -244,7 +244,7 @@ Gets the numeric base of this number system (total count of unique digits)
 get byChar(): Map<number, bigint>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:119](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L119)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:133](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L133)
 
 Maps each digit's character code to its numeric value in the system
 
@@ -259,16 +259,16 @@ Maps each digit's character code to its numeric value in the system
 #### Get Signature
 
 ```ts
-get digits(): readonly number[];
+get digits(): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:91](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L91)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:95](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L95)
 
 Gets array of character codes for all digits in order
 
 ##### Returns
 
-readonly `number`[]
+`number`[]
 
 ***
 
@@ -280,7 +280,7 @@ readonly `number`[]
 get maxSafeDigits(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:124](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L124)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:138](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L138)
 
 Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER
 
@@ -298,7 +298,7 @@ Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER
 get powers(): Powers;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:114](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/number-converter.ts#L114)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:128](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-converter.ts#L128)
 
 Gets the Powers calculator for this number system's base
 

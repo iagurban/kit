@@ -4,7 +4,7 @@
 function denyRecursion<T>(action, err): (...args) => BusyGuardResult<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:19](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/functions/deny-recursion.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:19](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/functions/deny-recursion.ts#L19)
 
 Prevents recursive execution of a given function by ensuring that the function cannot be called again
 while it is already running. If an attempt is made to call the function recursively, an error will be thrown.

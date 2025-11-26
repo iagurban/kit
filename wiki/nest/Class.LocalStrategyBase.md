@@ -1,6 +1,6 @@
 # Abstract Class: LocalStrategyBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:36](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/passport-strategies/local-strategy-base.ts#L36)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:36](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/passport-strategies/local-strategy-base.ts#L36)
 
 Base class for implementing Passport Local authentication strategy in NestJS applications.
 Provides username/password authentication integration with Passport.js.
@@ -201,7 +201,7 @@ PassportStrategy(Strategy).fail
 abstract getAuthService(): AuthServiceBase<User, CurrentUserJwtPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:49](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/passport-strategies/local-strategy-base.ts#L49)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:49](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/passport-strategies/local-strategy-base.ts#L49)
 
 Abstract method that must return an authentication service instance.
 The service must extend AuthServiceBase and implement user validation logic.

@@ -4,7 +4,7 @@
 function findNodeOfType<T>(n, nodeName): T | null;
 ```
 
-Defined in: [html.ts:9](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/html.ts#L9)
+Defined in: [html.ts:9](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/react/html.ts#L9)
 
 Recursively searches for a node of the specified type within a given element's descendants.
 

@@ -4,7 +4,7 @@
 function uidGenerator(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/uid-generator.ts:78](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/uid-generator.ts#L78)
+Defined in: [IdeaProjects/kit/kit/src/core/uid-generator.ts:78](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/uid-generator.ts#L78)
 
 Generates a compact, UUIDv4-like identifier using Base62 characters — shorter and prettier.
 

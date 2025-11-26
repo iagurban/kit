@@ -15,7 +15,7 @@
 
 # Class: KeySetPaginator\<T, WhereUniqueInput, WhereInput, Select\>
 
-Defined in: [keyset-paginator.ts:128](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/keyset-paginator.ts#L128)
+Defined in: [keyset-paginator.ts:128](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/keyset-paginator.ts#L128)
 
 The `KeySetPaginator` class implements a mechanism for performing efficient
 keyset pagination on a data set using a cursor-based approach.
@@ -43,7 +43,7 @@ The type of the input used for selecting specific fields.
 
 # Class: KeysetPaginatorBuilder\<T\>
 
-Defined in: [keyset-paginator.ts:12](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/keyset-paginator.ts#L12)
+Defined in: [keyset-paginator.ts:12](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/keyset-paginator.ts#L12)
 
 Class representing a builder for generating keyset pagination queries.
 This provides methods to construct the necessary SQL-like clauses for
@@ -63,7 +63,7 @@ The type of the paginated items.
 cursorSelectClause(): object;
 ```
 
-Defined in: [keyset-paginator.ts:48](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/keyset-paginator.ts#L48)
+Defined in: [keyset-paginator.ts:48](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/keyset-paginator.ts#L48)
 
 Generates a "select" clause object representing the fields required for cursor-based pagination
 based on the ordering configuration of the current instance.
@@ -80,7 +80,7 @@ An object containing the structured fields to be selected for the query.
 whereClause(cursor): object;
 ```
 
-Defined in: [keyset-paginator.ts:80](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/keyset-paginator.ts#L80)
+Defined in: [keyset-paginator.ts:80](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/keyset-paginator.ts#L80)
 
 Constructs and returns a structured "where" clause object based on the provided cursor and predefined orders.
 
@@ -103,7 +103,7 @@ OR: object[] = ands;
 
 # Class: ModelBlockAttribute
 
-Defined in: [models-metadata.ts:18](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L18)
+Defined in: [models-metadata.ts:18](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L18)
 
 Represents a model block attribute wrapper that allows handling
 attributes of a block within a model construct.
@@ -111,7 +111,7 @@ attributes of a block within a model construct.
 
 # Class: ModelFieldMeta
 
-Defined in: [models-metadata.ts:25](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L25)
+Defined in: [models-metadata.ts:25](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L25)
 
 Represents metadata about a model field, including its name and associated attributes.
 
@@ -125,7 +125,7 @@ Represents metadata about a model field, including its name and associated attri
 get attributes(): FieldAttribute[];
 ```
 
-Defined in: [models-metadata.ts:44](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L44)
+Defined in: [models-metadata.ts:44](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L44)
 
 Retrieves the attributes of the current object. If no attributes are available, returns an empty array.
 Decorated with
@@ -148,7 +148,7 @@ The list of attributes for the current object, or an empty array if no attribute
 get hasIdAttribute(): boolean;
 ```
 
-Defined in: [models-metadata.ts:54](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L54)
+Defined in: [models-metadata.ts:54](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L54)
 
 Checks if the attributes contain an `id` attribute.
 
@@ -166,7 +166,7 @@ True if the attributes include an `id` attribute, otherwise false.
 get name(): string;
 ```
 
-Defined in: [models-metadata.ts:33](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L33)
+Defined in: [models-metadata.ts:33](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L33)
 
 Retrieves the name value from the raw object property.
 
@@ -177,7 +177,7 @@ The name value.
 
 # Class: ModelMeta
 
-Defined in: [models-metadata.ts:63](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L63)
+Defined in: [models-metadata.ts:63](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L63)
 
 Represents metadata for a model declaration which provides information about fields,
 block attributes, and identification attributes in the model schema.
@@ -192,7 +192,7 @@ block attributes, and identification attributes in the model schema.
 get allIdFields(): ModelFieldMeta[];
 ```
 
-Defined in: [models-metadata.ts:143](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L143)
+Defined in: [models-metadata.ts:143](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L143)
 
 Retrieves all fields or attributes marked as ID within the current object.
 Combines ID fields from `idBlockAttribute` and fields containing the `hasIdAttribute` property.
@@ -213,7 +213,7 @@ A unique array of all fields or attributes identified as ID within the object.
 get blockAttributes(): ModelBlockAttribute[];
 ```
 
-Defined in: [models-metadata.ts:96](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L96)
+Defined in: [models-metadata.ts:96](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L96)
 
 Retrieves a list of block attributes from the raw members.
 Filters the members to include only those identified as block attributes
@@ -235,7 +235,7 @@ An array of ModelBlockAttribute instances extracted from the raw members.
 get fields(): ModelFieldMeta[];
 ```
 
-Defined in: [models-metadata.ts:74](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L74)
+Defined in: [models-metadata.ts:74](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L74)
 
 Retrieves the list of field metadata for the model.
 The method filters the raw member data to identify valid field metadata
@@ -257,7 +257,7 @@ An array of ModelFieldMeta instances representing the fields.
 get fieldsByName(): ExMap<string, ModelFieldMeta>;
 ```
 
-Defined in: [models-metadata.ts:84](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L84)
+Defined in: [models-metadata.ts:84](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L84)
 
 Retrieves a mapping of fields by their names.
 
@@ -275,7 +275,7 @@ A map where each key is a field name and its corresponding value is the field ob
 get idBlockAttribute(): ModelFieldMeta[] | null;
 ```
 
-Defined in: [models-metadata.ts:112](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L112)
+Defined in: [models-metadata.ts:112](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L112)
 
 Retrieves the block attribute related to the `id` for the corresponding schema.
 
@@ -298,7 +298,7 @@ An array of fields corresponding to the `id` block attribute if
 function getModelsMetadataFromString(s): object;
 ```
 
-Defined in: [models-metadata.ts:158](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/prisma/models-metadata.ts#L158)
+Defined in: [models-metadata.ts:158](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L158)
 
 Parses a Prisma schema string and extracts metadata information for all model declarations.
 

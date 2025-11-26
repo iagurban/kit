@@ -1,50 +1,50 @@
 import { NumberConverter, Powers } from './number-converter';
 
-describe('Powers', () => {
-  describe('constructor and initialization', () => {
-    test('should properly initialize and handle different base values', () => {
-      // Base cases
-      const base2 = new Powers(2n);
-      expect(base2.base).toBe(2n);
-      expect(base2.get(0)).toBe(1n);
-      expect(base2.get(1)).toBe(2n);
-
-      const base16 = new Powers(16n);
-      expect(base16.base).toBe(16n);
-      expect(base16.get(0)).toBe(1n);
-      expect(base16.get(1)).toBe(16n);
-      expect(base16.get(2)).toBe(256n);
-
-      // Large base
-      const base1000 = new Powers(1000n);
-      expect(base1000.get(3)).toBe(1000000000n);
-    });
-
-    test('should throw on invalid base values', () => {
-      expect(() => new Powers(0n)).toThrow('mapping length must be > 1');
-      expect(() => new Powers(1n)).toThrow('mapping length must be > 1');
-      expect(() => new Powers(-5n)).toThrow('mapping length must be > 1');
-    });
-  });
-
-  test('should compute and cache powers correctly', () => {
-    const powers = new Powers(3n);
-    // Test sequential access
-    expect(powers.get(0)).toBe(1n);
-    expect(powers.get(1)).toBe(3n);
-    expect(powers.get(2)).toBe(9n);
-    expect(powers.get(3)).toBe(27n);
-
-    // Test random access (should use cache)
-    expect(powers.get(2)).toBe(9n);
-    expect(powers.get(1)).toBe(3n);
-
-    // Test jumping to higher power (should compute intermediate values)
-    expect(powers.get(5)).toBe(243n);
-  });
-});
-
 describe('NumberConverter', () => {
+  describe('Powers', () => {
+    describe('constructor and initialization', () => {
+      test('should properly initialize and handle different base values', () => {
+        // Base cases
+        const base2 = new Powers(2n);
+        expect(base2.base).toBe(2n);
+        expect(base2.get(0)).toBe(1n);
+        expect(base2.get(1)).toBe(2n);
+
+        const base16 = new Powers(16n);
+        expect(base16.base).toBe(16n);
+        expect(base16.get(0)).toBe(1n);
+        expect(base16.get(1)).toBe(16n);
+        expect(base16.get(2)).toBe(256n);
+
+        // Large base
+        const base1000 = new Powers(1000n);
+        expect(base1000.get(3)).toBe(1000000000n);
+      });
+
+      test('should throw on invalid base values', () => {
+        expect(() => new Powers(0n)).toThrow('mapping length must be > 1');
+        expect(() => new Powers(1n)).toThrow('mapping length must be > 1');
+        expect(() => new Powers(-5n)).toThrow('mapping length must be > 1');
+      });
+    });
+
+    test('should compute and cache powers correctly', () => {
+      const powers = new Powers(3n);
+      // Test sequential access
+      expect(powers.get(0)).toBe(1n);
+      expect(powers.get(1)).toBe(3n);
+      expect(powers.get(2)).toBe(9n);
+      expect(powers.get(3)).toBe(27n);
+
+      // Test random access (should use cache)
+      expect(powers.get(2)).toBe(9n);
+      expect(powers.get(1)).toBe(3n);
+
+      // Test jumping to higher power (should compute intermediate values)
+      expect(powers.get(5)).toBe(243n);
+    });
+  });
+
   describe('constructor and basic properties', () => {
     test('should handle various digit mappings and compute properties correctly', () => {
       const hex = new NumberConverter([
@@ -67,10 +67,6 @@ describe('NumberConverter', () => {
     test('should validate input ranges and throw on invalid configurations', () => {
       // Invalid range (end before start)
       expect(() => new NumberConverter([['9', '0']]).digits).toThrow();
-
-      // Duplicate characters
-      expect(() => new NumberConverter(['a', 'a']).digits).toThrow();
-      expect(() => new NumberConverter([['a', 'c'], 'b']).digits).toThrow();
 
       // Invalid range format
       expect(

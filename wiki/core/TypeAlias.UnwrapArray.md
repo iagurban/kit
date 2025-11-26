@@ -4,7 +4,7 @@
 type UnwrapArray<T> = T extends infer R[] ? R : T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:92](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/types.ts#L92)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:93](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/types.ts#L93)
 
 A utility type that extracts the type of elements from an array type.
 If the provided type is an array type, it returns the type of its elements.

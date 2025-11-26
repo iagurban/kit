@@ -5,8 +5,7 @@ import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-import { checked, isROArray, isString } from '../core/checks';
-import { JsonObject } from '../core/json/json-type';
+import { checked, isROArray, isString, JsonObject } from '../core';
 
 /**
  * Parses an array of JSON strings and merges them into a single object.

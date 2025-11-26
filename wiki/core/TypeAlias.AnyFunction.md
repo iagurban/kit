@@ -4,7 +4,7 @@
 type AnyFunction<R> = (...a) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:150](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/types.ts#L150)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:151](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/types.ts#L151)
 
 Represents a type for any function. It can accept any number of arguments of any type and return a value of a specified type.
 

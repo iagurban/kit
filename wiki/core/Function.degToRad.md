@@ -4,7 +4,7 @@
 function degToRad(deg): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:323](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/geometry.ts#L323)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:323](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/geometry.ts#L323)
 
 Converts an angle from degrees to radians.
 

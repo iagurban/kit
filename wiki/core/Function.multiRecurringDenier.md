@@ -7,7 +7,7 @@ function multiRecurringDenier<Fn, K>(
 error): (...args) => ReturnType<Fn>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:85](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/functions/deny-recursion.ts#L85)
+Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:85](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/functions/deny-recursion.ts#L85)
 
 A higher-order function that wraps a given function to prevent
 multiple concurrent invocations with the same key. This utility

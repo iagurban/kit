@@ -1,6 +1,6 @@
 # Class: KeyframesBuilder
 
-Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/mobx/keyframes-builder.tsx#L25)
+Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/react/mobx/keyframes-builder.tsx#L25)
 
 The KeyframesBuilder class provides functionality to dynamically create CSS keyframes
 and manage them in the document's styles through unique naming and caching mechanisms.
@@ -15,7 +15,7 @@ are identical, while also cleaning up unused styles.
 inject(label, steps): IComputedValue<string>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/mobx/keyframes-builder.tsx#L39)
+Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/react/mobx/keyframes-builder.tsx#L39)
 
 Injects a CSS animation keyframes rule into the DOM and returns a computed value representing the animation name.
 

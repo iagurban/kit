@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export { ObservableExMap } from './observable-ex-map';
 export { ObservableExSet } from './observable-ex-set';
 export { observerWithForwardRef } from './observer-with-forward-ref';

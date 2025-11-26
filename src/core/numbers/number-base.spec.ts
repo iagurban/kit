@@ -24,7 +24,7 @@ describe('NumberBase', () => {
     const testCases = [
       { base: 2, num: 42n, str: '101010' },
       { base: 16, num: 255n, str: 'ff' },
-      { base: 62, num: 1000n, str: 'g8' },
+      { base: 62, num: 1000n, str: 'G8' },
     ] as const;
 
     test.each(testCases)(

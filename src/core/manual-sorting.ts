@@ -1,6 +1,9 @@
 import { sortedIndexOf } from 'lodash';
 
 import { ProgrammingError } from './errors/programming-error';
+import { notNull } from './flow/not-null';
+import { NumberBase } from './numbers/number-base';
+import { NumberConverter } from './numbers/number-converter';
 
 /**
  * Indicates there isn't enough space between keys to perform the requested insertion
@@ -56,19 +59,19 @@ export class Balancer {
       throw new ProgrammingError('Window growth must affect at least one side');
     }
 
-    const nextLeft = this.leftRebalanced + delta.left;
-    const nextRight = this.rightRebalanced + delta.right;
-
     const maxLeft = this.keyIndex;
     const maxRight = this.originalSorted.length - this.keyIndex - 1;
 
-    if (nextLeft > maxLeft && nextRight > maxRight) {
+    const newLeft = Math.min(this.leftRebalanced + delta.left, maxLeft);
+    const newRight = Math.min(this.rightRebalanced + delta.right, maxRight);
+
+    if (newLeft === this.leftRebalanced && newRight === this.rightRebalanced) {
       throw new ProgrammingError('Balance window exhausted — insertAfter cycle is broken');
     }
 
     return {
-      leftRebalanced: Math.min(nextLeft, maxLeft),
-      rightRebalanced: Math.min(nextRight, maxRight),
+      leftRebalanced: newLeft,
+      rightRebalanced: newRight,
     };
   }
 
@@ -103,14 +106,18 @@ export class Balancer {
  *                               'right-of-mid' - Places new keys evenly from the middle to right
  */
 type ManualSortingAlphabetOptions = Readonly<{
-  fromCodePoint: number;
-  toCodePoint: number;
+  converter: NumberConverter;
 
   extendWindow?: (b: Balancer) => {
     readonly left: number;
     readonly right: number;
   };
   prependingStrategy?: 'evenly' | 'right-of-mid';
+}>;
+
+export type Changes = Readonly<{
+  updated: Map<string, string>;
+  inserted: string[];
 }>;
 
 /**
@@ -123,26 +130,25 @@ type ManualSortingAlphabetOptions = Readonly<{
  *
  * @example
  * ```typescript
- * const alphabet = new ManualSortingAlphabet(65, 90); // A-Z range
+ * const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 }); // A-Z, a-z, 0-9
  * const firstKey = alphabet.getFirstKey(); // Returns middle character
  * const result = alphabet.insertAfter(['B', 'D'], 'B', 2); // Insert 2 keys after 'B'
  *
  * // Basic usage - inserting between existing keys
- * const alphabet = new ManualSortingAlphabet(65, 90);
- * const { newKeys } = alphabet.insertAfter(['B', 'D'], 'B', 1);
- * // newKeys might contain ['C']
+ * const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 });
+ * const { inserted } = alphabet.insertAfter(['B', 'D'], 'B', 1);
+ * // inserted might contain ['C']
  *
  * // Handling rebalancing
- * const { newKeys, updated } = alphabet.insertAfter(['B', 'C'], 'B', 2);
+ * const { inserted, updated } = alphabet.insertAfter(['B', 'C'], 'B', 2);
  * // updated might contain new values for 'C' to make room
  *
  * // Custom window extension strategy
- * const alphabet = new ManualSortingAlphabet(65, 90, {
+ * const alphabet = new ManualSortingAlphabet({
+ *   converter: NumberBase.b62,
  *   extendWindow: (b) => ({ left: 2, right: 2 })
  * });
  * ```
- *
- * @throws {Error} If fromCodePoint or toCodePoint are invalid
  */
 export class ManualSortingAlphabet {
   /**
@@ -164,10 +170,7 @@ export class ManualSortingAlphabet {
      * - ✅ PostgreSQL binary order safe
      * - ⚠️ Can require frequent rebalance in long-term dense lists
      */
-    asciiFriendly: {
-      fromCodePoint: 0x30, // '0'
-      toCodePoint: 0x7a, // 'z'
-    },
+    asciiFriendly: NumberBase.b62,
 
     /**
      * Invisible and rarely-used symbols from Unicode ranges.
@@ -177,10 +180,7 @@ export class ManualSortingAlphabet {
      * - ✅ UTF-8 and PostgreSQL-safe
      * - ❌ Not human-friendly
      */
-    invisibleUnicode: {
-      fromCodePoint: 0x2000, // EN QUAD (invisible space)
-      toCodePoint: 0x2fff, // IDEOGRAPHIC DESCRIPTION CHARACTER
-    },
+    invisibleUnicode: new NumberConverter([['\u2000', '\u2fff']]),
 
     /**
      * Very wide range using CJK unified ideographs.
@@ -190,44 +190,46 @@ export class ManualSortingAlphabet {
      * - ✅ JS/PostgreSQL binary order works
      * - ⚠️ Keys may appear unreadable or wide in editors
      */
-    wideCJK: {
-      fromCodePoint: 0x3000, // IDEOGRAPHIC SPACE
-      toCodePoint: 0x9fff, // End of common CJK block
-    },
-  } as const satisfies Record<string, Pick<ManualSortingAlphabetOptions, 'fromCodePoint' | 'toCodePoint'>>;
+    wideCJK: new NumberConverter([['\u3000', '\u9fff']]),
+  } as const satisfies Record<string, NumberConverter>;
 
   /**
    * Creates a new ManualSortingAlphabet instance.
    *
-   * @param fromCodePoint - The lower bound code point of the alphabet range (inclusive)
-   * @param toCodePoint - The upper bound code point of the alphabet range (inclusive)
    * @param options - Configuration options
    */
-  constructor(private readonly options: ManualSortingAlphabetOptions) {
-    if (options.fromCodePoint < 0 || options.toCodePoint < 0 || options.fromCodePoint > options.toCodePoint) {
-      throw new Error('Invalid alphabet range');
-    }
-    this.size = options.toCodePoint - options.fromCodePoint + 1;
-  }
-
-  readonly size: number;
+  constructor(public readonly options: ManualSortingAlphabetOptions) {}
 
   /**
    * Checks if a code point is within the configured alphabet range.
    */
   protected isValidCodePoint(code: number): boolean {
-    return code >= this.options.fromCodePoint && code <= this.options.toCodePoint;
+    return this.options.converter.digitsSet.has(code);
   }
 
   /**
    * Returns a middle code point between two valid code points.
+   * The first code point can be undefined (supposed value === 0).
+   * Can return undefined if no point can be calculated (when a=undefined and b=digits[0]).
+   *
    * Throws if either point is outside the alphabet range.
    */
-  protected getMiddleCodePoint(a: number, b: number): number {
-    if (!this.isValidCodePoint(a) || !this.isValidCodePoint(b)) {
-      throw new RangeError('Code point out of alphabet range');
+  protected getMiddleCodePoint(a: number | undefined, b: number): number | undefined {
+    if (!this.isValidCodePoint(b)) {
+      throw new RangeError('Code point "b" is out of alphabet range');
     }
-    return Math.floor((a + b) / 2);
+
+    const bIndex = this.options.converter.byChar.get(b)!;
+    if (a === undefined) {
+      return bIndex >= 1n ? this.options.converter.digits[Math.floor(Number(bIndex / 2n))] : undefined;
+    }
+
+    if (!this.isValidCodePoint(a)) {
+      throw new RangeError('Code point "a" is out of alphabet range');
+    }
+    const aIndex = this.options.converter.byChar.get(a)!;
+    const midIndex = (aIndex + bIndex) / 2n;
+    return this.options.converter.digits[Number(midIndex)]!;
   }
 
   /**
@@ -237,10 +239,8 @@ export class ManualSortingAlphabet {
     sorted: readonly string[],
     inserted: readonly string[],
     keyIndex: number,
-    balancing: Balancer
-  ): { newKeys: string[]; updated: Map<string, string> } {
-    const { leftRebalanced, rightRebalanced } = balancing;
-
+    { leftRebalanced, rightRebalanced }: { leftRebalanced: number; rightRebalanced: number }
+  ): Changes {
     const leftOld = sorted.slice(keyIndex - leftRebalanced, keyIndex);
     const rightOld = sorted.slice(keyIndex + 1, keyIndex + 1 + rightRebalanced);
 
@@ -256,7 +256,7 @@ export class ManualSortingAlphabet {
       updated.set(element, rightNew[i]);
     }
 
-    return { newKeys, updated };
+    return { inserted: newKeys, updated };
   }
 
   /**
@@ -264,20 +264,34 @@ export class ManualSortingAlphabet {
    * Uses code points to compute midpoint recursively.
    */
   protected getMiddleKey(a: string, b: string): string {
+    if (a === b) {
+      throw new NoSpaceError(`No space between keys`);
+    }
+    if (a > b) {
+      [a, b] = [b, a];
+    }
+
     const result: number[] = [];
+    const digits = this.options.converter.digits;
 
     for (let i = 0; ; i++) {
-      const aCode = a.codePointAt(i) ?? this.options.fromCodePoint;
-      const bCode = b.codePointAt(i) ?? this.options.toCodePoint;
+      const aCode = a.codePointAt(i);
+      const bCode = b.codePointAt(i) ?? digits[digits.length - 1];
 
       if (aCode !== bCode) {
         const mid = this.getMiddleCodePoint(aCode, bCode);
+        if (mid === undefined) {
+          throw new NoSpaceError(`No space between keys`);
+        }
         if (mid !== aCode && mid !== bCode) {
           result.push(mid);
           break;
         }
       }
 
+      if (aCode === undefined) {
+        break;
+      }
       result.push(aCode);
     }
 
@@ -307,15 +321,33 @@ export class ManualSortingAlphabet {
 
     let rest = count;
     while (rest > 0) {
-      for (let i = 0; rest > 0 && i < points.length - 1; i += 2) {
-        const mid = this.getMiddleKey(points[i], points[i + 1]);
+      let insertedSomething = false;
+      // Iterate all intervals and split the first one that has space
+      for (let i = 0; i < points.length - 1; i++) {
+        try {
+          const mid = this.getMiddleKey(points[i], points[i + 1]);
 
-        if (sortedSet.has(mid) || mid === points[i] || mid === points[i + 1]) {
-          throw new NoSpaceError('No space between keys');
+          if (mid === points[i] || mid === points[i + 1] || sortedSet.has(mid)) {
+            continue;
+          }
+
+          points.splice(i + 1, 0, mid);
+          rest--;
+          insertedSomething = true;
+          // Break to restart the search, ensuring we split intervals from the start
+          break;
+        } catch (e) {
+          if (e instanceof NoSpaceError) {
+            // This interval is full, try the next one
+            continue;
+          }
+          throw e; // Other error
         }
+      }
 
-        points.splice(i + 1, 0, mid);
-        rest--;
+      if (!insertedSomething) {
+        // If we've iterated all intervals and couldn't insert, the space is full.
+        throw new NoSpaceError('No space between keys');
       }
     }
 
@@ -361,12 +393,14 @@ export class ManualSortingAlphabet {
 
     const last = sorted[sorted.length - 1];
     const prev = sorted[sorted.length - 2] ?? '';
+    const digits = this.options.converter.digits;
+    const lastDigit = digits[digits.length - 1];
 
     if (last.length > prev.length) {
       const codes = Array.from(last).map(c => c.codePointAt(0)!);
       for (let i = codes.length - 1; i >= 0; i--) {
-        if (codes[i] < this.options.toCodePoint) {
-          codes[i] = this.getMiddleCodePoint(codes[i], this.options.toCodePoint);
+        if (codes[i] < lastDigit) {
+          codes[i] = notNull(this.getMiddleCodePoint(codes[i], lastDigit));
           const candidate = String.fromCodePoint(...codes);
           if (!sorted.includes(candidate)) {
             return candidate;
@@ -392,15 +426,11 @@ export class ManualSortingAlphabet {
    * @param keyIndex - Reference index after which to insert
    * @param count - Number of new keys to insert
    * @returns {Object} Result containing new keys and any updated existing keys
-   * @returns {string[]} result.newKeys - Array of newly generated keys
+   * @returns {string[]} result.inserted - Array of newly generated keys
    * @returns {Map<string, string>} result.updated - Map of original keys to their new values after rebalancing
    * @throws {Error} If the reference key is not found in the sorted array
    */
-  protected insertAfterIndex(
-    sorted: readonly string[],
-    keyIndex: number,
-    count: number
-  ): { newKeys: string[]; updated: Map<string, string> } {
+  protected insertAfterIndex(sorted: readonly string[], keyIndex: number, count: number): Changes {
     const balancing = new Balancer(keyIndex, sorted, this.options.extendWindow);
 
     for (;;) {
@@ -436,37 +466,52 @@ export class ManualSortingAlphabet {
    * @param {string[]} sorted - The sorted array of string elements where the insertion will occur.
    * @param {number} index - The index before which the new items will be inserted.
    * @param {number} count - The number of items to be inserted.
-   * @return {{ newKeys: string[], updated: Map<string, string> }}
+   * @return {{ inserted: string[], updated: Map<string, string> }}
    *         Returns an object containing two properties:
-   *         - `newKeys`: An array of the newly inserted keys.
+   *         - `inserted`: An array of the newly inserted keys.
    *         - `updated`: A map of the updated keys and their new keys.
    */
-  protected insertBeforeIndex(
-    sorted: readonly string[],
-    index: number,
-    count: number
-  ): { newKeys: string[]; updated: Map<string, string> } {
+  protected insertBeforeIndex(sorted: readonly string[], index: number, count: number): Changes {
     if (index === 0) {
-      const balancing = new Balancer(0, sorted, this.options.extendWindow);
-
+      let itemsToRebalance = 0;
       for (;;) {
-        const total = balancing.total(count);
+        const total = count + itemsToRebalance;
+
+        if (itemsToRebalance >= sorted.length) {
+          // We have rebalanced the whole list. The only space left is at the very end.
+          const newKeys = this.tryInsertManyAtEnd(total, []);
+          const updated = new Map<string, string>();
+          const rebalancedOld = sorted.slice(0, itemsToRebalance);
+          const rebalancedNew = newKeys.slice(count);
+          for (let i = 0; i < itemsToRebalance; i++) {
+            updated.set(rebalancedOld[i], rebalancedNew[i]);
+          }
+          const inserted = newKeys.slice(0, count);
+          return { inserted, updated };
+        }
+
+        const rightBoundary = sorted[itemsToRebalance];
 
         try {
-          return this.extractUpdatedKeys(
-            sorted,
-            this.options.prependingStrategy === `right-of-mid`
-              ? this.tryInsertManyAtStart(total, balancing.actualSorted)
-              : this.tryInsertAfterIndex(total, balancing.actualSorted, -1),
-            0,
-            balancing
-          );
-        } catch (error) {
-          if (error instanceof NoSpaceError) {
-            balancing.rebalance();
-          } else {
-            throw error;
+          // We generate all keys in the newly available space between '' and rightBoundary
+          const newKeys = this.tryInsertAfterIndex(total, [rightBoundary], -1);
+
+          const updated = new Map<string, string>();
+          const rebalancedOld = sorted.slice(0, itemsToRebalance);
+          const rebalancedNew = newKeys.slice(count);
+
+          for (let i = 0; i < itemsToRebalance; i++) {
+            updated.set(rebalancedOld[i], rebalancedNew[i]);
           }
+
+          const inserted = newKeys.slice(0, count);
+          return { inserted, updated };
+        } catch (e) {
+          if (e instanceof NoSpaceError) {
+            itemsToRebalance++;
+            continue;
+          }
+          throw e;
         }
       }
     }
@@ -478,9 +523,8 @@ export class ManualSortingAlphabet {
    * Returns the initial key to use if the list is empty.
    */
   getFirstKey(): string {
-    return String.fromCodePoint(
-      this.getMiddleCodePoint(this.options.fromCodePoint, this.options.toCodePoint)
-    );
+    const digits = this.options.converter.digits;
+    return String.fromCodePoint(digits[Math.floor(digits.length / 2)]);
   }
 
   /**
@@ -498,11 +542,10 @@ export class ManualSortingAlphabet {
     return result;
   }
 
-  insertAfter(
-    sorted: readonly string[],
-    key: string,
-    count: number
-  ): { newKeys: string[]; updated: Map<string, string> } {
+  insertAfter(sorted: readonly string[], key: string, count: number): Changes {
+    if (count === 0) {
+      return { inserted: [], updated: new Map() };
+    }
     const keyIndex = sortedIndexOf(sorted, key);
     if (keyIndex === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);
@@ -510,11 +553,10 @@ export class ManualSortingAlphabet {
     return this.insertAfterIndex(sorted, keyIndex, count);
   }
 
-  insertBefore(
-    sorted: readonly string[],
-    key: string,
-    count: number
-  ): { newKeys: string[]; updated: Map<string, string> } {
+  insertBefore(sorted: readonly string[], key: string, count: number): Changes {
+    if (count === 0) {
+      return { inserted: [], updated: new Map() };
+    }
     const index = sortedIndexOf(sorted, key);
     if (index === -1) {
       throw new Error(`Key "${key}" not found in sorted list`);

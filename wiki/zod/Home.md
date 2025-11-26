@@ -23,7 +23,7 @@
 function declareEventsTopic<S, N>(name, schema): Topic<S, N>;
 ```
 
-Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/declare-events-topic.ts#L23)
+Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/declare-events-topic.ts#L23)
 
 Declares an event topic with the specified name and schema.
 
@@ -60,7 +60,7 @@ An object representing the event topic, including its name and validation schema
 function isZodInput<T>(schema, o): o is input<T>;
 ```
 
-Defined in: [zod-utils.ts:11](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/zod-utils.ts#L11)
+Defined in: [zod-utils.ts:11](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/zod-utils.ts#L11)
 
 Determines if a given input conforms to the specified Zod schema.
 
@@ -93,7 +93,7 @@ True if the input matches the schema's expected input type, otherwise false.
 function isZodOutput<T>(schema, o): o is output<T>;
 ```
 
-Defined in: [zod-utils.ts:22](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/zod-utils.ts#L22)
+Defined in: [zod-utils.ts:22](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/zod-utils.ts#L22)
 
 Checks if the provided value matches the expected output type of the given Zod schema.
 
@@ -129,7 +129,7 @@ type Topic<S, N> = Readonly<{
 }>;
 ```
 
-Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/declare-events-topic.ts#L12)
+Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/declare-events-topic.ts#L12)
 
 Represents a Topic with a unique name and an associated schema.
 
@@ -150,7 +150,7 @@ The name of the topic, defaults to string if not specified.
 const jsonValueSchema: z.ZodType<JsonValue>;
 ```
 
-Defined in: [json-schema.ts:22](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/json-schema.ts#L22)
+Defined in: [json-schema.ts:22](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/json-schema.ts#L22)
 
 Represents a Zod schema for validating JSON values, supporting recursive structures.
 A JSON value can be a literal (string, number, boolean, or null), an array of JSON values,
@@ -173,7 +173,7 @@ Compatible with environments requiring the two-argument version of `z.record`.
 const stringifiedBigint: ZodCodec<ZodString, ZodBigInt>;
 ```
 
-Defined in: [stringified-types.ts:21](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/stringified-types.ts#L21)
+Defined in: [stringified-types.ts:21](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/stringified-types.ts#L21)
 
 A codec for handling the conversion between a stringified representation of
 a bigint and its actual bigint value. This ensures strict validation and
@@ -199,7 +199,7 @@ Fields:
 const stringifiedISODate: ZodCodec<ZodISODateTime, ZodDate>;
 ```
 
-Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/zod/stringified-types.ts#L53)
+Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/stringified-types.ts#L53)
 
 A Zod codec that validates and transforms ISO-formatted date strings.
 

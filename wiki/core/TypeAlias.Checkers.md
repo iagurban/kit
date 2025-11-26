@@ -4,7 +4,7 @@
 type Checkers<Vs> = { [K in keyof Vs]: (o: unknown) => o is Vs[K] };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:213](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/checks.ts#L213)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:213](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L213)
 
 A utility type that represents a collection of type-checking functions.
 Each function in the collection determines whether a given value matches

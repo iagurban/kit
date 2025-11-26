@@ -4,7 +4,7 @@
 function useMobxRootStoreRegistration(store): void;
 ```
 
-Defined in: [mobx/use-mobx-root-store-registration.ts:12](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/mobx/use-mobx-root-store-registration.ts#L12)
+Defined in: [mobx/use-mobx-root-store-registration.ts:12](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/mobx/use-mobx-root-store-registration.ts#L12)
 
 A custom hook for managing the registration of a MobX root store.
 

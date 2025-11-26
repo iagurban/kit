@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export { KeySetPaginator, KeysetPaginatorBuilder } from './keyset-paginator';
 export {
   getModelsMetadataFromString,

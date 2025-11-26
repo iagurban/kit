@@ -1,4 +1,4 @@
-import { notNull } from '../core/flow/not-null';
+import { notNull } from '../core';
 import { KeysetPaginatorBuilder } from './keyset-paginator';
 import { getModelsMetadataFromString } from './models-metadata';
 

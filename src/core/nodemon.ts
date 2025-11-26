@@ -7,6 +7,7 @@ import { glob } from 'glob';
 import path from 'path';
 
 import { isTruthy } from './checks';
+import { errorToString } from './error-utils';
 import { ReadonlyExtendedJsonObject } from './json/readonly-extended-json-type';
 import { sleep } from './sleep';
 
@@ -44,7 +45,7 @@ export class MtimeTracker extends EventEmitter<{
           return [p, (await fs.promises.stat(p)).mtime] as const;
         } catch (error) {
           this.log(`error`, `Cannot stat path ${p}`, {
-            error: error instanceof Error ? error.message : String(error),
+            error: errorToString(error),
           });
           return [p, null] as const;
         }
@@ -267,7 +268,7 @@ export class NodemonFileWatcher {
   }
 }
 
-class ManagedProcess extends EventEmitter<{
+export class ManagedProcess extends EventEmitter<{
   started: [];
   killed: [number | null];
   error: [unknown];
@@ -314,7 +315,7 @@ class ManagedProcess extends EventEmitter<{
       }
     } catch (error) {
       this.log(`warn`, `Failed to kill process group ${proc.pid}. It may have already exited.`, {
-        error: error instanceof Error ? error.message : String(error),
+        error: errorToString(error),
       });
     }
   }
@@ -346,7 +347,7 @@ class ManagedProcess extends EventEmitter<{
 
         process.once('error', error => {
           this.log(`error`, 'Failed to start child process.', {
-            error: error instanceof Error ? error.message : String(error),
+            error: errorToString(error),
           });
           reject(error);
         });
