@@ -11,5 +11,9 @@
   ],
   "testMatch": [
     "**/*.spec.ts"
+  ],
+  "coveragePathIgnorePatterns": [
+    "/node_modules/",
+    "<rootDir>/src/unsorted/"
   ]
 }

@@ -1,11 +1,11 @@
 import fs from 'fs';
-import http from 'http';
 import { Client as NTPClient } from 'ntp-time';
 import path from 'path';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 import { checked, isROArray, isString, JsonObject } from '../core';
+import { nodeFetch } from '../node';
 
 /**
  * Parses an array of JSON strings and merges them into a single object.
@@ -30,28 +30,11 @@ function parseExtraFields(extras: string[] = []): JsonObject {
   return extraFields;
 }
 
-const simpleFetch = (url: string) =>
-  new Promise<string>((resolve, reject) => {
-    http
-      .get(url, res => {
-        let data = '';
-        res.on('data', chunk => {
-          data += chunk;
-        });
-        res.on('end', () => {
-          resolve(data);
-        });
-      })
-      .on('error', err => {
-        reject(err);
-      });
-  });
-
 const sources = {
   local: async () => new Date(),
   worldclockapi: async () => {
     const currentDateTime = checked(
-      JSON.parse(await simpleFetch('http://worldclockapi.com/api/json/utc/now')),
+      JSON.parse((await nodeFetch('http://worldclockapi.com/api/json/utc/now')).toString()),
       isString,
       () => `currentDateTime is not a string`
     );

@@ -16,7 +16,7 @@ The error-handling function to execute if an error is thrown. Receives the error
 function catching<T, C>(fn, onCatch): T | C;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/flow/catching.ts#L1)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/flow/catching.ts#L1)
 
 ### Type Parameters
 
@@ -48,7 +48,7 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.co
 function catching<T>(fn, onCatch): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/flow/catching.ts#L2)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/flow/catching.ts#L2)
 
 ### Type Parameters
 

@@ -4,7 +4,7 @@
 function isTruthy<T>(o): o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:58](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:58](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L58)
 
 Determines whether a value is truthy, filtering out falsy values such as
 `undefined`, `null`, `false`, `0`, and empty strings (`''`).

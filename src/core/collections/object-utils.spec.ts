@@ -202,5 +202,15 @@ describe('Array Utility Functions', () => {
       });
       expect((result as Record<string, unknown>).inherited).toBeUndefined();
     });
+
+    it('should skip non-own properties', () => {
+      const proto = { a: 1 };
+      const obj = Object.create(proto);
+      obj.b = 2;
+
+      const result = mapOwnEntries(obj, (value: number) => value * 2);
+
+      expect(result).toEqual({ b: 4 });
+    });
   });
 });

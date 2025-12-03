@@ -3,7 +3,8 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
-import { checked, INodemonOptions, isNodeJSSignal, isSomeOf, isUndefined, Nodemon, notNull } from '../core';
+import { checked, isSomeOf, isUndefined, notNull } from '../core';
+import { INodemonOptions, isNodeJSSignal, Nodemon } from '../node';
 
 async function main() {
   const argv = await yargs(hideBin(process.argv))

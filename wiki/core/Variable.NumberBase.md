@@ -4,7 +4,7 @@
 const NumberBase: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-base.ts:58](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/number-base.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-base.ts:58](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/numbers/number-base.ts#L58)
 
 Provides number base conversion utilities with predefined bases and their corresponding digit sets.
 Each base N is accessible through two equivalent ways:

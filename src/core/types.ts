@@ -190,7 +190,7 @@ export type AnyAnyFunction<
  * parameters of any type and returns an instance of the specified type.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ClassConstructor<Instance> = { new (...args: any[]): Instance };
+export type ClassConstructor<Instance> = { new (...args: any[]): Instance; name?: string };
 
 /**
  * Represents a type alias for an array of any type.

@@ -1,27 +1,8 @@
 #!yarn tsx
 
-import https from 'https';
+import { nodeFetch } from '../node/index';
 
 type Range = [number, number];
-
-/**
- * Fetches text from the given HTTPS URL.
- */
-async function fetchText(url: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    https
-      .get(url, res => {
-        if (res.statusCode !== 200) {
-          reject(new Error(`Failed to fetch ${url}: ${res.statusCode}`));
-          return;
-        }
-        const chunks: Buffer[] = [];
-        res.on('data', chunk => chunks.push(chunk as Buffer));
-        res.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-      })
-      .on('error', reject);
-  });
-}
 
 /**
  * Parses DerivedCoreProperties.txt, extracting ranges for the given property.
@@ -110,7 +91,7 @@ function subtractRanges(base: Range[], subs: Range[]): Range[] {
 
 async function main() {
   const url = 'https://www.unicode.org/Public/15.1.0/ucd/DerivedCoreProperties.txt';
-  const text = await fetchText(url);
+  const text = (await nodeFetch(url)).toString();
 
   const idStart = parseRanges(text, 'ID_Start');
   const idContinue = parseRanges(text, 'ID_Continue');

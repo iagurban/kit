@@ -4,7 +4,7 @@
 type ValOrArr<T> = T | readonly T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:28](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/types.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:28](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/types.ts#L28)
 
 Represents a type that can either be a single value of type `T` or a readonly array of values of type `T`.
 

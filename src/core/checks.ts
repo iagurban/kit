@@ -1,5 +1,26 @@
 import { ClassConstructor } from './types';
 
+export const tagChecker = <T extends object, Type extends string>(o: T, type: Type): T =>
+  Object.assign(o, { type });
+
+const cachedTypeSymbol = Symbol(`gettrTag:cachedTypeSymbol`);
+
+export const tagCheckerGetter = <T extends object, Type extends string>(
+  o: T & { [cachedTypeSymbol]?: string },
+  type: () => Type,
+  cache = true
+): T => {
+  Object.defineProperty(o, `type`, {
+    get: cache ? () => (o[cachedTypeSymbol] ??= type()) : type,
+    set: undefined,
+    enumerable: true,
+    configurable: true,
+  });
+  return o as T & { type: Type };
+};
+
+export const checkerType = <T extends object>(o: T & { type?: string }) => o.type ?? `[unknown]`;
+
 /**
  * A type definition for a utility function that determines whether a given value
  * matches a specific type T. The `Checker` type is both a function and an object.
@@ -21,7 +42,7 @@ export type Checker<T> = ((o: unknown) => o is T) & { type?: string };
  * @param {T | undefined | null} o - The value to check.
  * @returns {o is T} Returns `true` if the value is defined (not `undefined` or `null`), otherwise `false`.
  */
-export const isDefined = <T>(o: T | undefined | null): o is T => o != null;
+export const isDefined = tagChecker(<T>(o: T | undefined | null): o is T => o != null, `[defined]`);
 
 /**
  * A type guard function that checks whether a given value is not `undefined`.
@@ -33,7 +54,7 @@ export const isDefined = <T>(o: T | undefined | null): o is T => o != null;
  * @param o - The value to be checked.
  * @returns A boolean value indicating whether the value is not `undefined`.
  */
-export const isNotUndefined = <T>(o: T | undefined): o is T => o !== undefined;
+export const isNotUndefined = tagChecker(<T>(o: T | undefined): o is T => o !== undefined, `!undefined`);
 
 /**
  * A type guard function that determines if a given value is not null.
@@ -42,7 +63,7 @@ export const isNotUndefined = <T>(o: T | undefined): o is T => o !== undefined;
  * @param {T | null} o The value to be checked.
  * @returns {o is T} Returns true if the value is not null; otherwise, returns false.
  */
-export const isNotNull = <T>(o: T | null): o is T => o !== null;
+export const isNotNull = tagChecker(<T>(o: T | null): o is T => o !== null, `!null`);
 
 /**
  * Determines whether a value is truthy, filtering out falsy values such as
@@ -55,7 +76,7 @@ export const isNotNull = <T>(o: T | null): o is T => o !== null;
  * @param {T | undefined | null | false | 0 | ''} o The value to be evaluated.
  * @returns {o is T} Returns `true` if the value is truthy, otherwise `false`.
  */
-export const isTruthy = <T>(o: T | undefined | null | false | 0 | ''): o is T => !!o;
+export const isTruthy = tagChecker(<T>(o: T | undefined | null | false | 0 | ''): o is T => !!o, `[truthy]`);
 
 /**
  * A type guard function to determine if a given value is undefined.
@@ -66,7 +87,7 @@ export const isTruthy = <T>(o: T | undefined | null | false | 0 | ''): o is T =>
  * @param {unknown} o - The value to check.
  * @returns {o is undefined} True if the value is `undefined`, otherwise false.
  */
-export const isUndefined = (o: unknown): o is undefined => o === undefined;
+export const isUndefined = tagChecker((o: unknown): o is undefined => o === undefined, `undefined`);
 
 /**
  * Checks if the given value is strictly null.
@@ -78,7 +99,7 @@ export const isUndefined = (o: unknown): o is undefined => o === undefined;
  * @param o - The value to check.
  * @returns A boolean indicating whether the input value is null.
  */
-export const isNull = (o: unknown): o is null => o === null;
+export const isNull = tagChecker((o: unknown): o is null => o === null, `null`);
 
 /**
  * Determines whether the given value is null or undefined.
@@ -89,7 +110,7 @@ export const isNull = (o: unknown): o is null => o === null;
  * @param {unknown} o - The value to be checked.
  * @returns {boolean} - `true` if the value is null or undefined, otherwise `false`.
  */
-export const isNullish = (o: unknown): o is null | undefined => o == null;
+export const isNullish = tagChecker((o: unknown): o is null | undefined => o == null, `(null|undefined)`);
 
 /**
  * A type guard function to check if the given input is of type string.
@@ -97,7 +118,7 @@ export const isNullish = (o: unknown): o is null | undefined => o == null;
  * @param {unknown} o - The value to be checked.
  * @returns {boolean} Returns true if the input is a string, otherwise false.
  */
-export const isString = (o: unknown): o is string => typeof o === 'string';
+export const isString = tagChecker((o: unknown): o is string => typeof o === 'string', `string`);
 
 /**
  * Checks if the provided value is of type number.
@@ -109,7 +130,7 @@ export const isString = (o: unknown): o is string => typeof o === 'string';
  * @param {unknown} o - The value to be checked.
  * @returns {boolean} - True if the input is a number, otherwise false.
  */
-export const isNumber = (o: unknown): o is number => typeof o === 'number';
+export const isNumber = tagChecker((o: unknown): o is number => typeof o === 'number', `number`);
 
 /**
  * Determines whether the provided value is an integer.
@@ -121,7 +142,10 @@ export const isNumber = (o: unknown): o is number => typeof o === 'number';
  * @param {unknown} o - The value to be checked.
  * @returns {boolean} Returns true if the value is a number and an integer, false otherwise.
  */
-export const isInteger = (o: unknown): o is number => isNumber(o) && Math.trunc(o) === o;
+export const isInteger = tagChecker(
+  (o: unknown): o is number => isNumber(o) && Math.trunc(o) === o,
+  `integer`
+);
 
 /**
  * Checks if a given value is a plain object.
@@ -134,8 +158,10 @@ export const isInteger = (o: unknown): o is number => isNumber(o) && Math.trunc(
  * @param {T} o - The value to check.
  * @returns {o is T & Record<string, R>} `true` if the value is a plain object, otherwise `false`.
  */
-export const isPlainObject = <T, R>(o: T): o is T & Record<string, R> =>
-  !!o && Object.getPrototypeOf(o) === Object.prototype;
+export const isPlainObject = tagChecker(
+  <T, R>(o: T): o is T & Record<string, R> => !!o && Object.getPrototypeOf(o) === Object.prototype,
+  `plain-object`
+);
 
 /**
  * Checks if the provided value is an object and not null, while also ensuring
@@ -148,8 +174,10 @@ export const isPlainObject = <T, R>(o: T): o is T & Record<string, R> =>
  * @returns {o is T & Record<string, R>} - Returns true if the value is an object
  * and meets the specified constraints, otherwise false.
  */
-export const isSomeObject = <T, R>(o: T): o is T & Record<string, R> =>
-  typeof o === 'object' && o != null && !Array.isArray(o);
+export const isSomeObject = tagChecker(
+  <T, R>(o: T): o is T & Record<string, R> => typeof o === 'object' && o != null && !Array.isArray(o),
+  `some-object`
+);
 
 /**
  * Determines if the provided value is a read-only array.
@@ -158,7 +186,10 @@ export const isSomeObject = <T, R>(o: T): o is T & Record<string, R> =>
  * @param {unknown | A[] | readonly A[]} a - The value to be checked.
  * @returns {a is readonly A[]} True if the value is a read-only array; otherwise, false.
  */
-export const isROArray = <A>(a: unknown | A[] | readonly A[]): a is readonly A[] => Array.isArray(a);
+export const isROArray = tagChecker(
+  <A>(a: unknown | A[] | readonly A[]): a is readonly A[] => Array.isArray(a),
+  `readonly-array`
+);
 
 /**
  * A utility function that checks if a given value is an array
@@ -169,19 +200,21 @@ export const isROArray = <A>(a: unknown | A[] | readonly A[]): a is readonly A[]
  * @returns {(o: unknown) => o is K[]} A function that takes in a value and
  * determines if it is an array of elements satisfying the `isK` type guard.
  */
-export const isArrayOf =
-  <K>(isK: Checker<K>): Checker<K[]> =>
-  (o): o is K[] => {
-    if (!Array.isArray(o)) {
-      return false;
-    }
-    for (const e of o) {
-      if (!isK(e)) {
+export const isArrayOf = <K>(isK: Checker<K>): Checker<K[]> =>
+  tagCheckerGetter(
+    (o): o is K[] => {
+      if (!Array.isArray(o)) {
         return false;
       }
-    }
-    return true;
-  };
+      for (const e of o) {
+        if (!isK(e)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    () => `${checkerType(isK)}[]`
+  );
 
 /**
  * A utility function to check if a given object is an instance of one or more specified classes.
@@ -190,16 +223,18 @@ export const isArrayOf =
  * @param {...{new (...args: any[]): C}[]} classes - A list of class constructors to check the object instance against.
  * @returns {(o: unknown) => o is C} A type guard function that takes an object and determines if it is an instance of any of the provided classes.
  */
-export const isInstanceOf =
-  <C>(...classes: ClassConstructor<C>[]): Checker<C> =>
-  (o): o is C => {
-    for (const c of classes) {
-      if (o instanceof c) {
-        return true;
+export const isInstanceOf = <C>(...classes: ClassConstructor<C>[]): Checker<C> =>
+  tagCheckerGetter(
+    (o): o is C => {
+      for (const c of classes) {
+        if (o instanceof c) {
+          return true;
+        }
       }
-    }
-    return false;
-  };
+      return false;
+    },
+    () => `[${classes.map(c => [`class`, c.name].filter(isTruthy).join(` `)).join(` | `)}]`
+  );
 
 /**
  * A utility type that represents a collection of type-checking functions.
@@ -220,16 +255,18 @@ export type Checkers<Vs extends readonly unknown[]> = { [K in keyof Vs]: (o: unk
  * @returns {(o: unknown) => boolean} A function that takes an unknown value and returns `true` if the value satisfies
  * at least one of the provided type-checking functions, or `false` otherwise.
  */
-export const isSomeOf =
-  <Vs extends readonly unknown[]>(...checkers: Checkers<Vs>): Checker<Vs[number]> =>
-  (o): o is Vs[number] => {
-    for (const e of checkers) {
-      if (e(o)) {
-        return true;
+export const isSomeOf = <Vs extends readonly unknown[]>(...checkers: Checkers<Vs>): Checker<Vs[number]> =>
+  tagCheckerGetter(
+    (o): o is Vs[number] => {
+      for (const e of checkers) {
+        if (e(o)) {
+          return true;
+        }
       }
-    }
-    return false;
-  };
+      return false;
+    },
+    () => `(${checkers.map(c => checkerType(c)).join(` | `)})`
+  );
 
 /**
  * A utility function used to determine whether a given value is a tuple of a specific structure.

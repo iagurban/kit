@@ -51,13 +51,14 @@ export const groupedBy = <T, K extends string | number | symbol>(
  * @param {(v: V, k: K) => D} fn - A function that takes a value of type `V` and a key of type `K`, and returns a transformed value of type `D`.
  * @returns {Record<K, D>} A new object with the same keys as the input object, but with transformed values of type `D`.
  */
-export const mapEntries = <K extends string, V, R extends Record<K, V>, D>(
+export const mapEntries = <K extends string, R extends Record<K, unknown>, D>(
   o: R,
-  fn: (v: V, k: K) => D
+  fn: (v: R[keyof R], k: keyof R) => D
 ): Record<K, D> => {
-  const r: Partial<Record<K, D>> = {};
-  for (const [k, v] of Object.entries(o)) {
-    r[k as K] = fn(v as V, k as K);
+  const r: Partial<Record<keyof R, D>> = {};
+  for (const k in o) {
+    // noinspection JSUnfilteredForInLoop
+    r[k as keyof R] = fn(o[k], k as unknown as K);
   }
   return r as Record<K, D>;
 };
@@ -75,18 +76,18 @@ export const mapEntries = <K extends string, V, R extends Record<K, V>, D>(
  * @returns {Record<keyof R, D>} A new object with the same keys as the input
  * object, but transformed values based on the provided function.
  */
-export const mapOwnEntries = <R extends Record<string, unknown>, D>(
+export const mapOwnEntries = <K extends string, R extends Record<K, unknown>, D>(
   o: R,
   fn: (v: R[keyof R], k: keyof R) => D
-): Record<keyof R, D> => {
+): Record<K, D> => {
   const r: Partial<Record<keyof R, D>> = {};
-  for (const [k, v] of Object.entries(o)) {
+  for (const k in o) {
     if (!Object.prototype.hasOwnProperty.call(o, k)) {
       continue;
     }
-    r[k as keyof R] = fn(v as R[keyof R], k as keyof R);
+    r[k as keyof R] = fn(o[k], k as unknown as K);
   }
-  return r as Record<keyof R, D>;
+  return r as Record<K, D>;
 };
 
 /**

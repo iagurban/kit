@@ -79,6 +79,12 @@ describe('NumberConverter', () => {
             .digits
       ).toThrow();
     });
+
+    test('should throw an error for a digit set with less than 2 characters', () => {
+      expect(() => new NumberConverter(['a']).digitsSet).toThrow('empty digits set');
+      expect(() => new NumberConverter([['a', 'a']]).digitsSet).toThrow('empty digits set');
+      expect(() => new NumberConverter([]).digitsSet).toThrow('empty digits set');
+    });
   });
 
   describe('conversion methods', () => {
@@ -252,6 +258,18 @@ describe('NumberConverter', () => {
       const max = Math.max(...arr);
       const min = Math.min(...arr);
       expect(max / min).toBeLessThan(5);
+    });
+
+    test('fixedWidthRandomGenerator should throw an error for NaN length', () => {
+      expect(() => hex.fixedWidthRandomGenerator(Number.NaN)).toThrow('length must be integer < 1, got NaN');
+    });
+
+    test('should throw "invalid mask" when maxSafeDigits is 0', () => {
+      const converter = new NumberConverter([['0', '1']]);
+      Object.defineProperty(converter, 'maxSafeDigits', {
+        get: () => 0,
+      });
+      expect(() => converter.fixedWidthRandomGenerator(10)).toThrow('invalid mask: 0');
     });
   });
 });

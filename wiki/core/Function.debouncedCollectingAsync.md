@@ -7,7 +7,7 @@ function debouncedCollectingAsync<Args, T, R>(
    fn): (...args) => Promise<T> & object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:19](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/async/debounced-collecting-async.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:19](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/async/debounced-collecting-async.ts#L19)
 
 Creates a function that combines debouncing logic with asynchronous callback execution.
 The function allows for multiple calls within a specified delay to be grouped and processed together,

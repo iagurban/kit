@@ -281,6 +281,11 @@ export class ManualSortingAlphabet {
       if (aCode !== bCode) {
         const mid = this.getMiddleCodePoint(aCode, bCode);
         if (mid === undefined) {
+          if (aCode === undefined && b.length > i + 1) {
+            result.push(bCode);
+            break;
+          }
+
           throw new NoSpaceError(`No space between keys`);
         }
         if (mid !== aCode && mid !== bCode) {
@@ -288,11 +293,7 @@ export class ManualSortingAlphabet {
           break;
         }
       }
-
-      if (aCode === undefined) {
-        break;
-      }
-      result.push(aCode);
+      result.push(aCode as number);
     }
 
     return String.fromCodePoint(...result);
@@ -410,12 +411,7 @@ export class ManualSortingAlphabet {
       }
     }
 
-    const next = last + this.getFirstKey();
-    if (!sorted.includes(next)) {
-      return next;
-    }
-
-    throw new NoSpaceError('Cannot insert at end — no space');
+    return last + this.getFirstKey();
   }
 
   /**
@@ -499,11 +495,9 @@ export class ManualSortingAlphabet {
           const updated = new Map<string, string>();
           const rebalancedOld = sorted.slice(0, itemsToRebalance);
           const rebalancedNew = newKeys.slice(count);
-
           for (let i = 0; i < itemsToRebalance; i++) {
             updated.set(rebalancedOld[i], rebalancedNew[i]);
           }
-
           const inserted = newKeys.slice(0, count);
           return { inserted, updated };
         } catch (e) {

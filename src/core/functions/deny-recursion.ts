@@ -1,4 +1,5 @@
 import { isPromise } from '../async/promise-util';
+import { errorFromUnknown } from '../error-utils';
 import { AnyAnyFunction } from '../types';
 
 type BusyGuardResult<T extends AnyAnyFunction> =
@@ -26,7 +27,7 @@ export const denyRecursion = <T extends AnyAnyFunction>(
   return (...args) => {
     if (busy) {
       const e = typeof err === 'function' ? err(...args) : err;
-      const error = typeof e === 'string' ? new Error(e) : e;
+      const error = errorFromUnknown(e);
       if (isAsync) {
         return Promise.reject(error) as BusyGuardResult<T>;
       }
@@ -96,7 +97,7 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
     const ready = mapping.get(k);
     if (ready === busySymbol) {
       const e = error(...args);
-      const err = typeof e === `string` ? new Error(e) : e;
+      const err = errorFromUnknown(e);
       if (asyncMap.get(k)) {
         return Promise.reject(err) as ReturnType<Fn>;
       }
@@ -111,7 +112,7 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
       const ret = fn(...args);
       if (isPromise(ret)) {
         asyncMap.set(k, true);
-        ret.then(
+        return ret.then(
           resolved => {
             mapping.set(k, resolved as ReturnType<Fn>);
             return resolved;
@@ -122,10 +123,10 @@ export const multiRecurringDenier = <Fn extends AnyAnyFunction, K>(
             throw rejection;
           }
         );
-      } else {
-        asyncMap.set(k, false);
-        mapping.set(k, ret);
       }
+
+      asyncMap.set(k, false);
+      mapping.set(k, ret);
       return ret;
     } catch (error) {
       mapping.delete(k);

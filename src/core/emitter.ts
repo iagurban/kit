@@ -1,6 +1,5 @@
 import { Errors } from './errors/errors';
 import { catching } from './flow/catching';
-import { once } from './once';
 
 type ListenerArgs<T> = T extends readonly unknown[] ? T : [T];
 
@@ -135,19 +134,4 @@ export class Emitter<T extends Record<string, readonly unknown[]>> {
       throw new Errors(errors);
     }
   };
-
-  @once
-  get subscriberInterface(): {
-    once: <E extends keyof T>(e: E, listener: Listener<T[E]>) => () => void;
-    on: <E extends keyof T>(e: E, listener: Listener<T[E]>) => () => void;
-    off: <E extends keyof T>(e: E, listener: Listener<T[E]>) => void;
-    ro: Omit<Emitter<T>, 'emit'>;
-  } {
-    return {
-      on: this.on,
-      off: this.off,
-      once: this.once,
-      ro: this.ro,
-    };
-  }
 }

@@ -290,11 +290,13 @@ export class NumberConverter {
     if (mask1Digits < 1 && sample0) {
       return () => genRepeatWith(mask0Count, sample0, mask0Digits, pad);
     }
+    /* istanbul ignore else */
     if (sample0 && sample1) {
       return () =>
         `${genRepeatWith(mask0Count, sample0, mask0Digits, pad)}${genWith(sample1, mask1Digits, pad)}`;
+    } else {
+      // Fallback (should not be reached given validations)
+      return () => '';
     }
-    // Fallback (should not be reached given validations)
-    return () => '';
   };
 }

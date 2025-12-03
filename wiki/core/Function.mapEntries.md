@@ -1,10 +1,10 @@
 # Function: mapEntries()
 
 ```ts
-function mapEntries<K, V, R, D>(o, fn): Record<K, D>;
+function mapEntries<K, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/collections/object-utils.ts#L54)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/collections/object-utils.ts#L54)
 
 Transforms the entries of an object by applying a mapping function to its values and keys.
 
@@ -16,15 +16,9 @@ Transforms the entries of an object by applying a mapping function to its values
 
 The type of the keys in the input object. Must extend `string`.
 
-### V
-
-`V`
-
-The type of the values in the input object.
-
 ### R
 
-`R` *extends* `Record`\<`K`, `V`\>
+`R` *extends* `Record`\<`K`, `unknown`\>
 
 The type of the input object. Must be a record where the key is of type `K` and the value is of type `V`.
 

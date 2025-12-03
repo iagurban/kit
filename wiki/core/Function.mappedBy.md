@@ -4,7 +4,7 @@
 function mappedBy<T, K>(o, by): Record<K, T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:10](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/collections/object-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:10](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/collections/object-utils.ts#L10)
 
 Maps an array of objects to an object where keys are derived from a specified property or computation.
 

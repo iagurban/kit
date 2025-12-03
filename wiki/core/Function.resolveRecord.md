@@ -4,7 +4,7 @@
 function resolveRecord<T>(o): Promise<PromisesRecordValue<T>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:50](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/async/promise-util.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:50](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/async/promise-util.ts#L50)
 
 Asynchronously resolves all promise values within an object while preserving the structure of the object.
 

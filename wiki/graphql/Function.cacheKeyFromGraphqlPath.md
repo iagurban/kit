@@ -4,7 +4,7 @@
 function cacheKeyFromGraphqlPath(info): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/cache-key-from-graphql-path.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/cache-key-from-graphql-path.ts#L13)
 
 Turns the "info.path" object into a unique string key.
 e.g., { prev: { key: "message" }, key: "author" } -> "message.author"

@@ -61,6 +61,7 @@ export const createIoCContainer = <T extends Record<string, unknown>>(schema: {
           case ServiceState.Creating: {
             throw new Error(`cyclic dependency on getting ${key} service`);
           }
+          /* istanbul ignore next */
           case ServiceState.Created: {
             throw new Error(`programmer error`);
           }

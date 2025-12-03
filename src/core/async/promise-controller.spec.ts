@@ -99,4 +99,21 @@ describe('PromiseController', () => {
 
     expect(handler).toHaveBeenCalledTimes(1);
   });
+
+  it('should do nothing when trying to remove a handler that was not added', () => {
+    const controller = new PromiseController();
+    const handler = jest.fn();
+    const otherHandler = jest.fn();
+
+    controller.on(handler);
+
+    // Calling off with a handler that was never added should not throw and should not affect other handlers.
+    expect(() => controller.off(otherHandler)).not.toThrow();
+
+    controller.abort('Test reason');
+
+    // The original handler should still be called.
+    expect(handler).toHaveBeenCalledWith('Test reason');
+    expect(otherHandler).not.toHaveBeenCalled();
+  });
 });

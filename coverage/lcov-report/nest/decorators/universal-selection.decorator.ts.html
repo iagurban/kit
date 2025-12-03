@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.48% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/41</span>
+                <span class='fraction'>41/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">68.42% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.48% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/39</span>
+                <span class='fraction'>39/39</span>
             </div>
         
             
@@ -269,11 +269,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,27 +293,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
@@ -389,17 +389,17 @@ export const stringifyUniversalSelection = (selection: UniversalSelection): stri
   return result;
 };
 &nbsp;
-const collectRecursiveUniversalSelection = <span class="fstat-no" title="function not covered" >(</span>
+const collectRecursiveUniversalSelection = (
   fields: readonly (GqlASTField | GqlASTFragmentSpread | GqlASTInlineFragmentSpread)[] | undefined,
   path: string,
   getCheckedSubpath: (path: string, f: GqlASTField) =&gt; string | undefined,
   fragments: Record&lt;string, GqlASTFragmentDefinition&gt;
 ): UniversalSelection | boolean =&gt;
-<span class="cstat-no" title="statement not covered" >  fields?.length</span>
+  fields?.length
     ? Object.fromEntries(
         flattenSpreads(fields, fragments)
-          .map(<span class="fstat-no" title="function not covered" >f </span>=&gt; {
-<span class="cstat-no" title="statement not covered" >            return collectRecursiveSelectionPair(</span>
+          .map(f =&gt; {
+            return collectRecursiveSelectionPair(
               path,
               f,
               getCheckedSubpath,
@@ -415,31 +415,31 @@ export type UniversalSelectionArgs = BasicSelectionArgs&lt;{
   postProcess?: (selection: UniversalSelection) =&gt; void;
 }&gt;;
 &nbsp;
-export const getUniversalSelectionFromInfo = <span class="fstat-no" title="function not covered" >(</span>
+export const getUniversalSelectionFromInfo = (
   { fieldName, fieldNodes: [fieldNode], fragments }: GqlContextInfo,
   opts?: UniversalSelectionArgs
 ) =&gt; {
-  const { root, path, getCheckedSubpath, postProcess } = <span class="cstat-no" title="statement not covered" >unpackSelectArgs(</span>
+  const { root, path, getCheckedSubpath, postProcess } = unpackSelectArgs(
     opts,
     fieldNode,
     fragments,
     fieldName
   );
 &nbsp;
-  const r = <span class="cstat-no" title="statement not covered" >collectRecursiveUniversalSelection(</span>
+  const r = collectRecursiveUniversalSelection(
     root.selectionSet?.selections,
     path?.join(`.`) || ``,
     getCheckedSubpath,
     fragments
   );
-  const result = <span class="cstat-no" title="statement not covered" >typeof r === `object` ? r : {};</span>
-<span class="cstat-no" title="statement not covered" >  postProcess?.(result);</span>
-<span class="cstat-no" title="statement not covered" >  return result;</span>
+  const result = typeof r === `object` ? r : {};
+  postProcess?.(result);
+  return result;
 };
 &nbsp;
 export const GetUniversalSelection = createParamDecorator(
-<span class="fstat-no" title="function not covered" >  (o</span>pts: UniversalSelectionArgs, context: ExecutionContext) =&gt;
-<span class="cstat-no" title="statement not covered" >    getUniversalSelectionFromInfo(GqlExecutionContext.create(context).getInfo(), opts)</span>
+  (opts: UniversalSelectionArgs, context: ExecutionContext) =&gt;
+    getUniversalSelectionFromInfo(GqlExecutionContext.create(context).getInfo(), opts)
 );
 &nbsp;</pre></td></tr></table></pre>
 
@@ -448,7 +448,7 @@ export const GetUniversalSelection = createParamDecorator(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T07:32:42.369Z
+                at 2025-12-03T11:37:19.588Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

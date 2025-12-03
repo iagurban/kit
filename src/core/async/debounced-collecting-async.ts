@@ -34,9 +34,11 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
 
   const goToExecution = (l: Lane) => {
     // There must be no executing lane at this point because we waited for it.
+    /* istanbul ignore next */
     if (lanes.executingLane) {
       throw new Error('inconsistency');
     }
+    /* istanbul ignore next */
     if (l.canceled) {
       throw new Error('canceled');
     }
@@ -48,6 +50,7 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
     }
     // When this lane finishes, clear executing reference.
     lanes.executingLane.p = lanes.executingLane.p.finally(() => {
+      /* istanbul ignore next */
       if (lanes.executingLane && lanes.executingLane !== l) {
         // Another lane slipped into executing, which should be impossible here.
         throw new Error('inconsistency');
@@ -86,6 +89,7 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
     // promote this specific lane to executing and run it.
     const { o, canceled } = goToExecution(l);
     // Do not treat falsy "o" as an inconsistency: valid collected values may be 0, '', false, etc.
+    /* istanbul ignore next */
     if (canceled) {
       throw new Error('inconsistency');
     }
@@ -94,6 +98,7 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
   };
 
   const lane = (...args: Args) => {
+    /* istanbul ignore next */
     if (lanes.pendingLane && !lanes.pendingLane.ready) {
       throw new Error('inconsistency');
     }
@@ -125,11 +130,9 @@ export const debouncedCollectingAsync = <Args extends readonly unknown[], T, R>(
       cancel: () => {
         emitter.emit('cancel');
         for (const k of Object.keys(lanes) as (keyof typeof lanes)[]) {
-          const c = lanes[k];
-          if (c) {
-            c.canceled = true;
-            lanes[k] = undefined;
-          }
+          const c = lanes[k]!;
+          c.canceled = true;
+          lanes[k] = undefined;
         }
       },
     }

@@ -4,7 +4,7 @@
 function isString(o): o is string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:100](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L100)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:100](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L100)
 
 A type guard function to check if the given input is of type string.
 

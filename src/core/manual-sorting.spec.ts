@@ -1,6 +1,7 @@
 import { checked } from './checks';
 import { Balancer, Changes, ManualSortingAlphabet } from './manual-sorting';
 import { DebugManualSortingAlphabet, isArraySortedUniq } from './manual-sorting.debug';
+import { NumberBase } from './numbers/number-base';
 import { NumberConverter } from './numbers/number-converter';
 import { AnyAnyFunction } from './types';
 
@@ -453,6 +454,7 @@ describe('manual-sorting', () => {
         it('should create a longer key when no character is between', () => {
           // M is the middle of A-Z
           expect(azInternal.getMiddleKey('A', 'B')).toBe('AM');
+          expect(azInternal.getMiddleKey('A', 'AB')).toBe('AA');
         });
 
         it('should create a longer key at the end of the alphabet', () => {
@@ -462,11 +464,15 @@ describe('manual-sorting', () => {
         it('should find a key at the beginning', () => {
           // When finding a key before 'B', the middle of '' and 'B' is 'A'.
           expect(azInternal.getMiddleKey('', 'B')).toBe('A');
+          expect(azInternal.getMiddleKey('', 'BBB')).toBe('A');
+          expect(azInternal.getMiddleKey('', 'BA')).toBe('A');
+          expect(azInternal.getMiddleKey('A', 'AAA')).toBe('AA');
         });
 
         it('should throw for a key at the beginning of the alphabet', () => {
+          expect(() => azInternal.getMiddleKey('', '')).toThrow(`No space between keys`);
+          expect(() => azInternal.getMiddleKey('A', 'A')).toThrow(`No space between keys`);
           expect(() => azInternal.getMiddleKey('', 'A')).toThrow(`No space between keys`);
-          expect(() => azInternal.getMiddleKey('', 'AAA')).toThrow(`No space between keys`);
           expect(() => azInternal.getMiddleKey('A', 'AA')).toThrow(`No space between keys`);
         });
 
@@ -656,6 +662,53 @@ describe('manual-sorting', () => {
       const final = applyChanges(sorted, changes);
       expect(final).toEqual(['G', 'M', 'Y', 'Z']);
       expect(isArraySortedUniq(final)).toBe(true);
+    });
+  });
+
+  describe('error coverage', () => {
+    it('should re-throw unexpected errors in insertAfter', () => {
+      const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 });
+      // '$' is not in the b62 alphabet. To trigger the error, the invalid character must be
+      // processed by getMiddleKey. This happens if we try to insert between 'A' and 'A$'.
+      const sortedWithInvalidKey = ['A', 'A$'];
+      expect(() => alphabet.insertAfter(sortedWithInvalidKey, 'A', 1)).toThrow(RangeError);
+    });
+
+    it('should re-throw unexpected errors in insertBefore', () => {
+      const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 });
+      // The array must be sorted for sortedIndexOf to work. '$' comes before 'A'.
+      // We insert before '$C', which will try to find a key between '' and '$C',
+      // triggering the RangeError on the '$' character.
+      const sortedWithInvalidKey = ['$C', 'A'];
+      expect(() => alphabet.insertBefore(sortedWithInvalidKey, '$C', 1)).toThrow(RangeError);
+    });
+
+    it('tryInsertAfterIndex should throw NoSpaceError when space is exhausted', () => {
+      // Using a minimal alphabet where 'A' is the first character.
+      const converter = new NumberConverter([['A', 'B']]);
+      const alphabet = new ManualSortingAlphabet({ converter });
+      const sorted = ['A'];
+
+      const internalAlphabet = alphabet as any;
+
+      // Attempting to insert before 'A' (index -1) will try to find a key between '' and 'A'.
+      // Since 'A' is the first character in the alphabet, no such key exists, and it should throw.
+      expect(() => internalAlphabet.tryInsertAfterIndex(1, sorted, -1)).toThrow('No space between keys');
+    });
+
+    it('should hit the collision safeguard with unsorted input', () => {
+      const alphabet = createAlphabet([['A', 'E']]);
+      // Bypassing the debug check to test the production safeguard against unsorted input.
+      const fn = ManualSortingAlphabet.prototype['tryInsertAfterIndex'];
+      const unsorted = ['A', 'E', 'C']; // C is between A and E
+
+      // We try to insert 1 key between 'A' and 'E'.
+      // getMiddleKey('A', 'E') will produce 'C'.
+      // The code will check if 'C' is in the sortedSet, which it is.
+      // It will hit `continue`.
+      // Since there are no other intervals in `points`, it will fail to insert.
+      // This will cause `insertedSomething` to be false, and it will throw NoSpaceError.
+      expect(() => fn.call(alphabet, 1, unsorted, 0)).toThrow('No space between keys');
     });
   });
 });

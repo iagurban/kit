@@ -15,7 +15,7 @@
 function cacheKeyFromGraphqlPath(info): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/cache-key-from-graphql-path.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/cache-key-from-graphql-path.ts#L13)
 
 Turns the "info.path" object into a unique string key.
 e.g., { prev: { key: "message" }, key: "author" } -> "message.author"
@@ -45,7 +45,7 @@ function collectRecursiveSelectionPair<T>(
    recur): readonly [string, T] | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:192](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/graphql-traverse.ts#L192)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:192](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/graphql-traverse.ts#L192)
 
 Collects recursive selection pairs based on a GraphQL field and its subpath.
 
@@ -100,7 +100,7 @@ function findGqlNodeByPath(
    fragments): GqlASTField | null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:88](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/graphql-traverse.ts#L88)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:88](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/graphql-traverse.ts#L88)
 
 Recursively finds a GraphQL node by traversing a path through a GraphQL Abstract Syntax Tree (AST).
 
@@ -140,7 +140,7 @@ A mapping of fragment names to their
 function flattenSpreads(fields, fragments): GqlASTField[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:60](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/graphql-traverse.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:60](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/graphql-traverse.ts#L60)
 
 Recursively processes an array of GraphQL AST fields, fragment spreads, and inline fragment spreads,
 and returns a flattened array of `GqlASTField` objects.
@@ -176,7 +176,7 @@ function unpackSelectArgs<Add>(
    fieldName): UnpackedBasicSelectionOptions & Add;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:131](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/graphql/graphql-traverse.ts#L131)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:131](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/graphql-traverse.ts#L131)
 
 Processes and unpacks selection arguments for a GraphQL field node, combining
 user-provided options with information from the GraphQL query AST.

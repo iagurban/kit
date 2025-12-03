@@ -4,7 +4,7 @@
 function convertToRoman(num): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/roman.ts:44](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/numbers/roman.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/roman.ts:44](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/numbers/roman.ts#L44)
 
 Converts a decimal number to its Roman numeral representation.
 Uses standard Roman numeral notation including subtractive combinations (e.g., IV for 4, IX for 9).

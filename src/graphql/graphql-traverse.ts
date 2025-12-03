@@ -6,7 +6,7 @@ export type GqlASTName = { kind: `Name`; value: string; loc: GqlASTLoc };
 
 export type GqlASTSelectionSet = {
   kind: `SelectionSet`;
-  selections: (GqlASTField | GqlASTFragmentSpread)[];
+  selections: readonly (GqlASTField | GqlASTFragmentSpread)[];
   loc: GqlASTLoc;
 };
 
@@ -14,13 +14,13 @@ export type GqlASTField = {
   kind: `Field`;
   alias?: GqlASTName;
   name: GqlASTName;
-  arguments: {
+  arguments: readonly {
     kind: `Argument`;
     name: GqlASTName;
     value: { kind: `Variable`; name: GqlASTName; loc: GqlASTLoc };
     loc: GqlASTLoc;
   }[];
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };
@@ -29,7 +29,7 @@ export type GqlASTFragmentDefinition = {
   kind: 'FragmentDefinition';
   name: GqlASTName;
   typeCondition: unknown;
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };
@@ -42,7 +42,7 @@ export type GqlASTFragmentSpread = {
 export type GqlASTInlineFragmentSpread = {
   kind: 'InlineFragment';
   typeCondition: unknown;
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };

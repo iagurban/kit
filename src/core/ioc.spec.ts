@@ -12,6 +12,16 @@ describe('createIoCContainer', () => {
     expect(container.serviceB).toBe('This is service B');
   });
 
+  it('should allow retrieving the registered implementation fabric', () => {
+    const schema = { serviceA: null };
+    const { implementations } = createIoCContainer(schema);
+
+    const serviceAImplementation = () => 'Service A';
+    implementations.serviceA = serviceAImplementation;
+
+    expect(implementations.serviceA).toBe(serviceAImplementation);
+  });
+
   it('should throw an error if a service is accessed without being registered', () => {
     const schema = { serviceA: null };
     const { container } = createIoCContainer(schema);

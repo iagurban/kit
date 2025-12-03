@@ -1,3 +1,4 @@
+import { sleep } from '../sleep';
 import { debouncedCollectingAsync } from './debounced-collecting-async';
 
 describe('debouncedCollectingAsync', () => {
@@ -73,5 +74,63 @@ describe('debouncedCollectingAsync', () => {
     const result = debounce();
     await expect(result).resolves.toBe('');
     expect(asyncMock).toHaveBeenCalledWith('');
+  });
+
+  describe('coverage', () => {
+    it('should log an error if an executing lane promise rejects', async () => {
+      const error = new Error('test error');
+      let isFirstCall = true;
+      let resolveFirstCall: () => void;
+      const firstCallPromise = new Promise<void>(resolve => (resolveFirstCall = resolve));
+
+      const debounced = debouncedCollectingAsync(
+        50,
+        (acc, v) => v,
+        async val => {
+          if (isFirstCall) {
+            isFirstCall = false;
+            await firstCallPromise;
+            throw error;
+          }
+          return val;
+        }
+      );
+
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const p1 = debounced(1);
+      await sleep(60); // Wait for p1 to start executing
+
+      const p2 = debounced(2); // p2 now waits for p1, attaching the console.error handler
+
+      resolveFirstCall!(); // Allow p1 to proceed and reject
+
+      await expect(p1).rejects.toThrow(error);
+      await expect(p2).resolves.toBe(2);
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('should throw from goToExecution if canceled after delay', async () => {
+      jest.useFakeTimers();
+      const asyncMock = jest.fn(async (v: number) => v);
+      const debounced = debouncedCollectingAsync(100, (acc: null | number, v: number) => v, asyncMock);
+
+      const p = debounced(1);
+
+      // Advance the timer synchronously. This queues the promise resolution (and the next step) as a microtask.
+      jest.advanceTimersByTime(100);
+
+      // Cancel *before* the microtask queue is processed.
+      debounced.cancel();
+
+      // Allow the microtask queue to process. The promise will now try to execute,
+      // call goToExecution, and hit the `if (l.canceled)` check.
+      await expect(p).rejects.toThrow('canceled');
+      expect(asyncMock).not.toHaveBeenCalled();
+
+      jest.useRealTimers();
+    });
   });
 });

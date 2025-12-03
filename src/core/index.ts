@@ -77,8 +77,6 @@ export type {
 export type { ReadonlyJsonArray, ReadonlyJsonObject, ReadonlyJsonValue } from './json/readonly-json-type';
 export { safeParseJSONValue } from './json/safe-parse-json-value';
 export { Balancer, ManualSortingAlphabet } from './manual-sorting';
-export { isNodeJSSignal } from './node-util';
-export { INodemonOptions, MtimeTracker, Nodemon, NodemonFileWatcher } from './nodemon';
 export type { NumericAgg } from './numbers/aggregation';
 export { aggregation } from './numbers/aggregation';
 export {

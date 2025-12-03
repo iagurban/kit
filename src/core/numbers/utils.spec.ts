@@ -1,4 +1,4 @@
-import { clamp, scale, scaleFrom01, scaleTo01, snap } from './utils';
+import { clamp, scale, scale_unsafe, scaleFrom01, scaleTo01, snap } from './utils';
 
 describe('numeric-utils', () => {
   describe('snap', () => {
@@ -85,6 +85,34 @@ describe('numeric-utils', () => {
     it('should handle decimal values', () => {
       expect(scaleTo01(3, 0, 10)).toBe(0.3);
       expect(scaleTo01(1, 0, 4)).toBe(0.25);
+    });
+
+    it('should throw an error if max equals min', () => {
+      expect(() => scaleTo01(5, 10, 10)).toThrow('max === min');
+    });
+  });
+
+  describe('scale_unsafe', () => {
+    it('should scale between arbitrary ranges', () => {
+      expect(scale_unsafe(50, 0, 100, 0, 1)).toBe(0.5);
+      expect(scale_unsafe(0.5, 0, 1, 0, 100)).toBe(50);
+      expect(scale_unsafe(5, 0, 10, 0, 100)).toBe(50);
+    });
+
+    it('should handle negative ranges', () => {
+      expect(scale_unsafe(0, -100, 100, 0, 1)).toBe(0.5);
+      expect(scale_unsafe(0, 0, 100, -1, 1)).toBe(-1);
+      expect(scale_unsafe(-50, -100, 0, 0, 100)).toBe(50);
+    });
+
+    it('should handle inverse ranges', () => {
+      expect(scale_unsafe(75, 0, 100, 100, 0)).toBe(25);
+      expect(scale_unsafe(25, 100, 0, 0, 100)).toBe(75);
+    });
+
+    it('should handle decimal values', () => {
+      expect(scale_unsafe(5, 0, 10, 0, 1)).toBe(0.5);
+      expect(scale_unsafe(0.5, 0, 1, 0, 10)).toBe(5);
     });
   });
 

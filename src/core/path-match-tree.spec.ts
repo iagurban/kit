@@ -115,6 +115,39 @@ describe('pathMatchTree', () => {
     });
   });
 
+  describe('Leading Separator and Matcher Priority', () => {
+    const tree = pathMatchTree([
+      ['/a/b', 1],
+      ['/a/*', 2],
+      ['/a/b/c', 3],
+    ]);
+
+    it('should handle paths with a leading separator', () => {
+      const result = tree.matchStart('/a/b');
+      expect(result?.leaf.payload).toBe(1);
+      expect(result?.rest).toBeUndefined();
+      expect(result?.matched).toEqual(['a', 'b']);
+    });
+
+    it('should handle paths with a leading separator and rest', () => {
+      const result = tree.matchStart('/a/b/d');
+      expect(result?.leaf.payload).toBe(1);
+      expect(result?.rest).toBe('d');
+      expect(result?.matched).toEqual(['a', 'b']);
+    });
+
+    it('should cover the longer match branch in getBetterMatch', () => {
+      // Path /a/b/c will have two potential matches at the '/a' level:
+      // 1. The prefix match for '/a/*' (length 2)
+      // 2. The deeper match for '/a/b/c' (length 3)
+      // The `getBetterMatch` function will be called to compare the deeper match (a)
+      // with the prefix match (b). `a.matched.length > b.matched.length` will be true.
+      const result = tree.matchStart('/a/b/c');
+      expect(result?.leaf.payload).toBe(3);
+      expect(result?.matched).toEqual(['a', 'b', 'c']);
+    });
+  });
+
   describe('Terminated Paths', () => {
     const tree = pathMatchTree([
       ['a/b$', 1], // Terminated
@@ -201,6 +234,21 @@ describe('pathMatchTree', () => {
 
     it('should return null if there is a rest', () => {
       expect(tree.matchStrict('a/b/c')).toBeNull();
+    });
+  });
+
+  describe('getFirstBestMatch branch coverage', () => {
+    it('should cover the rest.slice(separator.length) branch in getFirstBestMatch', () => {
+      // This test case is specifically designed to cover the branch in `getFirstBestMatch` where
+      // a partial match is found and the rest of the path starts with a separator.
+      // The tree has a path 'a', and we match against 'a/b'.
+      // The 'a' part is matched, and the rest is 'b'.
+      // The code then executes `rest.slice(separator.length)` to get the final rest value.
+      const tree = pathMatchTree([['a', 1]]);
+      const result = tree.matchStart('a/b');
+      expect(result?.leaf.payload).toBe(1);
+      expect(result?.rest).toBe('b');
+      expect(result?.matched).toEqual(['a']);
     });
   });
 });

@@ -4,9 +4,9 @@ import { EventEmitter } from 'node:events';
 import * as fs from 'fs';
 import { glob } from 'glob'; // Import glob to be mocked
 
+import { sleep } from '../core/sleep';
+import { AnyAnyFunction } from '../core/types';
 import { ManagedProcess, MtimeTracker, Nodemon, NodemonFileWatcher } from './nodemon';
-import { sleep } from './sleep';
-import { AnyAnyFunction } from './types';
 
 type Any = ReturnType<AnyAnyFunction>;
 
@@ -20,7 +20,7 @@ jest.mock('fs', () => ({
   },
 }));
 
-jest.mock('./sleep', () => ({
+jest.mock('../core/sleep', () => ({
   sleep: jest.fn((ms: number) => new Promise(resolve => setTimeout(resolve, ms))),
 }));
 
@@ -240,6 +240,17 @@ describe(`nodemon`, () => {
       mockedSleep.mockClear();
       await tick(CHECK_INTERVAL * 2);
       expect(mockedSleep).not.toHaveBeenCalled();
+    });
+
+    it('should handle stop() being called on a not-started tracker', async () => {
+      // Do not call tracker.start()
+      const stopPromise = tracker.stop();
+      await jest.runOnlyPendingTimersAsync();
+      await stopPromise;
+
+      expect(tracker.started).toBe(false);
+      expect(mockedSleep).not.toHaveBeenCalled(); // Ensure no polling was attempted
+      // No errors should be thrown, and it should resolve gracefully
     });
   });
 

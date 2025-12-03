@@ -1,5 +1,5 @@
 # Interface: IPubSubSubscriberService
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/pubsub-subscriber-service.interface.ts:6](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/interfaces/pubsub-subscriber-service.interface.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/pubsub-subscriber-service.interface.ts:6](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/interfaces/pubsub-subscriber-service.interface.ts#L6)
 
 Interface representing a Pub/Sub subscriber service.

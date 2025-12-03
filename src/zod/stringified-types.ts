@@ -50,14 +50,7 @@ export const stringifiedBigint = z.codec(
  * Throws:
  * - An error if the given date string is not valid or cannot be parsed into a valid `Date` object.
  */
-export const stringifiedISODate = z
-  .codec(z.iso.datetime(), z.date(), {
-    encode: v => v.toISOString(),
-    decode: v => new Date(v),
-  })
-  .refine(date => {
-    if (isNaN(date.getTime())) {
-      throw new Error(`invalid date`);
-    }
-    return date;
-  });
+export const stringifiedISODate = z.codec(z.iso.datetime(), z.date(), {
+  encode: v => v.toISOString(),
+  decode: v => new Date(v),
+});

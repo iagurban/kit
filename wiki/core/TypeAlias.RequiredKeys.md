@@ -4,7 +4,7 @@
 type RequiredKeys<T> = { [K in keyof T]: {} extends { [P in K]: T[K] } ? never : K }[keyof T];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:69](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/types.ts#L69)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:69](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/types.ts#L69)
 
 A utility type that extracts the required keys of a given type `T`.
 

@@ -4,7 +4,7 @@
 type Checker<T> = (o) => o is T & object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:15](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:36](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L36)
 
 A type definition for a utility function that determines whether a given value
 matches a specific type T. The `Checker` type is both a function and an object.

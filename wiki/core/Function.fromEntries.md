@@ -4,7 +4,7 @@
 function fromEntries<T, V>(pairs): Record<T, V>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:100](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/collections/object-utils.ts#L100)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:101](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/collections/object-utils.ts#L101)
 
 Converts an array of key-value pairs into an object.
 

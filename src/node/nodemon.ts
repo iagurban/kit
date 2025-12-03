@@ -6,10 +6,7 @@ import * as fs from 'fs';
 import { glob } from 'glob';
 import path from 'path';
 
-import { isTruthy } from './checks';
-import { errorToString } from './error-utils';
-import { ReadonlyExtendedJsonObject } from './json/readonly-extended-json-type';
-import { sleep } from './sleep';
+import { errorToString, isTruthy, ReadonlyExtendedJsonObject, sleep } from '../core';
 
 type LogFunction = (
   channel: `error` | `warn` | `log`,

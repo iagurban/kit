@@ -1,5 +1,5 @@
 import { ExMap } from '../core';
-import { getModelsMetadataFromString, ModelMeta } from './models-metadata';
+import { getModelsMetadataFromString, ModelFieldMeta, ModelMeta } from './models-metadata';
 
 describe('getModelsMetadataFromString', () => {
   it('should return an empty ExMap when no models are in the schema', () => {
@@ -33,6 +33,7 @@ describe('getModelsMetadataFromString', () => {
     const userModel = result.models.get('User');
     expect(userModel).toBeInstanceOf(ModelMeta);
     expect(userModel?.raw.name.value).toBe('User');
+    expect(userModel?.fields.length).toBe(2);
   });
 
   it('should extract multiple models from the schema', () => {
@@ -343,5 +344,37 @@ describe('ModelFieldMeta', () => {
     const hasId1 = idField.hasIdAttribute;
     const hasId2 = idField.hasIdAttribute;
     expect(hasId1).toBe(hasId2);
+  });
+
+  it('should work with attributes=undefined', () => {
+    // This test creates AST with attributes=undefined manually because a parsing function always fills it
+    // with the value at runtime.
+
+    const location = {
+      start: { offset: 32, line: 3, column: 11 },
+      end: { offset: 34, line: 3, column: 13 },
+    };
+
+    const meta = new ModelFieldMeta({
+      kind: 'field',
+      name: {
+        kind: 'name',
+        value: 'id',
+        location,
+      },
+      type: {
+        kind: 'typeId',
+        name: {
+          kind: 'name',
+          value: 'Int',
+          location,
+        },
+      },
+      attributes: undefined,
+      comment: null,
+      location,
+    });
+
+    expect(meta.attributes).toEqual([]);
   });
 });

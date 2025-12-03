@@ -4,7 +4,7 @@
 function allCodePoints<T>(s): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:35](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/string-util.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:35](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/string-util.ts#L35)
 
 Computes and returns an array of numeric code points for the provided input.
 

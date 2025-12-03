@@ -1,6 +1,6 @@
 # Abstract Class: OidcJwtStrategyBase\<TUser, TPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:25](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/oidc-jwt-strategy.base.ts#L25)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:25](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/nest/oidc-jwt-strategy.base.ts#L25)
 
 Abstract base class for a Passport JWT strategy that validates tokens from an
 OIDC-compliant third-party identity provider (e.g., Keycloak, Auth0).
@@ -71,7 +71,7 @@ PassportStrategy(Strategy, 'jwt').authenticate
 abstract convertPayloadToUser(payload): Promise<TUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:38](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/oidc-jwt-strategy.base.ts#L38)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:38](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/nest/oidc-jwt-strategy.base.ts#L38)
 
 Converts the validated JWT payload from the IdP into your application's
 internal user representation. This is where you map claims to user properties.
@@ -322,7 +322,7 @@ PassportStrategy(Strategy, 'jwt').success
 validate(payload): Promise<TUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:62](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/nest/oidc-jwt-strategy.base.ts#L62)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:62](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/nest/oidc-jwt-strategy.base.ts#L62)
 
 Passport's validation method. It receives the payload after the signature
 and claims (`iss`, `aud`, `exp`) have been verified.

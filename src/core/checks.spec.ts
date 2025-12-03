@@ -1,5 +1,6 @@
 import {
   checked,
+  checkerType,
   isArrayOf,
   isDefined,
   isInstanceOf,
@@ -18,6 +19,8 @@ import {
   isTuple,
   isTuples,
   isUndefined,
+  tagChecker,
+  tagCheckerGetter,
   validator,
   validator0,
 } from './checks';
@@ -238,20 +241,6 @@ describe('Type Checks', () => {
     });
   });
 
-  describe('validator and validator0', () => {
-    it('should validate and transform values', () => {
-      const validateString = validator(isString);
-      expect(validateString('text', s => s.length)).toBe(4);
-      expect(() => validateString(123, s => s.length)).toThrow();
-    });
-
-    it('should validate without transformation', () => {
-      const validateString = validator0(isString);
-      expect(validateString('text')).toBe('text');
-      expect(() => validateString(123)).toThrow();
-    });
-  });
-
   describe('checked', () => {
     it('should validate values with custom message', () => {
       const result = checked('text', isString, v => `Expected string, got ${typeof v}`);
@@ -270,6 +259,122 @@ describe('Type Checks', () => {
       expect(() => checked(-1, isPositive, n => `Expected positive number, got ${n}`)).toThrow(
         'Expected positive number, got -1'
       );
+    });
+
+    it('should throw an Error object if message returns one', () => {
+      const customError = new Error('Custom error object');
+      expect(() => checked(123, isString, () => customError)).toThrow(customError);
+    });
+  });
+
+  describe('Checker Type Field Generation', () => {
+    it('should have correct types for basic checkers', () => {
+      expect(checkerType(isDefined)).toBe('[defined]');
+      expect(checkerType(isNotUndefined)).toBe('!undefined');
+      expect(checkerType(isNotNull)).toBe('!null');
+      expect(checkerType(isTruthy)).toBe('[truthy]');
+      expect(checkerType(isUndefined)).toBe('undefined');
+      expect(checkerType(isNull)).toBe('null');
+      expect(checkerType(isNullish)).toBe('(null|undefined)');
+      expect(checkerType(isString)).toBe('string');
+      expect(checkerType(isNumber)).toBe('number');
+      expect(checkerType(isInteger)).toBe('integer');
+      expect(checkerType(isPlainObject)).toBe('plain-object');
+      expect(checkerType(isSomeObject)).toBe('some-object');
+      expect(checkerType(isROArray)).toBe('readonly-array');
+    });
+
+    it('should generate correct type for isArrayOf', () => {
+      const isNumberArray = isArrayOf(isNumber);
+      expect(checkerType(isNumberArray)).toBe('number[]');
+      const isStringArrayArray = isArrayOf(isArrayOf(isString));
+      expect(checkerType(isStringArrayArray)).toBe('string[][]');
+    });
+
+    it('should generate correct type for isSomeOf', () => {
+      const isStringOrNumber = isSomeOf(isString, isNumber);
+      expect(checkerType(isStringOrNumber)).toBe('(string | number)');
+      const isComplex = isSomeOf(isString, isArrayOf(isNumber));
+      expect(checkerType(isComplex)).toBe('(string | number[])');
+    });
+
+    it('should generate correct type for isInstanceOf', () => {
+      class MyClass {}
+      class AnotherClass {}
+      const isMyClass = isInstanceOf(MyClass);
+      expect(checkerType(isMyClass)).toBe('[class MyClass]');
+      const isOneOfTwo = isInstanceOf(MyClass, AnotherClass);
+      expect(checkerType(isOneOfTwo)).toBe('[class MyClass | class AnotherClass]');
+    });
+
+    it('should handle anonymous classes in isInstanceOf', () => {
+      const isAnon = isInstanceOf(class {});
+      expect(checkerType(isAnon)).toBe('[class]');
+    });
+  });
+
+  describe('Custom Checker Creation', () => {
+    it('should create a checker with no type tag', () => {
+      const isPositive = (o: unknown): o is number => typeof o === 'number' && o > 0;
+      expect(isPositive(1)).toBe(true);
+      expect(isPositive(-1)).toBe(false);
+      expect(checkerType(isPositive)).toBe('[unknown]');
+    });
+
+    it('should create a checker with a fixed string type', () => {
+      const isPositive = tagChecker((o: unknown): o is number => typeof o === 'number' && o > 0, 'positive-number');
+      expect(isPositive(1)).toBe(true);
+      expect(isPositive(-1)).toBe(false);
+      expect(checkerType(isPositive)).toBe('positive-number');
+    });
+
+    it('should create a checker with a cached getter for the type', () => {
+      const typeGetter = jest.fn(() => 'positive-number');
+      const isPositive = tagCheckerGetter((o: unknown): o is number => typeof o === 'number' && o > 0, typeGetter);
+
+      expect(checkerType(isPositive)).toBe('positive-number');
+      expect(checkerType(isPositive)).toBe('positive-number'); // Access again
+      expect(typeGetter).toHaveBeenCalledTimes(1); // Should only be called once
+    });
+
+    it('should create a checker with a non-cached getter for the type', () => {
+      const typeGetter = jest.fn(() => 'positive-number');
+      const isPositive = tagCheckerGetter(
+        (o: unknown): o is number => typeof o === 'number' && o > 0,
+        typeGetter,
+        false // cache = false
+      );
+
+      expect(checkerType(isPositive)).toBe('positive-number');
+      expect(checkerType(isPositive)).toBe('positive-number'); // Access again
+      expect(typeGetter).toHaveBeenCalledTimes(2); // Should be called each time
+    });
+  });
+
+  describe('Validator Error Messages', () => {
+    it('should include the type in the error message when available', () => {
+      const validateString = validator(isString);
+      expect(() => validateString(123, s => s.length)).toThrow('check of type string failed, got 123');
+      const validateString0 = validator0(isString);
+      expect(() => validateString0(123)).toThrow('check of type string failed, got 123');
+    });
+
+    it('should not include the type in the error message when not available', () => {
+      const isPositive = (o: unknown): o is number => typeof o === 'number' && o > 0;
+      const validatePositive = validator(isPositive);
+      expect(() => validatePositive(-1, n => n)).toThrow('check failed, got -1');
+      const validatePositive0 = validator0(isPositive);
+      expect(() => validatePositive0(-1)).toThrow('check failed, got -1');
+    });
+
+    it('should return transformed value on successful validation', () => {
+      const validateString = validator(isString);
+      expect(validateString('test', s => s.toUpperCase())).toBe('TEST');
+    });
+
+    it('should return value on successful validation for validator0', () => {
+      const validateNumber = validator0(isNumber);
+      expect(validateNumber(123)).toBe(123);
     });
   });
 });

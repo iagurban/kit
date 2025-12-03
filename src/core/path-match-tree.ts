@@ -145,7 +145,7 @@ export const pathMatchTree = <Payload>(
         // Path is not fully consumed, only a normal leaf can be a prefix match.
         return {
           leaf: node.leaf,
-          rest: rest.startsWith(separator) ? rest.slice(separator.length) : rest,
+          rest,
           matched: [...matched],
         };
       }

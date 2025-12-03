@@ -4,7 +4,7 @@
 function isTuple<Vs>(...items): Checker<Vs>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:244](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/core/checks.ts#L244)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:281](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L281)
 
 A utility function used to determine whether a given value is a tuple of a specific structure.
 
