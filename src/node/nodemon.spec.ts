@@ -387,6 +387,38 @@ describe(`nodemon`, () => {
       await managedProcess.kill();
       expect(processKillSpy).not.toHaveBeenCalled();
     });
+
+    it('should not clear the running process if a new one has started', async () => {
+      managedProcess = new ManagedProcess({ command: 'node' }, 'SIGTERM', {}, log);
+
+      // --- First Start ---
+      managedProcess.start();
+      const oldProcess = mockChildProcess;
+      const oldFinishedPromise = (managedProcess as Any).running.finished;
+      expect((managedProcess as Any).running.process).toBe(oldProcess);
+
+      // --- Simulate Restart (by clearing and starting again) ---
+      // Manually clear the running state to allow a new process to start
+      (managedProcess as Any).running = null;
+
+      const newMockProcess = new EventEmitter() as unknown as EventEmitter & { pid?: number };
+      newMockProcess.pid = 5678;
+      mockedSpawn.mockReturnValue(newMockProcess);
+
+      managedProcess.start();
+      expect((managedProcess as Any).running.process).toBe(newMockProcess);
+
+      // --- Trigger close on the OLD process ---
+      // Now, emit 'close' on the *old* process. Its 'finished' promise will resolve.
+      oldProcess.emit('close', 0);
+      await oldFinishedPromise; // Wait for the finally() block of the old process
+
+      // --- Assert ---
+      // The 'finally' block of the old process should NOT have cleared the 'running' state,
+      // because `this.running.process` now points to the new process.
+      expect((managedProcess as Any).running).not.toBeNull();
+      expect((managedProcess as Any).running.process).toBe(newMockProcess);
+    });
   });
 
   describe('NodemonFileWatcher', () => {
