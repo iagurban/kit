@@ -4,7 +4,7 @@
 function throwing<T>(e): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/throwing.ts:11](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/flow/throwing.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/throwing.ts:11](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/flow/throwing.ts#L11)
 
 A generic utility function that throws an exception provided by the given function.
 Handy for throwing in ternary operators.

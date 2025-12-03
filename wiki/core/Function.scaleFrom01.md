@@ -7,7 +7,7 @@ function scaleFrom01(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:26](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/numbers/utils.ts#L26)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:26](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/numbers/utils.ts#L26)
 
 Scales a value from a normalized range [0, 1] to a specified range [min, max].
 

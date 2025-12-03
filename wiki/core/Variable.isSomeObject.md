@@ -4,7 +4,7 @@
 const isSomeObject: <T, R>(o) => o is T & Record<string, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:177](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L177)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:177](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/checks.ts#L177)
 
 Checks if the provided value is an object and not null, while also ensuring
 it is not an array. This function performs a type guard that verifies the

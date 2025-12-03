@@ -1,6 +1,6 @@
 # Class: ModelFieldMeta
 
-Defined in: [models-metadata.ts:25](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L25)
+Defined in: [models-metadata.ts:25](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L25)
 
 Represents metadata about a model field, including its name and associated attributes.
 
@@ -14,7 +14,7 @@ Represents metadata about a model field, including its name and associated attri
 get attributes(): FieldAttribute[];
 ```
 
-Defined in: [models-metadata.ts:44](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L44)
+Defined in: [models-metadata.ts:44](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L44)
 
 Retrieves the attributes of the current object. If no attributes are available, returns an empty array.
 Decorated with
@@ -39,7 +39,7 @@ The list of attributes for the current object, or an empty array if no attribute
 get hasIdAttribute(): boolean;
 ```
 
-Defined in: [models-metadata.ts:54](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L54)
+Defined in: [models-metadata.ts:54](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L54)
 
 Checks if the attributes contain an `id` attribute.
 
@@ -59,7 +59,7 @@ True if the attributes include an `id` attribute, otherwise false.
 get name(): string;
 ```
 
-Defined in: [models-metadata.ts:33](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/prisma/models-metadata.ts#L33)
+Defined in: [models-metadata.ts:33](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L33)
 
 Retrieves the name value from the raw object property.
 

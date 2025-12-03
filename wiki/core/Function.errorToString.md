@@ -4,7 +4,7 @@
 function errorToString(error): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:10](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/error-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:10](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/error-utils.ts#L10)
 
 Converts an unknown error value into a string representation.
 

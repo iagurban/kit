@@ -4,9 +4,9 @@
 function isZodOutput<T>(schema, o): o is output<T>;
 ```
 
-Defined in: [zod-utils.ts:22](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/zod-utils.ts#L22)
+Defined in: [zod-utils.ts:32](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/zod/zod-utils.ts#L32)
 
-Checks if the provided value matches the expected output type of the given Zod schema.
+Determines if a given value is "encodeable" output-value of the given Zod schema.
 
 ## Type Parameters
 

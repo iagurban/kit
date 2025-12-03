@@ -4,9 +4,9 @@
 function isZodInput<T>(schema, o): o is input<T>;
 ```
 
-Defined in: [zod-utils.ts:11](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/zod/zod-utils.ts#L11)
+Defined in: [zod-utils.ts:21](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/zod/zod-utils.ts#L21)
 
-Determines if a given input conforms to the specified Zod schema.
+Determines if a given value is "decodeable" input-value of the given Zod schema.
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ The type of the Zod schema.
 
 `T`
 
-The Zod schema to validate the input against.
+The Zod schema to validate against.
 
 ### o
 

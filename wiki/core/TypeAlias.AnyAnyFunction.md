@@ -4,7 +4,7 @@
 type AnyAnyFunction<R> = (...args) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:177](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/types.ts#L177)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:177](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/types.ts#L177)
 
 A type definition for a function that accepts any number of arguments
 of any type and returns a value of type R.

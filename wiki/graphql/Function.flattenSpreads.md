@@ -4,7 +4,7 @@
 function flattenSpreads(fields, fragments): GqlASTField[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:60](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/graphql/graphql-traverse.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:60](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/graphql/graphql-traverse.ts#L60)
 
 Recursively processes an array of GraphQL AST fields, fragment spreads, and inline fragment spreads,
 and returns a flattened array of `GqlASTField` objects.

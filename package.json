@@ -45,7 +45,7 @@
     "docs:md:react-mobx": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/react/mobx/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/react-mobx/Home.md)",
     "docs:md:redis": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/redis/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/redis/Home.md)",
     "docs:md:zod": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/zod/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/zod/Home.md)",
-    "docs:md": "yarn docs:md:core && yarn docs:md:graphql && yarn docs:md:mobx && yarn docs:md:nest && docs:md:node && yarn docs:md:prisma && yarn docs:md:react && yarn docs:md:react-mobx && yarn docs:md:redis && yarn docs:md:zod"
+    "docs:md": "yarn docs:md:core && yarn docs:md:graphql && yarn docs:md:mobx && yarn docs:md:nest && yarn docs:md:node && yarn docs:md:prisma && yarn docs:md:react && yarn docs:md:react-mobx && yarn docs:md:redis && yarn docs:md:zod"
   },
   "dependencies": {
     "@loancrate/prisma-schema-parser": "^3.0.0",

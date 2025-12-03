@@ -4,7 +4,7 @@
 function isMounted(node): boolean;
 ```
 
-Defined in: [html.ts:53](https://github.com/iagurban/kit/blob/8f103f270ee7e07174f3b99efd44fc39c626cbff/src/react/html.ts#L53)
+Defined in: [html.ts:53](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/react/html.ts#L53)
 
 Checks if a given HTML element is mounted to the DOM.
 

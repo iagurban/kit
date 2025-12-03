@@ -4,7 +4,7 @@
 const stringConstants: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:40](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/string-const.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:40](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/string-const.ts#L40)
 
 An object containing string constants used throughout the application.
 

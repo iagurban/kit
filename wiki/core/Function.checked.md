@@ -27,7 +27,7 @@ function checked<T, R>(
    message): R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:346](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L346)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:346](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/checks.ts#L346)
 
 ### Type Parameters
 
@@ -66,7 +66,7 @@ function checked<T>(
    message): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:347](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L347)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:347](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/checks.ts#L347)
 
 ### Type Parameters
 

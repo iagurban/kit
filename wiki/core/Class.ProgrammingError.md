@@ -1,6 +1,6 @@
 # Class: ProgrammingError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/programming-error.ts:4](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/errors/programming-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/programming-error.ts:4](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/errors/programming-error.ts#L4)
 
 Indicates a programming error (unrecoverable; need to be fixed by code change)
 

@@ -7,7 +7,7 @@ type ReadonlyExtendedJsonValue =
   | ReadonlyExtendedJsonObject;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-extended-json-type.ts:11](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/json/readonly-extended-json-type.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-extended-json-type.ts:11](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/json/readonly-extended-json-type.ts#L11)
 
 Represents an extended JSON value that is immutable. This can be any of the following types:
 - An `ExtendedJsonScalar`, which includes scalar values like strings, numbers, or booleans.

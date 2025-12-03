@@ -4,7 +4,7 @@
 function isArrayOf<K>(isK): Checker<K[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:203](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L203)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:203](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/checks.ts#L203)
 
 A utility function that checks if a given value is an array
 whose elements satisfy a specific type guard function.

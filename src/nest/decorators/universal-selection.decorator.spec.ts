@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 
@@ -10,13 +12,6 @@ import {
   UniversalSelectionArgs,
 } from './universal-selection.decorator';
 
-// Mock createParamDecorator to get the factory function
-const mockCreateParamDecorator = jest.fn(
-  (factory: (data: UniversalSelectionArgs, context: ExecutionContext) => any) =>
-    (...dataOrPipes: any[]): ParameterDecorator =>
-    (target, key, index) => {}
-);
-
 // Mock GqlExecutionContext for decorator testing
 jest.mock('@nestjs/common', () => ({
   ...jest.requireActual('@nestjs/common'),
@@ -24,8 +19,8 @@ jest.mock('@nestjs/common', () => ({
     factory: (data: UniversalSelectionArgs, context: ExecutionContext) => any
   ): ((...dataOrPipes: any[]) => ParameterDecorator) => {
     const decorator =
-      (...dataOrPipes: any[]): ParameterDecorator =>
-      (target, key, index) => {};
+      (..._dataOrPipes: any[]): ParameterDecorator =>
+      (_target, _key, _index) => {};
     (decorator as any).factory = factory;
     return decorator as any;
   },
@@ -152,10 +147,12 @@ describe('UniversalSelection', () => {
           {
             kind: 'Field',
             name: { kind: 'Name', value: 'testField' },
-            selectionSet: selections ? {
-              kind: 'SelectionSet',
-              selections,
-            } : undefined,
+            selectionSet: selections
+              ? {
+                  kind: 'SelectionSet',
+                  selections,
+                }
+              : undefined,
           },
         ],
         fragments,
