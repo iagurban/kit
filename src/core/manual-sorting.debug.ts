@@ -5,7 +5,7 @@ import { sortedIndexOf } from 'lodash';
 import { checked, isNumber, isROArray, isSomeOf, isString } from './checks';
 import { Changes, ManualSortingAlphabet } from './manual-sorting';
 
-export class DebugManualSortingAlphabet extends ManualSortingAlphabet {
+export class ManualSortingAlphabetDebug extends ManualSortingAlphabet {
   isValidKey(s: string) {
     return Array.from(s).every(c => this.options.converter.digitsSet.has(c.codePointAt(0)!));
   }

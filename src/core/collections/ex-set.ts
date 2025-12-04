@@ -54,7 +54,6 @@ export class ExSet<Value> implements ReadonlySet<Value>, Set<Value> {
   /**
    * Executes a callback for each value in the set
    * @param by - Function to execute for each element
-   * @param thisArg - Value to use as 'this' when executing the callback
    */
   forEach(by: (value: Value, value2: Value, self: ExSet<Value>) => void): void {
     for (const value of this._s) {
@@ -183,8 +182,8 @@ export class ExSet<Value> implements ReadonlySet<Value>, Set<Value> {
   }
 
   /**
-   * Creates an immutable version of this set by freezing it and preventing mutations
-   * @returns A read-only version of this set that throws on mutation attempts
+   * Freezes the set, preventing any further mutations.
+   * @returns A read-only version of this set that throws on mutation attempts.
    */
   public freeze(): ReadonlyExSet<Value> {
     const descriptor = {

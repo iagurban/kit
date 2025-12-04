@@ -6,6 +6,8 @@
 
 ## Variables
 
+- [jsonLiteralSchema](Variable.jsonLiteralSchema.md)
+- [jsonObjectSchema](Variable.jsonObjectSchema.md)
 - [jsonValueSchema](Variable.jsonValueSchema.md)
 - [stringifiedBigint](Variable.stringifiedBigint.md)
 - [stringifiedISODate](Variable.stringifiedISODate.md)

@@ -41,6 +41,15 @@ export const getRedisHashToJSON = async (
   );
 };
 
+/**
+ * Retrieves the values of specified fields of a Redis Hash, converts the string values back to their
+ * native JavaScript types using JSON.parse(), and returns the resulting array of values.
+ * @param redis The Redis client instance.
+ * @param key The Redis key of the Hash.
+ * @param fields The fields to retrieve.
+ * @param options Optional configuration, including a fallback function.
+ * @returns An array of JavaScript values with typed values.
+ */
 export const getRedisHashToValuesByFields = async (
   redis: Redis,
   key: string,
@@ -58,6 +67,15 @@ export const getRedisHashToValuesByFields = async (
   });
 };
 
+/**
+ * Retrieves the specified fields of a Redis Hash, converts the string values back to their
+ * native JavaScript types using JSON.parse(), and returns the resulting object.
+ * @param redis The Redis client instance.
+ * @param key The Redis key of the Hash.
+ * @param fields The fields to retrieve.
+ * @param options Optional configuration, including a fallback function.
+ * @returns A JavaScript object with typed values, or null if the hash is empty or not found.
+ */
 export const getRedisHashToJSONByFields = async (
   redis: Redis,
   key: string,

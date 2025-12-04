@@ -4,7 +4,7 @@
 function useResizeObserver(callback): GraphNodeViewStore;
 ```
 
-Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/react/mobx/use-resize-observer.ts#L57)
+Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/react/mobx/use-resize-observer.ts#L57)
 
 useResizeObserver is a custom hook that creates a reference to a `GraphNodeViewStore`
 instance for handling resize events using a provided callback function.

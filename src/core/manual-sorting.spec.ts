@@ -1,6 +1,6 @@
 import { checked } from './checks';
 import { Balancer, Changes, ManualSortingAlphabet } from './manual-sorting';
-import { DebugManualSortingAlphabet, isArraySortedUniq } from './manual-sorting.debug';
+import { isArraySortedUniq, ManualSortingAlphabetDebug } from './manual-sorting.debug';
 import { NumberBase } from './numbers/number-base';
 import { NumberConverter } from './numbers/number-converter';
 import { AnyAnyFunction } from './types';
@@ -18,7 +18,7 @@ function applyChanges(oldArray: readonly string[], { updated, inserted }: Change
 }
 
 const createAlphabet = (ranges: [string, string][], prependingStrategy?: 'evenly' | 'right-of-mid') => {
-  return new DebugManualSortingAlphabet({
+  return new ManualSortingAlphabetDebug({
     converter: new NumberConverter(ranges),
     prependingStrategy,
   });
@@ -396,7 +396,7 @@ describe('manual-sorting', () => {
     describe('presets', () => {
       it('asciiFriendly preset has expected size and middle key in range', () => {
         const preset = ManualSortingAlphabet.presets.asciiFriendly;
-        const alphabet = new DebugManualSortingAlphabet({ converter: preset });
+        const alphabet = new ManualSortingAlphabetDebug({ converter: preset });
         expect(alphabet.options.converter.digits.length).toBe(preset.digits.length);
         const first = alphabet.getFirstKey();
         expect(first.length).toBeGreaterThan(0);

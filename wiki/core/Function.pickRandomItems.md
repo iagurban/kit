@@ -4,7 +4,7 @@
 function pickRandomItems<T>(count, from): T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:58](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/collections/array-utils.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:58](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/array-utils.ts#L58)
 
 Selects a specified number of random unique items from a given array.
 

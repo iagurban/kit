@@ -1,6 +1,6 @@
 # Class: ModelMeta
 
-Defined in: [models-metadata.ts:63](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L63)
+Defined in: [models-metadata.ts:63](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L63)
 
 Represents metadata for a model declaration which provides information about fields,
 block attributes, and identification attributes in the model schema.
@@ -15,7 +15,7 @@ block attributes, and identification attributes in the model schema.
 get allIdFields(): ModelFieldMeta[];
 ```
 
-Defined in: [models-metadata.ts:143](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L143)
+Defined in: [models-metadata.ts:143](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L143)
 
 Retrieves all fields or attributes marked as ID within the current object.
 Combines ID fields from `idBlockAttribute` and fields containing the `hasIdAttribute` property.
@@ -36,7 +36,7 @@ A unique array of all fields or attributes identified as ID within the object.
 get blockAttributes(): ModelBlockAttribute[];
 ```
 
-Defined in: [models-metadata.ts:96](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L96)
+Defined in: [models-metadata.ts:96](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L96)
 
 Retrieves a list of block attributes from the raw members.
 Filters the members to include only those identified as block attributes
@@ -58,7 +58,7 @@ An array of ModelBlockAttribute instances extracted from the raw members.
 get fields(): ModelFieldMeta[];
 ```
 
-Defined in: [models-metadata.ts:74](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L74)
+Defined in: [models-metadata.ts:74](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L74)
 
 Retrieves the list of field metadata for the model.
 The method filters the raw member data to identify valid field metadata
@@ -80,7 +80,7 @@ An array of ModelFieldMeta instances representing the fields.
 get fieldsByName(): ExMap<string, ModelFieldMeta>;
 ```
 
-Defined in: [models-metadata.ts:84](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L84)
+Defined in: [models-metadata.ts:84](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L84)
 
 Retrieves a mapping of fields by their names.
 
@@ -100,7 +100,7 @@ A map where each key is a field name and its corresponding value is the field ob
 get idBlockAttribute(): ModelFieldMeta[] | null;
 ```
 
-Defined in: [models-metadata.ts:112](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/prisma/models-metadata.ts#L112)
+Defined in: [models-metadata.ts:112](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/models-metadata.ts#L112)
 
 Retrieves the block attribute related to the `id` for the corresponding schema.
 

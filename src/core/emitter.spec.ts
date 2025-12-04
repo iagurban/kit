@@ -76,6 +76,24 @@ describe('Emitter', () => {
       emitter.emit('eventA', 42);
       expect(mockListener).not.toHaveBeenCalled();
     });
+
+    it('should do nothing when removing a listener that was not added', () => {
+      const addedListener = jest.fn();
+      const notAddedListener = jest.fn();
+
+      emitter.on('eventA', addedListener);
+
+      // Attempt to remove a listener that was never added
+      expect(() => emitter.off('eventA', notAddedListener)).not.toThrow();
+
+      // Ensure the added listener is still there and working
+      emitter.emit('eventA', 123);
+      expect(addedListener).toHaveBeenCalledTimes(1);
+      expect(addedListener).toHaveBeenCalledWith(123);
+
+      // Ensure the not-added listener was not called
+      expect(notAddedListener).not.toHaveBeenCalled();
+    });
   });
 
   describe('emit method', () => {

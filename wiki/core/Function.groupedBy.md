@@ -4,7 +4,7 @@
 function groupedBy<T, K>(o, by): Record<K, T[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:32](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/collections/object-utils.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:32](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/object-utils.ts#L32)
 
 Groups the elements of an array based on the result of a callback function.
 

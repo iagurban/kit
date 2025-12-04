@@ -4,7 +4,7 @@
 function retrying<T>(shouldRetry, fn): Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/retrying.ts:33](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/async/retrying.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/core/async/retrying.ts:32](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/async/retrying.ts#L32)
 
 Executes a function with retry logic, allowing for custom retry conditions and delays.
 

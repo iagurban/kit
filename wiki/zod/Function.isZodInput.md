@@ -4,7 +4,7 @@
 function isZodInput<T>(schema, o): o is input<T>;
 ```
 
-Defined in: [zod-utils.ts:21](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/zod/zod-utils.ts#L21)
+Defined in: [zod-utils.ts:21](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/zod/zod-utils.ts#L21)
 
 Determines if a given value is "decodeable" input-value of the given Zod schema.
 

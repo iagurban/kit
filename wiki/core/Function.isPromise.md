@@ -4,7 +4,7 @@
 function isPromise<T>(o): o is Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:8](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/async/promise-util.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:8](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/async/promise-util.ts#L8)
 
 Determines whether the given object is a Promise.
 

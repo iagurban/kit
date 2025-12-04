@@ -7,7 +7,7 @@ function mapArrayIfNotEmpty<T, U>(
    empty): U[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:105](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/collections/array-utils.ts#L105)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:137](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/array-utils.ts#L137)
 
 Applies a mapping function to each element of an array if the array is not empty.
 If the array is empty, a fallback function is executed and its result is returned as an array.

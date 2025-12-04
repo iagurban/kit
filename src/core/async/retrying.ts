@@ -3,7 +3,6 @@ import { sleep } from '../sleep';
 /**
  * A function type definition that determines whether a retry should occur based on the provided error and attempt number.
  *
- * @callback ShouldRetryFn
  * @param {unknown} error - The error object or value that was encountered during the previous attempt.
  * @param {number} attempt - The current attempt number, starting from 1 for the first attempt.
  * @returns {boolean | number | undefined | Promise<boolean | number | undefined>} - A return value to indicate retry behavior:
@@ -13,7 +12,7 @@ import { sleep } from '../sleep';
  *   - `undefined`: The default behavior or fallback logic should be used.
  *   - `Promise`: A promise resolving to any of the above return types to allow for asynchronous evaluation of retry behavior.
  */
-type ShouldRetryFn = (
+export type ShouldRetryFn = (
   error: unknown,
   attempt: number
 ) => boolean | number | undefined | Promise<boolean | number | undefined>;

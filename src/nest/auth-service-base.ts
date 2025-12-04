@@ -9,8 +9,22 @@ import { UnauthenticatedError } from '../graphql';
 
 const saltOrRounds = 10;
 
+/**
+ * A utility object for hashing and checking passwords using bcrypt.
+ */
 export const hashing = {
+  /**
+   * Hashes a password using bcrypt.
+   * @param password The password to hash.
+   * @returns A promise that resolves to the hashed password.
+   */
   hash: (password: string) => bcrypt.hash(password, saltOrRounds),
+  /**
+   * Checks a password against a hash using bcrypt.
+   * @param password The password to check.
+   * @param hash The hash to check against.
+   * @returns A promise that resolves to true if the password matches the hash, otherwise false.
+   */
   check: (password: string, hash: string) => bcrypt.compare(password, hash),
 } as const;
 
@@ -167,6 +181,10 @@ export abstract class AuthServiceBase<
     return this.issueTokens(stored.user); // новый access + refresh
   }
 
+  /**
+   * Revokes all refresh tokens for a user.
+   * @param userId The ID of the user.
+   */
   async revokeAll(userId: DbUser[`id`]) {
     await this.deleteRefreshTokensOfUser(userId);
   }

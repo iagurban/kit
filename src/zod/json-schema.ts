@@ -2,6 +2,10 @@ import { z } from 'zod/v4';
 
 import type { JsonValue } from '../core';
 
+/**
+ * A Zod schema for validating JSON literal values.
+ * A JSON literal can be a string, number, boolean, or null.
+ */
 export const jsonLiteralSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 
 /**
@@ -29,4 +33,8 @@ export const jsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
   ])
 );
 
+/**
+ * A Zod schema for validating JSON objects.
+ * A JSON object is a record with string keys and JSON values.
+ */
 export const jsonObjectSchema = z.record(z.string(), jsonValueSchema);

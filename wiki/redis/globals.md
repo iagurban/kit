@@ -12,5 +12,7 @@
 ## Functions
 
 - [getRedisHashToJSON](Function.getRedisHashToJSON.md)
+- [getRedisHashToJSONByFields](Function.getRedisHashToJSONByFields.md)
+- [getRedisHashToValuesByFields](Function.getRedisHashToValuesByFields.md)
 - [putJSONToRedisHash](Function.putJSONToRedisHash.md)
 - [stringifyJsObjectToRedisHash](Function.stringifyJsObjectToRedisHash.md)

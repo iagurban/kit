@@ -4,7 +4,7 @@
 function formatDuration(durationInMs): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/format-duration.ts:13](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/format-duration.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/format-duration.ts:13](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/format-duration.ts#L13)
 
 Converts a duration in milliseconds to a human-readable string format.
 

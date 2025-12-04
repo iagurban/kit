@@ -14,6 +14,9 @@ type LogFunction = (
   payload?: ReadonlyExtendedJsonObject
 ) => void;
 
+/**
+ * A class that tracks the modification times of files and emits events when they change.
+ */
 export class MtimeTracker extends EventEmitter<{
   changed: [readonly string[]];
   added: [string];
@@ -73,6 +76,10 @@ export class MtimeTracker extends EventEmitter<{
     }));
   }
 
+  /**
+   * Adds a path to the tracker.
+   * @param path The path to add.
+   */
   public add(path: string) {
     if (!this.mtimes.has(path)) {
       this.mtimes.set(path, null);
@@ -80,6 +87,10 @@ export class MtimeTracker extends EventEmitter<{
     }
   }
 
+  /**
+   * Removes a path from the tracker.
+   * @param path The path to remove.
+   */
   public remove(path: string) {
     if (this.mtimes.has(path)) {
       this.mtimes.delete(path);
@@ -87,10 +98,16 @@ export class MtimeTracker extends EventEmitter<{
     }
   }
 
+  /**
+   * Whether the tracker is running.
+   */
   get started() {
     return !!this.running;
   }
 
+  /**
+   * Starts the tracker.
+   */
   public start(): void {
     if (this.running) {
       return;
@@ -113,6 +130,9 @@ export class MtimeTracker extends EventEmitter<{
     };
   }
 
+  /**
+   * Stops the tracker.
+   */
   public async stop() {
     if (this.running) {
       this.running.cancel();
@@ -122,6 +142,9 @@ export class MtimeTracker extends EventEmitter<{
   }
 }
 
+/**
+ * A class that watches files and directories for changes.
+ */
 export class NodemonFileWatcher {
   readonly foldersTracker: MtimeTracker;
   readonly filesTracker: MtimeTracker;
@@ -222,6 +245,9 @@ export class NodemonFileWatcher {
 
   private reGlobbingCycle?: { promise: Promise<void>; cancel: () => void };
 
+  /**
+   * Starts the watcher.
+   */
   public async start() {
     if (this.reGlobbingCycle) {
       return;
@@ -249,6 +275,9 @@ export class NodemonFileWatcher {
     await this.performScan();
   }
 
+  /**
+   * Stops the watcher.
+   */
   public async stop() {
     if (!this.reGlobbingCycle) {
       return;
@@ -265,6 +294,9 @@ export class NodemonFileWatcher {
   }
 }
 
+/**
+ * A class that manages a child process.
+ */
 export class ManagedProcess extends EventEmitter<{
   started: [];
   killed: [number | null];
@@ -317,6 +349,9 @@ export class ManagedProcess extends EventEmitter<{
     }
   }
 
+  /**
+   * Starts the process.
+   */
   public start(): void {
     if (this.running) {
       return;
@@ -362,6 +397,10 @@ export class ManagedProcess extends EventEmitter<{
     this.emit(`started`);
   }
 
+  /**
+   * Kills the process.
+   * @returns A promise that resolves when the process is killed.
+   */
   public async kill(): Promise<unknown> {
     const { running } = this;
     if (!running) {
@@ -396,24 +435,75 @@ export class ManagedProcess extends EventEmitter<{
   }
 }
 
+/**
+ * Options for Nodemon.
+ */
 export interface INodemonOptions {
+  /**
+   * Patterns to watch for changes.
+   */
   watch: string[];
+  /**
+   * Patterns to ignore.
+   */
   ignore?: string[];
+  /**
+   * File extensions to watch.
+   */
   extensions?: string[] | null;
+  /**
+   * Delay in milliseconds before restarting.
+   */
   delay?: number; // in ms
+  /**
+   * Command to execute.
+   */
   exec: string | { command: string; args?: string[] };
+  /**
+   * Interval in milliseconds to check for file changes.
+   */
   filesCheckInterval?: number; // in ms
+  /**
+   * Interval in milliseconds to check for directory changes.
+   */
   dirsCheckInterval?: number; // in ms
+  /**
+   * Interval in milliseconds to re-glob for files.
+   */
   reGlobbingInterval?: number; // in ms
+  /**
+   * Signal to send to kill the process.
+   */
   killSignal?: NodeJS.Signals | number;
+  /**
+   * Options for spawning the process.
+   */
   spawnOptions?: SpawnOptions;
+  /**
+   * Whether to log verbose output.
+   */
   verbose?: boolean;
+  /**
+   * Whether to log changed files.
+   */
   logChangedFiles?: boolean;
+  /**
+   * Whether to log tracked files.
+   */
   logTrackedFiles?: boolean;
+  /**
+   * Current working directory.
+   */
   cwd?: string | null;
+  /**
+   * A function to use for logging.
+   */
   log?: LogFunction;
 }
 
+/**
+ * A class that mimics the functionality of nodemon.
+ */
 export class Nodemon extends EventEmitter<{
   'dirs-changed': [readonly string[]];
   'dir-added': [string];
@@ -531,6 +621,9 @@ export class Nodemon extends EventEmitter<{
     this.process[mode]('error', this.eventsPassthrough.process.error);
   }
 
+  /**
+   * Starts nodemon.
+   */
   public async start(): Promise<void> {
     if (this.destroyed) {
       throw new Error(`start called after destroy`);
@@ -545,6 +638,9 @@ export class Nodemon extends EventEmitter<{
     this.isRunning = true;
   }
 
+  /**
+   * Stops nodemon.
+   */
   public async stop(): Promise<void> {
     if (!this.isRunning) {
       return;
@@ -579,6 +675,9 @@ export class Nodemon extends EventEmitter<{
     this.process.start();
   }
 
+  /**
+   * Destroys the nodemon instance.
+   */
   public async destroy() {
     await this.stop();
     if (this.destroyed) {
@@ -590,6 +689,11 @@ export class Nodemon extends EventEmitter<{
   }
 }
 
+/**
+ * Formats a duration in milliseconds to a string in the format "X.XXXs".
+ * @param durationInMs The duration in milliseconds.
+ * @returns The formatted duration.
+ */
 export const formatDuration = (durationInMs: number): string => {
   const seconds = Math.floor(durationInMs / 1000);
   const milliseconds = durationInMs % 1000;

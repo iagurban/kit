@@ -8,7 +8,7 @@ function unpackSelectArgs<Add>(
    fieldName): UnpackedBasicSelectionOptions & Add;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:131](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/graphql/graphql-traverse.ts#L131)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:155](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/graphql/graphql-traverse.ts#L155)
 
 Processes and unpacks selection arguments for a GraphQL field node, combining
 user-provided options with information from the GraphQL query AST.
@@ -25,19 +25,19 @@ An additional set of properties that can be extended in the returned object.
 
 ### opts
 
-`BasicSelectionArgs`\<`Add`\>
+[`BasicSelectionArgs`](TypeAlias.BasicSelectionArgs.md)\<`Add`\>
 
 Selection options, which may include a path, skip list, check function, or additional properties.
 
 ### fieldNode
 
-`GqlASTField`
+[`GqlASTField`](TypeAlias.GqlASTField.md)
 
 The GraphQL AST field node that serves as the starting point for selection.
 
 ### fragments
 
-`Record`\<`string`, `GqlASTFragmentDefinition`\>
+`Record`\<`string`, [`GqlASTFragmentDefinition`](TypeAlias.GqlASTFragmentDefinition.md)\>
 
 A mapping of fragment names to their respective GraphQL AST definitions.
 

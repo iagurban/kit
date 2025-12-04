@@ -4,7 +4,7 @@
 type OverrideFields<T, O> = { [K in keyof T | keyof O]: K extends keyof O ? O[K] : K extends keyof T ? T[K] : never };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:16](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/types.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:16](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/types.ts#L16)
 
 A utility type that combines two types, T and O, allowing you to override the properties
 of the first type, T, with the properties from the second type, O.

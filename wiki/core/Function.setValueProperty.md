@@ -7,7 +7,7 @@ function setValueProperty<T, K, O>(
    value): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:20](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/once.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:20](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/once.ts#L20)
 
 Defines a value property on the given target with stable attributes and returns the value.
 

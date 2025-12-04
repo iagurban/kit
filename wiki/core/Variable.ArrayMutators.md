@@ -4,7 +4,7 @@
 const ArrayMutators: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:70](https://github.com/iagurban/kit/blob/bb29e09514172887133828d44e7dea0c857e22da/src/core/collections/array-utils.ts#L70)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:70](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/array-utils.ts#L70)
 
 A collection of utility functions for manipulating arrays. Each function allows optional mutation of the original array.
 
@@ -20,6 +20,8 @@ insert<T>(
    mutate): T[];
 ```
 
+Inserts a value into an array at a specified position.
+
 #### Type Parameters
 
 ##### T
@@ -32,21 +34,31 @@ insert<T>(
 
 `T`[]
 
+The array to insert into.
+
 ##### value
 
 `T`
+
+The value to insert.
 
 ##### pos
 
 `number`
 
+The position to insert at.
+
 ##### mutate
 
 `boolean` = `false`
 
+Whether to mutate the original array.
+
 #### Returns
 
 `T`[]
+
+A new array with the value inserted, or the mutated array.
 
 ### move() {#move}
 
@@ -58,6 +70,8 @@ move<T>(
    mutate): T[];
 ```
 
+Moves an element within an array from one position to another.
+
 #### Type Parameters
 
 ##### T
@@ -70,21 +84,31 @@ move<T>(
 
 `T`[]
 
+The array to move the element in.
+
 ##### from
 
 `number`
+
+The position of the element to move.
 
 ##### to
 
 `number`
 
+The position to move the element to.
+
 ##### mutate
 
 `boolean` = `false`
 
+Whether to mutate the original array.
+
 #### Returns
 
 `T`[]
+
+A new array with the element moved, or the mutated array.
 
 ### remove() {#remove}
 
@@ -96,6 +120,8 @@ remove<T>(
    mutate): T[];
 ```
 
+Removes one or more elements from an array.
+
 #### Type Parameters
 
 ##### T
@@ -108,21 +134,31 @@ remove<T>(
 
 `T`[]
 
+The array to remove elements from.
+
 ##### from
 
 `number`
+
+The position to start removing from.
 
 ##### count
 
 `number` = `1`
 
+The number of elements to remove.
+
 ##### mutate
 
 `boolean` = `false`
 
+Whether to mutate the original array.
+
 #### Returns
 
 `T`[]
+
+A new array with the elements removed, or the mutated array.
 
 ### set() {#set}
 
@@ -134,6 +170,8 @@ set<T>(
    mutate): T[];
 ```
 
+Sets the value of an element in an array at a specified position.
+
 #### Type Parameters
 
 ##### T
@@ -146,18 +184,28 @@ set<T>(
 
 `T`[]
 
+The array to set the element in.
+
 ##### value
 
 `T`
+
+The value to set.
 
 ##### pos
 
 `number`
 
+The position of the element to set.
+
 ##### mutate
 
 `boolean` = `false`
 
+Whether to mutate the original array.
+
 #### Returns
 
 `T`[]
+
+A new array with the element set, or the mutated array.
