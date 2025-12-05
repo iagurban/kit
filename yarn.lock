@@ -1167,9 +1167,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grbn/kit@npm:0.0.0-alpha.6":
-  version: 0.0.0-alpha.6
-  resolution: "@grbn/kit@npm:0.0.0-alpha.6"
+"@grbn/kit@npm:0.0.5":
+  version: 0.0.5
+  resolution: "@grbn/kit@npm:0.0.5"
   dependencies:
     "@loancrate/prisma-schema-parser": "npm:^3.0.0"
     "@mrleebo/prisma-ast": "npm:^0.12.1"
@@ -1180,6 +1180,7 @@ __metadata:
     "@dnd-kit/utilities": "*"
     "@mantine/core": "*"
     "@nestjs/common": "*"
+    "@nestjs/config": "*"
     "@nestjs/graphql": "*"
     "@nestjs/jwt": "*"
     "@nestjs/passport": "*"
@@ -1205,11 +1206,11 @@ __metadata:
   bin:
     build-info-gen: dist/src/bin/build-info-gen.js
     clean-md: dist/src/bin/clean-md.js
+    dotenv-flat: dist/src/bin/dotenv-flat.js
     fetch-unicode-letters-ranges: dist/src/bin/fetch-unicode-letters-ranges.js
     fix-graphql-codegen: dist/src/bin/fix-graphql-codegen.js
-    swc-ts-build: dist/src/bin/swc-ts-build-runner.js
     watch-n-run: dist/src/bin/watch-n-run.js
-  checksum: 10c0/a33000e773702aef32bc0c93082856a1ee99afd356c8a3be9d41d76987b6b0fe0328e4c687f6b18d592a5353e16a86c1d3aba0b3561c2e6b7225c8f379fce2c6
+  checksum: 10c0/2566d22c94c7cc61797ad8d509bd2c33168945087685c97a2a98895ae256fc68b781c63da6332705866285ff48e1f5adbe815efffb82319ee4345e8724a6cb2e
   languageName: node
   linkType: hard
 
@@ -1222,7 +1223,7 @@ __metadata:
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@dnd-kit/utilities": "npm:^3.2.2"
     "@eslint/js": "npm:^9.38.0"
-    "@grbn/swc-ts": "npm:^0.0.2"
+    "@grbn/swc-ts": "npm:^0.0.3"
     "@loancrate/prisma-schema-parser": "npm:^3.0.0"
     "@mantine/core": "npm:^8.3.6"
     "@mrleebo/prisma-ast": "npm:^0.12.1"
@@ -1347,21 +1348,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@grbn/swc-ts@npm:^0.0.2":
-  version: 0.0.2
-  resolution: "@grbn/swc-ts@npm:0.0.2"
+"@grbn/swc-ts@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@grbn/swc-ts@npm:0.0.3"
   dependencies:
-    "@grbn/kit": "npm:0.0.0-alpha.6"
+    "@grbn/kit": "npm:0.0.5"
     "@swc/core": "npm:1.15.0"
     chokidar: "npm:4.0.3"
     glob: "npm:11.1.0"
+    lodash: "npm:^4.17.21"
     micromatch: "npm:^4.0.7"
     yargs: "npm:18.0.0"
   peerDependencies:
     tsx: "*"
   bin:
     swc-ts-build: dist/src/swc-ts-build-runner.js
-  checksum: 10c0/ab5cf1309f1d29e28f0c5100d8a35bb4da508075f42ffe1990c771c08018b3b770b1f4712371ee6e024cf689bda0f37090e2cee641e3719fa45e5b49208ed75d
+  checksum: 10c0/a7d5d1ee88c98339e999f7bb7cf6950a5b0f9dcbfc6f534f705224dd5c43babd5ea98aa05ef302b2bd083845c3b6f34a7f9434f44049247c8ddc83598f38e607
   languageName: node
   linkType: hard
 

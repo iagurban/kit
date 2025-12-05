@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {
@@ -31,7 +31,7 @@
     "watch-n-run": "./dist/src/bin/watch-n-run.js"
   },
   "scripts": {
-    "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -R ./src/helpers/ ./dist/src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/{package,project,tsconfig}.json' -x '../tsconfig.*.json' './dist' && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
+    "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -R ./src/helpers/ ./dist/src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/.gemini/**' -x '**/{package,project,tsconfig,coverage-final,jest.config}.json' -x '../tsconfig.*.json' './dist' && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
     "test": "yarn jest --maxWorkers=4",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
@@ -57,7 +57,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^9.38.0",
-    "@grbn/swc-ts": "^0.0.2",
+    "@grbn/swc-ts": "^0.0.3",
     "@mantine/core": "^8.3.6",
     "@nestjs/common": "^11.1.9",
     "@nestjs/core": "^11.1.9",
