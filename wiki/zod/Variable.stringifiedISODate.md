@@ -4,7 +4,7 @@
 const stringifiedISODate: ZodCodec<ZodISODateTime, ZodDate>;
 ```
 
-Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/zod/stringified-types.ts#L53)
+Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/zod/stringified-types.ts#L53)
 
 A Zod codec that validates and transforms ISO-formatted date strings.
 

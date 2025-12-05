@@ -1,6 +1,6 @@
 # Interface: RotatingGradientBackgroundProps
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:15](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L15)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L15)
 
 Props for the RotatingGradientBackground component.
 
@@ -12,7 +12,7 @@ Props for the RotatingGradientBackground component.
 gradientStops: readonly object[];
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:24](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L24)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:24](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L24)
 
 The stops of the gradient.
 
@@ -24,7 +24,7 @@ The stops of the gradient.
 optional moveAnimation: readonly CSSProperties[];
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:45](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L45)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:45](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L45)
 
 The keyframes for the move animation.
 
@@ -36,7 +36,7 @@ The keyframes for the move animation.
 moveDur: string;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L50)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L50)
 
 The duration of the move animation.
 
@@ -48,7 +48,7 @@ The duration of the move animation.
 rotateDur: string;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:40](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L40)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L40)
 
 The duration of the rotation animation.
 
@@ -60,7 +60,7 @@ The duration of the rotation animation.
 rotateKeyframes: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:32](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L32)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L32)
 
 The keyframes for the rotation animation.
 
@@ -84,6 +84,6 @@ values: string;
 scale: number;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:19](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L19)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L19)
 
 The scale of the SVG.

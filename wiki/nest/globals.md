@@ -17,22 +17,27 @@
 
 ## Interfaces
 
+- [GqlSelectionDataLoaderContext](Interface.GqlSelectionDataLoaderContext.md)
 - [UniversalSelection](Interface.UniversalSelection.md)
 
 ## Type Aliases
 
+- [CachedSelection](TypeAlias.CachedSelection.md)
 - [DynamicModuleFabric](TypeAlias.DynamicModuleFabric.md)
+- [SelectionDataLoaderProvider](TypeAlias.SelectionDataLoaderProvider.md)
 - [UniversalSelectionArgs](TypeAlias.UniversalSelectionArgs.md)
 
 ## Variables
 
 - [CurrentUserBase](Variable.CurrentUserBase.md)
 - [GetUniversalSelection](Variable.GetUniversalSelection.md)
+- [InjectSelectionDataLoader](Variable.InjectSelectionDataLoader.md)
 - [PrismaSelection](Variable.PrismaSelection.md)
 - [TryCurrentUserBase](Variable.TryCurrentUserBase.md)
 
 ## Functions
 
+- [createSelectionDataLoaderProvider](Function.createSelectionDataLoaderProvider.md)
 - [getCurrentUserFromExeContext](Function.getCurrentUserFromExeContext.md)
 - [getPrismaSelectionFromInfo](Function.getPrismaSelectionFromInfo.md)
 - [getUniversalSelectionFromInfo](Function.getUniversalSelectionFromInfo.md)

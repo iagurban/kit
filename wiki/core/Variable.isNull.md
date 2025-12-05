@@ -4,7 +4,7 @@
 const isNull: (o) => o is null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:102](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/checks.ts#L102)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:102](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L102)
 
 Checks if the given value is strictly null.
 

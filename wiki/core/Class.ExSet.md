@@ -1,6 +1,6 @@
 # Class: ExSet\<Value\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:12](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L12)
 
 Extended Set implementation with additional set operations and utility methods.
 Provides both standard Set interface and additional functionality for set operations.
@@ -26,7 +26,7 @@ The type of elements in the set
 new ExSet<Value>(values?): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:19](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L19)
 
 Creates a new ExSet instance
 
@@ -52,7 +52,7 @@ Optional iterable of initial values
 get toStringTag: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L228)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L228)
 
 ##### Returns
 
@@ -76,7 +76,7 @@ Set.[toStringTag]
 get readonly(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L180)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L180)
 
 ##### Returns
 
@@ -94,7 +94,7 @@ A read-only view of this set
 get size(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L74)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L74)
 
 ##### Returns
 
@@ -116,7 +116,7 @@ ReadonlySet.size
 iterator: SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L223)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L223)
 
 #### Returns
 
@@ -138,7 +138,7 @@ ReadonlySet.[iterator]
 add(value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L31)
 
 Adds a value to the set
 
@@ -172,7 +172,7 @@ Set.add
 and(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L143)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L143)
 
 Creates a new set containing elements that exist in both this set and another iterable (intersection)
 
@@ -198,7 +198,7 @@ A new ExSet containing common elements
 backup(fn?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L212)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L212)
 
 Creates a backup of the current set state and returns a restore function
 
@@ -232,7 +232,7 @@ Function that when called restores the set to its backed up state
 clear(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L40)
 
 Removes all elements from the set
 
@@ -256,7 +256,7 @@ Set.clear
 delete(value): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L50)
 
 Removes a value from the set
 
@@ -290,7 +290,7 @@ Set.delete
 diff(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L134)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L134)
 
 Creates a new set containing elements from this set that are not in another iterable (difference)
 
@@ -316,7 +316,7 @@ A new ExSet containing elements unique to this set
 entries(): SetIterator<[Value, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L233)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L233)
 
 #### Returns
 
@@ -338,7 +338,7 @@ ReadonlySet.entries
 forEach(by): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L58)
 
 Executes a callback for each value in the set
 
@@ -368,7 +368,7 @@ ReadonlySet.forEach
 freeze(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L188)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L188)
 
 Freezes the set, preventing any further mutations.
 
@@ -386,7 +386,7 @@ A read-only version of this set that throws on mutation attempts.
 has(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L69)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L69)
 
 Checks if a value exists in the set
 
@@ -418,7 +418,7 @@ ReadonlySet.has
 intersects(other): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L85)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L85)
 
 Checks if this set has any elements in common with another iterable
 
@@ -444,7 +444,7 @@ true if there are common elements, false otherwise
 join(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L100)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L100)
 
 Adds all elements from another iterable to this set
 
@@ -472,7 +472,7 @@ This set instance for chaining
 keys(): SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L238)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L238)
 
 #### Returns
 
@@ -494,7 +494,7 @@ ReadonlySet.keys
 or(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L125)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L125)
 
 Creates a new set containing elements from both this set and another iterable (union)
 
@@ -520,7 +520,7 @@ A new ExSet containing all unique elements
 subtract(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L113)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L113)
 
 Removes all elements that exist in another iterable from this set
 
@@ -548,7 +548,7 @@ This set instance for chaining
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L175)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L175)
 
 Transforms set elements into an array using a mapping function
 
@@ -580,7 +580,7 @@ Array of transformed values
 values(): SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L243)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L243)
 
 #### Returns
 
@@ -602,7 +602,7 @@ ReadonlySet.values
 xor(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L158)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L158)
 
 Creates a new set containing elements that exist in either this set or another iterable, but not both (symmetric difference)
 
