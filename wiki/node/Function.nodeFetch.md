@@ -4,7 +4,7 @@
 function nodeFetch(url): Promise<Buffer<ArrayBufferLike>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:72](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/node-util.ts#L72)
+Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:72](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/node-util.ts#L72)
 
 Fetches a URL using the native http or https module and returns the response body as a Buffer.
 

@@ -26,7 +26,7 @@
 
 # Class: KeyframesBuilder
 
-Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/keyframes-builder.tsx#L25)
+Defined in: [mobx/keyframes-builder.tsx:25](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/keyframes-builder.tsx#L25)
 
 The KeyframesBuilder class provides functionality to dynamically create CSS keyframes
 and manage them in the document's styles through unique naming and caching mechanisms.
@@ -41,7 +41,7 @@ are identical, while also cleaning up unused styles.
 inject(label, steps): IComputedValue<string>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/keyframes-builder.tsx#L39)
+Defined in: [mobx/keyframes-builder.tsx:39](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/keyframes-builder.tsx#L39)
 
 Injects a CSS animation keyframes rule into the DOM and returns a computed value representing the animation name.
 
@@ -68,7 +68,7 @@ When the computed value is no longer observed, the animation styles are automati
 function dndTreeFabric<Item, State>(methods, mlStep): object;
 ```
 
-Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
+Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
 
 Creates context accessors for DndTreeState (which user must provide with ProvideDndTreeState) and
 components for rendering tree bound to that context.
@@ -245,7 +245,7 @@ useDndTreeState: () => State;
 function enhanceStepsEvenly(steps, o?): Record<`${number}%`, CSSProperties>;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/keyframes-builder.tsx#L94)
+Defined in: [mobx/keyframes-builder.tsx:94](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/keyframes-builder.tsx#L94)
 
 Generates a mapping of percentages to CSS properties, evenly distributing the provided steps.
 Optionally completes a cycle by repeating the first step at the end.
@@ -279,7 +279,7 @@ A record where keys are percentage strings and values are CSS properties.
 function useResizeObserver(callback): GraphNodeViewStore;
 ```
 
-Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/use-resize-observer.ts#L57)
+Defined in: [mobx/use-resize-observer.ts:57](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/use-resize-observer.ts#L57)
 
 useResizeObserver is a custom hook that creates a reference to a `GraphNodeViewStore`
 instance for handling resize events using a provided callback function.
@@ -308,7 +308,7 @@ Returns an instance of `GraphNodeViewStore` that manages
 function useResizeObserverWithCallback<T>(...cb): GraphNodeViewStore;
 ```
 
-Defined in: [mobx/use-resize-observer.ts:84](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/use-resize-observer.ts#L84)
+Defined in: [mobx/use-resize-observer.ts:84](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/use-resize-observer.ts#L84)
 
 A custom hook that uses a resize observer to track changes in the size of an element,
 and executes a memoized callback function when a resize event occurs.
@@ -337,7 +337,7 @@ An instance of `GraphNodeViewStore` that manages the resize observer.
 
 # Interface: RotatingGradientBackgroundProps
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:15](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L15)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L15)
 
 Props for the RotatingGradientBackground component.
 
@@ -349,7 +349,7 @@ Props for the RotatingGradientBackground component.
 gradientStops: readonly object[];
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:24](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L24)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:24](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L24)
 
 The stops of the gradient.
 
@@ -361,7 +361,7 @@ The stops of the gradient.
 optional moveAnimation: readonly CSSProperties[];
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:45](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L45)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:45](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L45)
 
 The keyframes for the move animation.
 
@@ -373,7 +373,7 @@ The keyframes for the move animation.
 moveDur: string;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L50)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L50)
 
 The duration of the move animation.
 
@@ -385,7 +385,7 @@ The duration of the move animation.
 rotateDur: string;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:40](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L40)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L40)
 
 The duration of the rotation animation.
 
@@ -397,7 +397,7 @@ The duration of the rotation animation.
 rotateKeyframes: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:32](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L32)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L32)
 
 The keyframes for the rotation animation.
 
@@ -421,7 +421,7 @@ values: string;
 scale: number;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:19](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L19)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L19)
 
 The scale of the SVG.
 
@@ -432,7 +432,7 @@ The scale of the SVG.
 const AnimatedSVGGradientBackground: FunctionComponent<PropsWithChildren<RotatingGradientBackgroundProps & object & Pick<FlexProps, "pos">>>;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:65](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L65)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx:65](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background.tsx#L65)
 
 A component that displays an animated SVG gradient background.
 
@@ -443,7 +443,7 @@ A component that displays an animated SVG gradient background.
 const gradientPresets: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
 
 A collection of preset gradients.
 
@@ -777,7 +777,7 @@ readonly sunSky: readonly [{
 const keyframesBuilder: KeyframesBuilder;
 ```
 
-Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/keyframes-builder.tsx#L121)
+Defined in: [mobx/keyframes-builder.tsx:121](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/keyframes-builder.tsx#L121)
 
 A variable that holds an instance of the KeyframesBuilder class.
 The KeyframesBuilder is used to programmatically create CSS keyframes
@@ -791,7 +791,7 @@ adding keyframes and managing animations dynamically.
 const moveAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:132](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L132)
 
 A collection of preset background position animations.
 
@@ -894,7 +894,7 @@ readonly zigzag: readonly [{
 const rotateAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
 
 A collection of preset gradient rotation animations.
 

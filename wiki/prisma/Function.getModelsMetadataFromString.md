@@ -4,7 +4,7 @@
 function getModelsMetadataFromString(s): object;
 ```
 
-Defined in: [models-metadata.ts:158](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/prisma/models-metadata.ts#L158)
+Defined in: [models-metadata.ts:158](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/prisma/models-metadata.ts#L158)
 
 Parses a Prisma schema string and extracts metadata information for all model declarations.
 

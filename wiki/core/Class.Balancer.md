@@ -1,6 +1,6 @@
 # Class: Balancer
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:19](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L19)
 
 Represents a balancing window around a specific index in a sorted array.
 Used internally by ManualSortingAlphabet to progressively include neighbors for rebalancing.
@@ -15,7 +15,7 @@ Used internally by ManualSortingAlphabet to progressively include neighbors for 
 getNextWindow(): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:52](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L52)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:52](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L52)
 
 Calculates the next window size based on the extension strategy.
 Throws if window cannot grow further or growth is invalid.
@@ -44,7 +44,7 @@ rightRebalanced: number;
 rebalance(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:81](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L81)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:81](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L81)
 
 Expands the balancing window and removes affected items from actualSorted.
 

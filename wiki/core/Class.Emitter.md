@@ -1,6 +1,6 @@
 # Class: Emitter\<T\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:19](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/emitter.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L19)
 
 A generic Emitter class that implements an event emitter pattern.
 This class allows adding event listeners for specific events, emitting events, and managing listeners.
@@ -22,7 +22,7 @@ A record type where keys represent event names, and values are tuple types descr
 emit<E>(e, ...data): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:105](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/emitter.ts#L105)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:105](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L105)
 
 Emits an event of the specified type, passing along any additional data to the registered listeners.
 It invokes both persistent and one-time listeners for the given event.
@@ -66,7 +66,7 @@ If any of the listeners throw an error, those errors are collected and thrown to
 off<E>(e, listener): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:87](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/emitter.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:87](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L87)
 
 Removes the specified event listener for the given event from both persistent
 and one-time listener collections. This method ensures that the listener is
@@ -106,7 +106,7 @@ The listener function to remove.
 on<E>(e, listener): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:61](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/emitter.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:61](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L61)
 
 Registers an event listener for a specified event type and returns a function to remove the listener.
 
@@ -152,7 +152,7 @@ A function that, when executed, removes the registered event listener.
 once<E>(e, listener): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:75](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/emitter.ts#L75)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:75](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L75)
 
 Registers a one-time event listener for a specific event type. The listener will be automatically
 removed after its first invocation. Returns a function to manually remove the listener before it

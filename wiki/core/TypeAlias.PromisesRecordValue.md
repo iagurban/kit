@@ -4,7 +4,7 @@
 type PromisesRecordValue<T> = { [K in keyof T]: PromiseValue<T[K]> };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:35](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/async/promise-util.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:35](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-util.ts#L35)
 
 Represents a type that transforms the values of an object type `T` into their resolved promise values.
 

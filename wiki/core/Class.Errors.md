@@ -1,6 +1,6 @@
 # Class: Errors
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:4](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/errors/errors.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L4)
 
 An error that represents a collection of multiple errors.
 
@@ -16,7 +16,7 @@ An error that represents a collection of multiple errors.
 new Errors(errors): Errors;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/errors/errors.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L9)
 
 Creates a new Errors instance.
 
@@ -46,7 +46,7 @@ Error.constructor
 readonly errors: unknown[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/errors/errors.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L9)
 
 The errors to include in this collection.
 
