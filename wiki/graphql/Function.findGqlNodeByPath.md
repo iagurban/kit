@@ -7,7 +7,7 @@ function findGqlNodeByPath(
    fragments): GqlASTField | null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:88](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/graphql/graphql-traverse.ts#L88)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:109](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L109)
 
 Recursively finds a GraphQL node by traversing a path through a GraphQL Abstract Syntax Tree (AST).
 
@@ -22,20 +22,20 @@ An array of strings representing the path to the node in the GraphQL AST.
 
 ### field
 
-`GqlASTField`
+[`GqlASTField`](TypeAlias.GqlASTField.md)
 
 The starting field node in the GraphQL AST to begin the traversal.
 
 ### fragments
 
-`Record`\<`string`, `GqlASTFragmentDefinition`\>
+`Record`\<`string`, [`GqlASTFragmentDefinition`](TypeAlias.GqlASTFragmentDefinition.md)\>
 
 A mapping of fragment names to their
                                                               corresponding definitions in the GraphQL AST.
 
 ## Returns
 
-`GqlASTField` \| `null`
+[`GqlASTField`](TypeAlias.GqlASTField.md) \| `null`
 
 - The GraphQL AST node found at the specified path, or null if the path
                                 does not exist in the AST.

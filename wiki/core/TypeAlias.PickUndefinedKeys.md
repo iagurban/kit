@@ -4,7 +4,7 @@
 type PickUndefinedKeys<T> = { [K in keyof T as T[K] extends undefined ? K : never]: true };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:125](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/types.ts#L125)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:126](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/types.ts#L126)
 
 A utility type that generates a new type by picking keys from a given type `T`
 where the corresponding properties are strictly of the `undefined` type.

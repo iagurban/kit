@@ -41,6 +41,15 @@ export const getRedisHashToJSON = async (
   );
 };
 
+/**
+ * Retrieves the values of specified fields of a Redis Hash, converts the string values back to their
+ * native JavaScript types using JSON.parse(), and returns the resulting array of values.
+ * @param redis The Redis client instance.
+ * @param key The Redis key of the Hash.
+ * @param fields The fields to retrieve.
+ * @param options Optional configuration, including a fallback function.
+ * @returns An array of JavaScript values with typed values.
+ */
 export const getRedisHashToValuesByFields = async (
   redis: Redis,
   key: string,
@@ -58,6 +67,15 @@ export const getRedisHashToValuesByFields = async (
   });
 };
 
+/**
+ * Retrieves the specified fields of a Redis Hash, converts the string values back to their
+ * native JavaScript types using JSON.parse(), and returns the resulting object.
+ * @param redis The Redis client instance.
+ * @param key The Redis key of the Hash.
+ * @param fields The fields to retrieve.
+ * @param options Optional configuration, including a fallback function.
+ * @returns A JavaScript object with typed values, or null if the hash is empty or not found.
+ */
 export const getRedisHashToJSONByFields = async (
   redis: Redis,
   key: string,
@@ -88,8 +106,11 @@ export const stringifyJsObjectToRedisHash = (data: JsonObject): Record<string, s
   const fieldsToStore: Record<string, string> = {};
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
-      // CRITICAL: JSON.stringify every value before storage.
-      fieldsToStore[key] = JSON.stringify(data[key]);
+      const value = data[key];
+      if (value !== undefined) {
+        // CRITICAL: JSON.stringify every value before storage.
+        fieldsToStore[key] = JSON.stringify(value);
+      }
     }
   }
   return fieldsToStore;
@@ -115,7 +136,11 @@ export const putJSONToRedisHash = async (
 
   // 2. Start a Redis pipeline (MULTI/EXEC transaction).
   const pipeline = redis.multi();
-  pipeline.hset(key, fieldsToStore);
+
+  // Only run hset if there are fields to store, otherwise it can create an empty hash
+  if (Object.keys(fieldsToStore).length > 0) {
+    pipeline.hset(key, fieldsToStore);
+  }
 
   // 3. If a TTL is provided, add the EXPIRE command to the pipeline.
   if (options.ttl !== undefined && options.ttl > 0) {

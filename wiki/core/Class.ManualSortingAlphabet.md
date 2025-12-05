@@ -1,6 +1,6 @@
 # Class: ManualSortingAlphabet
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:147](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L147)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:153](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L153)
 
 Manages lexicographic keys for manually sorted lists, enabling dynamic insertions between items.
 
@@ -12,28 +12,25 @@ This class generates unique string keys that maintain lexicographic ordering, al
 ## Example
 
 ```typescript
-const alphabet = new ManualSortingAlphabet(65, 90); // A-Z range
+const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 }); // A-Z, a-z, 0-9
 const firstKey = alphabet.getFirstKey(); // Returns middle character
 const result = alphabet.insertAfter(['B', 'D'], 'B', 2); // Insert 2 keys after 'B'
 
 // Basic usage - inserting between existing keys
-const alphabet = new ManualSortingAlphabet(65, 90);
-const { newKeys } = alphabet.insertAfter(['B', 'D'], 'B', 1);
-// newKeys might contain ['C']
+const alphabet = new ManualSortingAlphabet({ converter: NumberBase.b62 });
+const { inserted } = alphabet.insertAfter(['B', 'D'], 'B', 1);
+// inserted might contain ['C']
 
 // Handling rebalancing
-const { newKeys, updated } = alphabet.insertAfter(['B', 'C'], 'B', 2);
+const { inserted, updated } = alphabet.insertAfter(['B', 'C'], 'B', 2);
 // updated might contain new values for 'C' to make room
 
 // Custom window extension strategy
-const alphabet = new ManualSortingAlphabet(65, 90, {
+const alphabet = new ManualSortingAlphabet({
+  converter: NumberBase.b62,
   extendWindow: (b) => ({ left: 2, right: 2 })
 });
 ```
-
-## Throws
-
-If fromCodePoint or toCodePoint are invalid
 
 ## Constructors
 
@@ -43,7 +40,7 @@ If fromCodePoint or toCodePoint are invalid
 new ManualSortingAlphabet(options): ManualSortingAlphabet;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:206](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L206)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L201)
 
 Creates a new ManualSortingAlphabet instance.
 
@@ -61,13 +58,25 @@ Configuration options
 
 ## Properties
 
+### options {#options}
+
+```ts
+readonly options: ManualSortingAlphabetOptions;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L201)
+
+Configuration options
+
+***
+
 ### presets {#presets}
 
 ```ts
 static presets: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:157](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L157)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:163](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L163)
 
 Common presets for ManualSortingAlphabet alphabet ranges.
 
@@ -80,7 +89,7 @@ under standard collation (C or C.UTF-8), preserving binary sort order.
 #### asciiFriendly
 
 ```ts
-readonly asciiFriendly: object;
+readonly asciiFriendly: NumberConverter = NumberBase.b62;
 ```
 
 Human-readable preset using digits and Latin letters.
@@ -91,22 +100,10 @@ Includes '0'-'9', 'A'-'Z', 'a'-'z'
 - ✅ PostgreSQL binary order safe
 - ⚠️ Can require frequent rebalance in long-term dense lists
 
-##### asciiFriendly.fromCodePoint
-
-```ts
-readonly fromCodePoint: 48 = 0x30;
-```
-
-##### asciiFriendly.toCodePoint
-
-```ts
-readonly toCodePoint: 122 = 0x7a;
-```
-
 #### invisibleUnicode
 
 ```ts
-readonly invisibleUnicode: object;
+readonly invisibleUnicode: NumberConverter;
 ```
 
 Invisible and rarely-used symbols from Unicode ranges.
@@ -116,22 +113,10 @@ Optimized for maximum spacing in systems where keys are not user-facing.
 - ✅ UTF-8 and PostgreSQL-safe
 - ❌ Not human-friendly
 
-##### invisibleUnicode.fromCodePoint
-
-```ts
-readonly fromCodePoint: 8192 = 0x2000;
-```
-
-##### invisibleUnicode.toCodePoint
-
-```ts
-readonly toCodePoint: 12287 = 0x2fff;
-```
-
 #### wideCJK
 
 ```ts
-readonly wideCJK: object;
+readonly wideCJK: NumberConverter;
 ```
 
 Very wide range using CJK unified ideographs.
@@ -140,18 +125,6 @@ Suitable for systems needing extreme insert density with minimal key growth.
 - ✅ 6000+ chars of spacing
 - ✅ JS/PostgreSQL binary order works
 - ⚠️ Keys may appear unreadable or wide in editors
-
-##### wideCJK.fromCodePoint
-
-```ts
-readonly fromCodePoint: 12288 = 0x3000;
-```
-
-##### wideCJK.toCodePoint
-
-```ts
-readonly toCodePoint: 40959 = 0x9fff;
-```
 
 ## Methods
 
@@ -162,10 +135,10 @@ protected extractUpdatedKeys(
    sorted, 
    inserted, 
    keyIndex, 
-   balancing): object;
+   __namedParameters): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:236](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L236)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L238)
 
 Applies updated values to original keys from the rebalance result.
 
@@ -183,25 +156,19 @@ readonly `string`[]
 
 `number`
 
-##### balancing
+##### \_\_namedParameters
 
-[`Balancer`](Class.Balancer.md)
+###### leftRebalanced
+
+`number`
+
+###### rightRebalanced
+
+`number`
 
 #### Returns
 
-`object`
-
-##### newKeys
-
-```ts
-newKeys: string[];
-```
-
-##### updated
-
-```ts
-updated: Map<string, string>;
-```
+`Changes`
 
 ***
 
@@ -211,7 +178,7 @@ updated: Map<string, string>;
 getFirstKey(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:480](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L480)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:519](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L519)
 
 Returns the initial key to use if the list is empty.
 
@@ -224,19 +191,22 @@ Returns the initial key to use if the list is empty.
 ### getMiddleCodePoint() {#getmiddlecodepoint}
 
 ```ts
-protected getMiddleCodePoint(a, b): number;
+protected getMiddleCodePoint(a, b): number | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:226](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L226)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:217](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L217)
 
 Returns a middle code point between two valid code points.
+The first code point can be undefined (supposed value === 0).
+Can return undefined if no point can be calculated (when a=undefined and b=digits[0]).
+
 Throws if either point is outside the alphabet range.
 
 #### Parameters
 
 ##### a
 
-`number`
+`number` | `undefined`
 
 ##### b
 
@@ -244,7 +214,7 @@ Throws if either point is outside the alphabet range.
 
 #### Returns
 
-`number`
+`number` \| `undefined`
 
 ***
 
@@ -254,7 +224,7 @@ Throws if either point is outside the alphabet range.
 protected getMiddleKey(a, b): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:266](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L266)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:266](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L266)
 
 Returns a string key that is lexicographically between a and b.
 Uses code points to compute midpoint recursively.
@@ -281,7 +251,7 @@ Uses code points to compute midpoint recursively.
 getNewKeys(count): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:492](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L492)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:530](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L530)
 
 Generates a new array of unique keys based on the specified count.
 
@@ -307,10 +277,10 @@ An array containing the newly generated keys.
 protected insertAfterIndex(
    sorted, 
    keyIndex, 
-   count): object;
+   count): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:399](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L399)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:429](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L429)
 
 Inserts one or more keys immediately after the given key in a sorted array.
 If necessary space isn't available, automatically rebalances neighboring keys.
@@ -337,21 +307,9 @@ Number of new keys to insert
 
 #### Returns
 
-`object`
+`Changes`
 
 Result containing new keys and any updated existing keys
-
-##### newKeys
-
-```ts
-newKeys: string[];
-```
-
-##### updated
-
-```ts
-updated: Map<string, string>;
-```
 
 #### Throws
 
@@ -365,10 +323,10 @@ If the reference key is not found in the sorted array
 protected insertBeforeIndex(
    sorted, 
    index, 
-   count): object;
+   count): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:444](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L444)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:470](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L470)
 
 Inserts a specified number of items before a given index in a sorted array.
 
@@ -394,23 +352,11 @@ The number of items to be inserted.
 
 #### Returns
 
-`object`
+`Changes`
 
 Returns an object containing two properties:
-        - `newKeys`: An array of the newly inserted keys.
+        - `inserted`: An array of the newly inserted keys.
         - `updated`: A map of the updated keys and their new keys.
-
-##### newKeys
-
-```ts
-newKeys: string[];
-```
-
-##### updated
-
-```ts
-updated: Map<string, string>;
-```
 
 ***
 
@@ -420,7 +366,7 @@ updated: Map<string, string>;
 protected isValidCodePoint(code): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:218](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L218)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:206](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L206)
 
 Checks if a code point is within the configured alphabet range.
 
@@ -442,7 +388,7 @@ Checks if a code point is within the configured alphabet range.
 protected tryInsertAtEnd(sorted): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:357](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L357)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:390](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L390)
 
 Appends a key at the end by extending the last key or adding a character.
 
@@ -466,7 +412,7 @@ Appends a key at the end by extending the last key or adding a character.
 protected tryInsertManyAtEnd(count, sorted): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:328](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L328)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:361](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L361)
 
 Inserts keys after the last element by growing length.
 
@@ -492,7 +438,7 @@ Inserts keys after the last element by growing length.
 protected tryInsertManyAtStart(count, sorted): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:340](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/manual-sorting.ts#L340)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:373](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/manual-sorting.ts#L373)
 
 Inserts keys before the first element by creating room.
 

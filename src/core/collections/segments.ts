@@ -71,6 +71,7 @@ export class Segments {
   get size(): number {
     const l = this.raw.length / 2;
     const f = Math.floor(l);
+    /* istanbul ignore next */
     if (l !== f) {
       console.warn('raw length is not even:', this.raw.length);
     }

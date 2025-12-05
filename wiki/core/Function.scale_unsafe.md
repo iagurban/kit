@@ -9,7 +9,7 @@ function scale_unsafe(
    toMax): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:75](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/numbers/utils.ts#L75)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:75](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/utils.ts#L75)
 
 Scales a given number `v` from one range to another without enforcing boundary checks.
 

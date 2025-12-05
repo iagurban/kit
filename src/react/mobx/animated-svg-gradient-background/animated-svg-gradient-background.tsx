@@ -4,31 +4,49 @@ import { observer } from 'mobx-react-lite';
 import { computedFn } from 'mobx-utils';
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 
-import { uidGenerator } from '../../../core/uid-generator';
+import { svgNS, uidGenerator } from '../../../core';
 import { enhanceStepsEvenly, KeyframesBuilder } from '../keyframes-builder';
 
 const bgMovingKeyframesBuilder = new KeyframesBuilder();
 
+/**
+ * Props for the RotatingGradientBackground component.
+ */
 export interface RotatingGradientBackgroundProps {
-  /** коэффициент масштабирования SVG */
+  /**
+   * The scale of the SVG.
+   */
   scale: number;
 
+  /**
+   * The stops of the gradient.
+   */
   gradientStops: readonly {
     offset: number;
     color: string;
   }[];
 
+  /**
+   * The keyframes for the rotation animation.
+   */
   rotateKeyframes: {
     values: string;
     keyTimes: string;
   };
 
-  /** Длительность SVG-вращения, например "5s" */
+  /**
+   * The duration of the rotation animation.
+   */
   rotateDur: string;
 
+  /**
+   * The keyframes for the move animation.
+   */
   moveAnimation?: readonly CSSProperties[];
 
-  /** Длительность фоновой анимации */
+  /**
+   * The duration of the move animation.
+   */
   moveDur: string;
 }
 
@@ -41,6 +59,9 @@ const toBase64 =
 
 const dataUriEncode = (s: string) => `url("data:image/svg+xml;base64,${toBase64(s)}")`;
 
+/**
+ * A component that displays an animated SVG gradient background.
+ */
 export const AnimatedSVGGradientBackground = observer<
   PropsWithChildren<
     RotatingGradientBackgroundProps & { style?: CSSProperties; className?: string } & Pick<FlexProps, `pos`>
@@ -57,6 +78,7 @@ export const AnimatedSVGGradientBackground = observer<
   className,
   children,
 }) {
+  /// TODO use useId() if available
   const uid = useMemo(() => uidGenerator(), []);
 
   // Формируем SVG stop-элементы
@@ -72,7 +94,7 @@ export const AnimatedSVGGradientBackground = observer<
     () =>
       dataUriEncode(
         `<?xml version="1.0" encoding="UTF-8"?>` +
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" preserveAspectRatio="none">` +
+          `<svg xmlns="${svgNS}" viewBox="0 0 1 1" preserveAspectRatio="none">` +
           `<defs><linearGradient id="${uid}-rotGrad" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="0">` +
           `${stopTags}` +
           `<animateTransform attributeName="gradientTransform" type="rotate" values="${rotateKeyframes.values}" keyTimes="${rotateKeyframes.keyTimes}" dur="${rotateDur}" repeatCount="indefinite"/>` +

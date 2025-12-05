@@ -1,6 +1,6 @@
 # Class: ExMap\<Key, Value\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:6](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:6](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L6)
 
 Extended Map implementation with additional utility methods and operations
 
@@ -31,7 +31,7 @@ The type of values in the map
 new ExMap<Key, Value>(pairs?): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:13](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:13](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L13)
 
 Creates a new ExMap instance
 
@@ -57,7 +57,7 @@ Optional iterable of key-value pairs to initialize the map
 get toStringTag: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:277](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L277)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:281](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L281)
 
 ##### Returns
 
@@ -81,7 +81,7 @@ Map.[toStringTag]
 get size(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:79](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L79)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:78](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L78)
 
 ##### Returns
 
@@ -103,7 +103,7 @@ ReadonlyMap.size
 iterator: MapIterator<[Key, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:257](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L257)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:261](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L261)
 
 #### Returns
 
@@ -125,7 +125,7 @@ ReadonlyMap.[iterator]
 assign(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:199](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L199)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:198](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L198)
 
 Adds all entries from another iterable to this map
 
@@ -153,7 +153,7 @@ This map instance for chaining
 backup(fn?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:211](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L211)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:210](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L210)
 
 Creates a backup of the current map state and returns a restore function
 
@@ -185,7 +185,7 @@ Function that when called restores the map to its backed up state
 clear(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L23)
 
 Removes all elements from the map
 
@@ -209,7 +209,7 @@ Map.clear
 delete(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L33)
 
 Removes a key and its associated value from the map
 
@@ -243,7 +243,7 @@ Map.delete
 deleteKeys(keys): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:186](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L186)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:185](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L185)
 
 Removes multiple keys from the map
 
@@ -271,7 +271,7 @@ This map instance for chaining
 entries(): MapIterator<[Key, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:262](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L262)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:266](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L266)
 
 #### Returns
 
@@ -295,7 +295,7 @@ ReadonlyMap.entries
 filter<R>(by): ExMap<Key, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:224](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L224)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:223](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L223)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -325,7 +325,7 @@ New map with filtered entries
 filter(by): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:225](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L225)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:229](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L229)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -351,7 +351,7 @@ New map with filtered entries
 forEach(by): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:42](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L42)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:41](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L41)
 
 Executes a callback for each key-value pair in the map
 
@@ -378,32 +378,18 @@ ReadonlyMap.forEach
 ### freeze() {#freeze}
 
 ```ts
-freeze(): Omit<ExMap<Key, Value>, 
-  | "set"
-  | "delete"
-  | "clear"
-  | "deleteKeys"
-  | "update"
-  | "overwrite"
-| "getOrCreate">;
+freeze(): Omit<ExMap<Key, Value>, "set" | "delete" | "clear" | "deleteKeys" | "update" | "getOrCreate">;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:234](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L234)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L238)
 
-Creates an immutable version of this map
+Freezes the map, preventing any further mutations.
 
 #### Returns
 
-`Omit`\<`ExMap`\<`Key`, `Value`\>, 
-  \| `"set"`
-  \| `"delete"`
-  \| `"clear"`
-  \| `"deleteKeys"`
-  \| `"update"`
-  \| `"overwrite"`
-  \| `"getOrCreate"`\>
+`Omit`\<`ExMap`\<`Key`, `Value`\>, `"set"` \| `"delete"` \| `"clear"` \| `"deleteKeys"` \| `"update"` \| `"getOrCreate"`\>
 
-Frozen map that throws on mutation attempts
+The same map instance, but with mutation methods removed from its type.
 
 ***
 
@@ -413,7 +399,7 @@ Frozen map that throws on mutation attempts
 get(key): Value | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:53](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L53)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:52](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L52)
 
 Retrieves the value associated with a key
 
@@ -448,7 +434,7 @@ getOrCreate(
    onExisted?): Value;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:132](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L132)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:131](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L131)
 
 Gets a value from the map or creates it if it doesn't exist
 
@@ -490,7 +476,7 @@ when key doesn't exist
 has(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:62](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L62)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:61](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L61)
 
 Checks if a key exists in the map
 
@@ -522,7 +508,7 @@ ReadonlyMap.has
 keys(): MapIterator<Key>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:267](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L267)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:271](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L271)
 
 #### Returns
 
@@ -544,7 +530,7 @@ ReadonlyMap.keys
 mapEntries<NewValue>(by): ExMap<Key, NewValue>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:158](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L158)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:157](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L157)
 
 Creates a new map by transforming values while keeping the same keys
 
@@ -576,7 +562,7 @@ New map with transformed values
 set(key, value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:73](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L73)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:72](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L72)
 
 Associates a key with a value in the map
 
@@ -616,7 +602,7 @@ Map.set
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:167](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L167)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:166](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L166)
 
 Converts map entries to an array using a transform function
 
@@ -648,7 +634,7 @@ Array of transformed values
 update(key, value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:149](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L149)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:148](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L148)
 
 Updates a value in the map based on its current value
 
@@ -682,7 +668,7 @@ This map instance for chaining
 values(): MapIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:272](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L272)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:276](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L276)
 
 #### Returns
 
@@ -704,7 +690,7 @@ ReadonlyMap.values
 valuesToArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:176](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L176)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L175)
 
 Converts map values to an array using a transform function
 
@@ -736,7 +722,7 @@ Array of transformed values
 static groupedBy<Value, Key>(input, by): ExMap<Key, Value[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:91](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L91)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:90](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L90)
 
 Groups array elements by a key function, collecting values with the same key into arrays
 
@@ -778,7 +764,7 @@ Map of keys to arrays of values
 static mappedBy<Value, Key>(input, by): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:114](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-map.ts#L114)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:113](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L113)
 
 Creates a map from an array using a key function
 

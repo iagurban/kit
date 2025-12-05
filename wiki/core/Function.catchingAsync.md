@@ -18,7 +18,9 @@ A function that gets invoked with the caught error if `fn` throws or rejects. Th
 function catchingAsync<T, C>(fn, onCatch): Promise<T | C>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:19](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/catching.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:41](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/flow/catching.ts#L41)
+
+Executes an asynchronous function and provides a mechanism to handle any errors that may occur during its execution.
 
 ### Type Parameters
 
@@ -36,13 +38,19 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:19](https://github.c
 
 () => `Promise`\<`T`\>
 
+An asynchronous function that will be executed.
+
 #### onCatch
 
 (`e`) => `C` \| `Promise`\<`C`\>
 
+A function that gets invoked with the caught error if `fn` throws or rejects. This function can return a value or a Promise.
+
 ### Returns
 
 `Promise`\<`T` \| `C`\>
+
+A Promise that resolves to the result of `fn` if it succeeds, or to the outcome of `onCatch` if an error is caught.
 
 ## Call Signature
 
@@ -50,7 +58,9 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:19](https://github.c
 function catchingAsync<T>(fn, onCatch): Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:23](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/catching.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:53](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/flow/catching.ts#L53)
+
+Executes an asynchronous function and provides a mechanism to handle any errors that may occur during its execution.
 
 ### Type Parameters
 
@@ -64,10 +74,16 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:23](https://github.c
 
 () => `Promise`\<`T`\>
 
+An asynchronous function that will be executed.
+
 #### onCatch
 
 (`e`) => `T` \| `Promise`\<`T`\>
 
+A function that gets invoked with the caught error if `fn` throws or rejects. This function can return a value or a Promise.
+
 ### Returns
 
 `Promise`\<`T`\>
+
+A Promise that resolves to the result of `fn` if it succeeds, or to the outcome of `onCatch` if an error is caught.

@@ -68,21 +68,53 @@ export const pickRandomItems = <T>(count: number, from: readonly T[]): T[] => {
  * A collection of utility functions for manipulating arrays. Each function allows optional mutation of the original array.
  */
 export const ArrayMutators = {
+  /**
+   * Inserts a value into an array at a specified position.
+   * @param a The array to insert into.
+   * @param value The value to insert.
+   * @param pos The position to insert at.
+   * @param mutate Whether to mutate the original array.
+   * @returns A new array with the value inserted, or the mutated array.
+   */
   insert<T>(a: T[], value: T, pos: number, mutate = false) {
     const copy = mutate ? a : [...a];
     copy.splice(pos, 0, value);
     return copy;
   },
+  /**
+   * Moves an element within an array from one position to another.
+   * @param a The array to move the element in.
+   * @param from The position of the element to move.
+   * @param to The position to move the element to.
+   * @param mutate Whether to mutate the original array.
+   * @returns A new array with the element moved, or the mutated array.
+   */
   move<T>(a: T[], from: number, to: number, mutate = false) {
     const copy = mutate ? a : [...a];
     copy.splice(to, 0, ...copy.splice(from, 1));
     return copy;
   },
+  /**
+   * Removes one or more elements from an array.
+   * @param a The array to remove elements from.
+   * @param from The position to start removing from.
+   * @param count The number of elements to remove.
+   * @param mutate Whether to mutate the original array.
+   * @returns A new array with the elements removed, or the mutated array.
+   */
   remove<T>(a: T[], from: number, count = 1, mutate = false) {
     const copy = mutate ? a : [...a];
     copy.splice(from, count);
     return copy;
   },
+  /**
+   * Sets the value of an element in an array at a specified position.
+   * @param a The array to set the element in.
+   * @param value The value to set.
+   * @param pos The position of the element to set.
+   * @param mutate Whether to mutate the original array.
+   * @returns A new array with the element set, or the mutated array.
+   */
   set<T>(a: T[], value: T, pos: number, mutate = false) {
     const copy = mutate ? a : [...a];
     copy[pos] = value;

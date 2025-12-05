@@ -4,9 +4,9 @@
 const gradientPresets: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:22](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L22)
 
-Предопределённые градиенты (массивы GradientStop)
+A collection of preset gradients.
 
 ## Type Declaration
 

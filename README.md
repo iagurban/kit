@@ -19,6 +19,7 @@ TypeScript utility kit for full‑stack projects – collections, functional hel
 - [@grbn/kit/react/mobx](./wiki/react-mobx/Home.md) — animated SVG gradient presets, keyframes builder, DnD tree fabric, resize observer hook, and small animation utilities for MobX + React.
 - [@grbn/kit/mobx](./wiki/mobx/Home.md) — observable collections, snapshot tooling, and ergonomics like `observerWithForwardRef` and root store registration.
 - [@grbn/kit/nest](./wiki/nest/Home.md) — NestJS building blocks: JWT/OIDC auth bases, interceptors (server timestamp/contextual user), guards/decorators, and service helpers.
+- [@grbn/kit/node](./wiki/node/Home.md) — Node helpers.
 - [@grbn/kit/prisma](./wiki/prisma/Home.md) — keyset pagination (builder + runtime) and helpers to parse Prisma schema model metadata.
 - [@grbn/kit/redis](./wiki/redis/Home.md) — Redis cached resource + pub/sub subscription and JSON↔hash helpers for structured storage.
 - [@grbn/kit/graphql](./wiki/graphql/Home.md) — `cacheKeyFromGraphqlPath` to build deterministic cache keys from `GraphQLResolveInfo.path`.

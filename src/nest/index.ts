@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export { AuthControllerBase } from './auth-controller-base';
 export { AuthServiceBase } from './auth-service-base';
 export {

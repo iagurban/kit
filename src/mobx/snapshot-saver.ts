@@ -26,7 +26,6 @@ export class SnapshotSaver<S> {
    * and excessive save operations. If a save is already in progress, the method queues the latest snapshot to be saved after the current one completes.
    *
    * @param {SnapshotInOf<S>} snapshot - The snapshot data to be saved.
-   * @return {void} This method does not return a value.
    */
   save(snapshot: SnapshotInOf<S>): void {
     if (this.saving) {

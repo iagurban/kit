@@ -105,6 +105,13 @@ describe('Array Utilities', () => {
     });
 
     describe('remove', () => {
+      it('should remove elements starting at specified position with default count', () => {
+        const arr = [1, 2, 3, 4];
+        const result = ArrayMutators.remove(arr, 1);
+        expect(result).toEqual([1, 3, 4]);
+        expect(arr).toEqual([1, 2, 3, 4]); // Original unchanged
+      });
+
       it('should remove elements starting at specified position', () => {
         const arr = [1, 2, 3, 4];
         const result = ArrayMutators.remove(arr, 1, 2);

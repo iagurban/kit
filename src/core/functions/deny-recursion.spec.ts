@@ -133,6 +133,63 @@ describe('multiRecurringDenier', () => {
     expect(guardedFunc(2)).toBe(2);
     expect(func).toHaveBeenCalledTimes(2);
   });
+
+  it('should remove the key from mapping if a synchronous function throws an error, allowing re-execution', () => {
+    const error = new Error('Sync error');
+    const syncFunc = jest.fn((_x: number) => {
+      throw error;
+    });
+    const guardedFunc = multiRecurringDenier(
+      syncFunc,
+      (x: number) => x,
+      () => 'Should not be called'
+    );
+
+    // First call throws
+    expect(() => guardedFunc(1)).toThrow(error);
+    expect(syncFunc).toHaveBeenCalledTimes(1);
+
+    // Second call should also execute and throw, proving the key was cleared
+    expect(() => guardedFunc(1)).toThrow(error);
+    expect(syncFunc).toHaveBeenCalledTimes(2);
+  });
+
+  it('should remove the key from mapping if an async function promise is rejected, allowing re-execution', async () => {
+    const rejectionError = new Error('Async rejection');
+    const asyncFunc = jest.fn(async (_x: number) => {
+      await new Promise(resolve => setTimeout(resolve, 10));
+      throw rejectionError;
+    });
+
+    const guardedFunc = multiRecurringDenier(
+      asyncFunc,
+      (x: number) => x,
+      () => 'Duplicate call detected'
+    );
+
+    // First call should be rejected
+    await expect(guardedFunc(1)).rejects.toThrow(rejectionError);
+    expect(asyncFunc).toHaveBeenCalledTimes(1);
+
+    // Second call should also be rejected, proving the key was cleared
+    await expect(guardedFunc(1)).rejects.toThrow(rejectionError);
+    expect(asyncFunc).toHaveBeenCalledTimes(2);
+  });
+
+  it('should throw an error on recursive synchronous call', () => {
+    const errorMessage = 'Recursive call detected';
+    const recursiveSyncFunc = jest.fn(() => {
+      guardedFunc();
+    });
+
+    const guardedFunc = multiRecurringDenier(
+      recursiveSyncFunc,
+      () => 'const-key',
+      () => errorMessage
+    );
+
+    expect(() => guardedFunc()).toThrow(errorMessage);
+  });
 });
 describe('denyRecursion', () => {
   it('should successfully execute a non-recursive function', () => {

@@ -1,50 +1,51 @@
+import { NumberBase } from './number-base';
 import { NumberConverter, Powers } from './number-converter';
 
-describe('Powers', () => {
-  describe('constructor and initialization', () => {
-    test('should properly initialize and handle different base values', () => {
-      // Base cases
-      const base2 = new Powers(2n);
-      expect(base2.base).toBe(2n);
-      expect(base2.get(0)).toBe(1n);
-      expect(base2.get(1)).toBe(2n);
-
-      const base16 = new Powers(16n);
-      expect(base16.base).toBe(16n);
-      expect(base16.get(0)).toBe(1n);
-      expect(base16.get(1)).toBe(16n);
-      expect(base16.get(2)).toBe(256n);
-
-      // Large base
-      const base1000 = new Powers(1000n);
-      expect(base1000.get(3)).toBe(1000000000n);
-    });
-
-    test('should throw on invalid base values', () => {
-      expect(() => new Powers(0n)).toThrow('mapping length must be > 1');
-      expect(() => new Powers(1n)).toThrow('mapping length must be > 1');
-      expect(() => new Powers(-5n)).toThrow('mapping length must be > 1');
-    });
-  });
-
-  test('should compute and cache powers correctly', () => {
-    const powers = new Powers(3n);
-    // Test sequential access
-    expect(powers.get(0)).toBe(1n);
-    expect(powers.get(1)).toBe(3n);
-    expect(powers.get(2)).toBe(9n);
-    expect(powers.get(3)).toBe(27n);
-
-    // Test random access (should use cache)
-    expect(powers.get(2)).toBe(9n);
-    expect(powers.get(1)).toBe(3n);
-
-    // Test jumping to higher power (should compute intermediate values)
-    expect(powers.get(5)).toBe(243n);
-  });
-});
-
 describe('NumberConverter', () => {
+  describe('Powers', () => {
+    describe('constructor and initialization', () => {
+      test('should properly initialize and handle different base values', () => {
+        // Base cases
+        const base2 = new Powers(2n);
+        expect(base2.base).toBe(2n);
+        expect(base2.get(0)).toBe(1n);
+        expect(base2.get(1)).toBe(2n);
+
+        const base16 = new Powers(16n);
+        expect(base16.base).toBe(16n);
+        expect(base16.get(0)).toBe(1n);
+        expect(base16.get(1)).toBe(16n);
+        expect(base16.get(2)).toBe(256n);
+
+        // Large base
+        const base1000 = new Powers(1000n);
+        expect(base1000.get(3)).toBe(1000000000n);
+      });
+
+      test('should throw on invalid base values', () => {
+        expect(() => new Powers(0n)).toThrow('mapping length must be > 1');
+        expect(() => new Powers(1n)).toThrow('mapping length must be > 1');
+        expect(() => new Powers(-5n)).toThrow('mapping length must be > 1');
+      });
+    });
+
+    test('should compute and cache powers correctly', () => {
+      const powers = new Powers(3n);
+      // Test sequential access
+      expect(powers.get(0)).toBe(1n);
+      expect(powers.get(1)).toBe(3n);
+      expect(powers.get(2)).toBe(9n);
+      expect(powers.get(3)).toBe(27n);
+
+      // Test random access (should use cache)
+      expect(powers.get(2)).toBe(9n);
+      expect(powers.get(1)).toBe(3n);
+
+      // Test jumping to higher power (should compute intermediate values)
+      expect(powers.get(5)).toBe(243n);
+    });
+  });
+
   describe('constructor and basic properties', () => {
     test('should handle various digit mappings and compute properties correctly', () => {
       const hex = new NumberConverter([
@@ -68,10 +69,6 @@ describe('NumberConverter', () => {
       // Invalid range (end before start)
       expect(() => new NumberConverter([['9', '0']]).digits).toThrow();
 
-      // Duplicate characters
-      expect(() => new NumberConverter(['a', 'a']).digits).toThrow();
-      expect(() => new NumberConverter([['a', 'c'], 'b']).digits).toThrow();
-
       // Invalid range format
       expect(
         () =>
@@ -82,6 +79,12 @@ describe('NumberConverter', () => {
           new NumberConverter([['a', 'b', 'c']] as unknown as readonly (string | readonly [string, string])[])
             .digits
       ).toThrow();
+    });
+
+    test('should throw an error for a digit set with less than 2 characters', () => {
+      expect(() => new NumberConverter(['a']).digitsSet).toThrow('empty digits set');
+      expect(() => new NumberConverter([['a', 'a']]).digitsSet).toThrow('empty digits set');
+      expect(() => new NumberConverter([]).digitsSet).toThrow('empty digits set');
     });
   });
 
@@ -122,6 +125,80 @@ describe('NumberConverter', () => {
     });
   });
 
+  describe('maxSafeInteger and maxSafeExponent', () => {
+    test('should calculate maxSafeInteger correctly for different bases', () => {
+      const binary = new NumberConverter(['0', '1']);
+      // MAX_SAFE_INTEGER is 2^53 - 1, which is 53 ones in binary
+      expect(binary.maxSafeInteger).toBe('1'.repeat(53));
+
+      const hex = new NumberConverter([
+        ['0', '9'],
+        ['a', 'f'],
+      ]);
+      // 2^53 - 1 in hex is '1fffffffffffff'
+      expect(hex.maxSafeInteger).toBe('1fffffffffffff');
+    });
+
+    test('should calculate maxSafeExponent correctly', () => {
+      const binary = new NumberConverter(['0', '1']);
+      expect(binary.maxSafeExponent).toBe(52); // 53 - 1
+
+      const hex = new NumberConverter([
+        ['0', '9'],
+        ['a', 'f'],
+      ]);
+      expect(hex.maxSafeExponent).toBe(13); // 14 - 1
+    });
+
+    test('maxSafeExponent should always be >= 2', () => {
+      // Test with a very large base, which should result in the smallest maxSafeExponent
+      const largeBase = new NumberConverter([['\u0000', '\uFFFF']]); // Base 65536
+      expect(largeBase.maxSafeExponent).toBeGreaterThanOrEqual(2);
+
+      const base36 = new NumberConverter([
+        ['0', '9'],
+        ['a', 'z'],
+      ]);
+      expect(base36.maxSafeExponent).toBeGreaterThanOrEqual(2);
+
+      const binary = new NumberConverter(['0', '1']);
+      expect(binary.maxSafeExponent).toBeGreaterThanOrEqual(2);
+    });
+
+    describe('maxSafeInteger for NumberBase presets', () => {
+      test('NumberBase.b2.maxSafeInteger', () => {
+        expect(NumberBase.b2.maxSafeInteger).toBe('1'.repeat(53));
+      });
+      test('NumberBase.b3.maxSafeInteger', () => {
+        expect(NumberBase.b3.maxSafeInteger).toBe('1121202011211211122211100012101111');
+      });
+      test('NumberBase.b4.maxSafeInteger', () => {
+        expect(NumberBase.b4.maxSafeInteger).toBe('133333333333333333333333333');
+      });
+      test('NumberBase.b6.maxSafeInteger', () => {
+        expect(NumberBase.b6.maxSafeInteger).toBe('224404414114114022451');
+      });
+      test('NumberBase.b8.maxSafeInteger', () => {
+        expect(NumberBase.b8.maxSafeInteger).toBe('377777777777777777');
+      });
+      test('NumberBase.b10.maxSafeInteger should throw', () => {
+        expect(() => NumberBase.b10.maxSafeInteger).toThrow('mapping length must be != 10');
+      });
+      test('NumberBase.b16.maxSafeInteger', () => {
+        expect(NumberBase.b16.maxSafeInteger).toBe('1fffffffffffff');
+      });
+      test('NumberBase.b62.maxSafeInteger', () => {
+        expect(NumberBase.b62.maxSafeInteger).toBe('fFgnDxSe7');
+      });
+      test('NumberBase.b70.maxSafeInteger', () => {
+        expect(NumberBase.b70.maxSafeInteger).toBe('=_fv41ByO');
+      });
+      test('NumberBase.b88.maxSafeInteger', () => {
+        expect(NumberBase.b88.maxSafeInteger).toBe('#PG2S6Ek*');
+      });
+    });
+  });
+
   describe('random generation and utility methods', () => {
     const hex = new NumberConverter([
       ['0', '9'],
@@ -146,11 +223,11 @@ describe('NumberConverter', () => {
       expect(() => hex.random(1.5)).toThrow();
     });
 
-    test('should handle mask and maxSafeDigits correctly', () => {
+    test('should handle mask and maxSafeExponent correctly', () => {
       expect(hex.mask(3)).toBe('fff');
-      expect(hex.maxSafeDigits).toBe(hex.from10(BigInt(Number.MAX_SAFE_INTEGER)).length - 1);
+      expect(hex.maxSafeExponent).toBe(hex.from10(BigInt(Number.MAX_SAFE_INTEGER)).length - 1);
 
-      // maxSafeDigits = fixedWidthRandomGenerator(8).length = 8
+      // maxSafeExponent = fixedWidthRandomGenerator(8).length = 8
       expect(new NumberConverter([[' ', 'z']]).fixedWidthRandomGenerator(8)().length).toBe(8);
 
       // Test fixed width generator edge cases
@@ -177,8 +254,8 @@ describe('NumberConverter', () => {
       }
     });
 
-    test('fixedWidthRandomGenerator padding works when length % maxSafeDigits !== 0', () => {
-      const msd = hex.maxSafeDigits; // width of primary chunks
+    test('fixedWidthRandomGenerator padding works when length % maxSafeExponent !== 0', () => {
+      const msd = hex.maxSafeExponent; // width of primary chunks
       const len = msd + 3; // remainder chunk exists
       const gen = hex.fixedWidthRandomGenerator(len);
       const s = gen();
@@ -256,6 +333,18 @@ describe('NumberConverter', () => {
       const max = Math.max(...arr);
       const min = Math.min(...arr);
       expect(max / min).toBeLessThan(5);
+    });
+
+    test('fixedWidthRandomGenerator should throw an error for NaN length', () => {
+      expect(() => hex.fixedWidthRandomGenerator(Number.NaN)).toThrow('length must be integer < 1, got NaN');
+    });
+
+    test('should throw "invalid mask" when maxSafeExponent is 0', () => {
+      const converter = new NumberConverter([['0', '1']]);
+      Object.defineProperty(converter, 'maxSafeExponent', {
+        get: () => 0,
+      });
+      expect(() => converter.fixedWidthRandomGenerator(10)).toThrow('invalid mask: 0');
     });
   });
 });

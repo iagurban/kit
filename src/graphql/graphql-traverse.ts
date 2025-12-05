@@ -1,48 +1,69 @@
 import { isROArray, isTruthy, notNull } from '../core';
 
+/**
+ * Represents the location of a node in a GraphQL AST.
+ */
 export type GqlASTLoc = { start: number; end: number };
 
+/**
+ * Represents a name node in a GraphQL AST.
+ */
 export type GqlASTName = { kind: `Name`; value: string; loc: GqlASTLoc };
 
+/**
+ * Represents a selection set node in a GraphQL AST.
+ */
 export type GqlASTSelectionSet = {
   kind: `SelectionSet`;
-  selections: (GqlASTField | GqlASTFragmentSpread)[];
+  selections: readonly (GqlASTField | GqlASTFragmentSpread)[];
   loc: GqlASTLoc;
 };
 
+/**
+ * Represents a field node in a GraphQL AST.
+ */
 export type GqlASTField = {
   kind: `Field`;
   alias?: GqlASTName;
   name: GqlASTName;
-  arguments: {
+  arguments: readonly {
     kind: `Argument`;
     name: GqlASTName;
     value: { kind: `Variable`; name: GqlASTName; loc: GqlASTLoc };
     loc: GqlASTLoc;
   }[];
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };
 
+/**
+ * Represents a fragment definition node in a GraphQL AST.
+ */
 export type GqlASTFragmentDefinition = {
   kind: 'FragmentDefinition';
   name: GqlASTName;
   typeCondition: unknown;
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };
 
+/**
+ * Represents a fragment spread node in a GraphQL AST.
+ */
 export type GqlASTFragmentSpread = {
   kind: 'FragmentSpread';
   name: GqlASTName;
 };
 
+/**
+ * Represents an inline fragment spread node in a GraphQL AST.
+ */
 export type GqlASTInlineFragmentSpread = {
   kind: 'InlineFragment';
   typeCondition: unknown;
-  directives: unknown[];
+  directives: readonly unknown[];
   selectionSet?: GqlASTSelectionSet;
   loc: GqlASTLoc;
 };
@@ -105,6 +126,9 @@ type BasicSelectionArgsObject = {
   check?: (subPath: string, field: GqlASTField) => boolean;
 };
 
+/**
+ * Arguments for basic selection.
+ */
 export type BasicSelectionArgs<Add extends Record<string, unknown>> =
   | readonly string[]
   | (BasicSelectionArgsObject & Add)
@@ -156,9 +180,21 @@ export const unpackSelectArgs = <Add extends Record<string, unknown>>(
   };
 };
 
+/**
+ * Information about the current GraphQL context.
+ */
 export type GqlContextInfo = {
+  /**
+   * The name of the field being resolved.
+   */
   fieldName: string;
+  /**
+   * The AST nodes for the field being resolved.
+   */
   fieldNodes: GqlASTField[];
+  /**
+   * A map of fragment definitions.
+   */
   fragments: Record<string, GqlASTFragmentDefinition>;
 };
 

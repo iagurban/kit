@@ -1,5 +1,14 @@
+import { randomBytes } from 'crypto';
+
+import { isROArray } from '../checks';
+import { debugAssert } from '../flow/assertions';
+import { once } from '../once';
+
 /**
  * Utility class for efficiently computing and caching powers of a given base number.
+ * This class can be treated as immutable from an external perspective. Although it
+ * internally mutates an array to cache results, its public methods are pure and
+ * will always return the same output for a given input.
  *
  * @example
  * ```typescript
@@ -13,8 +22,6 @@
  * const power5 = hexPowers.get(5); // Returns 1048576n
  * ```
  */
-import { randomBytes } from 'crypto';
-
 export class Powers {
   /**
    * Creates a new Powers calculator.
@@ -88,41 +95,59 @@ export class NumberConverter {
   }
 
   /** Gets array of character codes for all digits in order */
-  get digits(): readonly number[] {
-    const r: number[] = [];
-    for (const e of this.parts) {
-      if (Array.isArray(e)) {
+  @once
+  get digits() {
+    const set = [...this.digitsSet];
+    return set.sort((a, b) => a - b);
+  }
+
+  @once
+  get digitsSet(): ReadonlySet<number> {
+    const r = new Set<number>();
+    for (const [idx, e] of this.parts.entries()) {
+      if (isROArray(e)) {
         if (e.length !== 2 || e[0].length !== 1 || e[1].length !== 1) {
-          throw new Error('fskdfjgksj');
+          throw new Error(`parts[${idx}] must be ['a','z'] (to add a range) or 'abc0xyz' (to add by char)`);
         }
-        const [from, to] = Array.from(e).map(s => s.charCodeAt(0));
+        const [from, to] = Array.from(e).map(s => s.codePointAt(0)!);
         if (from > to) {
-          throw new Error('sfldhgsjfgk');
+          throw new Error(`parts[${idx}] 'from' must be <= 'to', got '${from}' > '${to}'`);
         }
-        r.push(...Array.from({ length: to - from + 1 }, (_, i) => from + i));
+        for (let i = 0; i < to - from + 1; ++i) {
+          r.add(from + i);
+        }
       } else {
-        r.push(...Array.from(e).map(s => s.charCodeAt(0)));
+        for (let i = 0; i < e.length; ++i) {
+          r.add(e.codePointAt(i)!);
+        }
       }
     }
-    if (new Set(r).size !== r.length) {
-      throw new Error('duplicates');
+    if (r.size < 2) {
+      throw new Error(`empty digits set`);
     }
     return r;
   }
 
   /** Gets the Powers calculator for this number system's base */
+  @once
   get powers(): Powers {
     return new Powers(this.base);
   }
 
   /** Maps each digit's character code to its numeric value in the system */
+  @once
   get byChar(): Map<number, bigint> {
-    return new Map(this.digits.map((cc, i) => [cc, BigInt(i)] as const));
+    return new Map([...this.digits].map((cc, i) => [cc, BigInt(i)] as const));
   }
 
-  /** Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER */
-  get maxSafeDigits(): number {
-    return this.from10(BigInt(Number.MAX_SAFE_INTEGER)).length - 1;
+  @once
+  get maxSafeInteger() {
+    return this.from10(BigInt(Number.MAX_SAFE_INTEGER));
+  }
+
+  /** Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER (always >= 2) */
+  get maxSafeExponent(): number {
+    return this.maxSafeInteger.length - 1;
   }
 
   /**
@@ -208,16 +233,19 @@ export class NumberConverter {
    * @returns Function that generates random strings of specified length
    * @throws {Error} If length is not a positive integer
    */
-  readonly fixedWidthRandomGenerator: (length: number) => () => string = (length: number) => {
+  readonly fixedWidthRandomGenerator: (length: number) => () => string = length => {
     // Secure, unbiased integer in [0, mask) using Node's crypto.
     // Reference (non-secure) equivalent for understanding `mask` meaning:
     //   Math.floor(Math.random() * mask)  // yields 0..mask-1
     // Instead of fixed 8 bytes, compute the minimal number of bytes required per mask
     // and build a sampler once to avoid extra work per generated chunk.
-    const makeSecureIntBelow = (mask: number): (() => number) => {
+    const makeSecureIntBelow = (digits: number): (() => number) => {
+      const mask = Number(this.to10(this.mask(digits)));
+
       if (mask <= 0 || !Number.isFinite(mask)) {
         throw new Error(`invalid mask: ${mask}`);
       }
+
       const m = BigInt(mask);
       // bits needed to represent values in [0, mask)
       const bits = Math.ceil(Math.log2(mask));
@@ -247,40 +275,33 @@ export class NumberConverter {
 
     const pad = String.fromCharCode(this.digits[0]);
 
-    const mask0Digits = this.maxSafeDigits;
-    const mask0 = Number(this.to10(this.mask(mask0Digits)));
+    const mask0Digits = this.maxSafeExponent; // >=2
+    const mask1Length = length % mask0Digits; // [0, mask0Digits] -> [0, >=2]
+    const mask0Length = Math.floor(length / mask0Digits); // >=0
 
-    const mask1Digits = length % mask0Digits;
-    const mask1 = mask1Digits > 0 ? Number(this.to10(this.mask(mask1Digits))) : 0;
+    const genSample1 = (sampler: () => number, width: number) => this.from10(sampler()).padStart(width, pad);
 
-    const mask0Count = Math.floor(length / mask0Digits);
-
-    // Build samplers once per generator instance
-    const sample0 = mask0Count > 0 ? makeSecureIntBelow(mask0) : undefined;
-    const sample1 = mask1Digits > 0 ? makeSecureIntBelow(mask1) : undefined;
-
-    const genWith = (sampler: () => number, width: number, p: string) =>
-      this.from10(sampler()).padStart(width, p);
-
-    const genRepeatWith = (n: number, sampler: () => number, width: number, p: string) => {
+    const genSample0 = (sampler: () => number) => {
       const r: string[] = [];
-      for (let i = 0; i < n; ++i) {
-        r.push(genWith(sampler, width, p));
+      for (let i = 0; i < mask0Length; ++i) {
+        r.push(genSample1(sampler, mask0Digits));
       }
       return r.join('');
     };
 
-    if (mask0Count < 1 && sample1) {
-      return () => genWith(sample1, length, pad);
+    if (mask1Length > 0) {
+      const sample1 = makeSecureIntBelow(mask1Length);
+
+      if (mask0Length > 0) {
+        const sample0 = makeSecureIntBelow(mask0Digits);
+        return () => genSample0(sample0) + genSample1(sample1, mask1Length);
+      }
+
+      return () => genSample1(sample1, length);
     }
-    if (mask1Digits < 1 && sample0) {
-      return () => genRepeatWith(mask0Count, sample0, mask0Digits, pad);
-    }
-    if (sample0 && sample1) {
-      return () =>
-        `${genRepeatWith(mask0Count, sample0, mask0Digits, pad)}${genWith(sample1, mask1Digits, pad)}`;
-    }
-    // Fallback (should not be reached given validations)
-    return () => '';
+
+    debugAssert(mask0Length > 0);
+    const sample0 = makeSecureIntBelow(mask0Digits);
+    return () => genSample0(sample0);
   };
 }

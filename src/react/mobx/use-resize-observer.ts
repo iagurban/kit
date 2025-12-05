@@ -71,10 +71,19 @@ export const useResizeObserver = (callback: (e: ResizeObserverEntry) => void): G
   return watchingRef.current;
 };
 
+/**
+ * A custom hook that uses a resize observer to track changes in the size of an element,
+ * and executes a memoized callback function when a resize event occurs.
+ *
+ * @template T - The type of the callback function.
+ * @param {...Parameters<typeof useCallback<T>>} cb - The parameters for the `useCallback` hook.
+ * The first parameter is the callback function to be executed on resize, and the second is the dependency array.
+ * @returns {GraphNodeViewStore} An instance of `GraphNodeViewStore` that manages the resize observer.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useResizeObserverWithCallback = <T extends (e: ResizeObserverEntry) => any>(
   ...cb: Parameters<typeof useCallback<T>>
-) => {
+): GraphNodeViewStore => {
   const onResize = useCallback(...cb);
   return useResizeObserver(onResize);
 };

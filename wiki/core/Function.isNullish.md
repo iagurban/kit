@@ -4,7 +4,7 @@
 function isNullish(o): o is null | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:92](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/checks.ts#L92)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:92](https://github.com/iagurban/kit/blob/ec465b6e47e708a8ef4d0428d6692d00149ad444/src/core/checks.ts#L92)
 
 Determines whether the given value is null or undefined.
 

@@ -1,10 +1,10 @@
 # Function: createUsableContext()
 
 ```ts
-function createUsableContext<T>(name): object;
+function createUsableContext<T>(name): UsableContext<T>;
 ```
 
-Defined in: [create-usable-context.ts:28](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/react/create-usable-context.ts#L28)
+Defined in: [create-usable-context.ts:30](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/create-usable-context.ts#L30)
 
 A utility function to create a reusable React context with strict type safety.
 
@@ -30,36 +30,4 @@ The display name of the context, used for debugging and error messages.
 
 ## Returns
 
-`object`
-
-### ctx
-
-```ts
-ctx: Context<T | undefined>;
-```
-
-### provider
-
-```ts
-provider: Provider<T | undefined>;
-```
-
-### use()
-
-```ts
-use: () => T;
-```
-
-#### Returns
-
-`T`
-
-### useIfProvided()
-
-```ts
-useIfProvided: () => T | undefined;
-```
-
-#### Returns
-
-`T` \| `undefined`
+`UsableContext`\<`T`\>

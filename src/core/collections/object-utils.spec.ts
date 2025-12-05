@@ -1,4 +1,4 @@
-import { fromEntries, groupedBy, mapEntries, mappedBy } from './object-utils';
+import { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './object-utils';
 
 describe('Array Utility Functions', () => {
   describe('mappedBy', () => {
@@ -150,6 +150,67 @@ describe('Array Utility Functions', () => {
         1: 'one',
         2: 'two',
       });
+    });
+  });
+
+  describe('mapOwnEntries', () => {
+    it('should map own object entries using the provided function', () => {
+      const input = {
+        a: 1,
+        b: 2,
+        c: 3,
+      };
+
+      const result = mapOwnEntries(input, (value: number) => value * 2);
+
+      expect(result).toEqual({
+        a: 2,
+        b: 4,
+        c: 6,
+      });
+    });
+
+    it('should handle empty object', () => {
+      const result = mapOwnEntries({}, (value: number) => value * 2);
+      expect(result).toEqual({});
+    });
+
+    it('should provide correct key in mapping function', () => {
+      const input = { a: 1, b: 2 };
+      const mappedKeys: string[] = [];
+
+      mapOwnEntries(input, (value, key) => {
+        mappedKeys.push(key as string);
+        return value;
+      });
+
+      expect(mappedKeys).toEqual(['a', 'b']);
+    });
+
+    it('should not map inherited properties', () => {
+      const parent = {
+        inherited: 100,
+      };
+
+      const child = Object.create(parent);
+      child.own = 1;
+
+      const result = mapOwnEntries(child, (value: number) => value * 2);
+
+      expect(result).toEqual({
+        own: 2,
+      });
+      expect((result as Record<string, unknown>).inherited).toBeUndefined();
+    });
+
+    it('should skip non-own properties', () => {
+      const proto = { a: 1 };
+      const obj = Object.create(proto);
+      obj.b = 2;
+
+      const result = mapOwnEntries(obj, (value: number) => value * 2);
+
+      expect(result).toEqual({ b: 4 });
     });
   });
 });

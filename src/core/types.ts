@@ -67,6 +67,7 @@ export type NotNullish<T> = Exclude<T, Nullish>;
  * @returns A union type of the required keys of `T`.
  */
 export type RequiredKeys<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   [K in keyof T]: {} extends { [P in K]: T[K] } ? never : K;
 }[keyof T];
 
@@ -189,7 +190,7 @@ export type AnyAnyFunction<
  * parameters of any type and returns an instance of the specified type.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ClassConstructor<Instance> = { new (...args: any[]): Instance };
+export type ClassConstructor<Instance> = { new (...args: any[]): Instance; name?: string };
 
 /**
  * Represents a type alias for an array of any type.

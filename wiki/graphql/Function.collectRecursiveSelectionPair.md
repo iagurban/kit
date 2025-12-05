@@ -9,7 +9,7 @@ function collectRecursiveSelectionPair<T>(
    recur): readonly [string, T] | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:192](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/graphql/graphql-traverse.ts#L192)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:228](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L228)
 
 Collects recursive selection pairs based on a GraphQL field and its subpath.
 
@@ -35,7 +35,7 @@ The current path in the GraphQL query structure.
 
 ### f
 
-`GqlASTField`
+[`GqlASTField`](TypeAlias.GqlASTField.md)
 
 The current field in the GraphQL AST being processed.
 
@@ -47,7 +47,7 @@ A function that determines the subpath for the current field, returning `undefin
 
 ### fragments
 
-`Record`\<`string`, `GqlASTFragmentDefinition`\>
+`Record`\<`string`, [`GqlASTFragmentDefinition`](TypeAlias.GqlASTFragmentDefinition.md)\>
 
 A record of GraphQL fragment definitions used for resolving fragment spreads.
 

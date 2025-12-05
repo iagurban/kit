@@ -4,7 +4,7 @@
 type ExtendedJsonValue = ExtendedJsonScalar | ExtendedJsonArray | ExtendedJsonObject;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/extended-json-type.ts:16](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/json/extended-json-type.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/json/extended-json-type.ts:16](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/json/extended-json-type.ts#L16)
 
 Represents an extended JSON value which can be one of the following:
 - A scalar value (e.g., string, number, boolean, null, or other primitive types)

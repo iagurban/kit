@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {
@@ -11,6 +11,7 @@
     "./helpers/prettier-parts.mjs": "./dist/src/helpers/prettier-parts.mjs",
     "./mobx": "./dist/src/mobx/index.js",
     "./nest": "./dist/src/nest/index.js",
+    "./node": "./dist/src/node/index.js",
     "./prisma": "./dist/src/prisma/index.js",
     "./react": "./dist/src/react/index.js",
     "./react/mobx": "./dist/src/react/mobx/index.js",
@@ -31,19 +32,20 @@
   },
   "scripts": {
     "build": "yarn swc-ts-build -s src -d dist/src -p tsconfig.build.json && cp -R ./src/helpers/ ./dist/src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/{package,project,tsconfig}.json' -x '../tsconfig.*.json' './dist' && cp -R ./dist/_declarations/* ./dist/ && rm -rf ./dist/_declarations",
-    "test": "yarn jest",
+    "test": "yarn jest --maxWorkers=4",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
     "coverage": "yarn test --coverage",
     "docs:md:core": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/core/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/core/Home.md)",
     "docs:md:graphql": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/graphql/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/graphql/Home.md)",
     "docs:md:mobx": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/mobx/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/mobx/Home.md)",
     "docs:md:nest": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/nest/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/nest/Home.md)",
+    "docs:md:node": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/node/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/node/Home.md)",
     "docs:md:prisma": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/prisma/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/prisma/Home.md)",
     "docs:md:react": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/react/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/react/Home.md)",
     "docs:md:react-mobx": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/react/mobx/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/react-mobx/Home.md)",
     "docs:md:redis": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/redis/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/redis/Home.md)",
     "docs:md:zod": "(yarn typedoc --plugin typedoc-plugin-markdown --entryPoints src/zod/index.ts --tsconfig tsconfig.json --excludeNotDocumented --hideBreadcrumbs --hideGenerator --hidePageHeader --searchInComments --searchInDocuments --useCodeBlocks --useCustomAnchors --flattenOutputFiles --out .temp-docs) && (yarn tsx src/bin/clean-md.ts ./wiki/zod/Home.md)",
-    "docs:md": "yarn docs:md:core && yarn docs:md:graphql && yarn docs:md:mobx && yarn docs:md:nest && yarn docs:md:prisma && yarn docs:md:react && yarn docs:md:react-mobx && yarn docs:md:redis && yarn docs:md:zod"
+    "docs:md": "yarn docs:md:core && yarn docs:md:graphql && yarn docs:md:mobx && yarn docs:md:nest && yarn docs:md:node && yarn docs:md:prisma && yarn docs:md:react && yarn docs:md:react-mobx && yarn docs:md:redis && yarn docs:md:zod"
   },
   "dependencies": {
     "@loancrate/prisma-schema-parser": "^3.0.0",
@@ -70,6 +72,7 @@
     "@tsd/typescript": "^5.9.3",
     "@types/bcrypt": "^6",
     "@types/express": "^5",
+    "@types/ioredis-mock": "^8.2.6",
     "@types/jest": "^30.0.0",
     "@types/lodash": "^4.17.20",
     "@types/node": "^24.7.2",
@@ -103,6 +106,7 @@
     "globals": "^16.2.0",
     "graphql": "^16.12.0",
     "ioredis": "^5.8.2",
+    "ioredis-mock": "^8.9.0",
     "jest": "^30.2.0",
     "jest-html-reporters": "^3.1.7",
     "jest-runner-tsd": "^6.0.0",

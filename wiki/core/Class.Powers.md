@@ -1,8 +1,11 @@
 # Class: Powers
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:16](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/number-converter.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:25](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/number-converter.ts#L25)
 
 Utility class for efficiently computing and caching powers of a given base number.
+This class can be treated as immutable from an external perspective. Although it
+internally mutates an array to cache results, its public methods are pure and
+will always return the same output for a given input.
 
 ## Example
 
@@ -25,7 +28,7 @@ const power5 = hexPowers.get(5); // Returns 1048576n
 new Powers(base, initDigits): Powers;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:24](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/number-converter.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/number-converter.ts#L33)
 
 Creates a new Powers calculator.
 
@@ -59,7 +62,7 @@ If base is less than 2n
 readonly base: bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:25](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/number-converter.ts#L25)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:34](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/number-converter.ts#L34)
 
 The base number to calculate powers of. Must be >= 2n.
 
@@ -71,7 +74,7 @@ The base number to calculate powers of. Must be >= 2n.
 get(pos): bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:41](https://github.com/iagurban/kit/blob/8b774e0e19a5bd4b27ec02cbd39cc62b919e327f/src/core/numbers/number-converter.ts#L41)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/number-converter.ts#L50)
 
 Gets the power of the base at the specified position.
 Automatically calculates and caches any intermediate powers needed.

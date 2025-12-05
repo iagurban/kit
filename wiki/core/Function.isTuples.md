@@ -4,7 +4,7 @@
 function isTuples<Vs>(...items): Checker<Vs[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:268](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/checks.ts#L268)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:305](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/checks.ts#L305)
 
 Determines if a given array adheres strictly to a tuple structure based on provided type checkers.
 

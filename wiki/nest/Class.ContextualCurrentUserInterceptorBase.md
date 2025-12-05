@@ -1,6 +1,6 @@
 # Abstract Class: ContextualCurrentUserInterceptorBase\<CurrentUser\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:32](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:32](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L32)
 
 Base class for implementing Nest interceptors that manage user context in AsyncLocalStorage.
 
@@ -43,7 +43,7 @@ The type representing the user data to be stored in AsyncLocalStorage
 abstract getStorage(): AsyncLocalStorage<CurrentUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:39](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:39](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L39)
 
 Abstract method that must be implemented by subclasses to provide the AsyncLocalStorage
 instance where the current user data should be stored.
@@ -62,7 +62,7 @@ The storage instance for the current user
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:41](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L41)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:41](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L41)
 
 Method to implement a custom interceptor.
 

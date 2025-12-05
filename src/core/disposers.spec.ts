@@ -156,4 +156,43 @@ describe('Disposers', () => {
     d();
     expect(inits).toBe(0);
   });
+
+  test('calls destructors for successfully completed initializers on error', () => {
+    const init1 = jest.fn();
+    const destroy1 = jest.fn();
+    const init2 = jest.fn();
+    const destroy2 = jest.fn();
+    const error = new Error('Init failed');
+    const init3 = jest.fn(() => {
+      throw error;
+    });
+    const destroy3 = jest.fn();
+
+    try {
+      disposers([
+        () => {
+          init1();
+          return destroy1;
+        },
+        () => {
+          init2();
+          return destroy2;
+        },
+        () => {
+          init3();
+          return destroy3;
+        },
+      ]);
+      fail('Should have thrown');
+    } catch (e) {
+      expect(e).toBe(error);
+    }
+
+    expect(init1).toHaveBeenCalledTimes(1);
+    expect(init2).toHaveBeenCalledTimes(1);
+    expect(init3).toHaveBeenCalledTimes(1);
+    expect(destroy1).toHaveBeenCalledTimes(1);
+    expect(destroy2).toHaveBeenCalledTimes(1);
+    expect(destroy3).not.toHaveBeenCalled();
+  });
 });

@@ -35,7 +35,14 @@ export class CachedResource<T> {
         // message just notifies to invalidate cache and fetch data
         void this.fetch(true);
         for (const subscriber of this.subscribers) {
-          subscriber(this);
+          try {
+            subscriber(this);
+          } catch (error) {
+            this.logger.error(
+              { error },
+              `Unhandled error in CachedResource subscriber: ${errorToString(error)}`
+            );
+          }
         }
       },
     });

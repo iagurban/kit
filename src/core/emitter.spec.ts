@@ -55,12 +55,16 @@ describe('Emitter', () => {
 
   describe('off method', () => {
     it('should remove a specific listener for an event', () => {
-      const mockListener = jest.fn();
-      emitter.on('eventA', mockListener);
+      const mockListener1 = jest.fn();
+      const mockListener2 = jest.fn();
+      emitter.on('eventA', mockListener1);
+      emitter.on('eventA', mockListener2);
 
-      emitter.off('eventA', mockListener);
+      emitter.off('eventA', mockListener1);
+      emitter.off('eventA', mockListener2);
       emitter.emit('eventA', 42);
-      expect(mockListener).not.toHaveBeenCalled();
+      expect(mockListener1).not.toHaveBeenCalled();
+      expect(mockListener2).not.toHaveBeenCalled();
     });
 
     it('should remove listeners from both persistent and once collections', () => {
@@ -71,6 +75,24 @@ describe('Emitter', () => {
       emitter.off('eventA', mockListener);
       emitter.emit('eventA', 42);
       expect(mockListener).not.toHaveBeenCalled();
+    });
+
+    it('should do nothing when removing a listener that was not added', () => {
+      const addedListener = jest.fn();
+      const notAddedListener = jest.fn();
+
+      emitter.on('eventA', addedListener);
+
+      // Attempt to remove a listener that was never added
+      expect(() => emitter.off('eventA', notAddedListener)).not.toThrow();
+
+      // Ensure the added listener is still there and working
+      emitter.emit('eventA', 123);
+      expect(addedListener).toHaveBeenCalledTimes(1);
+      expect(addedListener).toHaveBeenCalledWith(123);
+
+      // Ensure the not-added listener was not called
+      expect(notAddedListener).not.toHaveBeenCalled();
     });
   });
 
@@ -87,9 +109,14 @@ describe('Emitter', () => {
       const errorListener = jest.fn(() => {
         throw new Error('Listener error');
       });
+      const errorListenerOnce = jest.fn(() => {
+        throw new Error('Listener once error');
+      });
       emitter.on('eventA', errorListener);
+      emitter.once('eventB', errorListenerOnce);
 
       expect(() => emitter.emit('eventA', 42)).toThrow('Listener error');
+      expect(() => emitter.emit('eventB', '', true)).toThrow('Listener once error');
     });
   });
 

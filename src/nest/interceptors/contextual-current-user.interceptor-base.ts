@@ -1,9 +1,9 @@
-import { AsyncLocalStorage } from 'node:async_hooks';
+import type { AsyncLocalStorage } from 'node:async_hooks';
 
-import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { defer, Observable } from 'rxjs';
 
-import { notNull } from '../../core/flow/not-null';
+import { notNull } from '../../core';
 import { getCurrentUserFromExeContext } from '../decorators/current-user.decorator-base';
 
 /**

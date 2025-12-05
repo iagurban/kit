@@ -17,7 +17,7 @@ const gradientRotateAnimation = (rotateKeyframes: readonly { angle: number; keyT
 };
 
 /**
- * Предопределённые градиенты (массивы GradientStop)
+ * A collection of preset gradients.
  */
 export const gradientPresets = (() => {
   const g = (offset: number, color: string) => ({ offset, color });
@@ -127,7 +127,7 @@ export const gradientPresets = (() => {
 })();
 
 /**
- * Предопределённые паттерны анимации позиции фона
+ * A collection of preset background position animations.
  */
 export const moveAnimations = (() => {
   const p = (x: number, y: number) => ({ backgroundPosition: `${x}% ${y}%` });
@@ -143,7 +143,7 @@ export const moveAnimations = (() => {
 })();
 
 /**
- * Предопределённые ключевые кадры вращения градиента
+ * A collection of preset gradient rotation animations.
  */
 export const rotateAnimations = (() => {
   const m = (angle: number, keyTime: number) => ({ angle, keyTime });

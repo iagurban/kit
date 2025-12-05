@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for core/functions/skip-calls.ts</title>
+    <title>Code coverage report for core/flow/assertions.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">core/functions</a> skip-calls.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">core/flow</a> assertions.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>6/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.28% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -75,33 +75,30 @@
 <a name='L10'></a><a href='#L10'>10</a>
 <a name='L11'></a><a href='#L11'>11</a>
 <a name='L12'></a><a href='#L12'>12</a>
-<a name='L13'></a><a href='#L13'>13</a>
-<a name='L14'></a><a href='#L14'>14</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">12x</span>
+<a name='L13'></a><a href='#L13'>13</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">47x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export const skipCalls = <span class="fstat-no" title="function not covered" >&lt;Args extends unknown[]&gt;(</span>
-  fn: (...args: Args) =&gt; void,
-  n: number
-): ((...args: Args) =&gt; void) =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (!(n &gt;= 0)) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(`n = ${n} (&gt;=0 allowed only)`);</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ProgrammingError } from '../errors/programming-error';
+&nbsp;
+type AnyBooleash = unknown;
+&nbsp;
+export const debugAssert = (condition: AnyBooleash, getMessage?: () =&gt; string) =&gt; {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!condition) {
+<span class="cstat-no" title="statement not covered" >    throw new ProgrammingError(getMessage?.());</span>
   }
-<span class="cstat-no" title="statement not covered" >  if (Math.floor(n) !== n) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(`n = ${n} (integer allowed only)`);</span>
-  }
-  let count = <span class="cstat-no" title="statement not covered" >0;</span>
-<span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >(.</span>..args: Args) =&gt; (<span class="cstat-no" title="statement not covered" >count &lt; n ? void ++count : fn(...args))</span>;</span>
 };
+&nbsp;
+export const debugAssertFn = <span class="fstat-no" title="function not covered" >(g</span>etCondition: () =&gt; AnyBooleash, getMessage?: () =&gt; string) =&gt;
+<span class="cstat-no" title="statement not covered" >  debugAssert(getCondition(), getMessage);</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -109,7 +106,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-19T03:59:26.218Z
+                at 2025-12-04T09:57:11.698Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

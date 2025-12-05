@@ -501,6 +501,7 @@ describe('ts parser', () => {
 
     const buildAst = (e: ExprAst) => {
       if (isExprOperand(e)) {
+        // empty
       }
     };
 

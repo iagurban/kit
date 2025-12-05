@@ -42,9 +42,8 @@ export class PromiseController {
    *   all handlers have been invoked.
    *
    * @param {string} reason - The reason for aborting.
-   * @return {void} - Throws an aggregated error if some handlers throw.
    */
-  abort(reason: string): void {
+  readonly abort = (reason: string): void => {
     if (this._aborted) {
       return;
     }
@@ -61,7 +60,7 @@ export class PromiseController {
     if (errors.length > 0) {
       throw new Errors(errors);
     }
-  }
+  };
 
   /**
    * Registers an abort handler.
@@ -71,7 +70,6 @@ export class PromiseController {
    * want to receive abort notifications.
    *
    * @param {function} fn - A callback function that receives the abort reason.
-   * @return {void}
    */
   on(fn: (reason: string) => void): void {
     this.onAborts.update(fn, n => (n || 0) + 1);
@@ -82,7 +80,6 @@ export class PromiseController {
    *
    * @param {Function} fn - The handler to remove.
    * @param {boolean} [all=false] - If true, removes all occurrences. Defaults to removing a single occurrence.
-   * @return {void} This method does not return a value.
    */
   off(fn: (reason: string) => void, all: boolean = false): void {
     const count = this.onAborts.get(fn);

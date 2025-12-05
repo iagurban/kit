@@ -1,10 +1,10 @@
-import { DynamicModule } from '@nestjs/common';
-import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
-import { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
-import { Type } from '@nestjs/common/interfaces/type.interface';
+import type { DynamicModule } from '@nestjs/common';
+import type { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
+import type { InjectionToken } from '@nestjs/common/interfaces/modules/injection-token.interface';
+import type { OptionalFactoryDependency } from '@nestjs/common/interfaces/modules/optional-factory-dependency.interface';
+import type { Type } from '@nestjs/common/interfaces/type.interface';
 
-import { AnyFunction } from '../core';
+import type { AnyFunction } from '../core';
 
 /**
  * Represents a factory configuration object for creating a dynamic module.

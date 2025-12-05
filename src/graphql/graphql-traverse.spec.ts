@@ -1,5 +1,6 @@
 import {
   collectRecursiveSelectionPair,
+  findGqlNodeByPath,
   flattenSpreads,
   GqlASTField,
   GqlASTFragmentDefinition,
@@ -166,6 +167,22 @@ describe('graphql-traverse', () => {
     });
   });
 
+  describe('findGqlNodeByPath', () => {
+    it('should throw "Programming Error: path.length < 1 in findByPath" if path is empty', () => {
+      const fieldNode: GqlASTField = {
+        kind: 'Field',
+        name: { kind: 'Name', value: 'rootField', loc },
+        arguments: [],
+        directives: [],
+        loc,
+      };
+
+      expect(() => findGqlNodeByPath([], fieldNode, {})).toThrow(
+        'Programming Error: path.length < 1 in findByPath'
+      );
+    });
+  });
+
   describe('unpackSelectArgs', () => {
     it('should return the field node itself if no path is provided', () => {
       const fieldNode: GqlASTField = {
@@ -180,6 +197,39 @@ describe('graphql-traverse', () => {
       expect(result.root).toEqual(fieldNode);
       expect(result.path).toBeUndefined();
       expect(result.skipSet).toBeUndefined();
+    });
+
+    it('should handle array as options, setting path correctly', () => {
+      const fieldNode: GqlASTField = {
+        kind: 'Field',
+        name: { kind: 'Name', value: 'rootField', loc },
+        arguments: [],
+        directives: [],
+        selectionSet: {
+          kind: 'SelectionSet',
+          selections: [
+            {
+              kind: 'Field',
+              name: { kind: 'Name', value: 'nestedField', loc },
+              arguments: [],
+              directives: [],
+              loc,
+            },
+          ],
+          loc,
+        },
+        loc,
+      };
+      const pathArray = ['nestedField'];
+      const result = unpackSelectArgs(pathArray, fieldNode, {}, 'rootField');
+      expect(result.root).toEqual({
+        kind: 'Field',
+        name: { kind: 'Name', value: 'nestedField', loc },
+        arguments: [],
+        directives: [],
+        loc,
+      });
+      expect(result.path).toEqual(pathArray);
     });
 
     it('should throw an error if the path does not exist in the field node or fragments', () => {
@@ -319,6 +369,64 @@ describe('graphql-traverse', () => {
           loc,
         })
       ).toBeUndefined();
+    });
+
+    it('should use the check function to filter subpaths', () => {
+      const fieldNode: GqlASTField = {
+        kind: 'Field',
+        name: { kind: 'Name', value: 'rootField', loc },
+        arguments: [],
+        directives: [],
+        selectionSet: {
+          kind: 'SelectionSet',
+          selections: [
+            {
+              kind: 'Field',
+              name: { kind: 'Name', value: 'includedField', loc },
+              arguments: [],
+              directives: [],
+              loc,
+            },
+            {
+              kind: 'Field',
+              name: { kind: 'Name', value: 'excludedField', loc },
+              arguments: [],
+              directives: [],
+              loc,
+            },
+          ],
+          loc,
+        },
+        loc,
+      };
+
+      const checkFn = jest.fn((subPath: string) => subPath !== 'rootField.excludedField');
+
+      const options = {
+        check: checkFn,
+      };
+
+      const result = unpackSelectArgs(options, fieldNode, {}, 'rootField');
+
+      const includedField = {
+        kind: 'Field',
+        name: { kind: 'Name', value: 'includedField', loc },
+        arguments: [],
+        directives: [],
+        loc,
+      } as const;
+      const excludedField = {
+        kind: 'Field',
+        name: { kind: 'Name', value: 'excludedField', loc },
+        arguments: [],
+        directives: [],
+        loc,
+      } as const;
+
+      expect(result.getCheckedSubpath('rootField', includedField)).toBe('rootField.includedField');
+      expect(result.getCheckedSubpath('rootField', excludedField)).toBeUndefined();
+      expect(checkFn).toHaveBeenCalledWith('rootField.includedField', includedField);
+      expect(checkFn).toHaveBeenCalledWith('rootField.excludedField', excludedField);
     });
 
     it('should merge additional properties with the returned object', () => {

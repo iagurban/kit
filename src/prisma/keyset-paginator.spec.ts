@@ -1,5 +1,5 @@
-import { notNull } from '../core/flow/not-null';
-import { KeysetPaginatorBuilder } from './keyset-paginator';
+import { notNull } from '../core';
+import { KeySetPaginator, KeysetPaginatorBuilder } from './keyset-paginator';
 import { getModelsMetadataFromString } from './models-metadata';
 
 describe('Keyset paginator builder', () => {
@@ -63,5 +63,156 @@ describe('Keyset paginator builder', () => {
         },
       ],
     });
+  });
+
+  test('should throw error for unsupported schema in order', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+        title String
+      }`);
+    const modelMeta = notNull(metadata.models.get('Topic'));
+
+    expect(() => {
+      new KeysetPaginatorBuilder<{ id: string; title: string }>([{ title: 'asc', id: 'desc' }], modelMeta);
+    }).toThrow('unsupported schema: order by title, id');
+  });
+
+  test('whereClause should throw "not found" if cursor is missing a nested property', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+      }`);
+
+    const kp = new KeysetPaginatorBuilder<{ id: string; author?: { name: string } }>(
+      // @ts-expect-error: missing author.name
+      [{ author: { name: 'asc' } }, { id: 'asc' }],
+      notNull(metadata.models.get('Topic'))
+    );
+
+    const cursor = { id: '123' };
+
+    expect(() => kp.whereClause(cursor)).toThrow('not found');
+  });
+
+  test('cursorSelectClause should throw "not found" on malformed order object', () => {
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+      }`);
+
+    const kp = new KeysetPaginatorBuilder<{ id: string }>(
+      [{ id: 'asc' }],
+      notNull(metadata.models.get('Topic'))
+    );
+
+    // @ts-expect-error Attempt to assign to const or readonly variable
+    // noinspection JSConstantReassignment
+    kp.orders = [{ author: { name: {} } }];
+
+    expect(() => kp.cursorSelectClause()).toThrow('not found');
+  });
+});
+
+describe('KeySetPaginator', () => {
+  test('fetch works correctly with proper mocks', async () => {
+    const findUniqueMock = jest.fn();
+    const findManyMock = jest.fn();
+
+    const paginator = new KeySetPaginator(findUniqueMock, findManyMock);
+
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+        title String
+      }`);
+    const modelMeta = notNull(metadata.models.get('Topic'));
+
+    const builder = new KeysetPaginatorBuilder<{ id: string; title: string }>([{ title: 'asc' }], modelMeta);
+
+    const cursor = { id: 'cursor-id', title: 'cursor-title' };
+    findUniqueMock.mockResolvedValue(cursor);
+
+    const expectedResults = [{ id: 'res1', title: 'res-title1' }];
+    findManyMock.mockResolvedValue(expectedResults);
+
+    const whereCursor = { id: 'cursor-id' };
+    const select = { id: true, title: true };
+    const result = await paginator.fetch(whereCursor, builder, select);
+
+    expect(result).toBe(expectedResults);
+    expect(findUniqueMock).toHaveBeenCalledTimes(1);
+    expect(findUniqueMock).toHaveBeenCalledWith(whereCursor, builder.cursorSelectClause());
+    expect(findManyMock).toHaveBeenCalledTimes(1);
+    expect(findManyMock).toHaveBeenCalledWith(builder.whereClause(cursor), select);
+  });
+
+  test('fetch handles findUnique error', async () => {
+    const findUniqueMock = jest.fn();
+    const findManyMock = jest.fn();
+
+    const paginator = new KeySetPaginator(findUniqueMock, findManyMock);
+
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+        title String
+      }`);
+    const modelMeta = notNull(metadata.models.get('Topic'));
+
+    const builder = new KeysetPaginatorBuilder<{ id: string; title: string }>([{ title: 'asc' }], modelMeta);
+
+    const error = new Error('Record not found');
+    findUniqueMock.mockRejectedValue(error);
+
+    const whereCursor = { id: 'non-existent-id' };
+    const select = { id: true, title: true };
+
+    await expect(paginator.fetch(whereCursor, builder, select)).rejects.toThrow(error);
+
+    expect(findUniqueMock).toHaveBeenCalledTimes(1);
+    expect(findUniqueMock).toHaveBeenCalledWith(whereCursor, builder.cursorSelectClause());
+    expect(findManyMock).not.toHaveBeenCalled();
+  });
+
+  test('fetch handles findMany error', async () => {
+    const findUniqueMock = jest.fn();
+    const findManyMock = jest.fn();
+    const paginator = new KeySetPaginator(findUniqueMock, findManyMock);
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+        title String
+      }`);
+    const modelMeta = notNull(metadata.models.get('Topic'));
+    const builder = new KeysetPaginatorBuilder<{ id: string; title: string }>([{ title: 'asc' }], modelMeta);
+    const cursor = { id: 'cursor-id', title: 'cursor-title' };
+    findUniqueMock.mockResolvedValue(cursor);
+    const error = new Error('DB error');
+    findManyMock.mockRejectedValue(error);
+    const whereCursor = { id: 'cursor-id' };
+    const select = { id: true, title: true };
+    await expect(paginator.fetch(whereCursor, builder, select)).rejects.toThrow(error);
+    expect(findUniqueMock).toHaveBeenCalledTimes(1);
+    expect(findManyMock).toHaveBeenCalledTimes(1);
+  });
+
+  test('fetch handles findUnique returning null', async () => {
+    const findUniqueMock = jest.fn();
+    const findManyMock = jest.fn();
+    const paginator = new KeySetPaginator(findUniqueMock, findManyMock);
+    const metadata = getModelsMetadataFromString(`
+      model Topic {
+        id String @id
+        title String
+      }`);
+    const modelMeta = notNull(metadata.models.get('Topic'));
+    const builder = new KeysetPaginatorBuilder<{ id: string; title: string }>([{ title: 'asc' }], modelMeta);
+    findUniqueMock.mockResolvedValue(null);
+    const whereCursor = { id: 'non-existent-id' };
+    const select = { id: true, title: true };
+    await expect(paginator.fetch(whereCursor, builder, select)).rejects.toThrow();
+    expect(findUniqueMock).toHaveBeenCalledTimes(1);
+    expect(findManyMock).not.toHaveBeenCalled();
   });
 });

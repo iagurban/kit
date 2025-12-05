@@ -1,4 +1,4 @@
-import { catching, warnCatch } from './catching';
+import { catching, catchingAsync, warnCatch } from './catching';
 
 describe('catching', () => {
   describe('catching', () => {
@@ -55,6 +55,26 @@ describe('catching', () => {
         throw error;
       });
       expect(consoleWarnSpy).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('catchingAsync', () => {
+    it('should return successful result', async () => {
+      const result = await catchingAsync(
+        async () => 'success',
+        () => 'fallback'
+      );
+      expect(result).toBe('success');
+    });
+
+    it('should return fallback on error', async () => {
+      const result = await catchingAsync(
+        async (): Promise<string> => {
+          throw new Error(`error`);
+        },
+        () => 'fallback'
+      );
+      expect(result).toBe('fallback');
     });
   });
 });

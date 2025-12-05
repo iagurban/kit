@@ -37,7 +37,6 @@ export class ExMap<Key, Value> implements ReadonlyMap<Key, Value>, Map<Key, Valu
   /**
    * Executes a callback for each key-value pair in the map
    * @param by - Function to execute for each element
-   * @param thisArg - Value to use as 'this' when executing the callback
    */
   forEach(by: (value: Value, key: Key, self: ExMap<Key, Value>) => void): void {
     for (const [key, value] of this._m) {
@@ -222,18 +221,23 @@ export class ExMap<Key, Value> implements ReadonlyMap<Key, Value>, Map<Key, Valu
    * @returns New map with filtered entries
    */
   public filter<R extends Value>(by: (v: Value, k: Key) => v is R): ExMap<Key, R>;
+  /**
+   * Creates a new map containing only entries that satisfy the predicate
+   * @param by - Predicate function to test entries
+   * @returns New map with filtered entries
+   */
   public filter(by: (v: Value, k: Key) => boolean): ExMap<Key, Value>;
   public filter(by: (v: Value, k: Key) => boolean): ExMap<Key, Value> {
     return new ExMap<Key, Value>([...this.entries()].filter(([key, value]) => by(value, key)));
   }
 
   /**
-   * Creates an immutable version of this map
-   * @returns Frozen map that throws on mutation attempts
+   * Freezes the map, preventing any further mutations.
+   * @returns The same map instance, but with mutation methods removed from its type.
    */
   public freeze(): Omit<
     ExMap<Key, Value>,
-    'set' | 'delete' | 'clear' | 'deleteKeys' | 'update' | 'overwrite' | 'getOrCreate'
+    'set' | 'delete' | 'clear' | 'deleteKeys' | 'update' | 'getOrCreate'
   > {
     const descriptor = {
       value() {

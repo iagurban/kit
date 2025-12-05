@@ -1,8 +1,27 @@
 # Class: ServerTimestampPreciseInterceptor
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:9](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:23](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L23)
 
-Warning: this interceptor ignores results of operation and returns only "12345:12345" string in any case
+An interceptor that replaces the entire response body with a string containing server-side request timestamps.
+
+## Warning
+
+This interceptor completely ignores and discards the data returned from the route handler.
+The response body will *always* be a string in the format "t1:t2".
+
+The returned string contains:
+- `t1`: The timestamp (in milliseconds since epoch) when the request entered the NestJS pipeline.
+- `t2`: The timestamp (in milliseconds since epoch) just before the response is sent.
+
+This interceptor is designed for use cases where only the precise server-side timing is required,
+such as client-side time synchronization, and the original response data is not needed.
+
+## Example
+
+```ts
+// Regardless of what the route handler returns, the final response body will be a string like:
+// "1672531200000:1672531200100"
+```
 
 ## Extends
 
@@ -16,7 +35,7 @@ Warning: this interceptor ignores results of operation and returns only "12345:1
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -52,7 +71,7 @@ a reference to the `CallHandler`, which provides access to an
 prepare(t1): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:10](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:24](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L24)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -102,7 +121,7 @@ prepare(t1: number, data: Record<string, string>) {
 update(o): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:14](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L14)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:28](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L28)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 export { cacheKeyFromGraphqlPath } from './cache-key-from-graphql-path';
 export {
   BasicSelectionArgs,

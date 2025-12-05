@@ -1,5 +1,6 @@
 import {
   createContextualLogger,
+  errorFromUnknown,
   ILogger,
   IPubSubSubscriberService,
   isInteger,
@@ -79,7 +80,7 @@ export class RedisPubsubSubscription {
         }
         return undefined; // do nothing
       } catch (error) {
-        return onError(error instanceof Error ? error : new Error(String(error)), message);
+        return onError(errorFromUnknown(error), message);
       }
     };
 
@@ -126,12 +127,6 @@ export class RedisPubsubSubscription {
 
     return (this.subscribing = (async () => {
       try {
-        if (!this.active) {
-          // after async point
-          this.subscribing = null;
-          return undefined;
-        }
-
         await this.subscribe();
         if (!this.active) {
           // after async point
@@ -185,7 +180,8 @@ export class RedisPubsubSubscription {
 
     this.subscriber.onMessage(`off`, this.onMessage).onReady(`off`, this.resubscribe);
 
-    await this.subscribing;
+    // The `active` flag will prevent any in-progress subscription from completing or retrying.
+    // We still need to ensure we unsubscribe from the channel.
     await this.subscriber.unsubscribe(this.channel, this.callback);
     this.subscribing = null;
   }

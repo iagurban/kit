@@ -272,7 +272,7 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
       dstChildren.splice(srcIndex, 1);
     }
 
-    const { newKeys, updated } = dstAfter
+    const { inserted: newKeys, updated } = dstAfter
       ? manualSort.insertAfter(
           dstChildren.map(i => i.orderKey),
           notNull(getById(dstAfter)).orderKey,
@@ -284,7 +284,7 @@ export class DndTreeState<Item extends { id: string; parentId?: string | null; o
             dstChildren[0].orderKey,
             1
           )
-        : { newKeys: manualSort.getNewKeys(1), updated: undefined };
+        : { inserted: manualSort.getNewKeys(1), updated: undefined };
 
     const change1 = { id: activeId, orderKey: newKeys[0], parentId: dstParent?.id ?? null };
     const change2 = [...(updated?.entries() || [])].map(([k, v]) => ({ id: k, orderKey: v }));

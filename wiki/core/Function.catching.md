@@ -16,7 +16,9 @@ The error-handling function to execute if an error is thrown. Receives the error
 function catching<T, C>(fn, onCatch): T | C;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/catching.ts#L1)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:8](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/flow/catching.ts#L8)
+
+Executes a function and provides a mechanism to handle errors by executing a provided error-handling function.
 
 ### Type Parameters
 
@@ -34,13 +36,19 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.co
 
 () => `T`
 
+The function to execute, which may throw an error.
+
 #### onCatch
 
 (`error`) => `C`
 
+The error-handling function to execute if an error is thrown. Receives the error as its argument.
+
 ### Returns
 
 `T` \| `C`
+
+The result of the executed function if no error occurs, or the result of the error-handling function if an error is caught.
 
 ## Call Signature
 
@@ -48,7 +56,9 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:1](https://github.co
 function catching<T>(fn, onCatch): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/flow/catching.ts#L2)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:16](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/flow/catching.ts#L16)
+
+Executes a function and provides a mechanism to handle errors by executing a provided error-handling function.
 
 ### Type Parameters
 
@@ -62,10 +72,16 @@ Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:2](https://github.co
 
 () => `T`
 
+The function to execute, which may throw an error.
+
 #### onCatch
 
 (`error`) => `T`
 
+The error-handling function to execute if an error is thrown. Receives the error as its argument.
+
 ### Returns
 
 `T`
+
+The result of the executed function if no error occurs, or the result of the error-handling function if an error is caught.

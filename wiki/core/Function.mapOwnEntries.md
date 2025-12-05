@@ -1,10 +1,10 @@
 # Function: mapOwnEntries()
 
 ```ts
-function mapOwnEntries<R, D>(o, fn): Record<keyof R, D>;
+function mapOwnEntries<K, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:78](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/object-utils.ts#L78)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:79](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/object-utils.ts#L79)
 
 Iterates over the own enumerable string-keyed properties of an object and
 applies a transformation function to each key-value pair, returning a new
@@ -12,9 +12,13 @@ object with the transformed values.
 
 ## Type Parameters
 
+### K
+
+`K` *extends* `string`
+
 ### R
 
-`R` *extends* `Record`\<`string`, `unknown`\>
+`R` *extends* `Record`\<`K`, `unknown`\>
 
 An object with string keys and values of any type.
 
@@ -41,7 +45,7 @@ The function receives the value and key of each property as arguments.
 
 ## Returns
 
-`Record`\<keyof `R`, `D`\>
+`Record`\<`K`, `D`\>
 
 A new object with the same keys as the input
 object, but transformed values based on the provided function.

@@ -1,6 +1,6 @@
 # Class: ObservableExSet\<Value\>
 
-Defined in: [mobx/observable-ex-set.ts:13](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/mobx/observable-ex-set.ts#L13)
+Defined in: [mobx/observable-ex-set.ts:13](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/observable-ex-set.ts#L13)
 
 A specialized Set-like collection class that extends `ExSet` and integrates observability
 using a reactive programming model. This class is designed to track and react to changes
@@ -28,7 +28,7 @@ The type of elements stored in the set.
 get toStringTag: string;
 ```
 
-Defined in: [core/collections/ex-set.ts:229](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L229)
+Defined in: [core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L228)
 
 ##### Returns
 
@@ -52,7 +52,7 @@ ExSet.[toStringTag]
 get readonly(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:181](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L181)
+Defined in: [core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L180)
 
 ##### Returns
 
@@ -76,7 +76,7 @@ ExSet.readonly
 get size(): number;
 ```
 
-Defined in: [core/collections/ex-set.ts:75](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L75)
+Defined in: [core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L74)
 
 ##### Returns
 
@@ -98,7 +98,7 @@ ExSet.size
 iterator: SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:224](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L224)
+Defined in: [core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L223)
 
 #### Returns
 
@@ -120,7 +120,7 @@ ExSet.[iterator]
 add(value): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L31)
+Defined in: [core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L31)
 
 Adds a value to the set
 
@@ -154,7 +154,7 @@ ExSet.add
 and(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:144](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L144)
+Defined in: [core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L143)
 
 Creates a new set containing elements that exist in both this set and another iterable (intersection)
 
@@ -186,7 +186,7 @@ ExSet.and
 backup(fn?): () => void;
 ```
 
-Defined in: [core/collections/ex-set.ts:213](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L213)
+Defined in: [core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L212)
 
 Creates a backup of the current set state and returns a restore function
 
@@ -226,7 +226,7 @@ ExSet.backup
 clear(): void;
 ```
 
-Defined in: [core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L40)
+Defined in: [core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L40)
 
 Removes all elements from the set
 
@@ -250,7 +250,7 @@ ExSet.clear
 delete(value): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L50)
+Defined in: [core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L50)
 
 Removes a value from the set
 
@@ -284,7 +284,7 @@ ExSet.delete
 diff(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:135](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L135)
+Defined in: [core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L134)
 
 Creates a new set containing elements from this set that are not in another iterable (difference)
 
@@ -316,7 +316,7 @@ ExSet.diff
 entries(): SetIterator<[Value, Value]>;
 ```
 
-Defined in: [core/collections/ex-set.ts:234](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L234)
+Defined in: [core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L233)
 
 #### Returns
 
@@ -338,7 +338,7 @@ ExSet.entries
 forEach(by): void;
 ```
 
-Defined in: [core/collections/ex-set.ts:59](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L59)
+Defined in: [core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L58)
 
 Executes a callback for each value in the set
 
@@ -368,15 +368,15 @@ ExSet.forEach
 freeze(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:189](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L189)
+Defined in: [core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L188)
 
-Creates an immutable version of this set by freezing it and preventing mutations
+Freezes the set, preventing any further mutations.
 
 #### Returns
 
 `ReadonlyExSet`\<`Value`\>
 
-A read-only version of this set that throws on mutation attempts
+A read-only version of this set that throws on mutation attempts.
 
 #### Inherited from
 
@@ -392,7 +392,7 @@ ExSet.freeze
 has(key): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:70](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L70)
+Defined in: [core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L69)
 
 Checks if a value exists in the set
 
@@ -424,7 +424,7 @@ ExSet.has
 intersects(other): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:86](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L86)
+Defined in: [core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L85)
 
 Checks if this set has any elements in common with another iterable
 
@@ -456,7 +456,7 @@ ExSet.intersects
 join(other): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:101](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L101)
+Defined in: [core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L100)
 
 Adds all elements from another iterable to this set
 
@@ -490,7 +490,7 @@ ExSet.join
 keys(): SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:239](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L239)
+Defined in: [core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L238)
 
 #### Returns
 
@@ -512,7 +512,7 @@ ExSet.keys
 or(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:126](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L126)
+Defined in: [core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L125)
 
 Creates a new set containing elements from both this set and another iterable (union)
 
@@ -544,7 +544,7 @@ ExSet.or
 subtract(other): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:114](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L114)
+Defined in: [core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L113)
 
 Removes all elements that exist in another iterable from this set
 
@@ -578,7 +578,7 @@ ExSet.subtract
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [core/collections/ex-set.ts:176](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L176)
+Defined in: [core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L175)
 
 Transforms set elements into an array using a mapping function
 
@@ -616,7 +616,7 @@ ExSet.toArray
 values(): SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:244](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L244)
+Defined in: [core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L243)
 
 #### Returns
 
@@ -638,7 +638,7 @@ ExSet.values
 xor(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:159](https://github.com/iagurban/kit/blob/6e66fe680955a3080903eeaad4a49a9a0b2845a0/src/core/collections/ex-set.ts#L159)
+Defined in: [core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L158)
 
 Creates a new set containing elements that exist in either this set or another iterable, but not both (symmetric difference)
 
