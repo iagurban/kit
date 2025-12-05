@@ -2,6 +2,15 @@
 
 export { AuthControllerBase } from './auth-controller-base';
 export { AuthServiceBase } from './auth-service-base';
+export { InjectSelectionDataLoader } from './data-loaders-fabric/inject-selection-data-loader.decorator';
+export {
+  CachedSelection,
+  DataLoaderInstance,
+  GqlSelectionDataLoaderContext,
+  SelectionDataLoaderProvider,
+} from './data-loaders-fabric/selection-data-loader.types';
+export { createSelectionDataLoaderCacheInterceptor } from './data-loaders-fabric/selection-data-loader-cache.interceptor';
+export { createSelectionDataLoaderProvider } from './data-loaders-fabric/selection-data-loader-provider';
 export {
   CurrentUserBase,
   getCurrentUserFromExeContext,
@@ -30,3 +39,4 @@ export { KeycloakJwtConfig, keycloakJwtConfigToken, OidcJwtStrategyBase } from '
 export { JwtStrategyBase } from './passport-strategies/jwt-strategy-base';
 export { LocalStrategyBase } from './passport-strategies/local-strategy-base';
 export { ServiceInfo, ServiceInfoModule } from './service-info';
+export { universalSelectionToPrisma } from './universal-selection-to-prisma';
