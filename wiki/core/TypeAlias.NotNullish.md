@@ -4,7 +4,7 @@
 type NotNullish<T> = Exclude<T, Nullish>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:49](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/types.ts#L49)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:49](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/types.ts#L49)
 
 A utility type that excludes `null` and `undefined` from a given type `T`.
 

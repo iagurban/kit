@@ -14,7 +14,7 @@
 
 # Class: ObservableExMap\<Key, Value\>
 
-Defined in: [mobx/observable-ex-map.ts:24](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/observable-ex-map.ts#L24)
+Defined in: [mobx/observable-ex-map.ts:24](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/observable-ex-map.ts#L24)
 
 The `ObservableExMap` class extends the functionality of the `ExMap` class
 by incorporating MobX observability. This makes it possible to use reactive
@@ -56,7 +56,7 @@ The type of mapped values.
 get toStringTag: string;
 ```
 
-Defined in: [core/collections/ex-map.ts:281](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L281)
+Defined in: [core/collections/ex-map.ts:281](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L281)
 
 ##### Returns `string`
 
@@ -78,7 +78,7 @@ ExMap.[toStringTag]
 get size(): number;
 ```
 
-Defined in: [core/collections/ex-map.ts:78](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L78)
+Defined in: [core/collections/ex-map.ts:78](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L78)
 
 ##### Returns `number`
 
@@ -98,7 +98,7 @@ ExMap.size
 iterator: MapIterator<[Key, Value]>;
 ```
 
-Defined in: [core/collections/ex-map.ts:261](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L261)
+Defined in: [core/collections/ex-map.ts:261](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L261)
 
 #### Returns `MapIterator`\<\[`Key`, `Value`\]\>
 
@@ -118,7 +118,7 @@ ExMap.[iterator]
 assign(other): this;
 ```
 
-Defined in: [core/collections/ex-map.ts:198](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L198)
+Defined in: [core/collections/ex-map.ts:198](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L198)
 
 Adds all entries from another iterable to this map
 
@@ -148,7 +148,7 @@ ExMap.assign
 backup(fn?): () => void;
 ```
 
-Defined in: [core/collections/ex-map.ts:210](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L210)
+Defined in: [core/collections/ex-map.ts:210](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L210)
 
 Creates a backup of the current map state and returns a restore function
 
@@ -184,7 +184,7 @@ ExMap.backup
 clear(): void;
 ```
 
-Defined in: [core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L23)
+Defined in: [core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L23)
 
 Removes all elements from the map
 
@@ -206,7 +206,7 @@ ExMap.clear
 delete(key): boolean;
 ```
 
-Defined in: [core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L33)
+Defined in: [core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L33)
 
 Removes a key and its associated value from the map
 
@@ -236,7 +236,7 @@ ExMap.delete
 deleteKeys(keys): this;
 ```
 
-Defined in: [core/collections/ex-map.ts:185](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L185)
+Defined in: [core/collections/ex-map.ts:185](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L185)
 
 Removes multiple keys from the map
 
@@ -266,7 +266,7 @@ ExMap.deleteKeys
 entries(): MapIterator<[Key, Value]>;
 ```
 
-Defined in: [core/collections/ex-map.ts:266](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L266)
+Defined in: [core/collections/ex-map.ts:266](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L266)
 
 #### Returns `MapIterator`\<\[`Key`, `Value`\]\>
 
@@ -288,7 +288,7 @@ ExMap.entries
 filter<R>(by): ExMap<Key, R>;
 ```
 
-Defined in: [core/collections/ex-map.ts:223](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L223)
+Defined in: [core/collections/ex-map.ts:223](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L223)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -320,7 +320,7 @@ ExMap.filter
 filter(by): ExMap<Key, Value>;
 ```
 
-Defined in: [core/collections/ex-map.ts:229](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L229)
+Defined in: [core/collections/ex-map.ts:229](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L229)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -350,7 +350,7 @@ ExMap.filter
 forEach(by): void;
 ```
 
-Defined in: [core/collections/ex-map.ts:41](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L41)
+Defined in: [core/collections/ex-map.ts:41](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L41)
 
 Executes a callback for each key-value pair in the map
 
@@ -378,7 +378,7 @@ ExMap.forEach
 freeze(): Omit<ExMap<Key, Value>, "set" | "delete" | "clear" | "deleteKeys" | "update" | "getOrCreate">;
 ```
 
-Defined in: [core/collections/ex-map.ts:238](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L238)
+Defined in: [core/collections/ex-map.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L238)
 
 Freezes the map, preventing any further mutations.
 
@@ -400,7 +400,7 @@ ExMap.freeze
 get(key): Value | undefined;
 ```
 
-Defined in: [core/collections/ex-map.ts:52](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L52)
+Defined in: [core/collections/ex-map.ts:52](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L52)
 
 Retrieves the value associated with a key
 
@@ -431,7 +431,7 @@ getOrCreate(
    onExisted?): Value;
 ```
 
-Defined in: [core/collections/ex-map.ts:131](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L131)
+Defined in: [core/collections/ex-map.ts:131](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L131)
 
 Gets a value from the map or creates it if it doesn't exist
 
@@ -475,7 +475,7 @@ ExMap.getOrCreate
 has(key): boolean;
 ```
 
-Defined in: [core/collections/ex-map.ts:61](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L61)
+Defined in: [core/collections/ex-map.ts:61](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L61)
 
 Checks if a key exists in the map
 
@@ -503,7 +503,7 @@ ExMap.has
 keys(): MapIterator<Key>;
 ```
 
-Defined in: [core/collections/ex-map.ts:271](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L271)
+Defined in: [core/collections/ex-map.ts:271](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L271)
 
 #### Returns `MapIterator`\<`Key`\>
 
@@ -523,7 +523,7 @@ ExMap.keys
 mapEntries<NewValue>(by): ExMap<Key, NewValue>;
 ```
 
-Defined in: [core/collections/ex-map.ts:157](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L157)
+Defined in: [core/collections/ex-map.ts:157](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L157)
 
 Creates a new map by transforming values while keeping the same keys
 
@@ -557,7 +557,7 @@ ExMap.mapEntries
 set(key, value): this;
 ```
 
-Defined in: [core/collections/ex-map.ts:72](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L72)
+Defined in: [core/collections/ex-map.ts:72](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L72)
 
 Associates a key with a value in the map
 
@@ -591,7 +591,7 @@ ExMap.set
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [core/collections/ex-map.ts:166](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L166)
+Defined in: [core/collections/ex-map.ts:166](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L166)
 
 Converts map entries to an array using a transform function
 
@@ -625,7 +625,7 @@ ExMap.toArray
 update(key, value): this;
 ```
 
-Defined in: [core/collections/ex-map.ts:148](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L148)
+Defined in: [core/collections/ex-map.ts:148](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L148)
 
 Updates a value in the map based on its current value
 
@@ -661,7 +661,7 @@ ExMap.update
 values(): MapIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-map.ts:276](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L276)
+Defined in: [core/collections/ex-map.ts:276](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L276)
 
 #### Returns `MapIterator`\<`Value`\>
 
@@ -681,7 +681,7 @@ ExMap.values
 valuesToArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [core/collections/ex-map.ts:175](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L175)
+Defined in: [core/collections/ex-map.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L175)
 
 Converts map values to an array using a transform function
 
@@ -715,7 +715,7 @@ ExMap.valuesToArray
 static groupedBy<Value, Key>(input, by): ExMap<Key, Value[]>;
 ```
 
-Defined in: [core/collections/ex-map.ts:90](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L90)
+Defined in: [core/collections/ex-map.ts:90](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L90)
 
 Groups array elements by a key function, collecting values with the same key into arrays
 
@@ -755,7 +755,7 @@ ExMap.groupedBy
 static mappedBy<Value, Key>(input, by): ExMap<Key, Value>;
 ```
 
-Defined in: [core/collections/ex-map.ts:113](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-map.ts#L113)
+Defined in: [core/collections/ex-map.ts:113](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-map.ts#L113)
 
 Creates a map from an array using a key function
 
@@ -790,7 +790,7 @@ ExMap.mappedBy
 
 # Class: ObservableExSet\<Value\>
 
-Defined in: [mobx/observable-ex-set.ts:13](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/observable-ex-set.ts#L13)
+Defined in: [mobx/observable-ex-set.ts:13](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/observable-ex-set.ts#L13)
 
 A specialized Set-like collection class that extends `ExSet` and integrates observability
 using a reactive programming model. This class is designed to track and react to changes
@@ -816,7 +816,7 @@ The type of elements stored in the set.
 get toStringTag: string;
 ```
 
-Defined in: [core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L228)
+Defined in: [core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L228)
 
 ##### Returns `string`
 
@@ -838,7 +838,7 @@ ExSet.[toStringTag]
 get readonly(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L180)
+Defined in: [core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L180)
 
 ##### Returns `ReadonlyExSet`\<`Value`\>
 
@@ -860,7 +860,7 @@ ExSet.readonly
 get size(): number;
 ```
 
-Defined in: [core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L74)
+Defined in: [core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L74)
 
 ##### Returns `number`
 
@@ -880,7 +880,7 @@ ExSet.size
 iterator: SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L223)
+Defined in: [core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L223)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -900,7 +900,7 @@ ExSet.[iterator]
 add(value): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L31)
+Defined in: [core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L31)
 
 Adds a value to the set
 
@@ -930,7 +930,7 @@ ExSet.add
 and(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L143)
+Defined in: [core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L143)
 
 Creates a new set containing elements that exist in both this set and another iterable (intersection)
 
@@ -958,7 +958,7 @@ ExSet.and
 backup(fn?): () => void;
 ```
 
-Defined in: [core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L212)
+Defined in: [core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L212)
 
 Creates a backup of the current set state and returns a restore function
 
@@ -996,7 +996,7 @@ ExSet.backup
 clear(): void;
 ```
 
-Defined in: [core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L40)
+Defined in: [core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L40)
 
 Removes all elements from the set
 
@@ -1018,7 +1018,7 @@ ExSet.clear
 delete(value): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L50)
+Defined in: [core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L50)
 
 Removes a value from the set
 
@@ -1048,7 +1048,7 @@ ExSet.delete
 diff(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L134)
+Defined in: [core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L134)
 
 Creates a new set containing elements from this set that are not in another iterable (difference)
 
@@ -1076,7 +1076,7 @@ ExSet.diff
 entries(): SetIterator<[Value, Value]>;
 ```
 
-Defined in: [core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L233)
+Defined in: [core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L233)
 
 #### Returns `SetIterator`\<\[`Value`, `Value`\]\>
 
@@ -1096,7 +1096,7 @@ ExSet.entries
 forEach(by): void;
 ```
 
-Defined in: [core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L58)
+Defined in: [core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L58)
 
 Executes a callback for each value in the set
 
@@ -1124,7 +1124,7 @@ ExSet.forEach
 freeze(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L188)
+Defined in: [core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L188)
 
 Freezes the set, preventing any further mutations.
 
@@ -1146,7 +1146,7 @@ ExSet.freeze
 has(key): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L69)
+Defined in: [core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L69)
 
 Checks if a value exists in the set
 
@@ -1174,7 +1174,7 @@ ExSet.has
 intersects(other): boolean;
 ```
 
-Defined in: [core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L85)
+Defined in: [core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L85)
 
 Checks if this set has any elements in common with another iterable
 
@@ -1202,7 +1202,7 @@ ExSet.intersects
 join(other): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L100)
+Defined in: [core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L100)
 
 Adds all elements from another iterable to this set
 
@@ -1232,7 +1232,7 @@ ExSet.join
 keys(): SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L238)
+Defined in: [core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L238)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -1252,7 +1252,7 @@ ExSet.keys
 or(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L125)
+Defined in: [core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L125)
 
 Creates a new set containing elements from both this set and another iterable (union)
 
@@ -1280,7 +1280,7 @@ ExSet.or
 subtract(other): this;
 ```
 
-Defined in: [core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L113)
+Defined in: [core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L113)
 
 Removes all elements that exist in another iterable from this set
 
@@ -1310,7 +1310,7 @@ ExSet.subtract
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L175)
+Defined in: [core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L175)
 
 Transforms set elements into an array using a mapping function
 
@@ -1344,7 +1344,7 @@ ExSet.toArray
 values(): SetIterator<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L243)
+Defined in: [core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L243)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -1364,7 +1364,7 @@ ExSet.values
 xor(other): ExSet<Value>;
 ```
 
-Defined in: [core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/ex-set.ts#L158)
+Defined in: [core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/ex-set.ts#L158)
 
 Creates a new set containing elements that exist in either this set or another iterable, but not both (symmetric difference)
 
@@ -1387,7 +1387,7 @@ ExSet.xor
 
 # Class: SnapshotSaver\<S\>
 
-Defined in: [mobx/snapshot-saver.ts:13](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/snapshot-saver.ts#L13)
+Defined in: [mobx/snapshot-saver.ts:13](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/snapshot-saver.ts#L13)
 
 A utility class for saving snapshots with throttle control and error handling. The class ensures that snapshots
 are saved in a controlled manner, with throttled save requests, handling successive save requests efficiently,
@@ -1407,7 +1407,7 @@ The type of the snapshot data structure to be saved.
 reaction(node): IReactionDisposer;
 ```
 
-Defined in: [mobx/snapshot-saver.ts:82](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/snapshot-saver.ts#L82)
+Defined in: [mobx/snapshot-saver.ts:82](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/snapshot-saver.ts#L82)
 
 Creates a reaction that observes changes in the snapshot of the given node
 and performs an action when changes are detected.
@@ -1430,7 +1430,7 @@ Returns a disposer function to stop the reaction.
 save(snapshot): void;
 ```
 
-Defined in: [mobx/snapshot-saver.ts:30](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/snapshot-saver.ts#L30)
+Defined in: [mobx/snapshot-saver.ts:30](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/snapshot-saver.ts#L30)
 
 Saves a snapshot. Ensures that multiple save requests are throttled and managed to avoid race conditions
 and excessive save operations. If a save is already in progress, the method queues the latest snapshot to be saved after the current one completes.
@@ -1450,7 +1450,7 @@ The snapshot data to be saved.
 function observerWithForwardRef<P, T>(render): FunctionComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 ```
 
-Defined in: [mobx/observer-with-forward-ref.ts:26](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/observer-with-forward-ref.ts#L26)
+Defined in: [mobx/observer-with-forward-ref.ts:26](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/observer-with-forward-ref.ts#L26)
 
 Enhances a given component with both observer and forwardRef functionality.
 
@@ -1490,7 +1490,7 @@ handles forwarded refs.
 function useMobxRootStoreRegistration(store): void;
 ```
 
-Defined in: [mobx/use-mobx-root-store-registration.ts:12](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/mobx/use-mobx-root-store-registration.ts#L12)
+Defined in: [mobx/use-mobx-root-store-registration.ts:12](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/mobx/use-mobx-root-store-registration.ts#L12)
 
 A custom hook for managing the registration of a MobX root store.
 

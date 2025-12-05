@@ -1,6 +1,6 @@
 # Class: KeySetPaginator\<T, WhereUniqueInput, WhereInput, Select\>
 
-Defined in: [keyset-paginator.ts:128](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/prisma/keyset-paginator.ts#L128)
+Defined in: [keyset-paginator.ts:128](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/prisma/keyset-paginator.ts#L128)
 
 The `KeySetPaginator` class implements a mechanism for performing efficient
 keyset pagination on a data set using a cursor-based approach.

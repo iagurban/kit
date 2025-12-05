@@ -4,7 +4,7 @@
 function buckets<T>(a, size): T[][];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:10](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/collections/array-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:10](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/collections/array-utils.ts#L10)
 
 Splits an array into smaller sub-arrays (buckets) of a specified size.
 

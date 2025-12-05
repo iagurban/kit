@@ -4,7 +4,7 @@
 type GqlContextInfo = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:186](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/graphql/graphql-traverse.ts#L186)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:186](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L186)
 
 Information about the current GraphQL context.
 
@@ -16,7 +16,7 @@ Information about the current GraphQL context.
 fieldName: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:190](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/graphql/graphql-traverse.ts#L190)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:190](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L190)
 
 The name of the field being resolved.
 
@@ -28,7 +28,7 @@ The name of the field being resolved.
 fieldNodes: GqlASTField[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:194](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/graphql/graphql-traverse.ts#L194)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:194](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L194)
 
 The AST nodes for the field being resolved.
 
@@ -40,6 +40,6 @@ The AST nodes for the field being resolved.
 fragments: Record<string, GqlASTFragmentDefinition>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:198](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/graphql/graphql-traverse.ts#L198)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:198](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/graphql/graphql-traverse.ts#L198)
 
 A map of fragment definitions.

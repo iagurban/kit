@@ -1,6 +1,6 @@
 # Abstract Class: JwtStrategyBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:33](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/jwt-strategy-base.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/jwt-strategy-base.ts#L33)
 
 Base class for implementing Passport JWT authentication strategy in NestJS applications.
 Provides the basic JWT authentication configuration and validation flow.
@@ -89,7 +89,7 @@ PassportStrategy(Strategy).authenticate
 abstract convert(payload): Promise<User>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:44](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/jwt-strategy-base.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:44](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/jwt-strategy-base.ts#L44)
 
 Abstract method to convert JWT payload into a user object.
 Must be implemented by derived classes to define how the JWT payload maps to a user.

@@ -8,7 +8,7 @@ function getRedisHashToValuesByFields(
 options): Promise<JsonValue[]>;
 ```
 
-Defined in: [redis-helpers.ts:53](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/redis/redis-helpers.ts#L53)
+Defined in: [redis-helpers.ts:53](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/redis/redis-helpers.ts#L53)
 
 Retrieves the values of specified fields of a Redis Hash, converts the string values back to their
 native JavaScript types using JSON.parse(), and returns the resulting array of values.

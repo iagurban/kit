@@ -18,7 +18,7 @@
 
 # Class: MtimeTracker
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:20](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:20](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L20)
 
 A class that tracks the modification times of files and emits events when they change.
 
@@ -169,7 +169,7 @@ EventEmitter.errorMonitor
 get started(): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:104](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L104)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:104](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L104)
 
 Whether the tracker is running.
 
@@ -183,7 +183,7 @@ Whether the tracker is running.
 add(path): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:83](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:83](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L83)
 
 Adds a path to the tracker.
 
@@ -777,7 +777,7 @@ EventEmitter.rawListeners
 remove(path): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:94](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L94)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:94](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L94)
 
 Removes a path from the tracker.
 
@@ -976,7 +976,7 @@ EventEmitter.setMaxListeners
 start(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:111](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L111)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:111](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L111)
 
 Starts the tracker.
 
@@ -990,7 +990,7 @@ Starts the tracker.
 stop(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:136](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L136)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:136](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L136)
 
 Stops the tracker.
 
@@ -1704,7 +1704,7 @@ EventEmitter.setMaxListeners
 
 # Class: Nodemon
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:507](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L507)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:507](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L507)
 
 A class that mimics the functionality of nodemon.
 
@@ -1902,7 +1902,7 @@ EventEmitter.addListener
 destroy(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:681](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L681)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:681](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L681)
 
 Destroys the nodemon instance.
 
@@ -2761,7 +2761,7 @@ EventEmitter.setMaxListeners
 start(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:627](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L627)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:627](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L627)
 
 Starts nodemon.
 
@@ -2775,7 +2775,7 @@ Starts nodemon.
 stop(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:644](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L644)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:644](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L644)
 
 Stops nodemon.
 
@@ -3489,7 +3489,7 @@ EventEmitter.setMaxListeners
 
 # Class: NodemonFileWatcher
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:148](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L148)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:148](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L148)
 
 A class that watches files and directories for changes.
 
@@ -3501,7 +3501,7 @@ A class that watches files and directories for changes.
 start(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:251](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L251)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:251](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L251)
 
 Starts the watcher.
 
@@ -3515,7 +3515,7 @@ Starts the watcher.
 stop(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:281](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L281)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:281](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L281)
 
 Stops the watcher.
 
@@ -3528,7 +3528,7 @@ Stops the watcher.
 function isNodeJSSignal(value): value is number | Signals;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:12](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/node-util.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:12](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/node-util.ts#L12)
 
 Type guard to check if a value is a valid NodeJS.Signals string.
 
@@ -3551,7 +3551,7 @@ True if the value is a valid signal name, false otherwise.
 function nodeFetch(url): Promise<Buffer<ArrayBufferLike>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:72](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/node-util.ts#L72)
+Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:72](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/node-util.ts#L72)
 
 Fetches a URL using the native http or https module and returns the response body as a Buffer.
 
@@ -3589,7 +3589,7 @@ nodeFetch('https://example.com')
 
 # Interface: INodemonOptions
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:441](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L441)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:441](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L441)
 
 Options for Nodemon.
 
@@ -3601,7 +3601,7 @@ Options for Nodemon.
 optional cwd: string | null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:497](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L497)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:497](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L497)
 
 Current working directory.
 
@@ -3613,7 +3613,7 @@ Current working directory.
 optional delay: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:457](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L457)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:457](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L457)
 
 Delay in milliseconds before restarting.
 
@@ -3625,7 +3625,7 @@ Delay in milliseconds before restarting.
 optional dirsCheckInterval: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:469](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L469)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:469](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L469)
 
 Interval in milliseconds to check for directory changes.
 
@@ -3642,7 +3642,7 @@ exec:
 };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:461](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L461)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:461](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L461)
 
 Command to execute.
 
@@ -3654,7 +3654,7 @@ Command to execute.
 optional extensions: string[] | null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:453](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L453)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:453](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L453)
 
 File extensions to watch.
 
@@ -3666,7 +3666,7 @@ File extensions to watch.
 optional filesCheckInterval: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:465](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L465)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:465](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L465)
 
 Interval in milliseconds to check for file changes.
 
@@ -3678,7 +3678,7 @@ Interval in milliseconds to check for file changes.
 optional ignore: string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:449](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L449)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:449](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L449)
 
 Patterns to ignore.
 
@@ -3690,7 +3690,7 @@ Patterns to ignore.
 optional killSignal: number | Signals;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:477](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L477)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:477](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L477)
 
 Signal to send to kill the process.
 
@@ -3702,7 +3702,7 @@ Signal to send to kill the process.
 optional log: LogFunction;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:501](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L501)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:501](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L501)
 
 A function to use for logging.
 
@@ -3714,7 +3714,7 @@ A function to use for logging.
 optional logChangedFiles: boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:489](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L489)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:489](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L489)
 
 Whether to log changed files.
 
@@ -3726,7 +3726,7 @@ Whether to log changed files.
 optional logTrackedFiles: boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:493](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L493)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:493](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L493)
 
 Whether to log tracked files.
 
@@ -3738,7 +3738,7 @@ Whether to log tracked files.
 optional reGlobbingInterval: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:473](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L473)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:473](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L473)
 
 Interval in milliseconds to re-glob for files.
 
@@ -3750,7 +3750,7 @@ Interval in milliseconds to re-glob for files.
 optional spawnOptions: SpawnOptions;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:481](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L481)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:481](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L481)
 
 Options for spawning the process.
 
@@ -3762,7 +3762,7 @@ Options for spawning the process.
 optional verbose: boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:485](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L485)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:485](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L485)
 
 Whether to log verbose output.
 
@@ -3774,6 +3774,6 @@ Whether to log verbose output.
 watch: string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:445](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L445)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:445](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L445)
 
 Patterns to watch for changes.

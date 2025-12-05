@@ -1,6 +1,6 @@
 # Class: RedisPubsubSubscription
 
-Defined in: [redis-pubsub-subscription.ts:17](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/redis/redis-pubsub-subscription.ts#L17)
+Defined in: [redis-pubsub-subscription.ts:17](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/redis/redis-pubsub-subscription.ts#L17)
 
 This class represents a Redis pub/sub subscription handler. It manages subscribing,
 unsubscribing, and handling messages from a specific Redis channel. The class ensures
@@ -18,7 +18,7 @@ new RedisPubsubSubscription(
    handlers): RedisPubsubSubscription;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:34](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/redis/redis-pubsub-subscription.ts#L34)
+Defined in: [redis-pubsub-subscription.ts:34](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/redis/redis-pubsub-subscription.ts#L34)
 
 Constructor for creating an instance of a subscription handler.
 
@@ -83,7 +83,7 @@ Callback invoked when successfully subscribed to the channel.
 activate(): Promise<void>;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:158](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/redis/redis-pubsub-subscription.ts#L158)
+Defined in: [redis-pubsub-subscription.ts:158](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/redis/redis-pubsub-subscription.ts#L158)
 
 Activates the current instance by setting it to active and establishing necessary subscriptions.
 Ensures the instance is not already active before proceeding. Upon activation, it sets up message
@@ -103,7 +103,7 @@ A promise that resolves once the activation logic has completed.
 deactivate(): Promise<void>;
 ```
 
-Defined in: [redis-pubsub-subscription.ts:175](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/redis/redis-pubsub-subscription.ts#L175)
+Defined in: [redis-pubsub-subscription.ts:175](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/redis/redis-pubsub-subscription.ts#L175)
 
 Deactivates the current subscriber instance if it is active.
 This method unsubscribes from the specified channel and cleans up resources.

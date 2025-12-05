@@ -42,7 +42,7 @@
 
 # Class: AuthControllerBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:32](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-controller-base.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:32](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-controller-base.ts#L32)
 
 Base controller class that implements JWT-based authentication flow with access and refresh tokens.
 Uses bearer tokens for access authorization and HTTP-only cookies for refresh tokens.
@@ -87,7 +87,7 @@ login(
 res): Promise<string>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:71](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-controller-base.ts#L71)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:71](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-controller-base.ts#L71)
 
 Authenticates user credentials and creates new session.
 Sets refresh token in cookies and returns access token.
@@ -122,7 +122,7 @@ If credentials are invalid
 logout(req, res): Promise<boolean>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:87](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-controller-base.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:87](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-controller-base.ts#L87)
 
 Ends the user session by invalidating refresh token and clearing cookies.
 If refresh token exists, it will be invalidated on the server.
@@ -149,7 +149,7 @@ True if logout was successful
 refresh(req, res): Promise<Response<any, Record<string, any>>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:47](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-controller-base.ts#L47)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-controller-base.ts:47](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-controller-base.ts#L47)
 
 Refreshes the access token using a refresh token from cookies.
 Issues new refresh token and returns new access token.
@@ -175,7 +175,7 @@ If refresh token is missing in cookies
 
 # Abstract Class: AuthServiceBase\<DbUser, JWTPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:46](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L46)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:46](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L46)
 
 Base class for implementing authentication service in NestJS applications.
 Provides a complete JWT-based authentication flow with access and refresh tokens.
@@ -204,7 +204,7 @@ JWT payload type that must contain a 'sub' property
 protected new AuthServiceBase<DbUser, JWTPayload>(jwtService, refreshCookieOptions): AuthServiceBase<DbUser, JWTPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:60](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:60](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L60)
 
 Creates an instance of AuthServiceBase.
 
@@ -240,7 +240,7 @@ Refresh token lifetime in days
 readonly jwtService: JwtService;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:61](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:61](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L61)
 
 NestJS JWT service for token operations
 
@@ -252,7 +252,7 @@ NestJS JWT service for token operations
 readonly refreshCookieOptions: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:62](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L62)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:62](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L62)
 
 Configuration for refresh tokens
 
@@ -282,7 +282,7 @@ refreshExpiresDays: number;
 abstract deleteRefreshToken(id): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:106](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L106)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:106](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L106)
 
 Deletes a specific refresh token from storage.
 
@@ -302,7 +302,7 @@ ID of the refresh token to delete
 abstract deleteRefreshTokensOfUser(userId): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:114](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L114)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:114](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L114)
 
 Deletes all refresh tokens belonging to a specific user.
 Used for logging out from all devices.
@@ -323,7 +323,7 @@ ID of the user whose tokens should be deleted
 abstract findByUsernameOrEmail(nameOrMail): Promise<DbUser & object | null>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:76](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L76)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:76](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L76)
 
 Finds a user by their username or email address.
 Used during the initial authentication process.
@@ -353,7 +353,7 @@ abstract findRefreshToken(id): Promise<
 | null>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:94](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L94)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:94](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L94)
 
 Retrieves a refresh token from storage by its ID.
 
@@ -380,7 +380,7 @@ ID of the refresh token to find
 revokeAll(userId): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:188](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L188)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:188](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L188)
 
 Revokes all refresh tokens for a user.
 
@@ -403,7 +403,7 @@ abstract saveRefreshToken(
 expiresAt): Promise<string>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:86](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L86)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:86](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L86)
 
 Stores a new refresh token in the database.
 
@@ -433,7 +433,7 @@ ID of the stored refresh token
 abstract userToPayload(user): JWTObject<JWTPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:123](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L123)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:123](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L123)
 
 Converts a user object to a JWT payload.
 Implementing classes should define how user data maps to token claims.
@@ -451,7 +451,7 @@ JWT payload object
 
 # Abstract Class: ContextualCurrentUserInterceptorBase\<CurrentUser\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:32](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:32](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L32)
 
 Base class for implementing Nest interceptors that manage user context in AsyncLocalStorage.
 
@@ -492,7 +492,7 @@ The type representing the user data to be stored in AsyncLocalStorage
 abstract getStorage(): AsyncLocalStorage<CurrentUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:39](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:39](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L39)
 
 Abstract method that must be implemented by subclasses to provide the AsyncLocalStorage
 instance where the current user data should be stored.
@@ -509,7 +509,7 @@ The storage instance for the current user
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:41](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L41)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/contextual-current-user.interceptor-base.ts:41](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/contextual-current-user.interceptor-base.ts#L41)
 
 Method to implement a custom interceptor.
 
@@ -536,7 +536,7 @@ NestInterceptor.intercept
 
 # Class: GqlJwtAuthGuardBase
 
-Defined in: [IdeaProjects/kit/kit/src/nest/guards/gql-jwt-auth-guard-base.ts:8](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/guards/gql-jwt-auth-guard-base.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/nest/guards/gql-jwt-auth-guard-base.ts:8](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/guards/gql-jwt-auth-guard-base.ts#L8)
 
 A JWT authentication guard for GraphQL requests.
 
@@ -598,7 +598,7 @@ AuthGuard('jwt').canActivate
 getRequest(context): any;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/guards/gql-jwt-auth-guard-base.ts:14](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/guards/gql-jwt-auth-guard-base.ts#L14)
+Defined in: [IdeaProjects/kit/kit/src/nest/guards/gql-jwt-auth-guard-base.ts:14](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/guards/gql-jwt-auth-guard-base.ts#L14)
 
 Gets the request object from the execution context.
 
@@ -779,7 +779,7 @@ AuthGuard('jwt').toString
 
 # Abstract Class: JwtStrategyBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:33](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/jwt-strategy-base.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/jwt-strategy-base.ts#L33)
 
 Base class for implementing Passport JWT authentication strategy in NestJS applications.
 Provides the basic JWT authentication configuration and validation flow.
@@ -858,7 +858,7 @@ PassportStrategy(Strategy).authenticate
 abstract convert(payload): Promise<User>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:44](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/jwt-strategy-base.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/jwt-strategy-base.ts:44](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/jwt-strategy-base.ts#L44)
 
 Abstract method to convert JWT payload into a user object.
 Must be implemented by derived classes to define how the JWT payload maps to a user.
@@ -1072,7 +1072,7 @@ PassportStrategy(Strategy).success
 
 # Abstract Class: LocalStrategyBase\<User, CurrentUserJwtPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:36](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/local-strategy-base.ts#L36)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:36](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/local-strategy-base.ts#L36)
 
 Base class for implementing Passport Local authentication strategy in NestJS applications.
 Provides username/password authentication integration with Passport.js.
@@ -1249,7 +1249,7 @@ PassportStrategy(Strategy).fail
 abstract getAuthService(): AuthServiceBase<User, CurrentUserJwtPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:49](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/passport-strategies/local-strategy-base.ts#L49)
+Defined in: [IdeaProjects/kit/kit/src/nest/passport-strategies/local-strategy-base.ts:49](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/passport-strategies/local-strategy-base.ts#L49)
 
 Abstract method that must return an authentication service instance.
 The service must extend AuthServiceBase and implement user validation logic.
@@ -1362,7 +1362,7 @@ PassportStrategy(Strategy).success
 
 # Abstract Class: OidcAuthControllerBase
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:16](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-auth-controller.base.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:16](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-auth-controller.base.ts#L16)
 
 Abstract base class for a controller that manages the OIDC Authorization Code Flow.
 It provides endpoints to initiate login and logout by redirecting the user
@@ -1379,7 +1379,7 @@ frontend typically handles this flow.
 abstract exchangeCodeForTokens(code): Promise<OidcTokens>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:60](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-auth-controller.base.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:60](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-auth-controller.base.ts#L60)
 
 Exchanges an authorization code for OIDC tokens.
 This method contains the provider-specific logic for the token endpoint.
@@ -1402,7 +1402,7 @@ A promise that resolves to the OIDC tokens.
 abstract protected getAuthorizationUrl(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:23](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-auth-controller.base.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:23](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-auth-controller.base.ts#L23)
 
 Constructs the full authorization URL to which the user should be redirected
 to start the login process.
@@ -1419,7 +1419,7 @@ The complete URL for the IdP's authorization endpoint with necessary query param
 abstract protected getLogoutUrl(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:33](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-auth-controller.base.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-auth-controller.base.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-auth-controller.base.ts#L33)
 
 Constructs the full logout URL to which the user should be redirected
 to end their session on the identity provider.
@@ -1431,7 +1431,7 @@ The complete URL for the IdP's end-session endpoint.
 
 # Abstract Class: OidcJwtStrategyBase\<TUser, TPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:25](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-jwt-strategy.base.ts#L25)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:25](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-jwt-strategy.base.ts#L25)
 
 Abstract base class for a Passport JWT strategy that validates tokens from an
 OIDC-compliant third-party identity provider (e.g., Keycloak, Auth0).
@@ -1492,7 +1492,7 @@ PassportStrategy(Strategy, 'jwt').authenticate
 abstract convertPayloadToUser(payload): Promise<TUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:38](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-jwt-strategy.base.ts#L38)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:38](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-jwt-strategy.base.ts#L38)
 
 Converts the validated JWT payload from the IdP into your application's
 internal user representation. This is where you map claims to user properties.
@@ -1711,7 +1711,7 @@ PassportStrategy(Strategy, 'jwt').success
 validate(payload): Promise<TUser>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:62](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/oidc-jwt-strategy.base.ts#L62)
+Defined in: [IdeaProjects/kit/kit/src/nest/oidc-jwt-strategy.base.ts:62](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/oidc-jwt-strategy.base.ts#L62)
 
 Passport's validation method. It receives the payload after the signature
 and claims (`iss`, `aud`, `exp`) have been verified.
@@ -1734,7 +1734,7 @@ PassportStrategy(Strategy, 'jwt').validate
 
 # Abstract Class: ServerTimestampInterceptorBase\<Intermediate, Result\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:33](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:33](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L33)
 
 Base interceptor class for adding server-side timestamp information to request processing.
 Tracks request timing by adding timestamps at entry and exit points of NestJS request pipeline.
@@ -1790,7 +1790,7 @@ Final type of the processed response
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -1822,7 +1822,7 @@ NestInterceptor.intercept
 abstract prepare(t1, data): Intermediate;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:60](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:60](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L60)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -1868,7 +1868,7 @@ prepare(t1: number, data: Record<string, string>) {
 abstract update(o): Result;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:87](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:87](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L87)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.
@@ -1905,7 +1905,7 @@ update(o: { data: any; t1: number }) {
 
 # Class: ServerTimestampMetaInterceptor
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:31](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L31)
 
 An interceptor that injects server-side request timestamps into the response body.
 
@@ -1955,7 +1955,7 @@ server time offset or measure the exact request processing duration.
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -1985,7 +1985,7 @@ a reference to the `CallHandler`, which provides access to an
 prepare(t1, data): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:35](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:35](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L35)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -2047,7 +2047,7 @@ prepare(t1: number, data: Record<string, string>) {
 update(o): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:39](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:39](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L39)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.
@@ -2114,7 +2114,7 @@ update(o: { data: any; t1: number }) {
 
 # Class: ServerTimestampPreciseInterceptor
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:23](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:23](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L23)
 
 An interceptor that replaces the entire response body with a string containing server-side request timestamps.
 
@@ -2149,7 +2149,7 @@ such as client-side time synchronization, and the original response data is not 
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -2179,7 +2179,7 @@ a reference to the `CallHandler`, which provides access to an
 prepare(t1): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:24](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:24](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L24)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -2225,7 +2225,7 @@ prepare(t1: number, data: Record<string, string>) {
 update(o): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:28](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts:28](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-precise.interceptor.ts#L28)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.
@@ -2266,7 +2266,7 @@ update(o: { data: any; t1: number }) {
 
 # Class: ServiceInfo
 
-Defined in: [IdeaProjects/kit/kit/src/nest/service-info.ts:21](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/service-info.ts#L21)
+Defined in: [IdeaProjects/kit/kit/src/nest/service-info.ts:21](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/service-info.ts#L21)
 
 Represents service information, including its name, optional short name,
 and a uniquely generated client name.
@@ -2290,7 +2290,7 @@ but is only accessible through the provided factory method.
 function getCurrentUserFromExeContext<CurrentUser>(context): CurrentUser | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:11](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/current-user.decorator-base.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:11](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/current-user.decorator-base.ts#L11)
 
 Extracts the current user from the execution context.
 
@@ -2321,7 +2321,7 @@ function getPrismaSelectionFromInfo(info, opts?):
   | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:49](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/prisma-selection.decorator.ts#L49)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:49](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/prisma-selection.decorator.ts#L49)
 
 Extracts the Prisma selection object from a GraphQL info object.
 
@@ -2351,7 +2351,7 @@ The Prisma selection object.
 function getUniversalSelectionFromInfo(info, opts?): UniversalSelection;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:121](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/universal-selection.decorator.ts#L121)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:121](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/universal-selection.decorator.ts#L121)
 
 Extracts the universal selection object from a GraphQL info object.
 
@@ -2384,7 +2384,7 @@ function prismaSelectionFromGqlExecutionCtx(ctx, opts):
   | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:70](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/prisma-selection.decorator.ts#L70)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:70](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/prisma-selection.decorator.ts#L70)
 
 Extracts the Prisma selection object from a GraphQL execution context.
 
@@ -2414,7 +2414,7 @@ The Prisma selection object.
 function stringifyUniversalSelection(selection): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:28](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/universal-selection.decorator.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:28](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/universal-selection.decorator.ts#L28)
 
 Stringifies a universal selection object.
 
@@ -2435,7 +2435,7 @@ The stringified universal selection.
 
 # Interface: UniversalSelection
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:21](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/universal-selection.decorator.ts#L21)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:21](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/universal-selection.decorator.ts#L21)
 
 A recursive type for representing a universal selection.
 
@@ -2450,7 +2450,7 @@ A recursive type for representing a universal selection.
 type DynamicModuleFabric<T> = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/dynamic-module-fabric.ts:31](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/dynamic-module-fabric.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/nest/dynamic-module-fabric.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/dynamic-module-fabric.ts#L31)
 
 Represents a factory configuration object for creating a dynamic module.
 Used to construct modules dynamically with flexible importing and dependency injection options.
@@ -2470,7 +2470,7 @@ type UniversalSelectionArgs = BasicSelectionArgs<{
 }>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:108](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/universal-selection.decorator.ts#L108)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:108](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/universal-selection.decorator.ts#L108)
 
 Arguments for the universal selection decorator.
 
@@ -2481,7 +2481,7 @@ Arguments for the universal selection decorator.
 const CurrentUserBase: <CurrentUser>(...dataOrPipes) => ParameterDecorator;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:30](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/current-user.decorator-base.ts#L30)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:30](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/current-user.decorator-base.ts#L30)
 
 A decorator that extracts the current user from the execution context.
 If the user is not found, it throws an error.
@@ -2507,7 +2507,7 @@ If the user is not found, it throws an error.
 const GetUniversalSelection: (...dataOrPipes) => ParameterDecorator;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:146](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/universal-selection.decorator.ts#L146)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/universal-selection.decorator.ts:146](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/universal-selection.decorator.ts#L146)
 
 A decorator that extracts the universal selection object from a GraphQL execution context.
 
@@ -2531,7 +2531,7 @@ A decorator that extracts the universal selection object from a GraphQL executio
 const PrismaSelection: (...dataOrPipes) => ParameterDecorator;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:80](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/prisma-selection.decorator.ts#L80)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/prisma-selection.decorator.ts:80](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/prisma-selection.decorator.ts#L80)
 
 A decorator that extracts the Prisma selection object from a GraphQL execution context.
 
@@ -2555,7 +2555,7 @@ A decorator that extracts the Prisma selection object from a GraphQL execution c
 const TryCurrentUserBase: <CurrentUser>(...dataOrPipes) => ParameterDecorator;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:22](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/decorators/current-user.decorator-base.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/nest/decorators/current-user.decorator-base.ts:22](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/decorators/current-user.decorator-base.ts#L22)
 
 A decorator that extracts the current user from the execution context.
 If the user is not found, it returns undefined.

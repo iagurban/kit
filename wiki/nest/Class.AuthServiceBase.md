@@ -1,6 +1,6 @@
 # Abstract Class: AuthServiceBase\<DbUser, JWTPayload\>
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:46](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L46)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:46](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L46)
 
 Base class for implementing authentication service in NestJS applications.
 Provides a complete JWT-based authentication flow with access and refresh tokens.
@@ -33,7 +33,7 @@ JWT payload type that must contain a 'sub' property
 protected new AuthServiceBase<DbUser, JWTPayload>(jwtService, refreshCookieOptions): AuthServiceBase<DbUser, JWTPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:60](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:60](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L60)
 
 Creates an instance of AuthServiceBase.
 
@@ -79,7 +79,7 @@ Refresh token lifetime in days
 readonly jwtService: JwtService;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:61](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:61](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L61)
 
 NestJS JWT service for token operations
 
@@ -91,7 +91,7 @@ NestJS JWT service for token operations
 readonly refreshCookieOptions: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:62](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L62)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:62](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L62)
 
 Configuration for refresh tokens
 
@@ -121,7 +121,7 @@ refreshExpiresDays: number;
 abstract deleteRefreshToken(id): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:106](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L106)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:106](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L106)
 
 Deletes a specific refresh token from storage.
 
@@ -145,7 +145,7 @@ ID of the refresh token to delete
 abstract deleteRefreshTokensOfUser(userId): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:114](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L114)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:114](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L114)
 
 Deletes all refresh tokens belonging to a specific user.
 Used for logging out from all devices.
@@ -170,7 +170,7 @@ ID of the user whose tokens should be deleted
 abstract findByUsernameOrEmail(nameOrMail): Promise<DbUser & object | null>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:76](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L76)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:76](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L76)
 
 Finds a user by their username or email address.
 Used during the initial authentication process.
@@ -204,7 +204,7 @@ abstract findRefreshToken(id): Promise<
 | null>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:94](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L94)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:94](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L94)
 
 Retrieves a refresh token from storage by its ID.
 
@@ -235,7 +235,7 @@ ID of the refresh token to find
 revokeAll(userId): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:188](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L188)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:188](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L188)
 
 Revokes all refresh tokens for a user.
 
@@ -262,7 +262,7 @@ abstract saveRefreshToken(
 expiresAt): Promise<string>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:86](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L86)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:86](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L86)
 
 Stores a new refresh token in the database.
 
@@ -300,7 +300,7 @@ ID of the stored refresh token
 abstract userToPayload(user): JWTObject<JWTPayload>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:123](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/auth-service-base.ts#L123)
+Defined in: [IdeaProjects/kit/kit/src/nest/auth-service-base.ts:123](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/auth-service-base.ts#L123)
 
 Converts a user object to a JWT payload.
 Implementing classes should define how user data maps to token claims.

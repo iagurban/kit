@@ -4,7 +4,7 @@
 function dndTreeFabric<Item, State>(methods, mlStep): object;
 ```
 
-Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
+Defined in: [mobx/dnd-tree-fabric/dnd-tree-fabric.tsx:455](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/react/mobx/dnd-tree-fabric/dnd-tree-fabric.tsx#L455)
 
 Creates context accessors for DndTreeState (which user must provide with ProvideDndTreeState) and
 components for rendering tree bound to that context.

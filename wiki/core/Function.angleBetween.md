@@ -8,7 +8,7 @@ function angleBetween(
    y2): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:84](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/numbers/geometry.ts#L84)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:84](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/numbers/geometry.ts#L84)
 
 Calculates the angle in radians between two points (x1, y1) and (x2, y2).
 

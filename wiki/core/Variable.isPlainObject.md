@@ -4,7 +4,7 @@
 const isPlainObject: <T, R>(o) => o is T & Record<string, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:161](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/checks.ts#L161)
+Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:161](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/checks.ts#L161)
 
 Checks if a given value is a plain object.
 

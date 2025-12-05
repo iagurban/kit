@@ -11,6 +11,7 @@
 - [ManualSortingAlphabet](Class.ManualSortingAlphabet.md)
 - [NullError](Class.NullError.md)
 - [NumberConverter](Class.NumberConverter.md)
+- [Powers](Class.Powers.md)
 - [ProgrammingError](Class.ProgrammingError.md)
 - [PromiseController](Class.PromiseController.md)
 

@@ -1,6 +1,6 @@
 # Class: ServerTimestampMetaInterceptor
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:31](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:31](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L31)
 
 An interceptor that injects server-side request timestamps into the response body.
 
@@ -50,7 +50,7 @@ server time offset or measure the exact request processing duration.
 intercept(context, next): Observable<unknown>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts:89](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-interceptor-base.ts#L89)
 
 Method to implement a custom interceptor.
 
@@ -86,7 +86,7 @@ a reference to the `CallHandler`, which provides access to an
 prepare(t1, data): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:35](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:35](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L35)
 
 Prepares intermediate data structure by combining request entry timestamp with response data.
 Called immediately after receiving response from route handler.
@@ -154,7 +154,7 @@ prepare(t1: number, data: Record<string, string>) {
 update(o): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:39](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts:39](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/nest/interceptors/server-timestamp/server-timestamp-meta.interceptor.ts#L39)
 
 Updates intermediate data with exit timestamp just before sending response.
 Called at the last possible moment before response is sent to client.

@@ -1,6 +1,6 @@
 # Class: Nodemon
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:507](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L507)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:507](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L507)
 
 A class that mimics the functionality of nodemon.
 
@@ -206,7 +206,7 @@ EventEmitter.addListener
 destroy(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:681](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L681)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:681](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L681)
 
 Destroys the nodemon instance.
 
@@ -1141,7 +1141,7 @@ EventEmitter.setMaxListeners
 start(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:627](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L627)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:627](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L627)
 
 Starts nodemon.
 
@@ -1157,7 +1157,7 @@ Starts nodemon.
 stop(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:644](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/node/nodemon.ts#L644)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:644](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/node/nodemon.ts#L644)
 
 Stops nodemon.
 

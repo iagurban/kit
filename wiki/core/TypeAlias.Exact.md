@@ -4,7 +4,7 @@
 type Exact<T> = { [K in keyof T]: T[K] };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:164](https://github.com/iagurban/kit/blob/78aea32be2811f93b17aa1de9430feb1fbc049c8/src/core/types.ts#L164)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:164](https://github.com/iagurban/kit/blob/e56ef98e829a034a16c52135f2f52db2a2e4fad8/src/core/types.ts#L164)
 
 A utility type that maps an object type `T` to another object type where all the properties
 of `T` are preserved exactly as they are, ensuring no additional or removed properties.
