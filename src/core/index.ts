@@ -121,6 +121,7 @@ export {
   pathMatchTree,
   PathMatchTreeOptions,
 } from './path-match-tree';
+export { getRandomBytes } from './random';
 export { sleep } from './sleep';
 export { emptySymbol, jnsp, nbsp, stringConstants, svgNS } from './string-const';
 export { allCodePoints, allStringCodePoints, isUppercase } from './string-util';
