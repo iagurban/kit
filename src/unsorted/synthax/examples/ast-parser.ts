@@ -1,7 +1,4 @@
-import { isDefined, isTruthy } from '../../../core/checks';
-import { samplesBy } from '../../../core/collections/array-utils';
-import { ExMap } from '../../../core/collections/ex-map';
-import { notNull } from '../../../core/index';
+import { ExMap, isDefined, isTruthy, notNull, samplesBy } from '../../../core';
 import { $o, $t, $u, locationInfo } from '../define';
 import { Expr, isExprOperand, Operand, OperandsTreeBuilder, OperatorDef } from '../operands-tree-builder';
 import { Dictionary, Tokenizer, TokenizerResult } from '../tokenizer-def';

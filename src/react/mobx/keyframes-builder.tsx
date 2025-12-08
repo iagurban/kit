@@ -1,7 +1,7 @@
 import { computed, IComputedValue, onBecomeUnobserved } from 'mobx';
 import { CSSProperties } from 'react';
 
-import { uidGenerator } from '../../core/index';
+import { uidGenerator } from '../../core';
 
 function stableStringify(obj: unknown): string {
   if (obj === null || typeof obj !== 'object') {

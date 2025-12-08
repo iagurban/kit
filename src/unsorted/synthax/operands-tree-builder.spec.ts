@@ -1,4 +1,4 @@
-import { notNull } from '../../core/index';
+import { notNull } from '../../core';
 import { tsOperators } from './examples/ts-ast-parser';
 import { Operand, OperandsTreeBuilder, OperatorDef } from './operands-tree-builder';
 
