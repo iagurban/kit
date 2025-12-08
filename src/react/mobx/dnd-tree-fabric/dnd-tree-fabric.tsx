@@ -38,7 +38,9 @@ import {
 import { clamp, ExSet, ManualSortingAlphabet, notNull } from '../../../core';
 import { ObservableExSet } from '../../../mobx';
 import { createUsableContext } from '../../create-usable-context';
-import classNames from './dnd-tree.module.scss';
+// import classNames from './dnd-tree.module.scss'; /// TODO move to styles in js
+
+const classNames = {} as Partial<Record<string, string>>;
 
 const preDroppableId = `!!!PRE!!!`;
 

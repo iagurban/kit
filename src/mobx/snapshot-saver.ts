@@ -1,7 +1,7 @@
 import { IReactionDisposer, reaction } from 'mobx';
 import { getSnapshot, SnapshotInOf } from 'mobx-keystone';
 
-import { sleep } from '../core/index';
+import { sleep } from '../core';
 
 /**
  * A utility class for saving snapshots with throttle control and error handling. The class ensures that snapshots
