@@ -1,10 +1,9 @@
-import { randomBytes } from 'node:crypto';
-
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { CookieOptions } from 'express';
 
+import { getRandomBytes } from '../core/index';
 import { UnauthenticatedError } from '../graphql';
 
 const saltOrRounds = 10;
@@ -145,7 +144,7 @@ export abstract class AuthServiceBase<
       secret: this.refreshCookieOptions.cookieSecret,
     });
 
-    const tokenValue = randomBytes(32).toString('hex');
+    const tokenValue = getRandomBytes.hex(32);
 
     const id = await this.saveRefreshToken(
       userId,

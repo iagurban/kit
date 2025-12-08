@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {

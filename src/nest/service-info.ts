@@ -1,5 +1,6 @@
 import { DynamicModule, Injectable, Module, Provider } from '@nestjs/common';
-import { randomBytes } from 'crypto';
+
+import { getRandomBytes } from '../core';
 
 /**
  * Represents service information, including its name, optional short name,
@@ -27,7 +28,7 @@ export class ServiceInfo {
     this.name = name;
     this.shortName = shortName ?? name;
 
-    const randomId = randomBytes(4).toString('hex');
+    const randomId = getRandomBytes.hex(4);
     this.clientName = `${this.name}-${randomId}`;
   }
 

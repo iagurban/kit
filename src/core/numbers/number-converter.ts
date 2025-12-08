@@ -1,8 +1,7 @@
-import { randomBytes } from 'crypto';
-
 import { isROArray } from '../checks';
 import { debugAssert } from '../flow/assertions';
 import { once } from '../once';
+import { getRandomBytes } from '../random';
 
 /**
  * Utility class for efficiently computing and caching powers of a given base number.
@@ -255,7 +254,7 @@ export class NumberConverter {
 
       return () => {
         while (true) {
-          const buf = randomBytes(nBytes);
+          const buf = getRandomBytes(nBytes);
           // Interpret as unsigned big-endian integer
           let x = 0n;
           for (let i = 0; i < nBytes; i++) {
