@@ -6,7 +6,7 @@ import {
   parsePrismaSchema,
 } from '@loancrate/prisma-schema-parser';
 
-import { ExMap, notNull, Nullish, once } from '../core/index';
+import { ExMap, notNull, Nullish, once } from '../core';
 
 const isFieldMdm = (m: ModelDeclarationMember): m is FieldDeclaration => m.kind === 'field';
 const isBlockAttributeMdm = (m: ModelDeclarationMember): m is BlockAttribute => m.kind === 'blockAttribute';

@@ -1,6 +1,6 @@
 import Redis from 'ioredis-mock';
 
-import { AnyAnyFunction } from '../core/index';
+import { AnyAnyFunction } from '../core';
 import {
   getRedisHashToJSON,
   getRedisHashToJSONByFields,

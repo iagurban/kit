@@ -1,6 +1,6 @@
 #!yarn tsx
 
-import { nodeFetch } from '../node/index';
+import { nodeFetch } from '../node';
 
 type Range = [number, number];
 

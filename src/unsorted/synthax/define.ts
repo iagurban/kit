@@ -1,10 +1,6 @@
 import { maxBy, sortedLastIndexBy, thru } from 'lodash';
 
-import { isROArray } from '../../core/checks';
-import { samplesBy } from '../../core/collections/array-utils';
-import { makeMatchingTree, notNull } from '../../core/index';
-import { aggregation } from '../../core/numbers/aggregation';
-import { AnyAnyFunction } from '../../core/types';
+import { aggregation, AnyAnyFunction, isROArray, makeMatchingTree, notNull, samplesBy } from '../../core';
 import {
   AnyAst,
   Dictionary,
