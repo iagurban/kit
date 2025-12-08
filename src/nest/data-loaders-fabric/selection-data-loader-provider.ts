@@ -1,6 +1,6 @@
-import { ExMap } from '@grbn/kit';
 import DataLoader from 'dataloader';
 
+import { ExMap } from '../../core';
 import { UniversalSelection } from '../';
 import { SelectionDataLoaderProvider } from './selection-data-loader.types';
 

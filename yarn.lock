@@ -1041,7 +1041,7 @@ __metadata:
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@dnd-kit/utilities": "npm:^3.2.2"
     "@eslint/js": "npm:^9.38.0"
-    "@grbn/swc-ts": "npm:^0.0.3"
+    "@grbn/swc-ts": "npm:^0.0.4"
     "@loancrate/prisma-schema-parser": "npm:^3.0.0"
     "@mantine/core": "npm:^8.3.6"
     "@mrleebo/prisma-ast": "npm:^0.12.1"
@@ -1168,9 +1168,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@grbn/swc-ts@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "@grbn/swc-ts@npm:0.0.3"
+"@grbn/swc-ts@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@grbn/swc-ts@npm:0.0.4"
   dependencies:
     "@grbn/kit": "npm:0.0.5"
     "@swc/core": "npm:1.15.0"
@@ -1183,7 +1183,7 @@ __metadata:
     tsx: "*"
   bin:
     swc-ts-build: dist/src/swc-ts-build-runner.js
-  checksum: 10c0/a7d5d1ee88c98339e999f7bb7cf6950a5b0f9dcbfc6f534f705224dd5c43babd5ea98aa05ef302b2bd083845c3b6f34a7f9434f44049247c8ddc83598f38e607
+  checksum: 10c0/ea2f992c51be34daf92e90aa1ddb4eaec6c347cf5347f8bd1e3436e88a6d7f4f21eeb87b9ac64ad61763b074d1b8d6e2f85703613f99fd0561d7e04b4352ad8a
   languageName: node
   linkType: hard
 
