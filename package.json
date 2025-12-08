@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {
@@ -57,7 +57,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^9.38.0",
-    "@grbn/swc-ts": "^0.0.3",
+    "@grbn/swc-ts": "^0.0.4",
     "@mantine/core": "^8.3.6",
     "@nestjs/common": "^11.1.9",
     "@nestjs/core": "^11.1.9",
