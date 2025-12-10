@@ -81,7 +81,7 @@
     "copy-assets-cjs": "cd src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/.gemini/**' -x '**/{package,project,tsconfig,coverage-final,jest.config}.json' -x '../tsconfig.*.json' '../dist/cjs/src'",
     "copy-assets-esm": "cd src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/.gemini/**' -x '**/{package,project,tsconfig,coverage-final,jest.config}.json' -x '../tsconfig.*.json' '../dist/esm/src'",
     "build-cjs": "yarn swc-ts-build -s src -d dist/cjs/src -p tsconfig.build.json -t ../ -c .swcrc.cjs && yarn copy-assets-cjs",
-    "build-esm": "yarn swc-ts-build -s src -d dist/esm/src -p tsconfig.build.json -t ../ -c .swcrc.esm && yarn copy-assets-esm && && echo '{\"type\": \"module\"}' > dist/es/package.json",
+    "build-esm": "yarn swc-ts-build -s src -d dist/esm/src -p tsconfig.build.json -t ../ -c .swcrc.esm && yarn copy-assets-esm && echo '{\"type\": \"module\"}' > dist/esm/package.json",
     "build": "yarn build-cjs && yarn build-esm && cp -R ./src/helpers/ ./dist/helpers",
     "test": "yarn jest --maxWorkers=4",
     "lint": "yarn eslint \"src/**/*.{ts,tsx}\" --fix",
