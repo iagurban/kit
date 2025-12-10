@@ -70,12 +70,12 @@
   "sideEffects": false,
   "type": "module",
   "bin": {
-    "build-info-gen": "./dist/src/bin/build-info-gen.js",
-    "clean-md": "./dist/src/bin/clean-md.js",
-    "dotenv-flat": "./dist/src/bin/dotenv-flat.js",
-    "fetch-unicode-letters-ranges": "./dist/src/bin/fetch-unicode-letters-ranges.js",
-    "fix-graphql-codegen": "./dist/src/bin/fix-graphql-codegen.js",
-    "watch-n-run": "./dist/src/bin/watch-n-run.js"
+    "build-info-gen": "./dist/cjs/src/bin/build-info-gen.js",
+    "clean-md": "./dist/cjs/src/bin/clean-md.js",
+    "dotenv-flat": "./dist/cjs/src/bin/dotenv-flat.js",
+    "fetch-unicode-letters-ranges": "./dist/cjs/src/bin/fetch-unicode-letters-ranges.js",
+    "fix-graphql-codegen": "./dist/cjs/src/bin/fix-graphql-codegen.js",
+    "watch-n-run": "./dist/cjs/src/bin/watch-n-run.js"
   },
   "scripts": {
     "copy-assets-cjs": "cd src && yarn mirr -i './**/*.{proto,lua,crt,key,pem,json,so.node}' -x '**/node_modules/**' -x '**/dist/**' -x '**/.gemini/**' -x '**/{package,project,tsconfig,coverage-final,jest.config}.json' -x '../tsconfig.*.json' '../dist/cjs/src'",
