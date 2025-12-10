@@ -112,15 +112,15 @@ export { NumberConverter, Powers } from './numbers/number-converter';
 export { convertToRoman } from './numbers/roman';
 export { clamp, scale, scale_unsafe, scaleFrom01, scaleTo01, scaleTo01_unsafe, snap } from './numbers/utils';
 export { once, setValueProperty } from './once';
-export {
+export type {
   PathMatchLeaf,
   PathMatchNode,
   PathMatchResult,
   PathMatchStrictResult,
   PathMatchTree,
-  pathMatchTree,
   PathMatchTreeOptions,
 } from './path-match-tree';
+export { pathMatchTree } from './path-match-tree';
 export { getRandomBytes } from './random';
 export { sleep } from './sleep';
 export { emptySymbol, jnsp, nbsp, stringConstants, svgNS } from './string-const';
