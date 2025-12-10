@@ -985,12 +985,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grbn/kit@npm:0.0.5":
-  version: 0.0.5
-  resolution: "@grbn/kit@npm:0.0.5"
+"@grbn/kit@npm:0.0.13":
+  version: 0.0.13
+  resolution: "@grbn/kit@npm:0.0.13"
   dependencies:
     "@loancrate/prisma-schema-parser": "npm:^3.0.0"
     "@mrleebo/prisma-ast": "npm:^0.12.1"
+    lodash-es: "npm:^4.17.21"
   peerDependencies:
     "@apollo/client": "*"
     "@dnd-kit/core": "*"
@@ -1006,12 +1007,12 @@ __metadata:
     bcrypt: "*"
     chokidar: "*"
     clsx: "*"
+    dataloader: "*"
     express: "*"
     glob: "*"
     graphql: "*"
     ioredis: "*"
     jwks-rsa: "*"
-    lodash: "*"
     mobx-keystone: "*"
     mobx-utils: "*"
     ntp-time: "*"
@@ -1028,7 +1029,7 @@ __metadata:
     fetch-unicode-letters-ranges: dist/src/bin/fetch-unicode-letters-ranges.js
     fix-graphql-codegen: dist/src/bin/fix-graphql-codegen.js
     watch-n-run: dist/src/bin/watch-n-run.js
-  checksum: 10c0/2566d22c94c7cc61797ad8d509bd2c33168945087685c97a2a98895ae256fc68b781c63da6332705866285ff48e1f5adbe815efffb82319ee4345e8724a6cb2e
+  checksum: 10c0/98cfee6c3bd56852ec9007f38c4ddd7a07201f0fe6c85057beb3f471a5d42b7f077e0d3655ba9373a49ee318131c094a2630a93fafe85c06cd936db48efd3ecd
   languageName: node
   linkType: hard
 
@@ -1041,7 +1042,7 @@ __metadata:
     "@dnd-kit/sortable": "npm:^10.0.0"
     "@dnd-kit/utilities": "npm:^3.2.2"
     "@eslint/js": "npm:^9.38.0"
-    "@grbn/swc-ts": "npm:^0.0.4"
+    "@grbn/swc-ts": "npm:^0.0.6"
     "@loancrate/prisma-schema-parser": "npm:^3.0.0"
     "@mantine/core": "npm:^8.3.6"
     "@mrleebo/prisma-ast": "npm:^0.12.1"
@@ -1169,11 +1170,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@grbn/swc-ts@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@grbn/swc-ts@npm:0.0.4"
+"@grbn/swc-ts@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "@grbn/swc-ts@npm:0.0.6"
   dependencies:
-    "@grbn/kit": "npm:0.0.5"
+    "@grbn/kit": "npm:0.0.13"
     "@swc/core": "npm:1.15.0"
     chokidar: "npm:4.0.3"
     glob: "npm:11.1.0"
@@ -1184,7 +1185,7 @@ __metadata:
     tsx: "*"
   bin:
     swc-ts-build: dist/src/swc-ts-build-runner.js
-  checksum: 10c0/ea2f992c51be34daf92e90aa1ddb4eaec6c347cf5347f8bd1e3436e88a6d7f4f21eeb87b9ac64ad61763b074d1b8d6e2f85703613f99fd0561d7e04b4352ad8a
+  checksum: 10c0/711c3b322a2c21b8c883d8695dc3330d298995258f1719d465153e87df310f11226f50fba342712c566284b70a0c6e991e3f36951843e6ba80b12fd13912e225
   languageName: node
   linkType: hard
 

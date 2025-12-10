@@ -1,7 +1,7 @@
 import DataLoader from 'dataloader';
 
 import { ExMap } from '../../core';
-import { UniversalSelection } from '../';
+import { UniversalSelection } from '../decorators/universal-selection.decorator';
 import { SelectionDataLoaderProvider } from './selection-data-loader.types';
 
 /**
@@ -22,7 +22,7 @@ import { SelectionDataLoaderProvider } from './selection-data-loader.types';
  * import { Injectable, Module } from '@nestjs/common';
  * import { Prisma } from '@prisma/client';
  * import { ExMap } from '@grbn/kit';
- * import { notNull } from '@grbn/kit/data';
+ * import { notNull } from '@grbn/kit';
  * import { universalSelectionToPrisma } from '@grbn/db/prisma';
  * import {
  *   createSelectionDataLoaderProvider,
