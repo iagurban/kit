@@ -1,11 +1,8 @@
 /* istanbul ignore file */
 
 export { cacheKeyFromGraphqlPath } from './cache-key-from-graphql-path';
-export {
+export type {
   BasicSelectionArgs,
-  collectRecursiveSelectionPair,
-  findGqlNodeByPath,
-  flattenSpreads,
   GqlASTField,
   GqlASTFragmentDefinition,
   GqlASTFragmentSpread,
@@ -14,6 +11,11 @@ export {
   GqlASTName,
   GqlASTSelectionSet,
   GqlContextInfo,
+} from './graphql-traverse';
+export {
+  collectRecursiveSelectionPair,
+  findGqlNodeByPath,
+  flattenSpreads,
   unpackSelectArgs,
 } from './graphql-traverse';
 export { UnauthenticatedError } from './unauthenticated-error';
