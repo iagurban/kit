@@ -18,10 +18,9 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { CSS, getEventCoordinates } from '@dnd-kit/utilities';
-import { Box, BoxProps, Flex } from '@mantine/core';
-import { ElementProps } from '@mantine/core/lib/core';
+import { Box, BoxProps, ElementProps, Flex } from '@mantine/core';
 import { clsx } from 'clsx';
-import { sortBy, sortedIndexBy } from 'lodash';
+import { sortBy, sortedIndexBy } from 'lodash-es';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import {

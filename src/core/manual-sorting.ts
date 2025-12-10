@@ -1,4 +1,4 @@
-import { sortedIndexOf } from 'lodash';
+import { sortedIndexOf } from 'lodash-es';
 
 import { ProgrammingError } from './errors/programming-error';
 import { notNull } from './flow/not-null';

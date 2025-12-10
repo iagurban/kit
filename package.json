@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {
@@ -49,7 +49,8 @@
   },
   "dependencies": {
     "@loancrate/prisma-schema-parser": "^3.0.0",
-    "@mrleebo/prisma-ast": "^0.12.1"
+    "@mrleebo/prisma-ast": "^0.12.1",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@apollo/client": "^4.0.9",
@@ -74,7 +75,8 @@
     "@types/express": "^5",
     "@types/ioredis-mock": "^8.2.6",
     "@types/jest": "^30.0.0",
-    "@types/lodash": "^4.17.20",
+    "@types/lodash": "^4",
+    "@types/lodash-es": "^4",
     "@types/node": "^24.7.2",
     "@types/passport-jwt": "^4",
     "@types/passport-local": "^1",
@@ -166,7 +168,6 @@
     "graphql": "*",
     "ioredis": "*",
     "jwks-rsa": "*",
-    "lodash": "*",
     "mobx-keystone": "*",
     "mobx-utils": "*",
     "ntp-time": "*",

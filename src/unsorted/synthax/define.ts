@@ -1,4 +1,4 @@
-import { maxBy, sortedLastIndexBy, thru } from 'lodash';
+import { maxBy, sortedLastIndexBy, thru } from 'lodash-es';
 
 import { aggregation, AnyAnyFunction, isROArray, makeMatchingTree, notNull, samplesBy } from '../../core';
 import {

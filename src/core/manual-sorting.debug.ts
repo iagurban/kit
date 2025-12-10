@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { sortedIndexOf } from 'lodash';
+import { sortedIndexOf } from 'lodash-es';
 
 import { checked, isNumber, isROArray, isSomeOf, isString } from './checks';
 import { Changes, ManualSortingAlphabet } from './manual-sorting';

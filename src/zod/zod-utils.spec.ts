@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 import { stringifiedISODate } from './stringified-types';
 import { isZodInput, isZodOutput } from './zod-utils';
