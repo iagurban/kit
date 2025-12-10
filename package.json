@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "./dist/src/core/index.js",
   "types": "./dist/src/core/index.d.ts",
   "exports": {
@@ -22,6 +22,8 @@
   "files": [
     "dist"
   ],
+  "sideEffects": false,
+  "type": "module",
   "bin": {
     "build-info-gen": "./dist/src/bin/build-info-gen.js",
     "clean-md": "./dist/src/bin/clean-md.js",
