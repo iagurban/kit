@@ -1,8 +1,8 @@
-import { z } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 import { jsonLiteralSchema, jsonObjectSchema, jsonValueSchema } from './json-schema';
 
-const check = (schema: z.ZodTypeAny, value: unknown) => {
+const check = (schema: z.ZodMiniType, value: unknown) => {
   const encoded = z.encode(schema, value);
   const decoded = z.decode(schema, encoded);
   expect(decoded).toEqual(value);

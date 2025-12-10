@@ -1,4 +1,4 @@
-import { maxBy, thru } from 'lodash';
+import { maxBy, thru } from 'lodash-es';
 
 import { isROArray } from '../../core/checks';
 import { ExMap } from '../../core/collections/ex-map';

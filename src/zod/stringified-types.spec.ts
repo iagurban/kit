@@ -1,8 +1,8 @@
-import { z } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 import { stringifiedBigint, stringifiedISODate } from './stringified-types';
 
-const check = (schema: z.ZodTypeAny, value: unknown) => {
+const check = (schema: z.ZodMiniType, value: unknown) => {
   const encoded = z.encode(schema, value);
   const decoded = z.decode(schema, encoded);
   expect(decoded).toEqual(value);
@@ -55,12 +55,10 @@ describe('Stringified Schemas', () => {
 
     it('should throw when encoding an invalid Date object', () => {
       const invalidDateString = 'not-a-real-date';
-      expect(() => z.decode(stringifiedISODate, invalidDateString)).toThrow(/"Invalid ISO datetime"/);
+      expect(() => z.decode(stringifiedISODate, invalidDateString)).toThrow(/"Invalid input"/);
 
-      const invalidDate = new Date('not-a-real-date');
-      expect(() => z.encode(stringifiedISODate, invalidDate)).toThrow(
-        /"Invalid input: expected date, received Date"/
-      );
+      const invalidDate = new Date(invalidDateString);
+      expect(() => z.encode(stringifiedISODate, invalidDate)).toThrow(/"Invalid input"/);
     });
   });
 });

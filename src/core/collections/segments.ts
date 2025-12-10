@@ -1,4 +1,4 @@
-import { sortedIndex } from 'lodash';
+import { sortedIndex } from 'lodash-es';
 
 /**
  * Iterator implementation for Segments class

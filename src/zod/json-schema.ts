@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 import type { JsonValue } from '../core';
 
@@ -23,7 +23,7 @@ export const jsonLiteralSchema = z.union([z.string(), z.number(), z.boolean(), z
  *
  * Compatible with environments requiring the two-argument version of `z.record`.
  */
-export const jsonValueSchema: z.ZodType<JsonValue> = z.lazy(() =>
+export const jsonValueSchema: z.ZodMiniType<JsonValue> = z.lazy(() =>
   z.union([
     jsonLiteralSchema,
     z.array(jsonValueSchema),

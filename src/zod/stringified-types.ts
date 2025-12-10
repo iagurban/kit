@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 /**
  * A codec for handling the conversion between a stringified representation of
@@ -19,7 +19,7 @@ import { z } from 'zod/v4';
  * - decode: A function that converts a valid integer string to a bigint.
  */
 export const stringifiedBigint = z.codec(
-  z.string().regex(/^[+-]?[0-9]+$/, 'Must be a string representation of an integer'),
+  z.string().check(z.regex(/^[+-]?[0-9]+$/, 'Must be a string representation of an integer')),
   z.bigint(),
   {
     encode: v => v.toString(),

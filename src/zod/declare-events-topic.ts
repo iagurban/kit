@@ -1,4 +1,4 @@
-import type { z } from 'zod/v4';
+import type z from 'zod/v4-mini';
 
 /**
  * Represents a Topic with a unique name and an associated schema.
@@ -9,7 +9,7 @@ import type { z } from 'zod/v4';
  * @property {N} name The unique name identifying the topic.
  * @property {S} schema The Zod schema defining the structure or validation rules for the topic's content.
  */
-export type Topic<S extends z.ZodType, N extends string = string> = Readonly<{ name: N; schema: S }>;
+export type Topic<S extends z.ZodMiniType, N extends string = string> = Readonly<{ name: N; schema: S }>;
 
 /**
  * Declares an event topic with the specified name and schema.
@@ -20,7 +20,10 @@ export type Topic<S extends z.ZodType, N extends string = string> = Readonly<{ n
  * @param {S} schema - The schema used to validate the event topic's data.
  * @returns {Topic<S, N>} An object representing the event topic, including its name and validation schema.
  */
-export const declareEventsTopic = <S extends z.ZodType, N extends string>(name: N, schema: S): Topic<S, N> =>
+export const declareEventsTopic = <S extends z.ZodMiniType, N extends string>(
+  name: N,
+  schema: S
+): Topic<S, N> =>
   ({
     name,
     schema,

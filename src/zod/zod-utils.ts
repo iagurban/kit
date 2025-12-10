@@ -1,4 +1,4 @@
-import type { z, ZodType } from 'zod/v4';
+import { z } from 'zod/v4-mini';
 
 /**
  * In Zod:
@@ -18,8 +18,8 @@ import type { z, ZodType } from 'zod/v4';
  * @param {unknown} o - The input to check.
  * @returns {o is z.input<T>} True if the input matches the schema's expected input type, otherwise false.
  */
-export const isZodInput = <T extends ZodType>(schema: T, o: unknown): o is z.input<T> =>
-  schema.safeDecode(o as z.input<T>).success;
+export const isZodInput = <T extends z.ZodMiniType>(schema: T, o: unknown): o is z.input<T> =>
+  z.safeDecode(schema, o as z.input<T>).success;
 
 /**
  * Determines if a given value is "encodeable" output-value of the given Zod schema.
@@ -29,5 +29,5 @@ export const isZodInput = <T extends ZodType>(schema: T, o: unknown): o is z.inp
  * @param {unknown} o - The value to validate.
  * @returns {boolean} True if the value matches the schema's output type, otherwise false.
  */
-export const isZodOutput = <T extends ZodType>(schema: T, o: unknown): o is z.output<T> =>
-  schema.safeEncode(o as z.output<T>).success;
+export const isZodOutput = <T extends z.ZodMiniType>(schema: T, o: unknown): o is z.output<T> =>
+  z.safeEncode(schema, o as z.output<T>).success;
