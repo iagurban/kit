@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      id-token: write # Required for OIDC
 
     steps:
       - name: Checkout code
@@ -20,13 +20,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          # No cache needed yet, we might not even install!
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+          # ^ REQUIRED: This turns on the OIDC authentication logic.
 
-      # 1. Check Version FIRST (Fastest Step)
+      # 1. Check Version (Fast Fail)
       - name: Check if version needs publishing
         id: check
         run: |
           LOCAL_VERSION=$(node -p "require('./package.json').version")
+          # Use "npm view" to get the remote version. 
+          # We suppress errors (2>/dev/null) in case the package is new.
           REMOTE_VERSION=$(npm view @grbn/kit version 2>/dev/null || echo "0.0.0")
           
           echo "Local: $LOCAL_VERSION"
@@ -40,8 +44,7 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      # 2. Everything else is Conditional (Only runs if changed=true)
-
+      # 2. Lazy Execution Steps
       - name: Install dependencies
         if: steps.check.outputs.changed == 'true'
         run: yarn install --immutable
@@ -56,6 +59,8 @@ jobs:
 
       - name: Publish to NPM
         if: steps.check.outputs.changed == 'true'
-        run: |
-          npm config set registry https://registry.npmjs.org/
-          npm publish --provenance --access public --tag latest
+        run: npm publish --provenance --access public --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # NOTE: setup-node uses this variable slot internally for the OIDC token.
+          # You don't need to set a real secret here; the action handles the swap.
