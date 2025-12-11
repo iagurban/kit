@@ -1111,6 +1111,7 @@ __metadata:
     mobx-utils: "npm:^6.1.1"
     nodemon: "npm:^3.1.10"
     ntp-time: "npm:^2.0.8"
+    p-limit: "npm:^7.2.0"
     passport-jwt: "npm:^4.0.1"
     passport-local: "npm:^1.0.0"
     prettier: "npm:^3.6.2"
@@ -1128,6 +1129,7 @@ __metadata:
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.46.1"
     yargs: "npm:^18.0.0"
+    yocto-queue: "npm:^1.2.2"
     zod: "npm:^4.1.12"
   peerDependencies:
     "@apollo/client": "*"
@@ -1160,6 +1162,10 @@ __metadata:
     zod: "*"
   dependenciesMeta:
     lodash-es@4.17.21:
+      unplugged: true
+    p-limit@7.2.0:
+      unplugged: true
+    yocto-queue@1.2.2:
       unplugged: true
   bin:
     build-info-gen: ./dist/cjs/src/bin/build-info-gen.js
@@ -14543,7 +14549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yocto-queue@npm:*, yocto-queue@npm:^1.0.0, yocto-queue@npm:^1.2.1":
+"yocto-queue@npm:*, yocto-queue@npm:^1.0.0, yocto-queue@npm:^1.2.1, yocto-queue@npm:^1.2.2":
   version: 1.2.2
   resolution: "yocto-queue@npm:1.2.2"
   checksum: 10c0/36d4793e9cf7060f9da543baf67c55e354f4862c8d3d34de1a1b1d7c382d44171315cc54abf84d8900b8113d742b830108a1434f4898fb244f9b7e8426d4b8f5
