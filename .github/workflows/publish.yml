@@ -22,45 +22,37 @@ jobs:
           node-version: '22'
           cache: 'yarn'
           registry-url: 'https://registry.npmjs.org'
-          # ^ REQUIRED: This turns on the OIDC authentication logic.
+          scope: '@grbn'  # <--- CRITICAL FIX: Maps auth to your scope
 
-      # 1. Check Version (Fast Fail)
-      - name: Check if version needs publishing
+      # 1. Update NPM (Fixes OIDC bugs in some Node versions)
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      # 2. Smart Check (Skips if version exists)
+      - name: Check version
         id: check
         run: |
-          LOCAL_VERSION=$(node -p "require('./package.json').version")
-          # Use "npm view" to get the remote version. 
-          # We suppress errors (2>/dev/null) in case the package is new.
-          REMOTE_VERSION=$(npm view @grbn/kit version 2>/dev/null || echo "0.0.0")
-          
-          echo "Local: $LOCAL_VERSION"
-          echo "Remote: $REMOTE_VERSION"
-          
-          if [ "$LOCAL_VERSION" = "$REMOTE_VERSION" ]; then
-            echo "Match. Skipping."
+          LOCAL=$(node -p "require('./package.json').version")
+          REMOTE=$(npm view @grbn/kit version 2>/dev/null || echo "0.0.0")
+          if [ "$LOCAL" = "$REMOTE" ]; then
+            echo "Match ($LOCAL). Skipping."
             echo "changed=false" >> $GITHUB_OUTPUT
           else
-            echo "Mismatch. Proceeding..."
+            echo "Mismatch ($LOCAL != $REMOTE). Publishing..."
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      # 2. Lazy Execution Steps
-      - name: Install dependencies
+      # 3. Build & Publish
+      - name: Install & Build
         if: steps.check.outputs.changed == 'true'
-        run: yarn install --immutable
+        run: |
+          yarn install --immutable
+          yarn unplug yocto-queue p-limit yargs || true
+          yarn build
 
-      - name: Unplug PnP packages
-        if: steps.check.outputs.changed == 'true'
-        run: yarn unplug yocto-queue p-limit yargs || true
-
-      - name: Build
-        if: steps.check.outputs.changed == 'true'
-        run: yarn build
-
-      - name: Publish to NPM
+      - name: Publish
         if: steps.check.outputs.changed == 'true'
         run: npm publish --provenance --access public --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NOTE: setup-node uses this variable slot internally for the OIDC token.
-          # You don't need to set a real secret here; the action handles the swap.
+          # setup-node uses this slot for the OIDC token exchange
