@@ -235,6 +235,12 @@
   "dependenciesMeta": {
     "lodash-es@4.17.21": {
       "unplugged": true
+    },
+    "p-limit@7.2.0": {
+      "unplugged": true
+    },
+    "yocto-queue@1.2.2": {
+      "unplugged": true
     }
   }
 }

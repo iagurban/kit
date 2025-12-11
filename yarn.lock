@@ -1165,6 +1165,10 @@ __metadata:
   dependenciesMeta:
     lodash-es@4.17.21:
       unplugged: true
+    p-limit@7.2.0:
+      unplugged: true
+    yocto-queue@1.2.2:
+      unplugged: true
   bin:
     build-info-gen: ./dist/cjs/src/bin/build-info-gen.js
     clean-md: ./dist/cjs/src/bin/clean-md.js
