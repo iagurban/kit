@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "main": "./dist/cjs/src/core/index.js",
   "types": "./dist/cjs/src/core/index.d.ts",
   "exports": {
