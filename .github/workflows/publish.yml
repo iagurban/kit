@@ -2,15 +2,15 @@ name: Publish to NPM
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches:
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # Required for Trusted Publishing
+      id-token: write
 
     steps:
       - name: Checkout code
@@ -20,23 +20,42 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'yarn'
-          # We purposefully REMOVE 'registry-url' here to prevent
-          # setup-node from creating a broken .npmrc file.
+          # No cache needed yet, we might not even install!
+
+      # 1. Check Version FIRST (Fastest Step)
+      - name: Check if version needs publishing
+        id: check
+        run: |
+          LOCAL_VERSION=$(node -p "require('./package.json').version")
+          REMOTE_VERSION=$(npm view @grbn/kit version 2>/dev/null || echo "0.0.0")
+          
+          echo "Local: $LOCAL_VERSION"
+          echo "Remote: $REMOTE_VERSION"
+          
+          if [ "$LOCAL_VERSION" = "$REMOTE_VERSION" ]; then
+            echo "Match. Skipping."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Mismatch. Proceeding..."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      # 2. Everything else is Conditional (Only runs if changed=true)
 
       - name: Install dependencies
+        if: steps.check.outputs.changed == 'true'
         run: yarn install --immutable
 
-      - name: Unplug PnP packages (Safety)
+      - name: Unplug PnP packages
+        if: steps.check.outputs.changed == 'true'
         run: yarn unplug yocto-queue p-limit yargs || true
 
       - name: Build
+        if: steps.check.outputs.changed == 'true'
         run: yarn build
 
       - name: Publish to NPM
+        if: steps.check.outputs.changed == 'true'
         run: |
-          # 1. Manually set registry (Fixes 'Need Auth' error)
-          # npm config set registry https://registry.npmjs.org/
-          npm login
-          # 2. Publish with OIDC and explicit 'latest' tag
+          npm config set registry https://registry.npmjs.org/
           npm publish --provenance --access public --tag latest
