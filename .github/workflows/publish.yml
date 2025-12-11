@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write  # <--- REQUIRED for OIDC
+      id-token: write # Required for Trusted Publishing
 
     steps:
       - name: Checkout code
@@ -21,7 +21,8 @@ jobs:
         with:
           node-version: '22'
           cache: 'yarn'
-          # DO NOT use registry-url here. It breaks OIDC.
+          # We purposefully REMOVE 'registry-url' here to prevent
+          # setup-node from creating a broken .npmrc file.
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -34,8 +35,8 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          # 1. Force npm to talk to the public registry (Avoids ENEEDAUTH)
+          # 1. Manually set registry (Fixes 'Need Auth' error)
           npm config set registry https://registry.npmjs.org/
           
-          # 2. Publish with Provenance (Triggers OIDC)
-          npm publish --provenance --access public
+          # 2. Publish with OIDC and explicit 'latest' tag
+          npm publish --provenance --access public --tag latest
