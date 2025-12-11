@@ -170,7 +170,7 @@
     "jwks-rsa": "^3.2.0",
     "libs": "^0.1.2",
     "lodash": "^4.17.21",
-    "mirr": "^0.0.1",
+    "mirr": "^0.0.2",
     "mobx": "^6.15.0",
     "mobx-keystone": "^1.11.4",
     "mobx-react-lite": "^4.1.1",

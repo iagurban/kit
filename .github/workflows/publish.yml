@@ -32,6 +32,9 @@ jobs:
           yarn unplug p-limit
           yarn unplug yocto-queue
 
+      - name: Debug
+        run: yarn mirr --help
+
       - name: Build
         run: yarn build
 

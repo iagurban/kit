@@ -1104,7 +1104,7 @@ __metadata:
     libs: "npm:^0.1.2"
     lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
-    mirr: "npm:^0.0.1"
+    mirr: "npm:^0.0.2"
     mobx: "npm:^6.15.0"
     mobx-keystone: "npm:^1.11.4"
     mobx-react-lite: "npm:^4.1.1"
@@ -7148,7 +7148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:11.1.0, glob@npm:^11.0.3":
+"glob@npm:11.1.0, glob@npm:^11.0.3, glob@npm:^11.1.0":
   version: 11.1.0
   resolution: "glob@npm:11.1.0"
   dependencies:
@@ -10569,16 +10569,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mirr@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "mirr@npm:0.0.1"
+"mirr@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "mirr@npm:0.0.2"
   dependencies:
-    glob: "npm:^11.0.3"
+    glob: "npm:^11.1.0"
     p-limit: "npm:^7.2.0"
     yargs: "npm:^18.0.0"
+    yocto-queue: "npm:^1.2.2"
+  dependenciesMeta:
+    p-limit@7.2.0:
+      unplugged: true
+    yocto-queue@1.2.2:
+      unplugged: true
   bin:
     mirr: dist/src/bin.js
-  checksum: 10c0/1dfaaa4ca70696a62cab8c2ab48e759a00b2bc09ff7baf305e8ab53b5c7bc043afd6fa321855f0511560b749acdeaf5fcf89778dba631dc1116515c922933d77
+  checksum: 10c0/e19febf6334d1b3f52e492264b7cf3eddf79f22ec98684e24a79e7924c2008a52de4e9db94e6cb8bc768277523c6fa40eba81f38f187acd154e2b5f2553990f8
   languageName: node
   linkType: hard
 
