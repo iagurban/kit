@@ -1,8 +1,6 @@
-# kit
+# kit [![Tests](https://github.com/iagurban/kit/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/iagurban/kit/actions/workflows/test.yml) [![codecov](https://codecov.io/github/iagurban/kit/graph/badge.svg?token=V7FVMNU35L)](https://codecov.io/github/iagurban/kit)
 
 TypeScript utility kit for full‑stack projects – collections, functional helpers, React and MobX utilities, NestJS building blocks, Prisma, Redis helpers, and Zod utilities.
-
-[![Tests](https://github.com/iagurban/kit/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/iagurban/kit/actions/workflows/test.yml)
 
 ### Core highlights
 
