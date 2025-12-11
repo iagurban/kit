@@ -1,6 +1,12 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
+
+  // for CodeCov
+  coverageDirectory: 'coverage', // Ensures output goes to ./coverage/
+  coverageReporters: ['text', 'lcov'], // 'lcov' generates the report Codecov reads
+
+  // readable
   reporters: [
     'default',
     [
