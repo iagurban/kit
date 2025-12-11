@@ -17,15 +17,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use the LTS version compatible with your project
-          cache: 'npm'       # Caches node_modules for faster runs
+          node-version: '20'
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: npm ci
-        # 'npm ci' is faster/safer than 'npm install' but requires a package-lock.json
+        run: yarn install --frozen-lockfile
+        # This ensures yarn.lock is respected and not modified.
 
       - name: Run Tests with Coverage
-        run: npm run coverage
+        run: yarn coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
