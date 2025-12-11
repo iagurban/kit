@@ -193,6 +193,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.1",
     "yargs": "^18.0.0",
+    "yocto-queue": "^1.2.2",
     "zod": "^4.1.12"
   },
   "engines": {
@@ -227,6 +228,7 @@
     "passport-local": "*",
     "rxjs": "*",
     "yargs": "*",
+    "yocto-queue": "*",
     "zod": "*"
   },
   "packageManager": "yarn@4.10.3",
