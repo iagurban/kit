@@ -4,7 +4,7 @@
 function isZodOutput<T>(schema, o): o is output<T>;
 ```
 
-Defined in: [zod-utils.ts:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/zod/zod-utils.ts#L32)
+Defined in: [zod-utils.ts:32](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/zod/zod-utils.ts#L32)
 
 Determines if a given value is "encodeable" output-value of the given Zod schema.
 
@@ -12,7 +12,7 @@ Determines if a given value is "encodeable" output-value of the given Zod schema
 
 ### T
 
-`T` *extends* `ZodType`\<`unknown`, `unknown`, `$ZodTypeInternals`\<`unknown`, `unknown`\>\>
+`T` *extends* `ZodMiniType`\<`unknown`, `unknown`, `$ZodTypeInternals`\<`unknown`, `unknown`\>\>
 
 The Zod schema type.
 

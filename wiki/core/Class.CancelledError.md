@@ -1,6 +1,6 @@
 # Class: CancelledError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/cancelled-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/cancelled-error.ts#L4)
 
 An error that is thrown when an operation is cancelled.
 
@@ -16,7 +16,7 @@ An error that is thrown when an operation is cancelled.
 new CancelledError(reason): CancelledError;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/cancelled-error.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/cancelled-error.ts#L9)
 
 Creates a new CancelledError.
 

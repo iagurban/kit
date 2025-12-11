@@ -1,4 +1,4 @@
-import { isPromise } from '../async/promise-util';
+import { isPromise } from '../checks/is-promise';
 import { errorFromUnknown } from '../error-utils';
 import { AnyAnyFunction } from '../types';
 

@@ -1,4 +1,4 @@
-import { isDefined } from '../../../core/checks';
+import { isDefined } from '../../../core/checks/basic';
 import { reversed } from '../../../core/collections/iterable-utils';
 import { Nullish } from '../../../core/types';
 import { Expr, isExprOperand, Operand } from '../operands-tree-builder';

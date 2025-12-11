@@ -7,7 +7,7 @@ type Topic<S, N> = Readonly<{
 }>;
 ```
 
-Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/zod/declare-events-topic.ts#L12)
+Defined in: [declare-events-topic.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/zod/declare-events-topic.ts#L12)
 
 Represents a Topic with a unique name and an associated schema.
 
@@ -15,7 +15,7 @@ Represents a Topic with a unique name and an associated schema.
 
 ### S
 
-`S` *extends* `z.ZodType`
+`S` *extends* `z.ZodMiniType`
 
 The Zod schema type associated with the topic.
 

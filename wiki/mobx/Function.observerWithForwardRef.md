@@ -4,7 +4,7 @@
 function observerWithForwardRef<P, T>(render): FunctionComponent<PropsWithoutRef<P> & RefAttributes<T>>;
 ```
 
-Defined in: [mobx/observer-with-forward-ref.ts:26](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/mobx/observer-with-forward-ref.ts#L26)
+Defined in: [mobx/observer-with-forward-ref.ts:26](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/mobx/observer-with-forward-ref.ts#L26)
 
 Enhances a given component with both observer and forwardRef functionality.
 

@@ -1,6 +1,6 @@
 # Class: MtimeTracker
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:20](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L20)
 
 A class that tracks the modification times of files and emits events when they change.
 
@@ -151,7 +151,7 @@ EventEmitter.errorMonitor
 get started(): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:104](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L104)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:104](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L104)
 
 Whether the tracker is running.
 
@@ -167,7 +167,7 @@ Whether the tracker is running.
 add(path): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:83](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:83](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L83)
 
 Adds a path to the tracker.
 
@@ -831,7 +831,7 @@ EventEmitter.rawListeners
 remove(path): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:94](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L94)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:94](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L94)
 
 Removes a path from the tracker.
 
@@ -1050,7 +1050,7 @@ EventEmitter.setMaxListeners
 start(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:111](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L111)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:111](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L111)
 
 Starts the tracker.
 
@@ -1066,7 +1066,7 @@ Starts the tracker.
 stop(): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:136](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/nodemon.ts#L136)
+Defined in: [IdeaProjects/kit/kit/src/node/nodemon.ts:136](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/nodemon.ts#L136)
 
 Stops the tracker.
 

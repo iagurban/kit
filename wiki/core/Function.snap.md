@@ -7,7 +7,7 @@ function snap(
    mode?): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L15)
 
 Adjusts a given number to the nearest multiple of a specified step size.
 The adjustment can be controlled using an optional rounding mode.

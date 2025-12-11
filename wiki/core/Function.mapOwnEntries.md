@@ -4,7 +4,7 @@
 function mapOwnEntries<K, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:79](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L79)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:79](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L79)
 
 Iterates over the own enumerable string-keyed properties of an object and
 applies a transformation function to each key-value pair, returning a new

@@ -52,17 +52,42 @@
 - [ArrayMutators](Variable.ArrayMutators.md)
 - [distance00to11](Variable.distance00to11.md)
 - [emptySymbol](Variable.emptySymbol.md)
+- [getRandomBytes](Variable.getRandomBytes.md)
+- [isAsyncFunction](Variable.isAsyncFunction.md)
+- [isAsyncGenerator](Variable.isAsyncGenerator.md)
+- [isAsyncIterable](Variable.isAsyncIterable.md)
+- [isAwaitable](Variable.isAwaitable.md)
+- [isBigInt](Variable.isBigInt.md)
+- [isBoolean](Variable.isBoolean.md)
+- [isConstructor](Variable.isConstructor.md)
+- [isDate](Variable.isDate.md)
 - [isDefined](Variable.isDefined.md)
+- [isError](Variable.isError.md)
+- [isFunction](Variable.isFunction.md)
+- [isGenerator](Variable.isGenerator.md)
+- [isGeneratorFunction](Variable.isGeneratorFunction.md)
 - [isInteger](Variable.isInteger.md)
+- [isInvalidDate](Variable.isInvalidDate.md)
+- [isIterable](Variable.isIterable.md)
+- [isIterableIterator](Variable.isIterableIterator.md)
+- [isIterator](Variable.isIterator.md)
+- [isIteratorResult](Variable.isIteratorResult.md)
+- [isMap](Variable.isMap.md)
+- [isNaN](Variable.isNaN.md)
 - [isNotNull](Variable.isNotNull.md)
 - [isNotUndefined](Variable.isNotUndefined.md)
 - [isNull](Variable.isNull.md)
 - [isNullish](Variable.isNullish.md)
 - [isNumber](Variable.isNumber.md)
 - [isPlainObject](Variable.isPlainObject.md)
+- [isPromise](Variable.isPromise.md)
+- [isPromiseInstance](Variable.isPromiseInstance.md)
+- [isRegExp](Variable.isRegExp.md)
 - [isROArray](Variable.isROArray.md)
+- [isSet](Variable.isSet.md)
 - [isSomeObject](Variable.isSomeObject.md)
 - [isString](Variable.isString.md)
+- [isSymbol](Variable.isSymbol.md)
 - [isTruthy](Variable.isTruthy.md)
 - [isUndefined](Variable.isUndefined.md)
 - [jnsp](Variable.jnsp.md)
@@ -84,6 +109,10 @@
 - [circleArea](Function.circleArea.md)
 - [circleCircumference](Function.circleCircumference.md)
 - [clamp](Function.clamp.md)
+- [compose](Function.compose.md)
+- [composeArgv](Function.composeArgv.md)
+- [composer](Function.composer.md)
+- [composerArgv](Function.composerArgv.md)
 - [convertToRoman](Function.convertToRoman.md)
 - [createContextualLogger](Function.createContextualLogger.md)
 - [createIoCContainer](Function.createIoCContainer.md)
@@ -100,9 +129,14 @@
 - [groupedBy](Function.groupedBy.md)
 - [indexed](Function.indexed.md)
 - [isArrayOf](Function.isArrayOf.md)
+- [isBigIntOf](Function.isBigIntOf.md)
+- [isBooleanOf](Function.isBooleanOf.md)
+- [isDateOf](Function.isDateOf.md)
 - [isInstanceOf](Function.isInstanceOf.md)
-- [isPromise](Function.isPromise.md)
+- [isNumberOf](Function.isNumberOf.md)
+- [isObjectEmpty](Function.isObjectEmpty.md)
 - [isSomeOf](Function.isSomeOf.md)
+- [isStringOf](Function.isStringOf.md)
 - [isTuple](Function.isTuple.md)
 - [isTuples](Function.isTuples.md)
 - [isUppercase](Function.isUppercase.md)
@@ -116,6 +150,7 @@
 - [midpoint](Function.midpoint.md)
 - [multiRecurringDenier](Function.multiRecurringDenier.md)
 - [notNull](Function.notNull.md)
+- [objectOwnKeysIterable](Function.objectOwnKeysIterable.md)
 - [once](Function.once.md)
 - [pickRandomItems](Function.pickRandomItems.md)
 - [pointInCircle](Function.pointInCircle.md)
@@ -157,7 +192,7 @@
 
 # Class: Balancer
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:19](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L19)
 
 Represents a balancing window around a specific index in a sorted array.
 Used internally by ManualSortingAlphabet to progressively include neighbors for rebalancing.
@@ -172,7 +207,7 @@ Used internally by ManualSortingAlphabet to progressively include neighbors for 
 getNextWindow(): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:52](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L52)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:52](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L52)
 
 Calculates the next window size based on the extension strategy.
 Throws if window cannot grow further or growth is invalid.
@@ -199,7 +234,7 @@ rightRebalanced: number;
 rebalance(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:81](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L81)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:81](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L81)
 
 Expands the balancing window and removes affected items from actualSorted.
 
@@ -208,7 +243,7 @@ Expands the balancing window and removes affected items from actualSorted.
 
 # Class: CancelledError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/cancelled-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/cancelled-error.ts#L4)
 
 An error that is thrown when an operation is cancelled.
 
@@ -224,7 +259,7 @@ An error that is thrown when an operation is cancelled.
 new CancelledError(reason): CancelledError;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/cancelled-error.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/cancelled-error.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/cancelled-error.ts#L9)
 
 Creates a new CancelledError.
 
@@ -367,7 +402,7 @@ Error.prepareStackTrace
 
 # Class: Emitter\<T\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:19](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/emitter.ts#L19)
 
 A generic Emitter class that implements an event emitter pattern.
 This class allows adding event listeners for specific events, emitting events, and managing listeners.
@@ -387,7 +422,7 @@ A record type where keys represent event names, and values are tuple types descr
 emit<E>(e, ...data): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:105](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L105)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:105](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/emitter.ts#L105)
 
 Emits an event of the specified type, passing along any additional data to the registered listeners.
 It invokes both persistent and one-time listeners for the given event.
@@ -425,7 +460,7 @@ If any of the listeners throw an error, those errors are collected and thrown to
 off<E>(e, listener): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:87](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L87)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:87](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/emitter.ts#L87)
 
 Removes the specified event listener for the given event from both persistent
 and one-time listener collections. This method ensures that the listener is
@@ -457,7 +492,7 @@ The listener function to remove.
 on<E>(e, listener): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:61](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:61](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/emitter.ts#L61)
 
 Registers an event listener for a specified event type and returns a function to remove the listener.
 
@@ -495,7 +530,7 @@ A function that, when executed, removes the registered event listener.
 once<E>(e, listener): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:75](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/emitter.ts#L75)
+Defined in: [IdeaProjects/kit/kit/src/core/emitter.ts:75](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/emitter.ts#L75)
 
 Registers a one-time event listener for a specific event type. The listener will be automatically
 removed after its first invocation. Returns a function to manually remove the listener before it
@@ -530,7 +565,7 @@ A function to manually remove this listener.
 
 # Class: Errors
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/errors.ts#L4)
 
 An error that represents a collection of multiple errors.
 
@@ -546,7 +581,7 @@ An error that represents a collection of multiple errors.
 new Errors(errors): Errors;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/errors.ts#L9)
 
 Creates a new Errors instance.
 
@@ -572,7 +607,7 @@ Error.constructor
 readonly errors: unknown[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/errors.ts#L9)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/errors.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/errors.ts#L9)
 
 The errors to include in this collection.
 
@@ -701,7 +736,7 @@ Error.prepareStackTrace
 
 # Class: ExMap\<Key, Value\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L6)
 
 Extended Map implementation with additional utility methods and operations
 
@@ -728,7 +763,7 @@ The type of values in the map
 new ExMap<Key, Value>(pairs?): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:13](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:13](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L13)
 
 Creates a new ExMap instance
 
@@ -750,7 +785,7 @@ Optional iterable of key-value pairs to initialize the map
 get toStringTag: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:281](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L281)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:281](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L281)
 
 ##### Returns `string`
 
@@ -772,7 +807,7 @@ Map.[toStringTag]
 get size(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:78](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L78)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:78](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L78)
 
 ##### Returns `number`
 
@@ -792,7 +827,7 @@ ReadonlyMap.size
 iterator: MapIterator<[Key, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:261](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L261)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:261](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L261)
 
 #### Returns `MapIterator`\<\[`Key`, `Value`\]\>
 
@@ -812,7 +847,7 @@ ReadonlyMap.[iterator]
 assign(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:198](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L198)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:198](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L198)
 
 Adds all entries from another iterable to this map
 
@@ -836,7 +871,7 @@ This map instance for chaining
 backup(fn?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:210](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L210)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:210](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L210)
 
 Creates a backup of the current map state and returns a restore function
 
@@ -866,7 +901,7 @@ Function that when called restores the map to its backed up state
 clear(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L23)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:23](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L23)
 
 Removes all elements from the map
 
@@ -888,7 +923,7 @@ Map.clear
 delete(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:33](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L33)
 
 Removes a key and its associated value from the map
 
@@ -918,7 +953,7 @@ Map.delete
 deleteKeys(keys): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:185](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L185)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:185](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L185)
 
 Removes multiple keys from the map
 
@@ -942,7 +977,7 @@ This map instance for chaining
 entries(): MapIterator<[Key, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:266](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L266)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:266](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L266)
 
 #### Returns `MapIterator`\<\[`Key`, `Value`\]\>
 
@@ -964,7 +999,7 @@ ReadonlyMap.entries
 filter<R>(by): ExMap<Key, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:223](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L223)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:223](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L223)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -990,7 +1025,7 @@ New map with filtered entries
 filter(by): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:229](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L229)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:229](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L229)
 
 Creates a new map containing only entries that satisfy the predicate
 
@@ -1014,7 +1049,7 @@ New map with filtered entries
 forEach(by): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:41](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L41)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:41](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L41)
 
 Executes a callback for each key-value pair in the map
 
@@ -1042,7 +1077,7 @@ ReadonlyMap.forEach
 freeze(): Omit<ExMap<Key, Value>, "set" | "delete" | "clear" | "deleteKeys" | "update" | "getOrCreate">;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:238](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L238)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:238](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L238)
 
 Freezes the map, preventing any further mutations.
 
@@ -1058,7 +1093,7 @@ The same map instance, but with mutation methods removed from its type.
 get(key): Value | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:52](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L52)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:52](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L52)
 
 Retrieves the value associated with a key
 
@@ -1089,7 +1124,7 @@ getOrCreate(
    onExisted?): Value;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:131](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L131)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:131](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L131)
 
 Gets a value from the map or creates it if it doesn't exist
 
@@ -1127,7 +1162,7 @@ when key doesn't exist
 has(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:61](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:61](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L61)
 
 Checks if a key exists in the map
 
@@ -1155,7 +1190,7 @@ ReadonlyMap.has
 keys(): MapIterator<Key>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:271](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L271)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:271](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L271)
 
 #### Returns `MapIterator`\<`Key`\>
 
@@ -1175,7 +1210,7 @@ ReadonlyMap.keys
 mapEntries<NewValue>(by): ExMap<Key, NewValue>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:157](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L157)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:157](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L157)
 
 Creates a new map by transforming values while keeping the same keys
 
@@ -1203,7 +1238,7 @@ New map with transformed values
 set(key, value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:72](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L72)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:72](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L72)
 
 Associates a key with a value in the map
 
@@ -1237,7 +1272,7 @@ Map.set
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:166](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L166)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:166](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L166)
 
 Converts map entries to an array using a transform function
 
@@ -1265,7 +1300,7 @@ Array of transformed values
 update(key, value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:148](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L148)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:148](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L148)
 
 Updates a value in the map based on its current value
 
@@ -1295,7 +1330,7 @@ This map instance for chaining
 values(): MapIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:276](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L276)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:276](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L276)
 
 #### Returns `MapIterator`\<`Value`\>
 
@@ -1315,7 +1350,7 @@ ReadonlyMap.values
 valuesToArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:175](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L175)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:175](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L175)
 
 Converts map values to an array using a transform function
 
@@ -1343,7 +1378,7 @@ Array of transformed values
 static groupedBy<Value, Key>(input, by): ExMap<Key, Value[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:90](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L90)
 
 Groups array elements by a key function, collecting values with the same key into arrays
 
@@ -1377,7 +1412,7 @@ Map of keys to arrays of values
 static mappedBy<Value, Key>(input, by): ExMap<Key, Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:113](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-map.ts#L113)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-map.ts:113](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-map.ts#L113)
 
 Creates a map from an array using a key function
 
@@ -1406,7 +1441,7 @@ Map of derived keys to original values
 
 # Class: ExSet\<Value\>
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L12)
 
 Extended Set implementation with additional set operations and utility methods.
 Provides both standard Set interface and additional functionality for set operations.
@@ -1430,7 +1465,7 @@ The type of elements in the set
 new ExSet<Value>(values?): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:19](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L19)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:19](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L19)
 
 Creates a new ExSet instance
 
@@ -1452,7 +1487,7 @@ Optional iterable of initial values
 get toStringTag: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L228)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:228](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L228)
 
 ##### Returns `string`
 
@@ -1474,7 +1509,7 @@ Set.[toStringTag]
 get readonly(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L180)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:180](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L180)
 
 ##### Returns `ReadonlyExSet`\<`Value`\>
 
@@ -1490,7 +1525,7 @@ A read-only view of this set
 get size(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L74)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:74](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L74)
 
 ##### Returns `number`
 
@@ -1510,7 +1545,7 @@ ReadonlySet.size
 iterator: SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L223)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:223](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L223)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -1530,7 +1565,7 @@ ReadonlySet.[iterator]
 add(value): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:31](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L31)
 
 Adds a value to the set
 
@@ -1560,7 +1595,7 @@ Set.add
 and(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L143)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:143](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L143)
 
 Creates a new set containing elements that exist in both this set and another iterable (intersection)
 
@@ -1582,7 +1617,7 @@ A new ExSet containing common elements
 backup(fn?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L212)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:212](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L212)
 
 Creates a backup of the current set state and returns a restore function
 
@@ -1614,7 +1649,7 @@ Function that when called restores the set to its backed up state
 clear(): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:40](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L40)
 
 Removes all elements from the set
 
@@ -1636,7 +1671,7 @@ Set.clear
 delete(value): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:50](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L50)
 
 Removes a value from the set
 
@@ -1666,7 +1701,7 @@ Set.delete
 diff(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L134)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:134](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L134)
 
 Creates a new set containing elements from this set that are not in another iterable (difference)
 
@@ -1688,7 +1723,7 @@ A new ExSet containing elements unique to this set
 entries(): SetIterator<[Value, Value]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L233)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:233](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L233)
 
 #### Returns `SetIterator`\<\[`Value`, `Value`\]\>
 
@@ -1708,7 +1743,7 @@ ReadonlySet.entries
 forEach(by): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:58](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L58)
 
 Executes a callback for each value in the set
 
@@ -1736,7 +1771,7 @@ ReadonlySet.forEach
 freeze(): ReadonlyExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L188)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:188](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L188)
 
 Freezes the set, preventing any further mutations.
 
@@ -1752,7 +1787,7 @@ A read-only version of this set that throws on mutation attempts.
 has(key): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L69)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:69](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L69)
 
 Checks if a value exists in the set
 
@@ -1780,7 +1815,7 @@ ReadonlySet.has
 intersects(other): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L85)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:85](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L85)
 
 Checks if this set has any elements in common with another iterable
 
@@ -1802,7 +1837,7 @@ true if there are common elements, false otherwise
 join(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L100)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:100](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L100)
 
 Adds all elements from another iterable to this set
 
@@ -1826,7 +1861,7 @@ This set instance for chaining
 keys(): SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L238)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:238](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L238)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -1846,7 +1881,7 @@ ReadonlySet.keys
 or(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L125)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:125](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L125)
 
 Creates a new set containing elements from both this set and another iterable (union)
 
@@ -1868,7 +1903,7 @@ A new ExSet containing all unique elements
 subtract(other): this;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L113)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:113](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L113)
 
 Removes all elements that exist in another iterable from this set
 
@@ -1892,7 +1927,7 @@ This set instance for chaining
 toArray<NewValue>(by): NewValue[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L175)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:175](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L175)
 
 Transforms set elements into an array using a mapping function
 
@@ -1920,7 +1955,7 @@ Array of transformed values
 values(): SetIterator<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L243)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:243](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L243)
 
 #### Returns `SetIterator`\<`Value`\>
 
@@ -1940,7 +1975,7 @@ ReadonlySet.values
 xor(other): ExSet<Value>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/ex-set.ts#L158)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/ex-set.ts:158](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/ex-set.ts#L158)
 
 Creates a new set containing elements that exist in either this set or another iterable, but not both (symmetric difference)
 
@@ -1957,7 +1992,7 @@ A new ExSet containing elements that are in either set but not both
 
 # Class: ManualSortingAlphabet
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:153](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L153)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:153](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L153)
 
 Manages lexicographic keys for manually sorted lists, enabling dynamic insertions between items.
 
@@ -1997,7 +2032,7 @@ const alphabet = new ManualSortingAlphabet({
 new ManualSortingAlphabet(options): ManualSortingAlphabet;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L201)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L201)
 
 Creates a new ManualSortingAlphabet instance.
 
@@ -2017,7 +2052,7 @@ Configuration options
 readonly options: ManualSortingAlphabetOptions;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L201)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:201](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L201)
 
 Configuration options
 
@@ -2029,7 +2064,7 @@ Configuration options
 static presets: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:163](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L163)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:163](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L163)
 
 Common presets for ManualSortingAlphabet alphabet ranges.
 
@@ -2091,7 +2126,7 @@ protected extractUpdatedKeys(
    __namedParameters): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:238](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L238)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:238](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L238)
 
 Applies updated values to original keys from the rebalance result.
 
@@ -2123,7 +2158,7 @@ readonly `string`[]
 getFirstKey(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:519](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L519)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:519](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L519)
 
 Returns the initial key to use if the list is empty.
 
@@ -2137,7 +2172,7 @@ Returns the initial key to use if the list is empty.
 protected getMiddleCodePoint(a, b): number | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:217](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L217)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:217](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L217)
 
 Returns a middle code point between two valid code points.
 The first code point can be undefined (supposed value === 0).
@@ -2161,7 +2196,7 @@ Throws if either point is outside the alphabet range.
 protected getMiddleKey(a, b): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:266](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L266)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:266](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L266)
 
 Returns a string key that is lexicographically between a and b.
 Uses code points to compute midpoint recursively.
@@ -2182,7 +2217,7 @@ Uses code points to compute midpoint recursively.
 getNewKeys(count): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:530](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L530)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:530](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L530)
 
 Generates a new array of unique keys based on the specified count.
 
@@ -2207,7 +2242,7 @@ protected insertAfterIndex(
    count): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:429](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L429)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:429](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L429)
 
 Inserts one or more keys immediately after the given key in a sorted array.
 If necessary space isn't available, automatically rebalances neighboring keys.
@@ -2247,7 +2282,7 @@ protected insertBeforeIndex(
    count): Changes;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:470](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L470)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:470](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L470)
 
 Inserts a specified number of items before a given index in a sorted array.
 
@@ -2281,7 +2316,7 @@ Returns an object containing two properties:
 protected isValidCodePoint(code): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:206](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L206)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:206](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L206)
 
 Checks if a code point is within the configured alphabet range.
 
@@ -2299,7 +2334,7 @@ Checks if a code point is within the configured alphabet range.
 protected tryInsertAtEnd(sorted): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:390](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L390)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:390](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L390)
 
 Appends a key at the end by extending the last key or adding a character.
 
@@ -2319,7 +2354,7 @@ Appends a key at the end by extending the last key or adding a character.
 protected tryInsertManyAtEnd(count, sorted): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:361](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L361)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:361](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L361)
 
 Inserts keys after the last element by growing length.
 
@@ -2339,7 +2374,7 @@ Inserts keys after the last element by growing length.
 protected tryInsertManyAtStart(count, sorted): string[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:373](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/manual-sorting.ts#L373)
+Defined in: [IdeaProjects/kit/kit/src/core/manual-sorting.ts:373](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/manual-sorting.ts#L373)
 
 Inserts keys before the first element by creating room.
 
@@ -2354,7 +2389,7 @@ Inserts keys before the first element by creating room.
 
 # Class: NullError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/null-error.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/null-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/null-error.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/null-error.ts#L4)
 
 An error that is thrown when a value is unexpectedly null or undefined.
 
@@ -2487,7 +2522,7 @@ Error.prepareStackTrace
 
 # Class: NumberConverter
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:83](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L83)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:82](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L82)
 
 Converts numbers between decimal and a custom number system with configurable digit symbols.
 Supports random number generation and fixed-width formatting in the custom system.
@@ -2519,7 +2554,7 @@ console.log(base36.random(5)); // Random 5-char string
 new NumberConverter(parts): NumberConverter;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:89](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L89)
 
 Creates a number converter with the specified digit mappings.
 
@@ -2545,7 +2580,7 @@ If there are duplicate characters in the mappings
 readonly fixedWidthRandomGenerator: (length) => () => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:236](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L236)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:235](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L235)
 
 Creates a function that generates fixed-width random numbers efficiently.
 
@@ -2577,7 +2612,7 @@ If length is not a positive integer
 readonly from10: (input) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:160](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L160)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:159](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L159)
 
 Converts a decimal number to this number system.
 
@@ -2605,7 +2640,7 @@ If input is floating point, negative, or base is 10
 readonly mask: (length) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:208](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L208)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:207](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L207)
 
 Creates a string of specified length using the maximum digit value.
 
@@ -2627,7 +2662,7 @@ String of specified length filled with max digit
 readonly parts: readonly (string | readonly [string, string])[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:89](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L89)
 
 Array of single characters or [start,end] character ranges defining the digits
 
@@ -2639,7 +2674,7 @@ Array of single characters or [start,end] character ranges defining the digits
 readonly random: (length) => string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:220](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L220)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:219](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L219)
 
 Generates a random number string of specified length.
 
@@ -2665,7 +2700,7 @@ If length is not a positive integer
 readonly to10: (n) => bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:189](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L189)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:188](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L188)
 
 Converts a number from this system to decimal.
 
@@ -2693,7 +2728,7 @@ If string contains invalid digits
 get base(): bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:93](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L93)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:92](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L92)
 
 Gets the numeric base of this number system (total count of unique digits)
 
@@ -2709,7 +2744,7 @@ Gets the numeric base of this number system (total count of unique digits)
 get byChar(): Map<number, bigint>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:139](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L139)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:138](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L138)
 
 Maps each digit's character code to its numeric value in the system
 
@@ -2725,7 +2760,7 @@ Maps each digit's character code to its numeric value in the system
 get digits(): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:99](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L99)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:98](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L98)
 
 Gets array of character codes for all digits in order
 
@@ -2741,7 +2776,7 @@ Gets array of character codes for all digits in order
 get maxSafeExponent(): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:149](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L149)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:148](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L148)
 
 Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER (always >= 2)
 
@@ -2757,7 +2792,7 @@ Gets maximum number of digits that can safely represent MAX_SAFE_INTEGER (always
 get powers(): Powers;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:133](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L133)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:132](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L132)
 
 Gets the Powers calculator for this number system's base
 
@@ -2768,7 +2803,7 @@ Gets the Powers calculator for this number system's base
 
 # Class: Powers
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:25](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L25)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:24](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L24)
 
 Utility class for efficiently computing and caching powers of a given base number.
 This class can be treated as immutable from an external perspective. Although it
@@ -2796,7 +2831,7 @@ const power5 = hexPowers.get(5); // Returns 1048576n
 new Powers(base, initDigits): Powers;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:33](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L33)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:32](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L32)
 
 Creates a new Powers calculator.
 
@@ -2824,7 +2859,7 @@ If base is less than 2n
 readonly base: bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:34](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L34)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:33](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L33)
 
 The base number to calculate powers of. Must be >= 2n.
 
@@ -2836,7 +2871,7 @@ The base number to calculate powers of. Must be >= 2n.
 get(pos): bigint;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-converter.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-converter.ts:49](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-converter.ts#L49)
 
 Gets the power of the base at the specified position.
 Automatically calculates and caches any intermediate powers needed.
@@ -2854,7 +2889,7 @@ The calculated power as a bigint
 
 # Class: ProgrammingError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/programming-error.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/programming-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/programming-error.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/programming-error.ts#L4)
 
 Indicates a programming error (unrecoverable; need to be fixed by code change)
 
@@ -2987,7 +3022,7 @@ Error.prepareStackTrace
 
 # Class: PromiseController
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:21](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-controller.ts#L21)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:21](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-controller.ts#L21)
 
 A class that provides a mechanism to broadcast abortion (cancellation) events.
 
@@ -3015,7 +3050,7 @@ completion.
 get aborted(): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:31](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-controller.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:31](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-controller.ts#L31)
 
 Retrieves the current aborted state.
 
@@ -3031,7 +3066,7 @@ The value of the aborted state.
 readonly abort(reason): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:46](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-controller.ts#L46)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:46](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-controller.ts#L46)
 
 Aborts and notifies all currently registered abort handlers.
 
@@ -3057,7 +3092,7 @@ The reason for aborting.
 off(fn, all?): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:84](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-controller.ts#L84)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:84](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-controller.ts#L84)
 
 Removes a handler from the list of abort handlers. If `all` is true, removes all instances; otherwise, decrements its count.
 
@@ -3083,7 +3118,7 @@ If true, removes all occurrences. Defaults to removing a single occurrence.
 on(fn): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:74](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-controller.ts#L74)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-controller.ts:74](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-controller.ts#L74)
 
 Registers an abort handler.
 
@@ -3108,7 +3143,7 @@ A callback function that receives the abort reason.
 function allCodePoints<T>(s): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:35](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-util.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:35](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-util.ts#L35)
 
 Computes and returns an array of numeric code points for the provided input.
 
@@ -3142,7 +3177,7 @@ An array of numeric code points for the given string(s).
 function allStringCodePoints(s): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-util.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-util.ts#L11)
 
 Converts a given string into an array of its Unicode code points.
 
@@ -3173,7 +3208,7 @@ function angleBetween(
    y2): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:84](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L84)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:84](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L84)
 
 Calculates the angle in radians between two points (x1, y1) and (x2, y2).
 
@@ -3212,7 +3247,7 @@ The angle in radians between the two points.
 function boundingBox(points): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:372](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L372)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:372](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L372)
 
 Calculates the bounding box of a given set of points.
 
@@ -3265,7 +3300,7 @@ y: number;
 function buckets<T>(a, size): T[][];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:10](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L10)
 
 Splits an array into smaller sub-arrays (buckets) of a specified size.
 
@@ -3313,7 +3348,7 @@ The error-handling function to execute if an error is thrown. Receives the error
 function catching<T, C>(fn, onCatch): T | C;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:8](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/catching.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:8](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/catching.ts#L8)
 
 Executes a function and provides a mechanism to handle errors by executing a provided error-handling function.
 
@@ -3347,7 +3382,7 @@ The result of the executed function if no error occurs, or the result of the err
 function catching<T>(fn, onCatch): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:16](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/catching.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:16](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/catching.ts#L16)
 
 Executes a function and provides a mechanism to handle errors by executing a provided error-handling function.
 
@@ -3394,7 +3429,7 @@ A function that gets invoked with the caught error if `fn` throws or rejects. Th
 function catchingAsync<T, C>(fn, onCatch): Promise<T | C>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:41](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/catching.ts#L41)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:41](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/catching.ts#L41)
 
 Executes an asynchronous function and provides a mechanism to handle any errors that may occur during its execution.
 
@@ -3428,7 +3463,7 @@ A Promise that resolves to the result of `fn` if it succeeds, or to the outcome 
 function catchingAsync<T>(fn, onCatch): Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:53](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/catching.ts#L53)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:53](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/catching.ts#L53)
 
 Executes an asynchronous function and provides a mechanism to handle any errors that may occur during its execution.
 
@@ -3484,7 +3519,7 @@ function checked<T, R>(
    message): R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:355](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L355)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/checked.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/checked.ts#L10)
 
 Evaluates a value against a given check function and throws an error if the check fails.
 
@@ -3529,7 +3564,7 @@ function checked<T>(
    message): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:365](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L365)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/checked.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/checked.ts#L20)
 
 Evaluates a value against a given check function and throws an error if the check fails.
 
@@ -3570,7 +3605,7 @@ Throws an error if the check function returns a falsy value.
 function circleArea(r): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:185](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L185)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:185](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L185)
 
 Calculates the area of a circle based on the given radius.
 
@@ -3593,7 +3628,7 @@ The area of the circle.
 function circleCircumference(r): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:192](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L192)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:192](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L192)
 
 Calculates the circumference of a circle given its radius.
 
@@ -3619,7 +3654,7 @@ function clamp(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:121](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L121)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:121](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L121)
 
 Restricts a number to be within a specified range.
 
@@ -3655,13 +3690,225 @@ The clamped value, restricted to the inclusive range [min, max].
 If `min` is greater than `max`.
 
 
+# Function: compose()
+
+```ts
+function compose<T>(prev, next): (v) => boolean;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/composer.ts:14](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/composer.ts#L14)
+
+Combines two predicate functions into a single function that returns true
+if both predicates return true for the given input.
+
+## Type Parameters
+
+### T `T`
+
+## Parameters
+
+### prev
+
+(`v`) => `boolean`
+
+The first predicate function to evaluate.
+
+### next
+
+(`v`) => `boolean`
+
+The second predicate function to evaluate.
+
+## Returns
+
+A new function that takes an input value of type T
+and returns true only if both predicate functions return true for that input.
+
+```ts
+(v): boolean;
+```
+
+### Parameters
+
+#### v `T`
+
+### Returns `boolean`
+
+
+# Function: composeArgv()
+
+```ts
+function composeArgv<Args>(prev, next): (...args) => boolean;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/composer.ts:29](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/composer.ts#L29)
+
+Composes two predicate functions into a single predicate function that returns true
+only if both the provided functions return true for the same arguments.
+
+## Type Parameters
+
+### Args `Args` *extends* [`AnyArray`](TypeAlias.AnyArray.md)
+
+The type of the arguments accepted by the predicate functions.
+
+## Parameters
+
+### prev
+
+(...`args`) => `boolean`
+
+The first predicate function to be evaluated.
+
+### next
+
+(...`args`) => `boolean`
+
+The second predicate function to be evaluated.
+
+## Returns
+
+A composed predicate function that returns true if both
+the `prev` and `next` functions return true for the provided arguments; otherwise, it returns false.
+
+```ts
+(...args): boolean;
+```
+
+### Parameters
+
+#### args
+
+...`Args`
+
+### Returns `boolean`
+
+
+# Function: composer()
+
+```ts
+function composer<T>(initial): object;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/composer.ts:71](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/composer.ts#L71)
+
+A utility function that creates a composer object for managing and composing
+multiple functions of the same type.
+
+## Type Parameters
+
+### T `T`
+
+## Parameters
+
+### initial
+
+(`o`) => `boolean`
+
+The initial function to be set as the starting point
+in the composition.
+
+## Returns
+
+`object`
+
+An object with the following properties:
+- push: A method to add a new function to the composition. It updates the `run`
+  property to represent the composed result of all added functions.
+- run: The current composition of functions, starting with the initial function
+  and including any subsequent additions via the `push` method.
+
+### run()
+
+```ts
+run: (o) => boolean;
+```
+
+#### Parameters
+
+##### o `T`
+
+#### Returns `boolean`
+
+### push()
+
+```ts
+push(next): void;
+```
+
+#### Parameters
+
+##### next
+
+(`o`) => `boolean`
+
+#### Returns `void`
+
+
+# Function: composerArgv()
+
+```ts
+function composerArgv<Args>(initial): object;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/composer.ts:46](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/composer.ts#L46)
+
+A factory function that creates an object for managing a composed series of argument handlers.
+
+## Type Parameters
+
+### Args `Args` *extends* [`AnyArray`](TypeAlias.AnyArray.md)
+
+## Parameters
+
+### initial
+
+(...`args`) => `boolean`
+
+The initial handler function that processes arguments.
+
+## Returns
+
+`object`
+
+An object with methods to manage composed argument handlers.
+
+### run()
+
+```ts
+run: (...args) => boolean;
+```
+
+#### Parameters
+
+##### args
+
+...`Args`
+
+#### Returns `boolean`
+
+### push()
+
+```ts
+push(next): void;
+```
+
+#### Parameters
+
+##### next
+
+(...`args`) => `boolean`
+
+#### Returns `void`
+
+
 # Function: convertToRoman()
 
 ```ts
 function convertToRoman(num): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/roman.ts:44](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/roman.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/roman.ts:44](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/roman.ts#L44)
 
 Converts a decimal number to its Roman numeral representation.
 Uses standard Roman numeral notation including subtractive combinations (e.g., IV for 4, IX for 9).
@@ -3704,7 +3951,7 @@ function createContextualLogger(
    payload?): IBaseLogger;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/contextual-logger.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/contextual-logger.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/contextual-logger.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/contextual-logger.ts#L11)
 
 Creates a contextual logger by extending the base logger with additional context information.
 
@@ -3737,7 +3984,7 @@ A new logger instance with the provided contextual information.
 function createIoCContainer<T>(schema): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/ioc.ts:31](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/ioc.ts#L31)
+Defined in: [IdeaProjects/kit/kit/src/core/ioc.ts:31](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/ioc.ts#L31)
 
 A factory function to create an Inversion of Control (IoC) container.
 
@@ -3806,7 +4053,7 @@ function debouncedCollectingAsync<Args, T, R>(
    fn): (...args) => Promise<T> & object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:27](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/debounced-collecting-async.ts#L27)
+Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:27](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/debounced-collecting-async.ts#L27)
 
 Creates a debounced function that collects arguments from multiple calls and executes an async function with the collected arguments.
 
@@ -3863,7 +4110,7 @@ A debounced function. Each call returns a promise that resolves with the result 
 function degToRad(deg): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:323](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L323)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:323](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L323)
 
 Converts an angle from degrees to radians.
 
@@ -3886,7 +4133,7 @@ The equivalent angle in radians.
 function denyRecursion<T>(action, err): (...args) => BusyGuardResult<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:20](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/functions/deny-recursion.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/functions/deny-recursion.ts#L20)
 
 Prevents recursive execution of a given function by ensuring that the function cannot be called again
 while it is already running. If an attempt is made to call the function recursively, an error will be thrown.
@@ -3939,7 +4186,7 @@ If a recursive invocation of the function is attempted, the provided error is th
 function disposers(initializers, onInit?): () => void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/disposers.ts:43](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/disposers.ts#L43)
+Defined in: [IdeaProjects/kit/kit/src/core/disposers.ts:43](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/disposers.ts#L43)
 
 Creates a composite disposer function that manages multiple disposable resources.
 Particularly useful for managing MobX reactions and store cleanup in a unified way.
@@ -4009,7 +4256,7 @@ function distance(
    y2): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:32](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L32)
 
 Calculates the Euclidean distance between two points in a 2D Cartesian coordinate system.
 
@@ -4044,7 +4291,7 @@ The distance between the two points.
 function distanceTo00(x, y): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L12)
 
 Calculates the Euclidean distance from a point (x, y) to the origin (0, 0).
 
@@ -4075,7 +4322,7 @@ The calculated distance from the point (x, y) to the origin (0, 0).
 function errorFromUnknown(e): Error;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:24](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/error-utils.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:24](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/error-utils.ts#L24)
 
 A utility function that converts an unknown value into an instance of the Error type.
 
@@ -4103,7 +4350,7 @@ The resulting Error object.
 function errorToString(error): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:10](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/error-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/error-utils.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/error-utils.ts#L10)
 
 Converts an unknown error value into a string representation.
 
@@ -4129,7 +4376,7 @@ A string representation of the provided error.
 function formatDuration(durationInMs): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/format-duration.ts:13](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/format-duration.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/core/format-duration.ts:13](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/format-duration.ts#L13)
 
 Converts a duration in milliseconds to a human-readable string format.
 
@@ -4158,7 +4405,7 @@ A string representation of the duration in the format "X.XXXs",
 function fromEntries<T, V>(pairs): Record<T, V>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:101](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L101)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:101](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L101)
 
 Converts an array of key-value pairs into an object.
 
@@ -4193,7 +4440,7 @@ An object constructed from the provided key-value pairs.
 function groupedBy<T, K>(o, by): Record<K, T[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:32](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L32)
 
 Groups the elements of an array based on the result of a callback function.
 
@@ -4236,7 +4483,7 @@ the values are arrays of elements from the input array that correspond to each k
 function indexed<T>(array): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:24](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/iterable-utils.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:24](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/iterable-utils.ts#L24)
 
 Creates an iterator that yields the elements of an array along with their indices.
 
@@ -4290,34 +4537,119 @@ iterator: { next: () => { done: boolean; value: readonly [T, number]; }; Symbol.
 # Function: isArrayOf()
 
 ```ts
-function isArrayOf<K>(isK): Checker<K[]>;
+function isArrayOf<T>(options?): Checker<T[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:203](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L203)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-array-of.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-array-of.ts#L20)
 
-A utility function that checks if a given value is an array
-whose elements satisfy a specific type guard function.
+Creates a checker that validates arrays with optional constraints.
+
+Supports minimum/maximum length, an element checker, and a custom predicate.
+The resulting checker also exposes a descriptive `type` label.
 
 ## Type Parameters
 
-### K `K`
+### T `T`
 
-The type of elements in the array.
+The element type being validated.
 
 ## Parameters
 
-### isK
+### options? `ArrayOptions`\<`T`\> = `{}`
 
-[`Checker`](TypeAlias.Checker.md)\<`K`\>
-
-A type guard function to validate individual elements of the array.
+Optional validation options.
 
 ## Returns
 
-[`Checker`](TypeAlias.Checker.md)\<`K`[]\>
+[`Checker`](TypeAlias.Checker.md)\<`T`[]\>
 
-A function that takes in a value and
-determines if it is an array of elements satisfying the `isK` type guard.
+A checker for arrays of `T`.
+
+
+# Function: isBigIntOf()
+
+```ts
+function isBigIntOf(options?): Checker<bigint>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-bigint-of.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-bigint-of.ts#L20)
+
+Creates a checker that validates `bigint` values with optional constraints.
+
+Supports min/max bounds (accepts `number` or `bigint` inputs), a `fitsInNumber`
+constraint to limit into JS safe integer range, and a custom predicate.
+The resulting checker exposes a descriptive `type` label.
+
+## Parameters
+
+### options? `BigIntOptions` = `{}`
+
+Optional validation options.
+
+## Returns
+
+[`Checker`](TypeAlias.Checker.md)\<`bigint`\>
+
+A checker for `bigint` values.
+
+
+# Function: isBooleanOf()
+
+```ts
+function isBooleanOf<T>(options?): Checker<T>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-boolean-of.ts:18](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-boolean-of.ts#L18)
+
+Creates a checker that validates boolean values with optional constraints.
+
+Supports fixing to an exact value and a custom predicate. The resulting checker
+exposes a descriptive `type` label.
+
+## Type Parameters
+
+### T `T` *extends* `boolean` = `boolean`
+
+The boolean subtype to validate.
+
+## Parameters
+
+### options? `BooleanOptions`\<`T`\> = `{}`
+
+Optional validation options.
+
+## Returns
+
+[`Checker`](TypeAlias.Checker.md)\<`T`\>
+
+A checker for boolean values.
+
+
+# Function: isDateOf()
+
+```ts
+function isDateOf(options?): Checker<Date>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-date-of.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-date-of.ts#L20)
+
+Creates a checker that validates `Date` values with optional constraints.
+
+Ensures the date is valid by default (i.e., its time is not `NaN`). You may allow
+invalid dates by setting `allowInvalid: true`. Supports min/max bounds (accepting
+`Date`, timestamp `number`, or ISO `string`) and a custom predicate.
+
+## Parameters
+
+### options? `DateOptions` = `{}`
+
+Optional validation options.
+
+## Returns
+
+[`Checker`](TypeAlias.Checker.md)\<`Date`\>
+
+A checker for `Date` values.
 
 
 # Function: isInstanceOf()
@@ -4326,7 +4658,7 @@ determines if it is an array of elements satisfying the `isK` type guard.
 function isInstanceOf<C>(...classes): Checker<C>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:226](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L226)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-instance-of.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-instance-of.ts#L12)
 
 A utility function to check if a given object is an instance of one or more specified classes.
 
@@ -4351,31 +4683,53 @@ A list of class constructors to check the object instance against.
 A type guard function that takes an object and determines if it is an instance of any of the provided classes.
 
 
-# Function: isPromise()
+# Function: isNumberOf()
 
 ```ts
-function isPromise<T>(o): o is Promise<T>;
+function isNumberOf(options?): Checker<number>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:8](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-util.ts#L8)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-number-of.ts:24](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-number-of.ts#L24)
 
-Determines whether the given object is a Promise.
+Creates a checker that validates `number` values with optional constraints.
 
-## Type Parameters
-
-### T `T`
+Supports min/max (inclusive or exclusive), `integer`, `finite`, `safe` (safe integer),
+and a custom predicate. The resulting checker provides a descriptive `type` label.
 
 ## Parameters
 
-### o `unknown`
+### options? `NumberOptions` = `{}`
 
-The object to test.
+Optional validation options.
 
 ## Returns
 
-`o is Promise<T>`
+[`Checker`](TypeAlias.Checker.md)\<`number`\>
 
-- Returns `true` if the object is a Promise; otherwise, `false`.
+A checker for numbers.
+
+
+# Function: isObjectEmpty()
+
+```ts
+function isObjectEmpty(o): boolean;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:111](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L111)
+
+Checks whether the given object is empty (i.e., contains no own enumerable properties).
+
+## Parameters
+
+### o `object`
+
+The object to be checked.
+
+## Returns
+
+`boolean`
+
+Returns `true` if the object is empty, otherwise `false`.
 
 
 # Function: isSomeOf()
@@ -4384,7 +4738,7 @@ The object to test.
 function isSomeOf<Vs>(...checkers): Checker<Vs[number]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:258](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L258)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-some-of.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-some-of.ts#L11)
 
 A utility function that checks whether a given value satisfies at least one of the provided type-checking functions.
 
@@ -4409,13 +4763,45 @@ A function that takes an unknown value and returns `true` if the value satisfies
 at least one of the provided type-checking functions, or `false` otherwise.
 
 
+# Function: isStringOf()
+
+```ts
+function isStringOf<T>(options?): Checker<T>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-string-of.ts:22](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-string-of.ts#L22)
+
+Creates a checker that validates strings with optional constraints.
+
+Supports minimum/maximum length, regex pattern, an enum of allowed values,
+and a custom predicate. The resulting checker exposes a descriptive `type` label.
+
+## Type Parameters
+
+### T `T` *extends* `string` = `string`
+
+The string subtype (union) to validate.
+
+## Parameters
+
+### options? `StringOptions`\<`T`\> = `{}`
+
+Optional validation options.
+
+## Returns
+
+[`Checker`](TypeAlias.Checker.md)\<`T`\>
+
+A checker for strings.
+
+
 # Function: isTuple()
 
 ```ts
 function isTuple<Vs>(...items): Checker<Vs>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:281](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L281)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-tuple.ts:13](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-tuple.ts#L13)
 
 A utility function used to determine whether a given value is a tuple of a specific structure.
 
@@ -4447,7 +4833,7 @@ An array of type-checking functions, one for each element in the tuple.
 function isTuples<Vs>(...items): Checker<Vs[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:305](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L305)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-tuples.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-tuples.ts#L15)
 
 Determines if a given array adheres strictly to a tuple structure based on provided type checkers.
 
@@ -4480,7 +4866,7 @@ Returns `true` if the array matches the tuple structure, otherwise `false`.
 function isUppercase(word): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:52](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-util.ts#L52)
+Defined in: [IdeaProjects/kit/kit/src/core/string-util.ts:52](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-util.ts#L52)
 
 Determines whether the given string contains at least one uppercase letter.
 
@@ -4510,7 +4896,7 @@ function lerp(
    t): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:55](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L55)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:55](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L55)
 
 Linearly interpolates between two numbers, `a` and `b`, based on the interpolation factor `t`.
 
@@ -4546,7 +4932,7 @@ function lerpPoint(
    t): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:66](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L66)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:66](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L66)
 
 Computes a point along a linear interpolation between two points in a 2D space.
 
@@ -4585,7 +4971,7 @@ The interpolated point as an array in the format [x, y].
 function makeMatchingTree(samples): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/code-points-matching-tree.ts:22](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/code-points-matching-tree.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/core/code-points-matching-tree.ts:22](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/code-points-matching-tree.ts#L22)
 
 Constructs a tree structure (matching tree) that maps a set of strings to
 their respective Unicode code points for efficient prefix matching.
@@ -4638,7 +5024,7 @@ function mapArrayIfNotEmpty<T, U>(
    empty): U[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:137](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L137)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:137](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L137)
 
 Applies a mapping function to each element of an array if the array is not empty.
 If the array is empty, a fallback function is executed and its result is returned as an array.
@@ -4685,7 +5071,7 @@ or an array containing the result of the `empty` function if the array is empty.
 function mapEntries<K, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L54)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:54](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L54)
 
 Transforms the entries of an object by applying a mapping function to its values and keys.
 
@@ -4728,7 +5114,7 @@ A new object with the same keys as the input object, but with transformed values
 function mapOwnEntries<K, R, D>(o, fn): Record<K, D>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:79](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L79)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:79](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L79)
 
 Iterates over the own enumerable string-keyed properties of an object and
 applies a transformation function to each key-value pair, returning a new
@@ -4773,7 +5159,7 @@ object, but transformed values based on the provided function.
 function mappedBy<T, K>(o, by): Record<K, T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:10](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/object-utils.ts#L10)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L10)
 
 Maps an array of objects to an object where keys are derived from a specified property or computation.
 
@@ -4818,7 +5204,7 @@ function midpoint(
    y2): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:43](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L43)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:43](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L43)
 
 Calculates the midpoint of a line segment defined by two points (x1, y1) and (x2, y2).
 
@@ -4856,7 +5242,7 @@ function multiRecurringDenier<Fn, K>(
 error): (...args) => ReturnType<Fn>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:86](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/functions/deny-recursion.ts#L86)
+Defined in: [IdeaProjects/kit/kit/src/core/functions/deny-recursion.ts:86](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/functions/deny-recursion.ts#L86)
 
 A higher-order function that wraps a given function to prevent
 multiple concurrent invocations with the same key. This utility
@@ -4931,7 +5317,7 @@ Throws an error generated by the `error` parameter if
 function notNull<T>(o, message?): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/not-null.ts:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/not-null.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/not-null.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/not-null.ts#L15)
 
 Ensures that the provided value is not null or undefined. If the value is null or undefined,
 an error is thrown based on the specified message or error-generating function.
@@ -4970,6 +5356,32 @@ If the value is null or undefined, and a string is provided as the message.
 If the value is null or undefined and a function generating an Error is provided.
 
 
+# Function: objectOwnKeysIterable()
+
+```ts
+function objectOwnKeysIterable(obj): IterableIterator<string>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/collections/object-utils.ts:125](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/object-utils.ts#L125)
+
+Returns a lazy iterable for the object's own enumerable string properties.
+*
+
+## Parameters
+
+### obj
+
+The object to iterate over. Can be null or undefined (safe no-op).
+
+`object` | `null` | `undefined`
+
+## Returns
+
+`IterableIterator`\<`string`\>
+
+An iterator that yields property keys as strings.
+
+
 # Function: once()
 
 ## Call Signature
@@ -4981,7 +5393,7 @@ function once<T, O, K>(
 d): TypedPropertyDescriptor<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:60](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/once.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:60](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/once.ts#L60)
 
 Memoizes a getter: replaces it with its computed value upon first access.
 
@@ -5046,7 +5458,7 @@ function once<T, O, K>(
    value): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/once.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:90](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/once.ts#L90)
 
 Sets a property to a concrete value in a form suitable for use inside a getter body.
 
@@ -5105,7 +5517,7 @@ The value that was assigned to the property.
 function pickRandomItems<T>(count, from): T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:58](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:58](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L58)
 
 Selects a specified number of random unique items from a given array.
 
@@ -5147,7 +5559,7 @@ function pointInCircle(
    r): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:216](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L216)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:216](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L216)
 
 Determines whether a point lies within or on the boundary of a circle.
 
@@ -5192,7 +5604,7 @@ function pointInRect(
    height): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:146](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L146)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:146](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L146)
 
 Determines whether a point lies within a given rectangle.
 
@@ -5243,7 +5655,7 @@ function pointInTriangle(
    y3): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:300](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L300)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:300](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L300)
 
 Determines if a point is inside a triangle using the area comparison method.
 
@@ -5303,7 +5715,7 @@ function pointOnCircle(
    angleRad): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:202](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L202)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:202](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L202)
 
 Calculates the coordinates of a point on the circumference of a circle given the circle's center, radius, and an angle in radians.
 
@@ -5338,7 +5750,7 @@ A tuple representing the x and y coordinates of the point on the circle.
 function radToDeg(rad): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:330](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L330)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:330](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L330)
 
 Converts a value from radians to degrees.
 
@@ -5361,7 +5773,7 @@ The equivalent angle in degrees.
 function rectArea(width, height): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:111](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L111)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:111](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L111)
 
 Calculates the area of a rectangle.
 
@@ -5392,7 +5804,7 @@ function rectCenter(
    height): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:133](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L133)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:133](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L133)
 
 Calculates the center point of a rectangle.
 
@@ -5427,7 +5839,7 @@ The coordinates of the center point as a tuple [centerX, centerY].
 function rectPerimeter(width, height): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:123](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L123)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:123](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L123)
 
 Calculates the perimeter of a rectangle.
 
@@ -5466,7 +5878,7 @@ function rectsIntersect(
    h2): boolean;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:168](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L168)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:168](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L168)
 
 Determines whether two rectangles intersect.
 
@@ -5517,7 +5929,7 @@ Returns `true` if the rectangles intersect, otherwise `false`.
 function resolveRecord<T>(o): Promise<PromisesRecordValue<T>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:50](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-util.ts#L50)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:38](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-util.ts#L38)
 
 Asynchronously resolves all promise values within an object while preserving the structure of the object.
 
@@ -5552,7 +5964,7 @@ with all promises replaced by their resolved values.
 function retrying<T>(shouldRetry, fn): Promise<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/retrying.ts:32](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/retrying.ts#L32)
+Defined in: [IdeaProjects/kit/kit/src/core/async/retrying.ts:32](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/retrying.ts#L32)
 
 Executes a function with retry logic, allowing for custom retry conditions and delays.
 
@@ -5590,7 +6002,7 @@ A promise that resolves with the result of the function if successful, or reject
 function reverse<T>(a): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:44](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/iterable-utils.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:44](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/iterable-utils.ts#L44)
 
 Creates an iterator that yields the elements of an array-like object in reverse order.
 
@@ -5647,7 +6059,7 @@ value: T;
 function reversed<T>(array): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/iterable-utils.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/iterable-utils.ts#L6)
 
 Creates an iterator that yields the elements of an array in reverse order.
 
@@ -5709,7 +6121,7 @@ function rotatePoint(
    rad): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:96](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L96)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:96](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L96)
 
 Rotates a point around a specified pivot point by a given angle in radians.
 
@@ -5755,7 +6167,7 @@ function rotateRect(
    angleRad): [number, number][];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:344](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L344)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:344](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L344)
 
 Rotates a rectangle around a given center point by a specified angle in radians.
 
@@ -5802,7 +6214,7 @@ An array of the rotated rectangle's corner coordinates as [x, y] pairs.
 function safeParseJSONValue(stringValue, fallback?): JsonValue;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/safe-parse-json-value.ts:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/json/safe-parse-json-value.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/json/safe-parse-json-value.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/json/safe-parse-json-value.ts#L15)
 
 Safely parses a JSON-encoded string into its corresponding JavaScript value.
 If parsing fails, either a custom fallback function or the original string is returned.
@@ -5836,7 +6248,7 @@ An optional callback invoked
 function samples(length, by?): number[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:34](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L34)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:34](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L34)
 
 Generates an array of numbers based on the specified length and an optional mapping function.
 
@@ -5868,7 +6280,7 @@ An array of numbers created based on the provided length and optional function.
 function samplesBy<T>(length, by): T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:46](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L46)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:46](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L46)
 
 Generates an array of specified length where each element is determined by a provided callback function.
 
@@ -5907,7 +6319,7 @@ function scale(
    toMax): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:102](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L102)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:102](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L102)
 
 Scales a numeric value from one range to another.
 
@@ -5958,7 +6370,7 @@ function scaleFrom01(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:26](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L26)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:26](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L26)
 
 Scales a value from a normalized range [0, 1] to a specified range [min, max].
 
@@ -5992,7 +6404,7 @@ function scaleTo01(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:53](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L53)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:53](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L53)
 
 Scales a given value to a normalized range [0, 1] based on the specified minimum and maximum range values.
 
@@ -6032,7 +6444,7 @@ function scaleTo01_unsafe(
    max): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:40](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L40)
 
 Scales a given value to a normalized range between 0 and 1.
 
@@ -6072,7 +6484,7 @@ function scale_unsafe(
    toMax): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:75](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L75)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:75](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L75)
 
 Scales a given number `v` from one range to another without enforcing boundary checks.
 
@@ -6119,7 +6531,7 @@ function setValueProperty<T, K, O>(
    value): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:20](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/once.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/once.ts#L20)
 
 Defines a value property on the given target with stable attributes and returns the value.
 
@@ -6172,7 +6584,7 @@ The same `value` that was provided.
 function sleep(ms, ac?): Promise<void>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:20](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/sleep.ts#L20)
+Defined in: [IdeaProjects/kit/kit/src/core/sleep.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/sleep.ts#L20)
 
 Suspends the execution for a specified duration in milliseconds.
 If a [PromiseController](Class.PromiseController.md) is provided, the sleep can be interrupted.
@@ -6216,7 +6628,7 @@ function snap(
    mode?): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:15](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/utils.ts#L15)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/utils.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/utils.ts#L15)
 
 Adjusts a given number to the nearest multiple of a specified step size.
 The adjustment can be controlled using an optional rounding mode.
@@ -6254,7 +6666,7 @@ The adjusted value, snapped to the nearest multiple of the step size.
 function throwing<T>(e): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/throwing.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/throwing.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/throwing.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/throwing.ts#L11)
 
 A generic utility function that throws an exception provided by the given function.
 Handy for throwing in ternary operators.
@@ -6297,7 +6709,7 @@ function triangleArea(
    y3): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:230](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L230)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:230](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L230)
 
 Calculates the area of a triangle given the coordinates of its vertices.
 
@@ -6346,7 +6758,7 @@ function triangleCentroid(
    y3): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:274](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L274)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:274](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L274)
 
 Calculates the centroid (geometric center) of a triangle given the coordinates
 of its three vertices.
@@ -6399,7 +6811,7 @@ function trianglePerimeter(
    y3): number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:250](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L250)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:250](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L250)
 
 Calculates the perimeter of a triangle given the coordinates of its three vertices.
 
@@ -6442,7 +6854,7 @@ The perimeter of the triangle.
 function uidGenerator(): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/uid-generator.ts:78](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/uid-generator.ts#L78)
+Defined in: [IdeaProjects/kit/kit/src/core/uid-generator.ts:78](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/uid-generator.ts#L78)
 
 Generates a compact, UUIDv4-like identifier using Base62 characters — shorter and prettier.
 
@@ -6478,7 +6890,7 @@ A compact, URL-safe Base62 identifier suitable for non-security primary keys.
 function validator<K>(isK): <R>(o, fn) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:320](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L320)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/validator.ts:15](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/validator.ts#L15)
 
 A higher-order function that validates an input against a specified checker function
 and applies a transformation function if the validation is successful.
@@ -6530,7 +6942,7 @@ Throws an error if the input validation fails, including the expected type (if a
 function validator0<K>(isK): (o) => K;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:338](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L338)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/validator.ts:33](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/validator.ts#L33)
 
 A higher-order function that creates a validator for performing runtime type checks on an input.
 The validator applies the provided type checker and throws an error if the type check fails.
@@ -6574,7 +6986,7 @@ If the input does not pass the provided type check.
 function warnCatch(fn): void;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:79](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/flow/catching.ts#L79)
+Defined in: [IdeaProjects/kit/kit/src/core/flow/catching.ts:79](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/flow/catching.ts#L79)
 
 Executes a provided function and catches any thrown errors, logging them as warnings.
 
@@ -6597,7 +7009,7 @@ A function to be executed. It may throw an error.
 function weakCache<T, E>(create): (o) => E;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/weak-cache.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/weak-cache.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/weak-cache.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/weak-cache.ts#L11)
 
 Creates a weak cache generator function that memoizes the output of a given creation function
 associated with the input object. The cache automatically ensures that objects are garbage
@@ -6638,7 +7050,7 @@ A function that takes an object of type `T` as input and returns a cached or new
 
 # Interface: IBaseLogger
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:7](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/interfaces/logger-interface.ts#L7)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/interfaces/logger-interface.ts#L7)
 
 IBaseLogger defines a logger interface with various logging levels.
 Each logging level allows logging messages with or without additional contextual information.
@@ -6650,7 +7062,7 @@ Each logging level allows logging messages with or without additional contextual
 
 # Interface: ILogger
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:35](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/interfaces/logger-interface.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:35](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/interfaces/logger-interface.ts#L35)
 
 Represents a logging interface that extends the functionality
 of a base logger and provides additional methods for creating
@@ -6663,7 +7075,7 @@ child loggers.
 
 # Interface: IPubSubSubscriberService
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/pubsub-subscriber-service.interface.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/interfaces/pubsub-subscriber-service.interface.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/pubsub-subscriber-service.interface.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/interfaces/pubsub-subscriber-service.interface.ts#L6)
 
 Interface representing a Pub/Sub subscriber service.
 
@@ -6674,7 +7086,7 @@ Interface representing a Pub/Sub subscriber service.
 type AnyAnyFunction<R> = (...args) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:177](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L177)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:177](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L177)
 
 A type definition for a function that accepts any number of arguments
 of any type and returns a value of type R.
@@ -6707,7 +7119,7 @@ Note:
 type AnyArray = any[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:201](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L201)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:201](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L201)
 
 Represents a type alias for an array of any type.
 This type can hold an array containing elements of any data type,
@@ -6720,7 +7132,7 @@ including mixed types within the same array.
 type AnyFunction<R> = (...a) => R;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:151](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L151)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:151](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L151)
 
 Represents a type for any function. It can accept any number of arguments of any type and return a value of a specified type.
 
@@ -6747,7 +7159,7 @@ The type of the return value of the function. Defaults to `unknown` if not speci
 type Checker<T> = (o) => o is T & object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:36](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L36)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/util.ts:34](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/util.ts#L34)
 
 A type definition for a utility function that determines whether a given value
 matches a specific type T. The `Checker` type is both a function and an object.
@@ -6779,7 +7191,7 @@ The type that the checker function validates against.
 type Checkers<Vs> = { [K in keyof Vs]: (o: unknown) => o is Vs[K] };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:248](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L248)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/util.ts:45](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/util.ts#L45)
 
 A utility type that represents a collection of type-checking functions.
 Each function in the collection determines whether a given value matches
@@ -6800,7 +7212,7 @@ verifying if a value conforms to that specific type.
 type new ClassConstructor(...args): Instance;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:193](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L193)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:193](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L193)
 
 Represents a constructor type for a class, which can be used to create
 instances of the class.
@@ -6822,7 +7234,7 @@ instances of the class.
 type Exact<T> = { [K in keyof T]: T[K] };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:164](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L164)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:164](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L164)
 
 A utility type that maps an object type `T` to another object type where all the properties
 of `T` are preserved exactly as they are, ensuring no additional or removed properties.
@@ -6843,7 +7255,7 @@ The input object type to be mapped exactly.
 type ExtendedJsonValue = ExtendedJsonScalar | ExtendedJsonArray | ExtendedJsonObject;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/extended-json-type.ts:16](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/json/extended-json-type.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/json/extended-json-type.ts:16](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/json/extended-json-type.ts#L16)
 
 Represents an extended JSON value which can be one of the following:
 - A scalar value (e.g., string, number, boolean, null, or other primitive types)
@@ -6863,7 +7275,7 @@ the basic JSON specification but remain compatible with JSON-like formatting.
 type JsonValue = JsonScalar | JsonObject | JsonArray;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/json-type.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/json/json-type.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/core/json/json-type.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/json/json-type.ts#L12)
 
 Represents a JSON value that can either be a scalar, an object, or an array.
 
@@ -6879,7 +7291,7 @@ JsonValue is a TypeScript type union combining the following:
 type NonOptional<T> = Pick<T, RequiredKeys<T>>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:84](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L84)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:84](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L84)
 
 A utility type that creates a new type by extracting all required (non-optional) properties
 from the given type `T`. The resulting type includes only the keys of `T` that are not marked
@@ -6901,7 +7313,7 @@ The source type from which required keys should be extracted.
 type NotNullish<T> = Exclude<T, Nullish>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:49](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L49)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:49](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L49)
 
 A utility type that excludes `null` and `undefined` from a given type `T`.
 
@@ -6921,7 +7333,7 @@ The type from which `null` and `undefined` will be excluded.
 type Nullish = null | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:39](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:39](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L39)
 
 Represents a type that can be either `null` or `undefined`.
 
@@ -6938,7 +7350,7 @@ Commonly used for optional values or to indicate an absence of data.
 type OverrideFields<T, O> = { [K in keyof T | keyof O]: K extends keyof O ? O[K] : K extends keyof T ? T[K] : never };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:16](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:16](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L16)
 
 A utility type that combines two types, T and O, allowing you to override the properties
 of the first type, T, with the properties from the second type, O.
@@ -6968,7 +7380,7 @@ The type containing fields and their types to override in the original type.
 type PickUndefinedKeys<T> = { [K in keyof T as T[K] extends undefined ? K : never]: true };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:126](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L126)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:126](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L126)
 
 A utility type that generates a new type by picking keys from a given type `T`
 where the corresponding properties are strictly of the `undefined` type.
@@ -6989,7 +7401,7 @@ The type from which keys with `undefined` values will be picked.
 type PromiseValue<T> = T extends Promise<infer R> ? R : T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:22](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-util.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-util.ts#L10)
 
 A utility type that extracts the resolved value type of Promise.
 If the provided type `T` is a Promise, `PromiseValue<T>` resolves to the type of the value that the Promise resolves/rejects with.
@@ -7008,7 +7420,7 @@ The type to evaluate.
 type PromisesRecordValue<T> = { [K in keyof T]: PromiseValue<T[K]> };
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:35](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/promise-util.ts#L35)
+Defined in: [IdeaProjects/kit/kit/src/core/async/promise-util.ts:23](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/promise-util.ts#L23)
 
 Represents a type that transforms the values of an object type `T` into their resolved promise values.
 
@@ -7034,7 +7446,7 @@ type ReadonlyExtendedJsonValue =
   | ReadonlyExtendedJsonObject;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-extended-json-type.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/json/readonly-extended-json-type.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-extended-json-type.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/json/readonly-extended-json-type.ts#L11)
 
 Represents an extended JSON value that is immutable. This can be any of the following types:
 - An `ExtendedJsonScalar`, which includes scalar values like strings, numbers, or booleans.
@@ -7048,7 +7460,7 @@ Represents an extended JSON value that is immutable. This can be any of the foll
 type ReadonlyJsonValue = JsonScalar | ReadonlyJsonArray | ReadonlyJsonObject;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-json-type.ts:17](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/json/readonly-json-type.ts#L17)
+Defined in: [IdeaProjects/kit/kit/src/core/json/readonly-json-type.ts:17](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/json/readonly-json-type.ts#L17)
 
 Represents a read-only JSON value, which can be a scalar value,
 a read-only array, or a read-only object.
@@ -7068,7 +7480,7 @@ Components:
 type RecordValues<T> = T[keyof T];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:105](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L105)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:105](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L105)
 
 A utility type that extracts the values of an object type.
 
@@ -7090,7 +7502,7 @@ The object type from which the values will be extracted.
 type RequiredKeys<T> = { [K in keyof T]: {} extends { [P in K]: T[K] } ? never : K }[keyof T];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:69](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L69)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:69](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L69)
 
 A utility type that extracts the required keys of a given type `T`.
 
@@ -7123,7 +7535,7 @@ A union type of the required keys of `T`.
 type UnwrapArray<T> = T extends infer R[] ? R : T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:93](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L93)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:93](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L93)
 
 A utility type that extracts the type of elements from an array type.
 If the provided type is an array type, it returns the type of its elements.
@@ -7142,7 +7554,7 @@ The type to be evaluated.
 type ValOrArr<T> = T | readonly T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:28](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L28)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:28](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L28)
 
 Represents a type that can either be a single value of type `T` or a readonly array of values of type `T`.
 
@@ -7162,7 +7574,7 @@ The type of the value or the elements in the array.
 const ArrayMutators: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:70](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L70)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:70](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L70)
 
 A collection of utility functions for manipulating arrays. Each function allows optional mutation of the original array.
 
@@ -7327,7 +7739,7 @@ A new array with the element set, or the mutated array.
 const NumberBase: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-base.ts:58](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/number-base.ts#L58)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/number-base.ts:58](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/number-base.ts#L58)
 
 Provides number base conversion utilities with predefined bases and their corresponding digit sets.
 Each base N is accessible through two equivalent ways:
@@ -7501,7 +7913,7 @@ Array of decimal digits in big-endian order (most significant digit first)
 const aggregation: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/aggregation.ts:61](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/aggregation.ts#L61)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/aggregation.ts:61](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/aggregation.ts#L61)
 
 Aggregation methods for statistical calculations.
 This object provides various utility functions to calculate descriptive
@@ -7817,7 +8229,7 @@ readonly `number`[]
 const distance00to11: number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:22](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L22)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:22](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L22)
 
 Represents the distance from coordinate (0, 0) to coordinate (1, 1).
 
@@ -7834,7 +8246,7 @@ Value is computed based on the specific implementation of `distanceTo00`.
 const emptySymbol: "∅";
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:17](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-const.ts#L17)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:17](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-const.ts#L17)
 
 A constant variable representing the symbol for an empty set.
 
@@ -7844,13 +8256,233 @@ in various mathematical, programming, or symbolic contexts.
 Value: '∅'
 
 
+# Variable: getRandomBytes
+
+```ts
+const getRandomBytes: (length) => Uint8Array | Buffer & object;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/random.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/random.ts#L7)
+
+Generates cryptographically secure random bytes.
+Works in Browsers (Web Crypto API) and Node.js (Legacy & Modern).
+*
+
+## Type Declaration
+
+### hex()
+
+```ts
+hex: (length) => string;
+```
+
+#### Parameters
+
+##### length `number`
+
+#### Returns `string`
+
+## Param
+
+Number of bytes
+
+## Returns
+
+
+# Variable: isAsyncFunction()
+
+```ts
+const isAsyncFunction: (value) => value is AnyFunction<Promise<unknown>>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-async-function.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-async-function.ts#L10)
+
+Checker that determines whether a value is an async function.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is AnyFunction<Promise<unknown>>`
+
+True if the value is an async function, otherwise false.
+
+
+# Variable: isAsyncGenerator()
+
+```ts
+const isAsyncGenerator: (value) => value is AsyncGenerator<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-async-generator.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-async-generator.ts#L12)
+
+Checker that determines whether a value is an async generator instance.
+
+An async generator must be async-iterable and implement `next`, `return`, and `throw` methods.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is AsyncGenerator<unknown, any, any>`
+
+True if the value is an async generator, otherwise false.
+
+
+# Variable: isAsyncIterable()
+
+```ts
+const isAsyncIterable: (value) => value is AsyncIterable<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-async-iterable.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-async-iterable.ts#L9)
+
+Checker that determines whether a value is an async iterable.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is AsyncIterable<unknown, any, any>`
+
+True if the value implements `Symbol.asyncIterator`, otherwise false.
+
+
+# Variable: isAwaitable()
+
+```ts
+const isAwaitable: (value) => value is { then: AnyAnyFunction };
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-awaitable.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-awaitable.ts#L10)
+
+Checker that determines whether a value is awaitable (a thenable).
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is { then: AnyAnyFunction }`
+
+True if the value has a callable `then`, otherwise false.
+
+
+# Variable: isBigInt()
+
+```ts
+const isBigInt: (value) => value is bigint;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-bigint.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-bigint.ts#L9)
+
+Checker that determines whether a value is a BigInt.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is bigint`
+
+True if the value is a bigint, otherwise false.
+
+
+# Variable: isBoolean()
+
+```ts
+const isBoolean: (o) => o is boolean;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-boolean.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-boolean.ts#L9)
+
+A type guard function to check if the given input is of type boolean.
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is boolean`
+
+Returns true if the input is a boolean, otherwise false.
+
+
+# Variable: isConstructor()
+
+```ts
+const isConstructor: (value) => value is ClassConstructor<unknown>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-constructor.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-constructor.ts#L12)
+
+Checker that determines whether a value is a class/constructor function
+(i.e., has a prototype and is not a generator function).
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is ClassConstructor<unknown>`
+
+True if the value can be used with `new`, otherwise false.
+
+
+# Variable: isDate()
+
+```ts
+const isDate: (o) => o is Date;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-date.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-date.ts#L9)
+
+Checks if the provided value is a Date object.
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is Date`
+
+Returns true if the input is a Date object, otherwise false.
+
+
 # Variable: isDefined()
 
 ```ts
 const isDefined: <T>(o) => o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:45](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L45)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L10)
 
 Checks if a given value is neither `undefined` nor `null`.
 
@@ -7873,13 +8505,107 @@ The value to check.
 Returns `true` if the value is defined (not `undefined` or `null`), otherwise `false`.
 
 
+# Variable: isError()
+
+```ts
+const isError: (o) => o is Error;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:94](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L94)
+
+Checks if the provided value is an Error object.
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is Error`
+
+Returns true if the input is an Error object, otherwise false.
+
+
+# Variable: isFunction()
+
+```ts
+const isFunction: (o) => o is AnyAnyFunction;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-function.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-function.ts#L10)
+
+Checks if the provided value is a function.
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is AnyAnyFunction`
+
+Returns true if the input is a function, otherwise false.
+
+
+# Variable: isGenerator()
+
+```ts
+const isGenerator: (value) => value is Generator<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-generator.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-generator.ts#L12)
+
+Checker that determines whether a value is a generator instance.
+
+A generator must be an `IterableIterator` and provide `return` and `throw` methods.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is Generator<unknown, any, any>`
+
+True if the value is a generator, otherwise false.
+
+
+# Variable: isGeneratorFunction()
+
+```ts
+const isGeneratorFunction: (value) => value is GeneratorFunction;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-generator-function.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-generator-function.ts#L9)
+
+Checker that determines whether a value is a generator function (function*).
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is GeneratorFunction`
+
+True if the value is a generator function, otherwise false.
+
+
 # Variable: isInteger()
 
 ```ts
 const isInteger: (o) => o is number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:145](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L145)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-integer.ts:14](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-integer.ts#L14)
 
 Determines whether the provided value is an integer.
 
@@ -7900,13 +8626,174 @@ The value to be checked.
 Returns true if the value is a number and an integer, false otherwise.
 
 
+# Variable: isInvalidDate()
+
+```ts
+const isInvalidDate: (o) => o is Date;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-invalid-date.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-invalid-date.ts#L7)
+
+Checks if a value is a Date object, but contains an invalid time (NaN).
+Analogous to Number.isNaN but for Dates.
+
+## Parameters
+
+### o `unknown`
+
+## Returns
+
+`o is Date`
+
+
+# Variable: isIterable()
+
+```ts
+const isIterable: (value) => value is Iterable<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-iterable.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-iterable.ts#L9)
+
+Checker that determines whether a value is iterable.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is Iterable<unknown, any, any>`
+
+True if the value implements `Symbol.iterator`, otherwise false.
+
+
+# Variable: isIterableIterator()
+
+```ts
+const isIterableIterator: (value) => value is IterableIterator<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-iterable-iterator.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-iterable-iterator.ts#L11)
+
+Checker that determines whether a value is an `IterableIterator`.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is IterableIterator<unknown, any, any>`
+
+True if the value is both iterable and an iterator, otherwise false.
+
+
+# Variable: isIterator()
+
+```ts
+const isIterator: (value) => value is Iterator<unknown, any, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-iterator.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-iterator.ts#L9)
+
+Checker that determines whether a value is an iterator (has a callable `next`).
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is Iterator<unknown, any, any>`
+
+True if the value has a `next` method, otherwise false.
+
+
+# Variable: isIteratorResult()
+
+```ts
+const isIteratorResult: (value) => value is IteratorResult<unknown, any>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-iterator-result.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-iterator-result.ts#L9)
+
+Checker that determines whether a value is an `IteratorResult`.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is IteratorResult<unknown, any>`
+
+True if the value has a `value` field and boolean `done`, otherwise false.
+
+
+# Variable: isMap()
+
+```ts
+const isMap: <K, V>(o) => o is Map<K, V>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:110](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L110)
+
+Checks if the provided value is a Map.
+
+## Type Parameters
+
+### K `K`
+
+### V `V`
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is Map<K, V>`
+
+Returns true if the input is a Map, otherwise false.
+
+
+# Variable: isNaN()
+
+```ts
+const isNaN: (o) => o is number;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-nan.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-nan.ts#L7)
+
+Checks specifically for NaN (typeof number AND is NaN).
+Use this if you actually want to allow NaN: isSomeOf(isNumber, isNaN)
+
+## Parameters
+
+### o `unknown`
+
+## Returns
+
+`o is number`
+
+
 # Variable: isNotNull()
 
 ```ts
 const isNotNull: <T>(o) => o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:66](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L66)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:31](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L31)
 
 A type guard function that determines if a given value is not null.
 
@@ -7937,7 +8824,7 @@ Returns true if the value is not null; otherwise, returns false.
 const isNotUndefined: <T>(o) => o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:57](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L57)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:22](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L22)
 
 A type guard function that checks whether a given value is not `undefined`.
 
@@ -7971,7 +8858,7 @@ A boolean value indicating whether the value is not `undefined`.
 const isNull: (o) => o is null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:102](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L102)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:67](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L67)
 
 Checks if the given value is strictly null.
 
@@ -7998,7 +8885,7 @@ A boolean indicating whether the input value is null.
 const isNullish: (o) => o is null | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:113](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L113)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:78](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L78)
 
 Determines whether the given value is null or undefined.
 
@@ -8021,28 +8908,25 @@ o is null \| undefined
 # Variable: isNumber()
 
 ```ts
-const isNumber: (o) => o is number;
+const isNumber: (value) => value is number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:133](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L133)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-number.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-number.ts#L10)
 
-Checks if the provided value is of type number.
-
-This function determines whether the given input is a JavaScript number.
-It performs a strict type check and returns true if the input is a number,
-otherwise it returns false.
+Checker that determines whether a value is a valid number
+(typeof `number` and not `NaN`).
 
 ## Parameters
 
-### o `unknown`
+### value `unknown`
 
-The value to be checked.
+The value to check.
 
 ## Returns
 
-`o is number`
+`value is number`
 
-- True if the input is a number, otherwise false.
+True if the value is a number and not `NaN`, otherwise false.
 
 
 # Variable: isPlainObject()
@@ -8051,7 +8935,7 @@ The value to be checked.
 const isPlainObject: <T, R>(o) => o is T & Record<string, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:161](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L161)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-plain-object.ts:14](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-plain-object.ts#L14)
 
 Checks if a given value is a plain object.
 
@@ -8081,13 +8965,62 @@ The value to check.
 `true` if the value is a plain object, otherwise `false`.
 
 
+# Variable: isPromise()
+
+```ts
+const isPromise: (value) => value is Promise<unknown>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-promise.ts:13](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-promise.ts#L13)
+
+Checker that determines whether a value is a Promise or thenable with full Promise API.
+
+Fast-path checks native `Promise` instances, then falls back to objects that
+provide callable `then`, `catch`, and `finally` methods.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is Promise<unknown>`
+
+True if the value behaves like a Promise, otherwise false.
+
+
+# Variable: isPromiseInstance()
+
+```ts
+const isPromiseInstance: (value) => value is Promise<unknown>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-promise-instance.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-promise-instance.ts#L9)
+
+Checker that determines whether a value is a native `Promise` instance.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is Promise<unknown>`
+
+True if the value is an instance of `Promise`, otherwise false.
+
+
 # Variable: isROArray()
 
 ```ts
 const isROArray: <A>(a) => a is readonly A[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:189](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L189)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:127](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L127)
 
 Determines if the provided value is a read-only array.
 
@@ -8108,13 +9041,63 @@ The value to be checked.
 True if the value is a read-only array; otherwise, false.
 
 
+# Variable: isRegExp()
+
+```ts
+const isRegExp: (o) => o is RegExp;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:102](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L102)
+
+Checks if the provided value is a RegExp object.
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is RegExp`
+
+Returns true if the input is a RegExp object, otherwise false.
+
+
+# Variable: isSet()
+
+```ts
+const isSet: <T>(o) => o is Set<T>;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:118](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L118)
+
+Checks if the provided value is a Set.
+
+## Type Parameters
+
+### T `T`
+
+## Parameters
+
+### o `unknown`
+
+The value to be checked.
+
+## Returns
+
+`o is Set<T>`
+
+Returns true if the input is a Set, otherwise false.
+
+
 # Variable: isSomeObject()
 
 ```ts
 const isSomeObject: <T, R>(o) => o is T & Record<string, R>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:177](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L177)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-some-object.ts:14](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-some-object.ts#L14)
 
 Checks if the provided value is an object and not null, while also ensuring
 it is not an array. This function performs a type guard that verifies the
@@ -8147,12 +9130,35 @@ and meets the specified constraints, otherwise false.
 # Variable: isString()
 
 ```ts
-const isString: (o) => o is string;
+const isString: (value) => value is string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:121](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L121)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-string.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-string.ts#L9)
 
-A type guard function to check if the given input is of type string.
+Checker that determines whether a value is a string.
+
+## Parameters
+
+### value `unknown`
+
+The value to check.
+
+## Returns
+
+`value is string`
+
+True if the value is a string, otherwise false.
+
+
+# Variable: isSymbol()
+
+```ts
+const isSymbol: (o) => o is symbol;
+```
+
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:86](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L86)
+
+Checks if the provided value is a symbol.
 
 ## Parameters
 
@@ -8162,9 +9168,9 @@ The value to be checked.
 
 ## Returns
 
-`o is string`
+`o is symbol`
 
-Returns true if the input is a string, otherwise false.
+Returns true if the input is a symbol, otherwise false.
 
 
 # Variable: isTruthy()
@@ -8173,7 +9179,7 @@ Returns true if the input is a string, otherwise false.
 const isTruthy: <T>(o) => o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:79](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L79)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:44](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L44)
 
 Determines whether a value is truthy, filtering out falsy values such as
 `undefined`, `null`, `false`, `0`, and empty strings (`''`).
@@ -8208,7 +9214,7 @@ Returns `true` if the value is truthy, otherwise `false`.
 const isUndefined: (o) => o is undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:55](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L55)
 
 A type guard function to determine if a given value is undefined.
 
@@ -8234,7 +9240,7 @@ True if the value is `undefined`, otherwise false.
 const jnsp: "⁠";
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:30](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-const.ts#L30)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:30](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-const.ts#L30)
 
 A constant variable `jnsp` representing the Unicode character 'WORD JOINER' (U+2060).
 It is used to indicate a position where line breaks or spacing are not allowed.
@@ -8247,7 +9253,7 @@ This character is typically invisible and meant to enforce text formatting const
 const nbsp: " ";
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:24](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-const.ts#L24)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:24](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-const.ts#L24)
 
 Represents a non-breaking space character (Unicode: U+00A0).
 This is a constant and immutable string, used to enforce space that prevents
@@ -8260,7 +9266,7 @@ line breaks at its position in text processing or rendering.
 const stringConstants: object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:40](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-const.ts#L40)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:40](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-const.ts#L40)
 
 An object containing string constants used throughout the application.
 
@@ -8311,7 +9317,7 @@ line breaks at its position in text processing or rendering.
 const svgNS: "http://www.w3.org/2000/svg";
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:7](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/string-const.ts#L7)
+Defined in: [IdeaProjects/kit/kit/src/core/string-const.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/string-const.ts#L7)
 
 A constant representing the namespace URI for Scalable Vector Graphics (SVG).
 This is used to create and manipulate SVG elements in the DOM.

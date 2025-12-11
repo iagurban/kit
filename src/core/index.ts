@@ -2,32 +2,69 @@
 export { debouncedCollectingAsync } from './async/debounced-collecting-async';
 export { PromiseController } from './async/promise-controller';
 export type { PromisesRecordValue, PromiseValue } from './async/promise-util';
-export { isPromise, resolveRecord } from './async/promise-util';
+export { resolveRecord } from './async/promise-util';
 export { retrying } from './async/retrying';
-export type { Checker, Checkers } from './checks';
 export {
-  checked,
-  isArrayOf,
   isDefined,
-  isInstanceOf,
-  isInteger,
+  isError,
+  isMap,
   isNotNull,
   isNotUndefined,
   isNull,
   isNullish,
-  isNumber,
-  isPlainObject,
+  isRegExp,
   isROArray,
-  isSomeObject,
-  isSomeOf,
-  isString,
+  isSet,
+  isSymbol,
   isTruthy,
-  isTuple,
-  isTuples,
   isUndefined,
-  validator,
-  validator0,
-} from './checks';
+} from './checks/basic';
+export { checked } from './checks/checked';
+export { isArrayOf } from './checks/is-array-of';
+export { ArrayOptions } from './checks/is-array-of';
+export { isAsyncFunction } from './checks/is-async-function';
+export { isAsyncGenerator } from './checks/is-async-generator';
+export { isAsyncIterable } from './checks/is-async-iterable';
+export { isAwaitable } from './checks/is-awaitable';
+export { isBigInt } from './checks/is-bigint';
+export { isBigIntOf } from './checks/is-bigint-of';
+export { BigIntOptions } from './checks/is-bigint-of';
+export { isBoolean } from './checks/is-boolean';
+export { isBooleanOf } from './checks/is-boolean-of';
+export { BooleanOptions } from './checks/is-boolean-of';
+export { isConstructor } from './checks/is-constructor';
+export { isDate } from './checks/is-date';
+export { isDateOf } from './checks/is-date-of';
+export { DateOptions } from './checks/is-date-of';
+export { isFunction } from './checks/is-function';
+export { isGenerator } from './checks/is-generator';
+export { isGeneratorFunction } from './checks/is-generator-function';
+export { isInstanceOf } from './checks/is-instance-of';
+export { isInteger } from './checks/is-integer';
+export { isInvalidDate } from './checks/is-invalid-date';
+export { isIterable } from './checks/is-iterable';
+export { isIterableIterator } from './checks/is-iterable-iterator';
+export { isIterator } from './checks/is-iterator';
+export { isIteratorResult } from './checks/is-iterator-result';
+export { isNaN } from './checks/is-nan';
+export { isNumber } from './checks/is-number';
+export { isNumberOf } from './checks/is-number-of';
+export { NumberOptions } from './checks/is-number-of';
+export { isPlainObject } from './checks/is-plain-object';
+export { isPromise } from './checks/is-promise';
+export { isPromiseInstance } from './checks/is-promise-instance';
+export { isSomeObject } from './checks/is-some-object';
+export { isSomeOf } from './checks/is-some-of';
+export { isString } from './checks/is-string';
+export { isStringOf } from './checks/is-string-of';
+export { StringOptions } from './checks/is-string-of';
+export { isTuple } from './checks/is-tuple';
+export { isTuples } from './checks/is-tuples';
+export { Checker } from './checks/util';
+export { Checkers } from './checks/util';
+export { CheckOptions } from './checks/util';
+export { validator0 } from './checks/validator';
+export { validator } from './checks/validator';
 export { makeMatchingTree } from './code-points-matching-tree';
 export {
   ArrayMutators,
@@ -40,7 +77,16 @@ export {
 export { ExMap } from './collections/ex-map';
 export { ExSet } from './collections/ex-set';
 export { indexed, iterableUtils, iu, reverse, reversed } from './collections/iterable-utils';
-export { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './collections/object-utils';
+export {
+  fromEntries,
+  groupedBy,
+  isObjectEmpty,
+  mapEntries,
+  mapOwnEntries,
+  mappedBy,
+  objectOwnKeysIterable,
+} from './collections/object-utils';
+export { compose, composeArgv, composer, composerArgv } from './composer';
 export { createContextualLogger } from './contextual-logger';
 export type { FunctionDisposable, ObjectDisposable } from './disposers';
 export { disposers } from './disposers';

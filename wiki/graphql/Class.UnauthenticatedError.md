@@ -1,6 +1,6 @@
 # Class: UnauthenticatedError
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/unauthenticated-error.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/unauthenticated-error.ts#L6)
 
 An error that is thrown when a user is not authenticated.
 
@@ -16,7 +16,7 @@ An error that is thrown when a user is not authenticated.
 new UnauthenticatedError(message): UnauthenticatedError;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/unauthenticated-error.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/unauthenticated-error.ts#L11)
 
 Creates a new UnauthenticatedError.
 

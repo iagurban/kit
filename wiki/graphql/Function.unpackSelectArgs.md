@@ -8,7 +8,7 @@ function unpackSelectArgs<Add>(
    fieldName): UnpackedBasicSelectionOptions & Add;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:155](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L155)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:155](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L155)
 
 Processes and unpacks selection arguments for a GraphQL field node, combining
 user-provided options with information from the GraphQL query AST.

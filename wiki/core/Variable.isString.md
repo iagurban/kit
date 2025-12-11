@@ -1,23 +1,23 @@
 # Variable: isString()
 
 ```ts
-const isString: (o) => o is string;
+const isString: (value) => value is string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:121](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L121)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-string.ts:9](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-string.ts#L9)
 
-A type guard function to check if the given input is of type string.
+Checker that determines whether a value is a string.
 
 ## Parameters
 
-### o
+### value
 
 `unknown`
 
-The value to be checked.
+The value to check.
 
 ## Returns
 
-`o is string`
+`value is string`
 
-Returns true if the input is a string, otherwise false.
+True if the value is a string, otherwise false.

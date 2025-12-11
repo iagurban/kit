@@ -101,3 +101,39 @@ export const mapOwnEntries = <K extends string, R extends Record<K, unknown>, D>
 export const fromEntries = <T extends string | number | symbol, V>(
   pairs: readonly (readonly [T, V])[]
 ): Record<T, V> => Object.fromEntries(pairs) as Record<T, V>;
+
+/**
+ * Checks whether the given object is empty (i.e., contains no own enumerable properties).
+ *
+ * @param {object} o - The object to be checked.
+ * @returns {boolean} Returns `true` if the object is empty, otherwise `false`.
+ */
+export const isObjectEmpty = (o: object): boolean => {
+  for (const k in o) {
+    if (Object.prototype.hasOwnProperty.call(o, k)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * Returns a lazy iterable for the object's own enumerable string properties.
+ * * @param obj - The object to iterate over. Can be null or undefined (safe no-op).
+ * @returns An iterator that yields property keys as strings.
+ */
+export function* objectOwnKeysIterable(obj: object | null | undefined): IterableIterator<string> {
+  // 1. Safety check handles null/undefined
+  if (obj == null) {
+    return;
+  }
+
+  // 2. Iterate using for...in (lazy)
+  for (const key in obj) {
+    // 3. Filter for own properties
+    // Note: Object.hasOwn requires "lib": ["ES2022"] in tsconfig.json
+    if (Object.hasOwn(obj, key)) {
+      yield key;
+    }
+  }
+}

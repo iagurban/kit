@@ -1,33 +1,34 @@
 # Function: isArrayOf()
 
 ```ts
-function isArrayOf<K>(isK): Checker<K[]>;
+function isArrayOf<T>(options?): Checker<T[]>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:203](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L203)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-array-of.ts:20](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-array-of.ts#L20)
 
-A utility function that checks if a given value is an array
-whose elements satisfy a specific type guard function.
+Creates a checker that validates arrays with optional constraints.
+
+Supports minimum/maximum length, an element checker, and a custom predicate.
+The resulting checker also exposes a descriptive `type` label.
 
 ## Type Parameters
 
-### K
+### T
 
-`K`
+`T`
 
-The type of elements in the array.
+The element type being validated.
 
 ## Parameters
 
-### isK
+### options?
 
-[`Checker`](TypeAlias.Checker.md)\<`K`\>
+`ArrayOptions`\<`T`\> = `{}`
 
-A type guard function to validate individual elements of the array.
+Optional validation options.
 
 ## Returns
 
-[`Checker`](TypeAlias.Checker.md)\<`K`[]\>
+[`Checker`](TypeAlias.Checker.md)\<`T`[]\>
 
-A function that takes in a value and
-determines if it is an array of elements satisfying the `isK` type guard.
+A checker for arrays of `T`.

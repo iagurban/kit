@@ -1,6 +1,6 @@
 # Interface: IBaseLogger
 
-Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:7](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/interfaces/logger-interface.ts#L7)
+Defined in: [IdeaProjects/kit/kit/src/core/interfaces/logger-interface.ts:7](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/interfaces/logger-interface.ts#L7)
 
 IBaseLogger defines a logger interface with various logging levels.
 Each logging level allows logging messages with or without additional contextual information.

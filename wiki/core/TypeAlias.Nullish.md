@@ -4,7 +4,7 @@
 type Nullish = null | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/types.ts:39](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/types.ts#L39)
+Defined in: [IdeaProjects/kit/kit/src/core/types.ts:39](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/types.ts#L39)
 
 Represents a type that can be either `null` or `undefined`.
 

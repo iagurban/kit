@@ -1,4 +1,4 @@
-import { isTruthy } from '../../../core/checks';
+import { isTruthy } from '../../../core/checks/basic';
 import { fromEntries } from '../../../core/collections/object-utils';
 import { NumberBase } from '../../../core/numbers/number-base';
 import { once } from '../../../core/once';

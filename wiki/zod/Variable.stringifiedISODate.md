@@ -1,10 +1,10 @@
 # Variable: stringifiedISODate
 
 ```ts
-const stringifiedISODate: ZodCodec<ZodISODateTime, ZodDate>;
+const stringifiedISODate: ZodMiniCodec<ZodMiniISODateTime, ZodMiniDate<Date>>;
 ```
 
-Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/zod/stringified-types.ts#L53)
+Defined in: [stringified-types.ts:53](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/zod/stringified-types.ts#L53)
 
 A Zod codec that validates and transforms ISO-formatted date strings.
 

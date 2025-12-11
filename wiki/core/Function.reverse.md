@@ -4,7 +4,7 @@
 function reverse<T>(a): object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:44](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/iterable-utils.ts#L44)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/iterable-utils.ts:44](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/iterable-utils.ts#L44)
 
 Creates an iterator that yields the elements of an array-like object in reverse order.
 

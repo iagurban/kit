@@ -2,7 +2,11 @@
 
 import { sortedIndexOf } from 'lodash-es';
 
-import { checked, isNumber, isROArray, isSomeOf, isString } from './checks';
+import { isROArray } from './checks/basic';
+import { checked } from './checks/checked';
+import { isNumber } from './checks/is-number';
+import { isSomeOf } from './checks/is-some-of';
+import { isString } from './checks/is-string';
 import { Changes, ManualSortingAlphabet } from './manual-sorting';
 
 export class ManualSortingAlphabetDebug extends ManualSortingAlphabet {

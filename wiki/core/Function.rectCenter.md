@@ -8,7 +8,7 @@ function rectCenter(
    height): [number, number];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:133](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/numbers/geometry.ts#L133)
+Defined in: [IdeaProjects/kit/kit/src/core/numbers/geometry.ts:133](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/numbers/geometry.ts#L133)
 
 Calculates the center point of a rectangle.
 

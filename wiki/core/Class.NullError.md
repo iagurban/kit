@@ -1,6 +1,6 @@
 # Class: NullError
 
-Defined in: [IdeaProjects/kit/kit/src/core/errors/null-error.ts:4](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/errors/null-error.ts#L4)
+Defined in: [IdeaProjects/kit/kit/src/core/errors/null-error.ts:4](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/errors/null-error.ts#L4)
 
 An error that is thrown when a value is unexpectedly null or undefined.
 
