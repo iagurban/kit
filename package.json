@@ -1,6 +1,9 @@
 {
   "name": "@grbn/kit",
   "version": "0.0.22",
+  "repository": {
+    "url": "https://github.com/iagurban/kit"
+  },
   "main": "./dist/cjs/src/core/index.js",
   "types": "./dist/cjs/src/core/index.d.ts",
   "exports": {
