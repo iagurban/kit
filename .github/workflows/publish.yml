@@ -25,7 +25,12 @@ jobs:
           # We keep this line so setup-node knows we are talking to npmjs
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
+
+      - name: Fix PnP Resolution (Unplug packages)
+        run: |
+          yarn unplug p-limit
+          yarn unplug yocto-queue
 
       - name: Build
         run: yarn build
