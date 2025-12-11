@@ -175,7 +175,6 @@
     "mobx-utils": "^6.1.1",
     "nodemon": "^3.1.10",
     "ntp-time": "^2.0.8",
-    "p-limit": "^7.2.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "prettier": "^3.6.2",
@@ -193,7 +192,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.1",
     "yargs": "^18.0.0",
-    "yocto-queue": "^1.2.2",
     "zod": "^4.1.12"
   },
   "engines": {
@@ -223,23 +221,15 @@
     "mobx-keystone": "*",
     "mobx-utils": "*",
     "ntp-time": "*",
-    "p-limit": "*",
     "passport-jwt": "*",
     "passport-local": "*",
     "rxjs": "*",
     "yargs": "*",
-    "yocto-queue": "*",
     "zod": "*"
   },
   "packageManager": "yarn@4.10.3",
   "dependenciesMeta": {
     "lodash-es@4.17.21": {
-      "unplugged": true
-    },
-    "p-limit@7.2.0": {
-      "unplugged": true
-    },
-    "yocto-queue@1.2.2": {
       "unplugged": true
     }
   }
