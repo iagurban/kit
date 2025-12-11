@@ -9,8 +9,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # REQUIRED for Trusted Publishing
       contents: read
+      id-token: write  # <--- REQUIRED for OIDC
 
     steps:
       - name: Checkout code
@@ -21,25 +21,21 @@ jobs:
         with:
           node-version: '22'
           cache: 'yarn'
-#          registry-url: 'https://registry.npmjs.org'
-          # We keep this line so setup-node knows we are talking to npmjs
+          # DO NOT use registry-url here. It breaks OIDC.
 
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Fix PnP Resolution (Unplug packages)
-        run: |
-          yarn unplug p-limit
-          yarn unplug yocto-queue
-
-      - name: Debug
-        run: yarn mirr --help
+      - name: Unplug PnP packages (Safety)
+        run: yarn unplug yocto-queue p-limit yargs || true
 
       - name: Build
         run: yarn build
 
       - name: Publish to NPM
-        run: npm publish --provenance --access public --verbose
-        # 1. No NODE_AUTH_TOKEN needed anymore!
-        # 2. --provenance is added: This links the package on NPM back to
-        #    this exact GitHub run (so users can verify the code source).
+        run: |
+          # 1. Force npm to talk to the public registry (Avoids ENEEDAUTH)
+          npm config set registry https://registry.npmjs.org/
+          
+          # 2. Publish with Provenance (Triggers OIDC)
+          npm publish --provenance --access public
