@@ -1160,6 +1160,9 @@ __metadata:
     rxjs: "*"
     yargs: "*"
     zod: "*"
+  dependenciesMeta:
+    lodash-es@4.17.21:
+      unplugged: true
   bin:
     build-info-gen: ./dist/cjs/src/bin/build-info-gen.js
     clean-md: ./dist/cjs/src/bin/clean-md.js
