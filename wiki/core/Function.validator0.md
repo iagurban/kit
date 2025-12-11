@@ -4,7 +4,7 @@
 function validator0<K>(isK): (o) => K;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:338](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L338)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/validator.ts:33](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/validator.ts#L33)
 
 A higher-order function that creates a validator for performing runtime type checks on an input.
 The validator applies the provided type checker and throws an error if the type check fails.

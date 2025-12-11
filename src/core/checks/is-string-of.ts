@@ -9,6 +9,16 @@ export type StringOptions<T extends string = string> = CheckOptions<T> & {
   values?: readonly T[];
 };
 
+/**
+ * Creates a checker that validates strings with optional constraints.
+ *
+ * Supports minimum/maximum length, regex pattern, an enum of allowed values,
+ * and a custom predicate. The resulting checker exposes a descriptive `type` label.
+ *
+ * @template T The string subtype (union) to validate.
+ * @param {StringOptions<T>} [options={}] Optional validation options.
+ * @returns {Checker<T>} A checker for strings.
+ */
 export const isStringOf = <T extends string = string>(options: StringOptions<T> = {}): Checker<T> => {
   const run = (() => {
     const fn = composer((_: string) => true);

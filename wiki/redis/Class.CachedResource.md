@@ -1,6 +1,6 @@
 # Class: CachedResource\<T\>
 
-Defined in: [cached-resource.ts:14](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/redis/cached-resource.ts#L14)
+Defined in: [cached-resource.ts:14](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/redis/cached-resource.ts#L14)
 
 A class that manages a cached resource, providing the ability to fetch data,
 subscribe to updates, and handle cleanup when the application shuts down.
@@ -25,7 +25,7 @@ The type of the resource being managed.
 destroy(): Promise<void>;
 ```
 
-Defined in: [cached-resource.ts:114](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/redis/cached-resource.ts#L114)
+Defined in: [cached-resource.ts:114](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/redis/cached-resource.ts#L114)
 
 Cleans up the subscription.
 This should be called from the parent service's `onApplicationShutdown`.
@@ -42,7 +42,7 @@ This should be called from the parent service's `onApplicationShutdown`.
 fetch(force): Promise<T>;
 ```
 
-Defined in: [cached-resource.ts:89](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/redis/cached-resource.ts#L89)
+Defined in: [cached-resource.ts:89](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/redis/cached-resource.ts#L89)
 
 Initiates a fetch operation for retrieving data, returning a cached result unless forced.
 
@@ -68,7 +68,7 @@ A promise that resolves to the fetched data.
 initialize(): Promise<void>;
 ```
 
-Defined in: [cached-resource.ts:63](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/redis/cached-resource.ts#L63)
+Defined in: [cached-resource.ts:63](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/redis/cached-resource.ts#L63)
 
 Initializes the resource by fetching the initial data and subscribing to updates.
 This should be called from the parent service's `onModuleInit`.
@@ -85,7 +85,7 @@ This should be called from the parent service's `onModuleInit`.
 subscribe(onUpdate): () => void;
 ```
 
-Defined in: [cached-resource.ts:76](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/redis/cached-resource.ts#L76)
+Defined in: [cached-resource.ts:76](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/redis/cached-resource.ts#L76)
 
 Subscribes a callback function to be invoked on updates.
 

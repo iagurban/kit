@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1765461263178" clover="3.2.0">
-  <project timestamp="1765461263178" name="All files">
+<coverage generated="1765462585599" clover="3.2.0">
+  <project timestamp="1765462585599" name="All files">
     <metrics statements="2221" coveredstatements="2221" conditionals="1055" coveredconditionals="1055" methods="621" coveredmethods="621" elements="3897" coveredelements="3897" complexity="0" loc="2221" ncloc="2221" packages="18" files="105" classes="105"/>
     <package name="core">
       <metrics statements="507" coveredstatements="507" conditionals="229" coveredconditionals="229" methods="93" coveredmethods="93"/>
@@ -470,9 +470,9 @@
         <metrics statements="10" coveredstatements="10" conditionals="3" coveredconditionals="3" methods="7" coveredmethods="7"/>
         <line num="7" count="24" type="stmt"/>
         <line num="11" count="23" type="stmt"/>
-        <line num="12" count="27253" type="stmt"/>
-        <line num="13" count="27253" type="stmt"/>
-        <line num="14" count="27253" type="stmt"/>
+        <line num="12" count="27218" type="stmt"/>
+        <line num="13" count="27218" type="stmt"/>
+        <line num="14" count="27218" type="stmt"/>
         <line num="17" count="23" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="4" type="stmt"/>
@@ -716,75 +716,75 @@
         <metrics statements="21" coveredstatements="21" conditionals="24" coveredconditionals="24" methods="7" coveredmethods="7"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="10" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="12" type="stmt"/>
-        <line num="14" count="20" type="stmt"/>
-        <line num="16" count="12" type="stmt"/>
-        <line num="18" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="12" type="cond" truecount="2" falsecount="0"/>
-        <line num="21" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="19" type="cond" truecount="1" falsecount="0"/>
         <line num="23" count="12" type="stmt"/>
+        <line num="24" count="20" type="stmt"/>
         <line num="26" count="12" type="stmt"/>
-        <line num="29" count="12" type="stmt"/>
-        <line num="32" count="22" type="cond" truecount="4" falsecount="0"/>
-        <line num="33" count="6" type="stmt"/>
-        <line num="36" count="16" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="8" type="stmt"/>
-        <line num="40" count="8" type="stmt"/>
-        <line num="41" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="42" count="3" type="stmt"/>
-        <line num="45" count="5" type="stmt"/>
-        <line num="48" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="12" type="stmt"/>
+        <line num="36" count="12" type="stmt"/>
+        <line num="39" count="12" type="stmt"/>
+        <line num="42" count="22" type="cond" truecount="4" falsecount="0"/>
+        <line num="43" count="6" type="stmt"/>
+        <line num="46" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="8" type="stmt"/>
+        <line num="50" count="8" type="stmt"/>
+        <line num="51" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="3" type="stmt"/>
+        <line num="55" count="5" type="stmt"/>
+        <line num="58" count="9" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-async-function.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-async-function.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="4" count="19" type="stmt"/>
-        <line num="6" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="19" type="stmt"/>
+        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-async-generator.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-async-generator.ts">
         <metrics statements="4" coveredstatements="4" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="4" count="19" type="stmt"/>
-        <line num="6" count="1" type="cond" truecount="4" falsecount="0"/>
+        <line num="12" count="19" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="4" falsecount="0"/>
       </file>
       <file name="is-async-iterable.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-async-iterable.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
-        <line num="3" count="19" type="stmt"/>
-        <line num="5" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-awaitable.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-awaitable.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="4" count="19" type="stmt"/>
-        <line num="6" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="19" type="stmt"/>
+        <line num="12" count="3" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-bigint-of.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-bigint-of.ts">
         <metrics statements="22" coveredstatements="22" conditionals="22" coveredconditionals="22" methods="8" coveredmethods="8"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="10" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="11" count="5" type="stmt"/>
-        <line num="12" count="12" type="stmt"/>
-        <line num="14" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="4" type="stmt"/>
-        <line num="18" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
-        <line num="22" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="25" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="27" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="32" count="5" type="stmt"/>
-        <line num="35" count="5" type="stmt"/>
-        <line num="36" count="13" type="cond" truecount="2" falsecount="0"/>
-        <line num="38" count="5" type="stmt"/>
+        <line num="20" count="19" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="12" type="stmt"/>
+        <line num="24" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="28" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="32" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="42" count="5" type="stmt"/>
+        <line num="45" count="5" type="stmt"/>
+        <line num="46" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="5" type="stmt"/>
       </file>
       <file name="is-bigint.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-bigint.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -795,16 +795,16 @@
         <metrics statements="12" coveredstatements="12" conditionals="12" coveredconditionals="12" methods="7" coveredmethods="7"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="8" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="9" count="4" type="stmt"/>
-        <line num="10" count="8" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="14" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="15" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="17" count="4" type="stmt"/>
-        <line num="20" count="4" type="stmt"/>
-        <line num="21" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="4" type="stmt"/>
+        <line num="18" count="19" type="cond" truecount="1" falsecount="0"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="8" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="24" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="31" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="4" type="stmt"/>
       </file>
       <file name="is-boolean.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-boolean.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -815,27 +815,27 @@
         <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="2" count="19" type="stmt"/>
         <line num="3" count="19" type="stmt"/>
-        <line num="5" count="19" type="stmt"/>
-        <line num="7" count="5" type="cond" truecount="3" falsecount="0"/>
+        <line num="12" count="19" type="stmt"/>
+        <line num="14" count="5" type="cond" truecount="3" falsecount="0"/>
       </file>
       <file name="is-date-of.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-date-of.ts">
         <metrics statements="16" coveredstatements="16" conditionals="22" coveredconditionals="22" methods="8" coveredmethods="8"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="14" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="15" count="6" type="stmt"/>
-        <line num="16" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="18" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
-        <line num="22" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="27" count="6" type="stmt"/>
-        <line num="30" count="6" type="stmt"/>
-        <line num="32" count="6" type="stmt"/>
-        <line num="35" count="9" type="cond" truecount="4" falsecount="0"/>
-        <line num="41" count="5" type="stmt"/>
+        <line num="20" count="19" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="6" type="stmt"/>
+        <line num="22" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="28" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="33" count="6" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="38" count="6" type="stmt"/>
+        <line num="41" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="47" count="5" type="stmt"/>
       </file>
       <file name="is-date.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-date.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
@@ -852,15 +852,15 @@
       <file name="is-generator-function.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-generator-function.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
-        <line num="3" count="19" type="stmt"/>
-        <line num="5" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="11" count="5" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-generator.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-generator.ts">
         <metrics statements="4" coveredstatements="4" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
-        <line num="4" count="19" type="stmt"/>
-        <line num="6" count="1" type="cond" truecount="3" falsecount="0"/>
+        <line num="12" count="19" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="3" falsecount="0"/>
       </file>
       <file name="is-instance-of.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-instance-of.ts">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
@@ -892,26 +892,26 @@
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
         <line num="3" count="19" type="stmt"/>
-        <line num="5" count="19" type="stmt"/>
-        <line num="6" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="19" type="stmt"/>
+        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-iterable.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-iterable.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
-        <line num="3" count="19" type="stmt"/>
-        <line num="5" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="11" count="4" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-iterator-result.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-iterator-result.ts">
         <metrics statements="3" coveredstatements="3" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
-        <line num="3" count="19" type="stmt"/>
-        <line num="5" count="4" type="cond" truecount="3" falsecount="0"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="11" count="4" type="cond" truecount="3" falsecount="0"/>
       </file>
       <file name="is-iterator.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-iterator.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="19" type="stmt"/>
-        <line num="3" count="19" type="stmt"/>
-        <line num="5" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="11" count="5" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-nan.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-nan.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -923,26 +923,26 @@
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
         <line num="3" count="19" type="stmt"/>
-        <line num="15" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="16" count="9" type="stmt"/>
-        <line num="17" count="25" type="stmt"/>
-        <line num="19" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="20" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="21" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="9" type="stmt"/>
-        <line num="24" count="10" type="cond" truecount="4" falsecount="0"/>
-        <line num="25" count="9" type="cond" truecount="4" falsecount="0"/>
-        <line num="27" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="9" type="stmt"/>
+        <line num="24" count="19" type="cond" truecount="1" falsecount="0"/>
+        <line num="25" count="9" type="stmt"/>
+        <line num="26" count="25" type="stmt"/>
+        <line num="28" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="9" type="cond" truecount="2" falsecount="0"/>
         <line num="32" count="9" type="stmt"/>
-        <line num="33" count="26" type="cond" truecount="2" falsecount="0"/>
-        <line num="35" count="7" type="stmt"/>
+        <line num="33" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="36" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="9" type="stmt"/>
+        <line num="41" count="9" type="stmt"/>
+        <line num="42" count="26" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="7" type="stmt"/>
       </file>
       <file name="is-number.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-number.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="1" count="20" type="stmt"/>
-        <line num="7" count="20" type="stmt"/>
-        <line num="8" count="59" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="20" type="stmt"/>
+        <line num="11" count="59" type="cond" truecount="2" falsecount="0"/>
       </file>
       <file name="is-plain-object.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-plain-object.ts">
         <metrics statements="3" coveredstatements="3" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
@@ -953,15 +953,15 @@
       <file name="is-promise-instance.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-promise-instance.ts">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="21" type="stmt"/>
-        <line num="3" count="21" type="stmt"/>
-        <line num="4" count="33" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="33" type="stmt"/>
       </file>
       <file name="is-promise.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-promise.ts">
         <metrics statements="4" coveredstatements="4" conditionals="5" coveredconditionals="5" methods="1" coveredmethods="1"/>
         <line num="1" count="21" type="stmt"/>
         <line num="2" count="21" type="stmt"/>
-        <line num="4" count="21" type="stmt"/>
-        <line num="7" count="31" type="cond" truecount="5" falsecount="0"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="16" count="31" type="cond" truecount="5" falsecount="0"/>
       </file>
       <file name="is-record-of.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-record-of.ts">
         <metrics statements="19" coveredstatements="19" conditionals="26" coveredconditionals="26" methods="5" coveredmethods="5"/>
@@ -969,21 +969,21 @@
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="16" count="4" type="stmt"/>
-        <line num="18" count="4" type="stmt"/>
-        <line num="19" count="4" type="stmt"/>
-        <line num="20" count="12" type="stmt"/>
-        <line num="22" count="12" type="stmt"/>
-        <line num="23" count="13" type="stmt"/>
-        <line num="25" count="13" type="cond" truecount="2" falsecount="0"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="38" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="41" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="43" count="4" type="stmt"/>
-        <line num="46" count="4" type="stmt"/>
-        <line num="47" count="14" type="cond" truecount="2" falsecount="0"/>
-        <line num="49" count="4" type="stmt"/>
+        <line num="26" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="29" count="4" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="31" count="12" type="stmt"/>
+        <line num="33" count="12" type="stmt"/>
+        <line num="34" count="13" type="stmt"/>
+        <line num="36" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="49" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="4" type="stmt"/>
+        <line num="57" count="4" type="stmt"/>
+        <line num="58" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="60" count="4" type="stmt"/>
       </file>
       <file name="is-shape.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-shape.ts">
         <metrics statements="25" coveredstatements="25" conditionals="16" coveredconditionals="16" methods="7" coveredmethods="7"/>
@@ -991,27 +991,27 @@
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="15" count="9" type="stmt"/>
-        <line num="17" count="9" type="stmt"/>
-        <line num="19" count="9" type="stmt"/>
-        <line num="20" count="19" type="stmt"/>
-        <line num="22" count="19" type="stmt"/>
-        <line num="26" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="28" count="3" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="39" count="9" type="stmt"/>
-        <line num="40" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="42" count="9" type="stmt"/>
-        <line num="45" count="9" type="stmt"/>
-        <line num="46" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="50" count="6" type="stmt"/>
-        <line num="51" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="52" count="6" type="cond" truecount="5" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="28" count="9" type="stmt"/>
+        <line num="30" count="9" type="stmt"/>
+        <line num="32" count="9" type="stmt"/>
+        <line num="33" count="19" type="stmt"/>
+        <line num="35" count="19" type="stmt"/>
+        <line num="39" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="43" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="52" count="9" type="stmt"/>
+        <line num="53" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="9" type="stmt"/>
+        <line num="58" count="9" type="stmt"/>
+        <line num="59" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="63" count="6" type="stmt"/>
+        <line num="64" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="6" type="cond" truecount="5" falsecount="0"/>
       </file>
       <file name="is-some-object.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-some-object.ts">
         <metrics statements="3" coveredstatements="3" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
@@ -1035,21 +1035,21 @@
         <line num="1" count="19" type="stmt"/>
         <line num="2" count="19" type="stmt"/>
         <line num="3" count="19" type="stmt"/>
-        <line num="12" count="19" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="6" type="stmt"/>
-        <line num="14" count="20" type="stmt"/>
-        <line num="16" count="6" type="stmt"/>
-        <line num="18" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="20" count="10" type="cond" truecount="2" falsecount="0"/>
-        <line num="22" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="27" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="6" type="stmt"/>
-        <line num="32" count="6" type="stmt"/>
-        <line num="33" count="21" type="cond" truecount="2" falsecount="0"/>
-        <line num="35" count="6" type="stmt"/>
+        <line num="22" count="19" type="cond" truecount="1" falsecount="0"/>
+        <line num="23" count="6" type="stmt"/>
+        <line num="24" count="20" type="stmt"/>
+        <line num="26" count="6" type="stmt"/>
+        <line num="28" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="37" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="6" type="stmt"/>
+        <line num="42" count="6" type="stmt"/>
+        <line num="43" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="6" type="stmt"/>
       </file>
       <file name="is-string.ts" path="/home/ing/IdeaProjects/kit/kit/src/core/checks/is-string.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -1761,8 +1761,8 @@
         <line num="171" count="3" type="stmt"/>
         <line num="173" count="31254" type="stmt"/>
         <line num="174" count="31254" type="stmt"/>
-        <line num="175" count="180692" type="stmt"/>
-        <line num="176" count="180692" type="stmt"/>
+        <line num="175" count="180668" type="stmt"/>
+        <line num="176" count="180668" type="stmt"/>
         <line num="178" count="31254" type="stmt"/>
         <line num="188" count="307" type="stmt"/>
         <line num="189" count="129" type="stmt"/>
@@ -1793,11 +1793,11 @@
         <line num="253" count="69" type="stmt"/>
         <line num="255" count="69" type="stmt"/>
         <line num="256" count="23168" type="stmt"/>
-        <line num="257" count="27251" type="stmt"/>
-        <line num="259" count="27251" type="stmt"/>
-        <line num="260" count="27251" type="stmt"/>
-        <line num="261" count="130949" type="stmt"/>
-        <line num="263" count="27251" type="cond" truecount="2" falsecount="0"/>
+        <line num="257" count="27216" type="stmt"/>
+        <line num="259" count="27216" type="stmt"/>
+        <line num="260" count="27216" type="stmt"/>
+        <line num="261" count="130541" type="stmt"/>
+        <line num="263" count="27216" type="cond" truecount="2" falsecount="0"/>
         <line num="264" count="23168" type="stmt"/>
         <line num="271" count="56" type="cond" truecount="4" falsecount="0"/>
         <line num="272" count="7" type="stmt"/>

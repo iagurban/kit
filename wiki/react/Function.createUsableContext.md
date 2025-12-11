@@ -4,7 +4,7 @@
 function createUsableContext<T>(name): UsableContext<T>;
 ```
 
-Defined in: [create-usable-context.ts:30](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/create-usable-context.ts#L30)
+Defined in: [create-usable-context.ts:30](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/react/create-usable-context.ts#L30)
 
 A utility function to create a reusable React context with strict type safety.
 

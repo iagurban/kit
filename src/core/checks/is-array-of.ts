@@ -7,6 +7,16 @@ export type ArrayOptions<T> = CheckOptions<T[]> & {
   item?: Checker<T>;
 };
 
+/**
+ * Creates a checker that validates arrays with optional constraints.
+ *
+ * Supports minimum/maximum length, an element checker, and a custom predicate.
+ * The resulting checker also exposes a descriptive `type` label.
+ *
+ * @template T The element type being validated.
+ * @param {ArrayOptions<T>} [options={}] Optional validation options.
+ * @returns {Checker<T[]>} A checker for arrays of `T`.
+ */
 export const isArrayOf = <T>(options: ArrayOptions<T> = {}): Checker<T[]> => {
   // 1. Array Level Checks (O(1))
 

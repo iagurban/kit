@@ -8,6 +8,19 @@ export type ShapeOptions<T> = CheckOptions<T> & {
   exact?: boolean;
 };
 
+/**
+ * Creates a checker that validates an object matches a given shape.
+ *
+ * Each key in the `shape` is validated by its corresponding checker. When `exact`
+ * is true, no extra keys are allowed. You can also provide a custom predicate.
+ * The resulting checker exposes a descriptive `type` label with the listed keys
+ * (truncated for large shapes) and constraints.
+ *
+ * @template T The target object type.
+ * @param {{ [K in keyof T]: Checker<T[K]> }} shape - Checkers for each expected property.
+ * @param {ShapeOptions<T>} [options] Optional validation options.
+ * @returns {Checker<T>} A checker for objects of shape `T`.
+ */
 export const isShape = <T extends Record<string, unknown>>(
   shape: { [K in keyof T]: Checker<T[K]> },
   options: ShapeOptions<T> = {}

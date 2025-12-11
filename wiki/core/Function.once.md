@@ -9,7 +9,7 @@ function once<T, O, K>(
 d): TypedPropertyDescriptor<T>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:60](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/once.ts#L60)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:60](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/once.ts#L60)
 
 Memoizes a getter: replaces it with its computed value upon first access.
 
@@ -88,7 +88,7 @@ function once<T, O, K>(
    value): T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/once.ts:90](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/once.ts#L90)
+Defined in: [IdeaProjects/kit/kit/src/core/once.ts:90](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/once.ts#L90)
 
 Sets a property to a concrete value in a form suitable for use inside a getter body.
 

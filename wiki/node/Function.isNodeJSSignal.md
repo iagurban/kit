@@ -4,7 +4,7 @@
 function isNodeJSSignal(value): value is number | Signals;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:12](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/node/node-util.ts#L12)
+Defined in: [IdeaProjects/kit/kit/src/node/node-util.ts:12](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/node/node-util.ts#L12)
 
 Type guard to check if a value is a valid NodeJS.Signals string.
 

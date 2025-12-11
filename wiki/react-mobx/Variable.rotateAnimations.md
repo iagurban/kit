@@ -4,7 +4,7 @@
 const rotateAnimations: object;
 ```
 
-Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
+Defined in: [mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts:148](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/react/mobx/animated-svg-gradient-background/animated-svg-gradient-background-presets.ts#L148)
 
 A collection of preset gradient rotation animations.
 

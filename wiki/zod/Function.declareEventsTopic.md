@@ -4,7 +4,7 @@
 function declareEventsTopic<S, N>(name, schema): Topic<S, N>;
 ```
 
-Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/zod/declare-events-topic.ts#L23)
+Defined in: [declare-events-topic.ts:23](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/zod/declare-events-topic.ts#L23)
 
 Declares an event topic with the specified name and schema.
 
@@ -12,7 +12,7 @@ Declares an event topic with the specified name and schema.
 
 ### S
 
-`S` *extends* `ZodType`\<`unknown`, `unknown`, `$ZodTypeInternals`\<`unknown`, `unknown`\>\>
+`S` *extends* `ZodMiniType`\<`unknown`, `unknown`, `$ZodTypeInternals`\<`unknown`, `unknown`\>\>
 
 The Zod schema type used to validate the event topic's data.
 

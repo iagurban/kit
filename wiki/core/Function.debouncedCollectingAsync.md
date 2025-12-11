@@ -7,7 +7,7 @@ function debouncedCollectingAsync<Args, T, R>(
    fn): (...args) => Promise<T> & object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:27](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/async/debounced-collecting-async.ts#L27)
+Defined in: [IdeaProjects/kit/kit/src/core/async/debounced-collecting-async.ts:27](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/async/debounced-collecting-async.ts#L27)
 
 Creates a debounced function that collects arguments from multiple calls and executes an async function with the collected arguments.
 

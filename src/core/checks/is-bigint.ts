@@ -1,9 +1,9 @@
 import { tagChecker } from './util';
 
 /**
- * Checks if the provided value is a BigInt.
+ * Checker that determines whether a value is a BigInt.
  *
- * @param {unknown} o - The valuMape to be checked.
- * @returns {boolean} Returns true if the input is a bigint, otherwise false.
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is a bigint, otherwise false.
  */
-export const isBigInt = tagChecker((o: unknown): o is bigint => typeof o === 'bigint', `bigint`);
+export const isBigInt = tagChecker((value: unknown): value is bigint => typeof value === 'bigint', `bigint`);

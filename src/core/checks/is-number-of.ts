@@ -12,6 +12,15 @@ export type NumberOptions = CheckOptions<number> & {
   safe?: boolean;
 };
 
+/**
+ * Creates a checker that validates `number` values with optional constraints.
+ *
+ * Supports min/max (inclusive or exclusive), `integer`, `finite`, `safe` (safe integer),
+ * and a custom predicate. The resulting checker provides a descriptive `type` label.
+ *
+ * @param {NumberOptions} [options={}] Optional validation options.
+ * @returns {Checker<number>} A checker for numbers.
+ */
 export const isNumberOf = (options: NumberOptions = {}): Checker<number> => {
   const isNumberValid = (() => {
     const fn = composer((_: number) => true);

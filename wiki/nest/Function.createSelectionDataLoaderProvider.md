@@ -4,7 +4,7 @@
 function createSelectionDataLoaderProvider<TKey, TData>(fetch): SelectionDataLoaderProvider<TKey, TData>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/nest/data-loaders-fabric/selection-data-loader-provider.ts:111](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/nest/data-loaders-fabric/selection-data-loader-provider.ts#L111)
+Defined in: [IdeaProjects/kit/kit/src/nest/data-loaders-fabric/selection-data-loader-provider.ts:111](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/nest/data-loaders-fabric/selection-data-loader-provider.ts#L111)
 
 Creates a provider for selection-aware DataLoader instances.
 This allows for efficient, batched, and cached data loading in GraphQL resolvers,
@@ -44,7 +44,7 @@ A function that takes a `UniversalSelection` and returns a DataLoader-compatible
 import { Injectable, Module } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { ExMap } from '@grbn/kit';
-import { notNull } from '@grbn/kit/data';
+import { notNull } from '@grbn/kit';
 import { universalSelectionToPrisma } from '@grbn/db/prisma';
 import {
   createSelectionDataLoaderProvider,

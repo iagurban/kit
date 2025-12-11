@@ -1,27 +1,24 @@
 # Variable: isNumber()
 
 ```ts
-const isNumber: (o) => o is number;
+const isNumber: (value) => value is number;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:133](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L133)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/is-number.ts:10](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/is-number.ts#L10)
 
-Checks if the provided value is of type number.
-
-This function determines whether the given input is a JavaScript number.
-It performs a strict type check and returns true if the input is a number,
-otherwise it returns false.
+Checker that determines whether a value is a valid number
+(typeof `number` and not `NaN`).
 
 ## Parameters
 
-### o
+### value
 
 `unknown`
 
-The value to be checked.
+The value to check.
 
 ## Returns
 
-`o is number`
+`value is number`
 
-- True if the input is a number, otherwise false.
+True if the value is a number and not `NaN`, otherwise false.

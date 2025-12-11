@@ -12,6 +12,17 @@ export type RecordOptions<V> = CheckOptions<Record<string, V>> & {
   maxKeys?: number;
 };
 
+/**
+ * Creates a checker that validates plain object records with optional constraints.
+ *
+ * Validates string keys and associated values using provided checkers, supports
+ * minimum/maximum number of keys, and allows a custom predicate. The type label
+ * reflects the key/value checkers and constraints.
+ *
+ * @template V The value type of the record.
+ * @param {RecordOptions<V>} [options={}] Optional validation options.
+ * @returns {Checker<Record<string, V>>} A checker for string-keyed records of `V`.
+ */
 export const isRecordOf = <V = unknown>(options: RecordOptions<V> = {}): Checker<Record<string, V>> => {
   const { key: keyChecker, value: valueChecker, minKeys, maxKeys, check, checkName } = options;
 

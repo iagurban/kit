@@ -4,7 +4,7 @@
 const isNotUndefined: <T>(o) => o is T;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/checks.ts:57](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/checks.ts#L57)
+Defined in: [IdeaProjects/kit/kit/src/core/checks/basic.ts:22](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/checks/basic.ts#L22)
 
 A type guard function that checks whether a given value is not `undefined`.
 

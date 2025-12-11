@@ -27,7 +27,7 @@
 
 # Class: UnauthenticatedError
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/unauthenticated-error.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/unauthenticated-error.ts#L6)
 
 An error that is thrown when a user is not authenticated.
 
@@ -43,7 +43,7 @@ An error that is thrown when a user is not authenticated.
 new UnauthenticatedError(message): UnauthenticatedError;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/unauthenticated-error.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/graphql/unauthenticated-error.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/unauthenticated-error.ts#L11)
 
 Creates a new UnauthenticatedError.
 
@@ -350,7 +350,7 @@ GraphQLError.prepareStackTrace
 function cacheKeyFromGraphqlPath(info): string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/cache-key-from-graphql-path.ts#L13)
+Defined in: [IdeaProjects/kit/kit/src/graphql/cache-key-from-graphql-path.ts:13](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/cache-key-from-graphql-path.ts#L13)
 
 Turns the "info.path" object into a unique string key.
 e.g., { prev: { key: "message" }, key: "author" } -> "message.author"
@@ -380,7 +380,7 @@ function collectRecursiveSelectionPair<T>(
    recur): readonly [string, T] | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:228](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L228)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:228](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L228)
 
 Collects recursive selection pairs based on a GraphQL field and its subpath.
 
@@ -437,7 +437,7 @@ function findGqlNodeByPath(
    fragments): GqlASTField | null;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:109](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L109)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:109](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L109)
 
 Recursively finds a GraphQL node by traversing a path through a GraphQL Abstract Syntax Tree (AST).
 
@@ -479,7 +479,7 @@ A mapping of fragment names to their
 function flattenSpreads(fields, fragments): GqlASTField[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:81](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L81)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:81](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L81)
 
 Recursively processes an array of GraphQL AST fields, fragment spreads, and inline fragment spreads,
 and returns a flattened array of `GqlASTField` objects.
@@ -518,7 +518,7 @@ function unpackSelectArgs<Add>(
    fieldName): UnpackedBasicSelectionOptions & Add;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:155](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L155)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:155](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L155)
 
 Processes and unpacks selection arguments for a GraphQL field node, combining
 user-provided options with information from the GraphQL query AST.
@@ -568,7 +568,7 @@ If the provided path does not exist within the specified field node or fragments
 type BasicSelectionArgs<Add> = readonly string[] | BasicSelectionArgsObject & Add | undefined;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:132](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L132)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:132](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L132)
 
 Arguments for basic selection.
 
@@ -583,7 +583,7 @@ Arguments for basic selection.
 type GqlASTField = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:25](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L25)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:25](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L25)
 
 Represents a field node in a GraphQL AST.
 
@@ -594,7 +594,7 @@ Represents a field node in a GraphQL AST.
 type GqlASTFragmentDefinition = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:43](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L43)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:43](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L43)
 
 Represents a fragment definition node in a GraphQL AST.
 
@@ -605,7 +605,7 @@ Represents a fragment definition node in a GraphQL AST.
 type GqlASTFragmentSpread = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:55](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L55)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:55](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L55)
 
 Represents a fragment spread node in a GraphQL AST.
 
@@ -616,7 +616,7 @@ Represents a fragment spread node in a GraphQL AST.
 type GqlASTInlineFragmentSpread = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:63](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L63)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:63](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L63)
 
 Represents an inline fragment spread node in a GraphQL AST.
 
@@ -627,7 +627,7 @@ Represents an inline fragment spread node in a GraphQL AST.
 type GqlASTLoc = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:6](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L6)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:6](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L6)
 
 Represents the location of a node in a GraphQL AST.
 
@@ -638,7 +638,7 @@ Represents the location of a node in a GraphQL AST.
 type GqlASTName = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:11](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L11)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:11](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L11)
 
 Represents a name node in a GraphQL AST.
 
@@ -649,7 +649,7 @@ Represents a name node in a GraphQL AST.
 type GqlASTSelectionSet = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:16](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L16)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:16](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L16)
 
 Represents a selection set node in a GraphQL AST.
 
@@ -660,7 +660,7 @@ Represents a selection set node in a GraphQL AST.
 type GqlContextInfo = object;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:186](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L186)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:186](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L186)
 
 Information about the current GraphQL context.
 
@@ -672,7 +672,7 @@ Information about the current GraphQL context.
 fieldName: string;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:190](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L190)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:190](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L190)
 
 The name of the field being resolved.
 
@@ -684,7 +684,7 @@ The name of the field being resolved.
 fieldNodes: GqlASTField[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:194](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L194)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:194](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L194)
 
 The AST nodes for the field being resolved.
 
@@ -696,6 +696,6 @@ The AST nodes for the field being resolved.
 fragments: Record<string, GqlASTFragmentDefinition>;
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:198](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/graphql/graphql-traverse.ts#L198)
+Defined in: [IdeaProjects/kit/kit/src/graphql/graphql-traverse.ts:198](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/graphql/graphql-traverse.ts#L198)
 
 A map of fragment definitions.

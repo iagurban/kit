@@ -1,10 +1,13 @@
 import { tagChecker } from './util';
 
 /**
- * Checks if the provided value is a VALID number (typeof number AND not NaN).
- * strictly safer than standard typeof check.
+ * Checker that determines whether a value is a valid number
+ * (typeof `number` and not `NaN`).
+ *
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is a number and not `NaN`, otherwise false.
  */
 export const isNumber = tagChecker(
-  (o: unknown): o is number => typeof o === 'number' && !Number.isNaN(o),
+  (value: unknown): value is number => typeof value === 'number' && !Number.isNaN(value),
   `number`
 );

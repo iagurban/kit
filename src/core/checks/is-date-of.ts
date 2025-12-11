@@ -8,8 +8,14 @@ export type DateOptions = CheckOptions<Date> & {
 };
 
 /**
- * Checks if a value is a valid Date object matching optional constraints.
- * Implicitly ensures the date is valid (not NaN).
+ * Creates a checker that validates `Date` values with optional constraints.
+ *
+ * Ensures the date is valid by default (i.e., its time is not `NaN`). You may allow
+ * invalid dates by setting `allowInvalid: true`. Supports min/max bounds (accepting
+ * `Date`, timestamp `number`, or ISO `string`) and a custom predicate.
+ *
+ * @param {DateOptions} [options={}] Optional validation options.
+ * @returns {Checker<Date>} A checker for `Date` values.
  */
 export const isDateOf = (options: DateOptions = {}): Checker<Date> => {
   const isDateValid = (() => {

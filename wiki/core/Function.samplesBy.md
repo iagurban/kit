@@ -4,7 +4,7 @@
 function samplesBy<T>(length, by): T[];
 ```
 
-Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:46](https://github.com/iagurban/kit/blob/fa9fa6938de45d521729171297aa5a63ad08fac8/src/core/collections/array-utils.ts#L46)
+Defined in: [IdeaProjects/kit/kit/src/core/collections/array-utils.ts:46](https://github.com/iagurban/kit/blob/1e781a5487ee363602a36fe6fd9858d348e2b67a/src/core/collections/array-utils.ts#L46)
 
 Generates an array of specified length where each element is determined by a provided callback function.
 

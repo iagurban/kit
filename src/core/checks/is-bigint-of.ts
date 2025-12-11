@@ -7,6 +7,16 @@ export type BigIntOptions = CheckOptions<bigint> & {
   fitsInNumber?: boolean;
 };
 
+/**
+ * Creates a checker that validates `bigint` values with optional constraints.
+ *
+ * Supports min/max bounds (accepts `number` or `bigint` inputs), a `fitsInNumber`
+ * constraint to limit into JS safe integer range, and a custom predicate.
+ * The resulting checker exposes a descriptive `type` label.
+ *
+ * @param {BigIntOptions} [options={}] Optional validation options.
+ * @returns {Checker<bigint>} A checker for `bigint` values.
+ */
 export const isBigIntOf = (options: BigIntOptions = {}): Checker<bigint> => {
   const isBigIntValid = (() => {
     const fn = composer((_: bigint) => true);
