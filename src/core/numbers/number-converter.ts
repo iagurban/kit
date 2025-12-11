@@ -1,4 +1,4 @@
-import { isROArray } from '../checks';
+import { isROArray } from '../checks/basic';
 import { debugAssert } from '../flow/assertions';
 import { once } from '../once';
 import { getRandomBytes } from '../random';

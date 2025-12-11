@@ -1,16 +1,4 @@
-/**
- * Determines whether the given object is a Promise.
- *
- * @template T
- * @param {unknown} o - The object to test.
- * @returns {o is Promise<T>} - Returns `true` if the object is a Promise; otherwise, `false`.
- */
-export const isPromise = <T>(o: unknown): o is Promise<T> =>
-  o instanceof Promise ||
-  (o != null &&
-    (o as { then?: unknown }).then != null &&
-    (o as { catch?: unknown }).catch != null &&
-    (o as { finally?: unknown }).finally != null);
+import { isPromise } from '../checks/is-promise';
 
 /**
  * A utility type that extracts the resolved value type of Promise.

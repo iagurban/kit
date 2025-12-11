@@ -1,4 +1,4 @@
-import { isPromise, resolveRecord } from './promise-util';
+import { resolveRecord } from './promise-util';
 
 describe('promise-util', () => {
   describe('resolveRecord', () => {
@@ -73,55 +73,6 @@ describe('promise-util', () => {
       };
 
       await expect(resolveRecord(input)).rejects.toThrow('Test rejection');
-    });
-  });
-
-  describe('isPromise', () => {
-    it('should return true for a Promise instance', () => {
-      expect(isPromise(Promise.resolve())).toBe(true);
-    });
-
-    it('should return false for a non-Promise value', () => {
-      expect(isPromise(42)).toBe(false);
-      expect(isPromise('string')).toBe(false);
-      expect(isPromise({})).toBe(false);
-      expect(isPromise([])).toBe(false);
-    });
-
-    it('should return true for an object with then, catch, and finally methods', () => {
-      const mockPromise = {
-        then: () => {},
-        catch: () => {},
-        finally: () => {},
-      };
-      expect(isPromise(mockPromise)).toBe(true);
-    });
-
-    it('should return false for an object with only one of then, catch, or finally', () => {
-      expect(
-        isPromise({
-          then: () => {},
-        })
-      ).toBe(false);
-      expect(
-        isPromise({
-          catch: () => {},
-        })
-      ).toBe(false);
-      expect(
-        isPromise({
-          finally: () => {},
-        })
-      ).toBe(false);
-    });
-
-    it('should return false for null and undefined', () => {
-      expect(isPromise(null)).toBe(false);
-      expect(isPromise(undefined)).toBe(false);
-    });
-
-    it('should return true for a nested Promise', () => {
-      expect(isPromise(Promise.resolve(Promise.resolve(10)))).toBe(true);
     });
   });
 });

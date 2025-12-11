@@ -1,4 +1,12 @@
-import { fromEntries, groupedBy, mapEntries, mapOwnEntries, mappedBy } from './object-utils';
+import {
+  fromEntries,
+  groupedBy,
+  mapEntries,
+  mapOwnEntries,
+  mappedBy,
+  isObjectEmpty,
+  objectOwnKeysIterable,
+} from './object-utils';
 
 describe('Array Utility Functions', () => {
   describe('mappedBy', () => {
@@ -211,6 +219,47 @@ describe('Array Utility Functions', () => {
       const result = mapOwnEntries(obj, (value: number) => value * 2);
 
       expect(result).toEqual({ b: 4 });
+    });
+  });
+
+  describe('isObjectEmpty', () => {
+    it('returns true for empty plain object', () => {
+      expect(isObjectEmpty({})).toBe(true);
+    });
+
+    it('returns false for object with own enumerable property', () => {
+      expect(isObjectEmpty({ a: 1 })).toBe(false);
+    });
+
+    it('returns true when only inherited enumerable properties exist', () => {
+      const proto = { x: 1 }; // enumerable on prototype
+      const obj = Object.create(proto);
+      expect(isObjectEmpty(obj)).toBe(true);
+    });
+
+    it('handles arrays: empty array -> true; non-empty -> false', () => {
+      expect(isObjectEmpty([])).toBe(true);
+      expect(isObjectEmpty([1])).toBe(false);
+    });
+  });
+
+  describe('objectOwnKeysIterable', () => {
+    it('returns nothing for null and undefined (early return branch)', () => {
+      expect([...objectOwnKeysIterable(null as any)]).toEqual([]);
+      expect([...objectOwnKeysIterable(undefined as any)]).toEqual([]);
+    });
+
+    it('yields only own enumerable keys; ignores inherited ones (covers hasOwn false path)', () => {
+      const proto = { a: 1 }; // enumerable on prototype
+      const obj = Object.create(proto);
+      Object.defineProperty(obj, 'b', { value: 2, enumerable: true });
+      expect([...objectOwnKeysIterable(obj)]).toEqual(['b']);
+    });
+
+    it('yields own keys of a normal object', () => {
+      const obj = { k1: 1, k2: 2 };
+      const keys = [...objectOwnKeysIterable(obj)];
+      expect(keys).toEqual(['k1', 'k2']);
     });
   });
 });

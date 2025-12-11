@@ -1,4 +1,4 @@
-import { checked } from './checks';
+import { checked } from './checks/checked';
 import { Balancer, Changes, ManualSortingAlphabet } from './manual-sorting';
 import { isArraySortedUniq, ManualSortingAlphabetDebug } from './manual-sorting.debug';
 import { NumberBase } from './numbers/number-base';

@@ -1,4 +1,4 @@
-import { isTruthy } from '../../../core/checks';
+import { isTruthy } from '../../../core/checks/basic';
 import { $t, $u, InferTokenizer, rawSpan } from '../define';
 import { Tokenizer } from '../tokenizer-def';
 import { CodePointsBuilder } from '../util/code-points-builder';

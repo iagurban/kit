@@ -31,13 +31,13 @@ export const getRandomBytes: ((length: number) => Uint8Array | Buffer) & {
       typeof require === 'function'
         ? // eslint-disable-next-line @typescript-eslint/no-require-imports
           require('crypto')
-        : {
+        : /* istanbul ignore next */ {
             randomBytes: Object.assign(
-              () => {
+              /* istanbul ignore next */ () => {
                 throw new Error('Secure random generation not supported');
               },
               {
-                hex: () => {
+                hex: /* istanbul ignore next */ () => {
                   throw new Error('Secure random generation not supported');
                 },
               }
