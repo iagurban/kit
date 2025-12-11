@@ -229,5 +229,10 @@
     "yargs": "*",
     "zod": "*"
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.10.3",
+  "dependenciesMeta": {
+    "lodash-es@4.17.21": {
+      "unplugged": true
+    }
+  }
 }
