@@ -230,6 +230,9 @@
     "zod": "*"
   },
   "packageManager": "yarn@4.10.3",
+  "resolutions": {
+    "p-limit": "3.1.0"
+  },
   "dependenciesMeta": {
     "lodash-es@4.17.21": {
       "unplugged": true
