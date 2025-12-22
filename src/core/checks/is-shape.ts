@@ -58,7 +58,6 @@ export const isShape = <T extends Record<string, unknown>>(
   return tagCheckerGetter(
     (o): o is T => isSomeObject(o) && runShapeCheck(o),
     () => {
-      // Build Description
       // Truncate to avoid massive error messages for large objects
       const keys = Object.keys(shape);
       const fmtKeys = keys.length > 5 ? `{${keys.slice(0, 5).join(', ')}, ...}` : `{${keys.join(', ')}}`;

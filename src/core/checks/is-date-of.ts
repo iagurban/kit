@@ -18,8 +18,8 @@ export type DateOptions = CheckOptions<Date> & {
  * @returns {Checker<Date>} A checker for `Date` values.
  */
 export const isDateOf = (options: DateOptions = {}): Checker<Date> => {
-  const isDateValid = (() => {
-    const fn = composer(options.allowInvalid ? (_: number) => true : (t: number) => !Number.isNaN(t));
+  const isTimestampValid = (() => {
+    const fn = composer<number>(options.allowInvalid ? () => true : t => !Number.isNaN(t));
 
     if (options.min != null) {
       const min = new Date(options.min).getTime();
@@ -33,16 +33,16 @@ export const isDateOf = (options: DateOptions = {}): Checker<Date> => {
     return fn.run;
   })();
 
-  const custom = options.check;
+  const isDateValid = options.check;
 
   return tagCheckerGetter(
     (o): o is Date =>
       // 1. Instance check
       o instanceof Date &&
       // 2. Time & Validity checks (Validates !NaN and Ranges)
-      isDateValid(o.getTime()) &&
+      isTimestampValid(o.getTime()) &&
       // 3. Custom check
-      (!custom || custom(o)),
+      (!isDateValid || isDateValid(o)),
     () =>
       buildDesc('date', [
         !options.allowInvalid && 'valid',

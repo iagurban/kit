@@ -1,5 +1,5 @@
 import { objectOwnKeysIterable } from '../collections/object-utils';
-import { composer } from '../composer';
+import { composer, composerArgv } from '../composer';
 import { isSomeObject } from './is-some-object';
 import { buildDesc, Checker, checkerType, CheckOptions, tagCheckerGetter } from './util';
 
@@ -26,27 +26,27 @@ export type RecordOptions<V> = CheckOptions<Record<string, V>> & {
 export const isRecordOf = <V = unknown>(options: RecordOptions<V> = {}): Checker<Record<string, V>> => {
   const { key: keyChecker, value: valueChecker, minKeys, maxKeys, check, checkName } = options;
 
+  const isValidEntry = (() => {
+    const fn = composerArgv<[count: number, key: string, value: unknown]>(() => true);
+
+    maxKeys != null && fn.push(count => count <= maxKeys);
+    keyChecker != null && fn.push((_, key) => keyChecker(key));
+    valueChecker != null && fn.push((_, __, value) => valueChecker(value));
+
+    return fn.run;
+  })();
+
   const isValidRecord = (() => {
     const fn = composer((o: Record<string, unknown>) => {
       let count = 0;
-
       for (const k of objectOwnKeysIterable(o)) {
         count++;
-
-        if (
-          // Validate Count
-          (maxKeys != null && count > maxKeys) ||
-          // Validate Key
-          (keyChecker && !keyChecker(k)) ||
-          // Validate Value
-          (valueChecker && !valueChecker((o as Record<string, unknown>)[k]))
-        ) {
+        if (!isValidEntry(count, k, o[k])) {
           return false;
         }
       }
 
-      // Check Min Keys (after counting)
-      return !(minKeys != null && count < minKeys);
+      return minKeys == null || count >= minKeys;
     });
 
     check && fn.push(check as (o: Record<string, unknown>) => boolean);

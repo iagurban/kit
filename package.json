@@ -1,6 +1,6 @@
 {
   "name": "@grbn/kit",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "repository": {
     "url": "https://github.com/iagurban/kit"
   },
@@ -71,7 +71,6 @@
     "dist"
   ],
   "sideEffects": false,
-  "type": "module",
   "bin": {
     "build-info-gen": "./dist/cjs/src/bin/build-info-gen.js",
     "clean-md": "./dist/cjs/src/bin/clean-md.js",
