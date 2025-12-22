@@ -12,9 +12,9 @@ import globals from 'globals/index.js';
 import tseslint from 'typescript-eslint';
 
 const installCommand = `
-yarn add eslint eslint-config-next eslint-config-prettier eslint-plugin-import eslint-plugin-prettier \\
-  eslint-plugin-simple-import-sort eslint-plugin-unicorn eslint-plugin-unused-imports \\
-  prettier @eslint/js typescript-eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser \\
+yarn add eslint eslint-config-next eslint-config-prettier eslint-plugin-import eslint-plugin-prettier \
+  eslint-plugin-simple-import-sort eslint-plugin-unicorn eslint-plugin-unused-imports \
+  prettier @eslint/js typescript-eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser \
   eslint-plugin-react
 `;
 void installCommand;

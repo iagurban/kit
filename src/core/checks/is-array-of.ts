@@ -18,15 +18,23 @@ export type ArrayOptions<T> = CheckOptions<T[]> & {
  * @returns {Checker<T[]>} A checker for arrays of `T`.
  */
 export const isArrayOf = <T>(options: ArrayOptions<T> = {}): Checker<T[]> => {
-  // 1. Array Level Checks (O(1))
-
   const isArrayValid = (() => {
     const fn = composer((_: T[]) => true);
 
-    const { minLength, maxLength, check } = options;
+    const { minLength, maxLength, check, item } = options;
 
     minLength != null && fn.push(v => v.length >= minLength);
     maxLength != null && fn.push(v => v.length <= maxLength);
+
+    item != null &&
+      fn.push(v => {
+        for (const element of v) {
+          if (!item(element)) {
+            return false;
+          }
+        }
+        return true;
+      });
 
     check != null && fn.push(check);
 
@@ -35,25 +43,8 @@ export const isArrayOf = <T>(options: ArrayOptions<T> = {}): Checker<T[]> => {
 
   const { item } = options;
 
-  // 2. The Optimized Loop
   return tagCheckerGetter(
-    (o): o is T[] => {
-      // Base type + Fast checks
-      if (!Array.isArray(o) || !isArrayValid(o)) {
-        return false;
-      }
-
-      if (item == null) {
-        return true;
-      }
-      // Slow check (Iteration) - only happens if needed
-      for (const element of o) {
-        if (!item(element)) {
-          return false;
-        }
-      }
-      return true;
-    },
+    (o): o is T[] => Array.isArray(o) && isArrayValid(o),
     () =>
       buildDesc(`${item ? checkerType(item) : `unknown`}[]`, [
         options.minLength != null && `len>=${options.minLength}`,
